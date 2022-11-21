@@ -9,6 +9,8 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { RouterModule } from '@angular/router';
 import { ViewCompanyComponent } from './view-company/view-company.component';
+import { ListUsersComponent } from './list-users/list-users.component';
+import { ViewUserComponent } from './view-user/view-user.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { ViewCompanyComponent } from './view-company/view-company.component';
     AddCompanyRedesComponent,
     ListCompaniesComponent,
     HistoryCompaniesComponent,
-    ViewCompanyComponent
+    ViewCompanyComponent,
+    ListUsersComponent,
+    ViewUserComponent
   ],
   imports: [
     CommonModule,

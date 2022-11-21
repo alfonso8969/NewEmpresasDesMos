@@ -8,6 +8,8 @@ import { ListCompaniesComponent } from './list-companies/list-companies.componen
 import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { ViewCompanyComponent } from './view-company/view-company.component';
+import { ListUsersComponent } from './list-users/list-users.component';
+import { ViewUserComponent } from './view-user/view-user.component';
 
 const routes: Routes = [
   {
@@ -18,7 +20,9 @@ const routes: Routes = [
       { path: 'add-redes', component: AddCompanyRedesComponent },
       { path: 'list-companies', component: ListCompaniesComponent },
       { path: 'history-companies', component: HistoryCompaniesComponent },
-      { path: 'view-company/:id', component: ViewCompanyComponent }
+      { path: 'view-company/:id', component: ViewCompanyComponent },
+      { path: 'list-users', component: ListUsersComponent },
+      { path: 'view-user/:id', component: ViewUserComponent }
     ]
   },
 

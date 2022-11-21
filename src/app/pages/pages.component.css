@@ -1,0 +1,11 @@
+.hide-menu {
+  font-weight: 400 !important;
+  font-family: Monserrat, Arial, Helvetica, sans-serif !important;
+  font-size: 1em !important;
+  color: black;
+  display: inline !important;
+  padding-left: 5px;
+}
+.cursor {
+    cursor: pointer;
+}

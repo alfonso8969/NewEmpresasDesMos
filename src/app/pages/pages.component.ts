@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CompaniesService } from '../services/companies.service';
 
 @Component({
   selector: 'app-pages',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PagesComponent implements OnInit {
 
-  constructor() { }
+  constructor(public companiesService: CompaniesService,
+    private router: Router) {
+
+   }
 
   ngOnInit(): void {
   }
 
+  logout() {
+    this.router.navigateByUrl('/login')
+  }
 }
