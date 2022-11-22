@@ -11,6 +11,8 @@ import { RouterModule } from '@angular/router';
 import { ViewCompanyComponent } from './view-company/view-company.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 import { ViewUserComponent } from './view-user/view-user.component';
+import { NgMaterialModule } from '../design/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { ViewUserComponent } from './view-user/view-user.component';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    NgMaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class PagesModule { }

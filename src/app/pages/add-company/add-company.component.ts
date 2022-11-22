@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Empresa } from 'src/app/class/empresa';
 
 @Component({
   selector: 'app-add-company',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddCompanyComponent implements OnInit {
 
-  constructor() { }
+  empresa: Empresa;
+  constructor() {
+    this.empresa = new Empresa("","",0);
+  }
 
   ngOnInit(): void {
   }

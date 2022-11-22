@@ -1,10 +1,14 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Empresa } from '../class/empresa';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompaniesService {
 
+  url: string = "http://localhost/api-angular-php"
 
   public menu = [
     {
@@ -33,12 +37,16 @@ export class CompaniesService {
       icon: 'fa fa-id-card',
       submenu: [
         {
-          title: 'Listado usuarios', url: '/dashboard/list-users'
+          title: 'Listado usuarios', url: '/dashboard/list-user'
         }
       ]
     }
-
   ]
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  public getCompanies(): Observable<Empresa[]> {
+     return this.http.get<Empresa[]>(`${ this.url}/listCompanies.php`);
+  }
+
 }

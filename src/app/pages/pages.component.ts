@@ -9,10 +9,8 @@ import { CompaniesService } from '../services/companies.service';
 })
 export class PagesComponent implements OnInit {
 
-  constructor(public companiesService: CompaniesService,
-    private router: Router) {
-
-   }
+  constructor(public companiesService: CompaniesService, private router: Router) {
+  }
 
   ngOnInit(): void {
   }

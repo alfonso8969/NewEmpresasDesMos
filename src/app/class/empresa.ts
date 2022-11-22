@@ -2,32 +2,91 @@ import { Descripcion } from "./descripcion";
 
 export class Empresa extends Descripcion {
 
-   Id!: number;
+    static SIN_DATOS: string = "Sin datos";
 
-   Nombre: string;
+    private Id!: number;
+    private Nombre: string;
+    private Sector: string;
+    private Distrito?: string;
+    private Poligono?: string;
+    private Link?: string;
+    private Empresa_det_id: number;
+    private Habilitada: number
 
-   Sector: string;
 
-   Distrito: string;
+    // Constructor, donde debemos pasar todos los datos
+    constructor(nombre: string, sector: string, Empresadetid: number, distrito: string = Empresa.SIN_DATOS, poligono: string = Empresa.SIN_DATOS, link: string = Empresa.SIN_DATOS) {
+        super();
+        this.Nombre = nombre
+        this.Sector = sector
+        this.Distrito = distrito
+        this.Poligono = poligono
+        this.Link = link
+        this.Empresa_det_id = Empresadetid
+        this.Habilitada = 1
+    }
 
-   Poligono: string;
+    public getId(): number {
+        return this.Id;
+    }
 
-   Link?: string;
+    public setId(Id: number): void {
+        this.Id = Id;
+    }
 
-   Empresa_det_id: number;
+    public getNombre(): string {
+        return this.Nombre;
+    }
 
-   Habilitada: number
+    public setNombre(Nombre: string): void {
+        this.Nombre = Nombre;
+    }
 
-  // Constructor, donde debemos pasar todos los datos
-  constructor (nombre: string, sector: string, distrito: string, poligono: string, link: string, Empresadetid: number) {
-    super();
-      this.Nombre = nombre
-      this.Sector = sector
-      this.Distrito = distrito
-      this.Poligono = poligono
-      this.Link = link
-      this.Empresa_det_id = Empresadetid
-      this.Habilitada = 1
-  }
+    public getSector(): string {
+        return this.Sector;
+    }
 
+    public setSector(Sector: string): void {
+        this.Sector = Sector;
+    }
+
+    public getDistrito(): string {
+        return this.Distrito || Empresa.SIN_DATOS;
+    }
+
+    public setDistrito(Distrito: string): void {
+        this.Distrito = Distrito;
+    }
+
+    public getPoligono(): string | undefined {
+        return this.Poligono;
+    }
+
+    public setPoligono(Poligono: string): void {
+        this.Poligono = Poligono;
+    }
+
+    public getLink(): string | undefined {
+        return this.Link;
+    }
+
+    public setLink(Link: string): void {
+        this.Link = Link;
+    }
+
+    public getEmpresa_det_id(): number {
+        return this.Empresa_det_id;
+    }
+
+    public setEmpresa_det_id(Empresa_det_id: number): void {
+        this.Empresa_det_id = Empresa_det_id;
+    }
+
+    public getHabilitada(): number {
+        return this.Habilitada;
+    }
+
+    public setHabilitada(Habilitada: number): void {
+        this.Habilitada = Habilitada;
+    }
 }
