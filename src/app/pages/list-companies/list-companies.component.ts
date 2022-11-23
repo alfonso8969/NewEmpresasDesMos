@@ -13,32 +13,58 @@ import { CompaniesService } from 'src/app/services/companies.service';
 export class ListCompaniesComponent implements OnInit, OnDestroy {
 
   listEmpresas: Empresa[]
+  div: Element;
+
 
   displayedColumns: string[] = ['Nombre', 'Sector', 'Distrito', 'Poligono'];
 
   dataSource: MatTableDataSource<Empresa>;
-  
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    if (this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }
+  @ViewChild(MatSort, {static: false})
+  set sort(value: MatSort) {
+    if (this.dataSource){
+      this.dataSource.sort = value;
+    }
+  }
+
+  viewSpinner: boolean = true;
+  message: string;
 
   constructor(private companiesService: CompaniesService) {
     this.listEmpresas = [];
     this.getCompanies();
+    this.message = 'Cargando...';
+
   }
 
   ngOnInit(): void {
-
+    this.div = document.getElementsByClassName('page-wrapper')[0];
+    this.div.className = "viewSpinner";
   }
+
 
   public getCompanies(): void {
     this.companiesService.getCompanies().subscribe({
-      next: (result: any) => {
+      next: async (result: any) => {
         this.listEmpresas = result.data;
         this.dataSource = new MatTableDataSource<Empresa>(this.listEmpresas);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        await this.sleep()
+        this.viewSpinner = false;
       },
-      error: (error: any) => console.log(error),
+      error: (error: any) => {
+        console.log(error);
+        this.viewSpinner = false;
+        this.div.className = "page-wrapper";
+        alert(error.message)
+      },
       complete: () => console.log("Complete", this.listEmpresas)
     });
   }
@@ -47,6 +73,16 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
     console.log(item);
   }
 
+  private delay(ms: number) {
+    setTimeout(() => {
+      this.div.className = "page-wrapper";
+    }, ms);
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async sleep() {
+    await this.delay(3000);
+  }
 
   ngOnDestroy() {
 

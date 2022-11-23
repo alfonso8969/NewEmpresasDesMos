@@ -10,7 +10,7 @@ export class AddCompanyComponent implements OnInit {
 
   empresa: Empresa;
   constructor() {
-    this.empresa = new Empresa("","",0);
+    
   }
 
   ngOnInit(): void {

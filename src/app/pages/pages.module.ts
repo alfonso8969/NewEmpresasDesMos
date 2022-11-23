@@ -13,6 +13,9 @@ import { ListUsersComponent } from './list-users/list-users.component';
 import { ViewUserComponent } from './view-user/view-user.component';
 import { NgMaterialModule } from '../design/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     RouterModule,
     NgMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ComponentsModule
   ]
 })
 export class PagesModule { }

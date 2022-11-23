@@ -1,3 +1,11 @@
 div.login {
     background-image: url(../../../assets/images/background/urjc2.jpeg);
 }
+
+
+span.err {
+    font-weight: 800!important;
+    font-family: Monserrat, Arial, Helvetica, sans-serif !important;
+    font-size: 17px !important;
+    margin-left: 0.5em;
+  }

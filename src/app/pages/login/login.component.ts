@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,13 +9,20 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  loginForm: FormGroup;
+
+  constructor(private router: Router, private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
   }
 
   login() {
-    this.router.navigateByUrl("dashboard");
+    this.router.navigateByUrl("/dashboard");
   }
 
 }
