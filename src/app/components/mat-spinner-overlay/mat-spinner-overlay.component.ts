@@ -8,14 +8,14 @@ import {  ProgressSpinnerMode } from '@angular/material/progress-spinner';
 })
 export class MatSpinnerOverlayComponent implements OnInit {
 
-
+  message: string = "Cargando..."
   constructor() { }
 
   @Input() value : number = 100;
   @Input() diameter: number = 100;
   @Input() mode : ProgressSpinnerMode = 'indeterminate'
   @Input() strokeWidth : number = 10;
-  @Input() overlay: boolean = false;
+  @Input() overlay: boolean = true;
   @Input() color: string = "primary";
 
 

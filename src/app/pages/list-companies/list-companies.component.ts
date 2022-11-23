@@ -39,8 +39,6 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
   constructor(private companiesService: CompaniesService) {
     this.listEmpresas = [];
     this.getCompanies();
-    this.message = 'Cargando...';
-
   }
 
   ngOnInit(): void {
