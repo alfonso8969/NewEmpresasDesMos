@@ -1,70 +1,125 @@
-
 <div class="page-wrapper">
-    <!-- ============================================================== -->
-    <!-- Container fluid  -->
-    <!-- ============================================================== -->
-    <div class="container-fluid animated fadeIn">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeIn">
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
-        <div class="row page-titles">
-            <div class="col-md-5 align-self-center">
-                <h3 class="text-themecolor">Registrar empresa</h3>
-            </div>
-            <div class="">
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Registrar empresa</h3>
+      </div>
+      <div class="">
 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-
-                    <div class="card-body">
-                            <div class="form-body">
-                                <h3 class="card-title">Solicitud de datos de la empresa</h3>
-                                <hr>
-                                <div class="row p-t-20">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Nombre completo</label>
-                                            <input type="text" class="form-control" placeholder="Nombre completo">
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Edad</label>
-                                            <input type="text" class="form-control"  placeholder="31 años">
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                </div>
-                                <!--/row-->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Teléfono</label>
-                                            <input type="text"  class="form-control"  placeholder="(999) 999-9999">
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Dirección</label>
-                                            <input type="text" class="form-control"  placeholder="Av. Venustiano carranza 43, Atlacomulco, Edo. De Méx.">
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                </div>
-                                <!--/row-->
-                            </div>
-                            <div class="form-actions">
-                                <button  class="btn btn-success" > <i class="fa fa-check"></i> Guardar </button>
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-            <!-- Row -->
+      </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <h3 class="card-title">Solicitud de datos de la empresa</h3>
+          <cite>los campos marcados con * son obligatorios</cite>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <div class="row p-t-20">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="name" class="control-label">* Nombre completo</label>
+                    <input id="name" name="name" type="text" class="form-control" placeholder="Nombre completo">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="sector" class="control-label">* Sector</label>
+                    <select name="sector" id="sector" class="form-control" title="Sector">
+                      <option value="0" selected>Seleccione sector</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="phone" class="control-label">* Teléfono</label>
+                    <input type="text" name="phone" id="phone" class="form-control" placeholder="+31 999 99 99 99">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="otherphone" class="control-label">Otro Teléfono</label>
+                    <input type="text" name="otherphone" id="otherphone" class="form-control"
+                      placeholder="+31 999 99 99 99">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email" class="control-label">* Email</label>
+                        <input type="email" class="form-control" placeholder="Email" id="email" name="email">
+                      </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="contact_person" class="control-label">Persona contacto</label>
+                    <input type="text" class="form-control" name="contactperson" id="contact_person" placeholder="Persona contacto">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="address" class="control-label">* Dirección</label>
+                    <input type="text" class="form-control" name="address" id="address" placeholder="Dirección">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="district" class="control-label">* Distrito</label>
+                    <select name="district" id="district" class="form-control" title="Distrito">
+                      <option value="0" selected>Seleccione distrito</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="email" class="control-label">Polígono</label>
+                    <select name="poligon" id="pologon" class="form-control" title="Polígono">
+                      <option value="0" selected>Seleccione polígono</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="region" class="control-label">Provincía</label>
+                    <input type="text" class="form-control" name="region" id="region" placeholder="Madrid" [value]="region">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="city" class="control-label">Localidad</label>
+                    <input type="text" class="form-control" name="city" id="city" placeholder="Móstoles" [value]="city">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cod_postal" class="control-label">* Código postal</label>
+                    <input type="text" class="form-control" name="cod_postal" id="cod_postal"
+                      placeholder="Código postal 289--">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-success"  matTooltip="Elija guardar y añadir datos de red y web después"> <i class="fa fa-check"></i> Guardar </button>
+              <button type="button" routerLink="/dashboard/add-redes" class="btn btn-primary float-right p-y-2" matTooltip="Elija siguiente para añadir datos de red y web">Siguiente  <i class="fas fa-long-arrow-alt-right"></i> </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

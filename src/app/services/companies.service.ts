@@ -8,7 +8,8 @@ import { Empresa } from '../class/empresa';
 })
 export class CompaniesService {
 
-  url: string = "http://localhost/api-angular-php"
+  // url: string = "http://localhost/api-angular-php"
+  url: string = "https://alfonsogonz.es/api-angular-php"
 
   public menu = [
     {
@@ -46,7 +47,7 @@ export class CompaniesService {
   constructor(private http: HttpClient) { }
 
   public getCompanies(): Observable<Empresa[]> {
-     return this.http.get<Empresa[]>(`${ this.url}/listCompanies.php`);
+     return this.http.get<Empresa[]>(`${ this.url }/listCompanies.php`);
   }
 
 }

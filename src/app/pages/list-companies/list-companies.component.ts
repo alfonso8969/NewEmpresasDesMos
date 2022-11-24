@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,7 +10,7 @@ import { CompaniesService } from 'src/app/services/companies.service';
   templateUrl: './list-companies.component.html',
   styleUrls: ['./list-companies.component.css']
 })
-export class ListCompaniesComponent implements OnInit, OnDestroy {
+export class ListCompaniesComponent implements OnInit {
 
   listEmpresas: Empresa[]
   div: Element;
@@ -50,11 +50,15 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
   public getCompanies(): void {
     this.companiesService.getCompanies().subscribe({
       next: async (result: any) => {
-        this.listEmpresas = result.data;
-        this.dataSource = new MatTableDataSource<Empresa>(this.listEmpresas);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        await this.sleep()
+        if (result != null) {
+          this.listEmpresas = result.data;
+          this.dataSource = new MatTableDataSource<Empresa>(this.listEmpresas);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          await this.sleep()
+        } else {
+          alert("Hubo un error")
+        }
         this.viewSpinner = false;
       },
       error: (error: any) => {
@@ -79,10 +83,6 @@ export class ListCompaniesComponent implements OnInit, OnDestroy {
   }
 
   private async sleep() {
-    await this.delay(3000);
-  }
-
-  ngOnDestroy() {
-
+    await this.delay(2000);
   }
 }

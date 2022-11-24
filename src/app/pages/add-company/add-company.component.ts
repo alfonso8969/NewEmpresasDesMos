@@ -9,9 +9,9 @@ import { Empresa } from 'src/app/class/empresa';
 export class AddCompanyComponent implements OnInit {
 
   empresa: Empresa;
-  constructor() {
-    
-  }
+  city: string = "Móstoles";
+  region: string = "Madrid";
+  constructor() {}
 
   ngOnInit(): void {
   }

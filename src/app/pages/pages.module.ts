@@ -1,5 +1,4 @@
 import { AddCompanyComponent } from './add-company/add-company.component';
-import { AddCompanyDescriptionComponent } from './add-company-description/add-company-description.component';
 import { AddCompanyRedesComponent } from './add-company-redes/add-company-redes.component';
 import { CommonModule } from '@angular/common';
 import { HistoryCompaniesComponent } from './history-companies/history-companies.component';
@@ -22,7 +21,6 @@ import { ComponentsModule } from '../components/components.module';
     PagesComponent,
     LoginComponent,
     AddCompanyComponent,
-    AddCompanyDescriptionComponent,
     AddCompanyRedesComponent,
     ListCompaniesComponent,
     HistoryCompaniesComponent,
