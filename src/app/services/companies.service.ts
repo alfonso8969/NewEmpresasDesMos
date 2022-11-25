@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Empresa } from '../class/empresa';
 
@@ -8,8 +8,9 @@ import { Empresa } from '../class/empresa';
 })
 export class CompaniesService {
 
-  // url: string = "http://localhost/api-angular-php"
-  url: string = "https://alfonsogonz.es/api-angular-php"
+  url: String;
+  urlDevMode: string = "http://localhost/api-angular-php"
+  urlProdMode: string = "https://alfonsogonz.es/api-angular-php"
 
   public menu = [
     {
@@ -29,7 +30,10 @@ export class CompaniesService {
       icon: 'fa fa-archive',
       submenu: [
         {
-          title: 'Empresas deshabilitadas', url: '/dashboard/history-companies'
+          title: 'Empresas deshabilitadas', url: '/dashboard/companies-out'
+        },
+        {
+          title: 'Historial', url: '/dashboard/history-companies'
         }
       ]
     },
@@ -38,13 +42,22 @@ export class CompaniesService {
       icon: 'fa fa-id-card',
       submenu: [
         {
-          title: 'Listado usuarios', url: '/dashboard/list-user'
+          title: 'Listado usuarios', url: '/dashboard/list-users'
         }
       ]
     }
   ]
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+
+    if (isDevMode()) {
+      console.log('Development!');
+      this.url = this.urlDevMode ;
+    } else {
+      console.log('Production!');
+      this.url = this.urlProdMode;
+    }
+   }
 
   public getCompanies(): Observable<Empresa[]> {
      return this.http.get<Empresa[]>(`${ this.url }/listCompanies.php`);

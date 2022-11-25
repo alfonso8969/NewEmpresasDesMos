@@ -7,11 +7,3 @@
 html, body { height: 60%; }
 body { margin: 0; font-family: Montserrat, "Helvetica Neue", sans-serif; }
 
-.viewSpinner {
-    background: #f4f6f9;
-    padding-bottom: 60px;
-    position: relative;
-    margin-top: 5% !important;
-    margin-left: 50% !important;
-    margin-right: 50% !important;
-}

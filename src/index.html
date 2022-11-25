@@ -26,9 +26,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type="text/javascript">
+    function disabledForward() {
+      window.location.hash = "no-back-button";
+      window.location.hash = "Again-No-back-button" //chrome
+      window.onhashchange = function () { window.location.hash = "no-back-button"; }
+	}
+  </script>
 </head>
 
-<body class="fix-header card-no-border fix-sidebar">
+<body class="fix-header card-no-border fix-sidebar" onload="disabledForward()">
   <app-root></app-root>
   <!-- ============================================================== -->
   <!-- All Jquery -->

@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from '../components/components.module';
+import { CompaniesOutComponent } from './companies-out/companies-out.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ComponentsModule } from '../components/components.module';
     HistoryCompaniesComponent,
     ViewCompanyComponent,
     ListUsersComponent,
-    ViewUserComponent
+    ViewUserComponent,
+    CompaniesOutComponent
   ],
   imports: [
     CommonModule,

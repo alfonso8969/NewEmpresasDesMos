@@ -9,6 +9,7 @@ import { ViewCompanyComponent } from './view-company/view-company.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 import { ViewUserComponent } from './view-user/view-user.component';
 import { Title } from '@angular/platform-browser';
+import { CompaniesOutComponent } from './companies-out/companies-out.component';
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -26,12 +27,13 @@ export class TemplatePageTitleStrategy extends TitleStrategy {
 
 const routes: Routes = [
   {
-    path: 'dashboard', component: PagesComponent,
+    path: 'dashboard', title: "Página principal", component: PagesComponent,
     children: [
       { path: 'add-company', title: "Crear empresa", component: AddCompanyComponent },
       { path: 'add-redes', title: "Añadir redes", component: AddCompanyRedesComponent },
       { path: 'list-companies', title: "Listado empresas", component: ListCompaniesComponent },
       { path: 'history-companies', title: "Historial empresa", component: HistoryCompaniesComponent },
+      { path: 'companies-out', title: "Empresas dshabilitadas", component: CompaniesOutComponent },
       { path: 'view-company/:id', title: "Ver empresa", component: ViewCompanyComponent },
       { path: 'list-users', title: "Listado usuarios", component: ListUsersComponent },
       { path: 'view-user/:id', title: "Ver empresa", component: ViewUserComponent }
@@ -44,7 +46,8 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
   providers: [
-    {provide: TitleStrategy, useClass: TemplatePageTitleStrategy},
+    { provide: TitleStrategy, useClass: TemplatePageTitleStrategy },
+
   ]
 })
 export class PagesRoutingModule { }

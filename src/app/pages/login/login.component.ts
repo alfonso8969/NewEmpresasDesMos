@@ -19,10 +19,14 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   login() {
-    this.router.navigateByUrl("/dashboard");
+    this.router.navigate(["/dashboard"])
+    .then(() => {
+      window.location.reload();
+    });
   }
 
 }

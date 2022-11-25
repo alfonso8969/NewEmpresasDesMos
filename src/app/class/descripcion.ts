@@ -7,17 +7,20 @@ export class Descripcion extends Redes {
    private Web?: string;
    private Telefono: string;
    private Email: string;
+   private Persona_contacto?: string;
    private Direccion: string;
    private Localidad?: string;
    private Provincia?: string;
    private Cod_postal: string;
 
      // Constructor, donde debemos pasar todos los datos
-  constructor(web: string = Empresa.SIN_DATOS, telefono: string = Empresa.SIN_DATOS, email: string = Empresa.SIN_DATOS, direccion: string = Empresa.SIN_DATOS, localidad: string = Empresa.SIN_DATOS, provincia: string = Empresa.SIN_DATOS, codpostal: string = Empresa.SIN_DATOS) {
+  constructor(web: string = Empresa.SIN_DATOS, telefono: string = Empresa.SIN_DATOS, email: string = Empresa.SIN_DATOS,
+    persona_contact: string = Empresa.SIN_DATOS,direccion: string = Empresa.SIN_DATOS, localidad: string = Empresa.SIN_DATOS, provincia: string = Empresa.SIN_DATOS, codpostal: string = Empresa.SIN_DATOS) {
     super();
     this.Web = web;
     this.Telefono = telefono;
     this.Email = email;
+    this.Persona_contacto = persona_contact;
     this.Direccion = direccion;
     this.Localidad = localidad;
     this.Provincia = provincia;
@@ -54,6 +57,14 @@ export class Descripcion extends Redes {
 
     public setEmail(Email: string): void {
         this.Email = Email;
+    }
+
+    public getPersonaContacto(): string | undefined  {
+        return this.Persona_contacto;
+    }
+
+    public setPersonaContacto(Persona_contacto: string): void {
+        this.Email = Persona_contacto;
     }
 
     public getDireccion(): string {

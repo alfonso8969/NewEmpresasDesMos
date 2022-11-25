@@ -12,7 +12,8 @@ export class Empresa extends Descripcion {
     private Link?: string;
     private Empresa_det_id: number;
     private Habilitada: number
-
+    private fecha_alta: Date
+    private fecha_baja: Date
 
     // Constructor, donde debemos pasar todos los datos
     constructor(nombre: string, sector: string, Empresadetid: number, distrito: string = Empresa.SIN_DATOS, poligono: string = Empresa.SIN_DATOS, link: string = Empresa.SIN_DATOS) {
@@ -24,6 +25,7 @@ export class Empresa extends Descripcion {
         this.Link = link
         this.Empresa_det_id = Empresadetid
         this.Habilitada = 1
+        this.fecha_alta = new Date()
     }
 
     public getId(): number {
@@ -88,5 +90,21 @@ export class Empresa extends Descripcion {
 
     public setHabilitada(Habilitada: number): void {
         this.Habilitada = Habilitada;
+    }
+
+    public getFecha_alta(): Date {
+        return this.fecha_alta;
+    }
+
+    public setFecha_alta(fecha_alta: Date): void {
+        this.fecha_alta = fecha_alta;
+    }
+
+    public getFecha_baja(): Date {
+        return this.fecha_baja;
+    }
+
+    public setFecha_baja(fecha_baja: Date): void {
+        this.fecha_baja = fecha_baja;
     }
 }

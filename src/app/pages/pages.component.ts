@@ -9,13 +9,20 @@ import { CompaniesService } from '../services/companies.service';
 })
 export class PagesComponent implements OnInit {
 
-  constructor(public companiesService: CompaniesService, private router: Router) {
+  private currentRouter: string;
+  constructor(public companiesService: CompaniesService, private _router: Router) {
+    this.currentRouter = this._router.url;
   }
 
   ngOnInit(): void {
   }
 
+
+  reLoad() {
+    this._router.navigate([this.currentRouter]);
+  }
+
   logout() {
-    this.router.navigateByUrl('/login')
+    this._router.navigateByUrl('/login')
   }
 }
