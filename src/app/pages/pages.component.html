@@ -52,7 +52,7 @@
                 class="profile-pic" /></a>
             <div class="dropdown-menu dropdown-menu-right animated flipInY">
               <ul class="dropdown-user">
-              <!--<li>
+                <!--<li>
                     <div class="dw-user-box">
                         <div class="u-img"><img src="../assets/images/users/1.jpg" alt="user"></div>
                         <div class="u-text">
@@ -64,11 +64,11 @@
                 <li *ngFor="let item of companiesService.menu">
                   <a class="waves-effect waves-dark" aria-expanded="false">
                     <i [class]="item.icon"></i>
-                    <span class="hide-menu">{{ item.title }}</span>
+                    <span class="hide-menu p-2">{{ item.title }}</span>
                   </a>
                   <ul aria-expanded="false">
                     <li *ngFor="let subitem of item.submenu">
-                      <a [routerLink]="subitem.url" routerLinkActive="active"
+                      <a (click)="navigateTo(subitem.url, $event)" routerLinkActive="active"
                         [routerLinkActiveOptions]="{ exact: true }">{{ subitem.title }}</a>
                     </li>
                   </ul>
@@ -94,6 +94,60 @@
   <!-- ============================================================== -->
   <!-- End Topbar header -->
   <!-- ============================================================== -->
+  <!-- Center component -->
+  <div id="main-wrapper-mat-card" *ngIf="viewDashBoard">
+    <div class="container-fluid animated fadeIn">
+      <div class="row">
+        <div class="col-md-4 first" appMaterialElevation>
+          <mat-card class="card panel first">
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>Shiba Inu</mat-card-title>
+                <mat-card-subtitle>Large</mat-card-subtitle>
+              </mat-card-title-group>
+            </mat-card-header>
+            <mat-card-content>
+              {{longText}}
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-md-4 second" appMaterialElevation>
+          <mat-card class="card panel second">
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>Shiba Inu</mat-card-title>
+                <mat-card-subtitle>Large</mat-card-subtitle>
+              </mat-card-title-group>
+            </mat-card-header>
+            <mat-card-content>
+              {{longText}}
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-md-4 third" appMaterialElevation>
+          <mat-card class="card panel third">
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>Shiba Inu</mat-card-title>
+                <mat-card-subtitle>Large</mat-card-subtitle>
+              </mat-card-title-group>
+            </mat-card-header>
+            <mat-card-content>
+              {{longText}}
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-8 mx-3 no-gutters" *ngIf="apiLoaded | async" appMaterialElevation>
+          <google-map height="400px"
+          width="1200px" [center]="center" [zoom]="zoom">
+        </google-map>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- Center component -->
   <!-- ============================================================== -->
   <!-- Left Sidebar - style you can find in sidebar.scss  -->
   <!-- ============================================================== -->
@@ -106,8 +160,8 @@
           <li class="user-profile">
             <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
               <img src="./assets/images/icon/alfonso.ico" alt="user" />
-                <span class="hide-menu"></span>
-              </a>
+              <span class="hide-menu"></span>
+            </a>
             <ul aria-expanded="false" class="collapse">
               <li><a href="javascript:void()">Mi perfil </a></li>
               <li><a href="javascript:void()">Logout</a></li>
@@ -130,14 +184,24 @@
             </a>
             <ul aria-expanded="false">
               <li class="mt-3" *ngFor="let subitem of item.submenu">
-                <a [routerLink]="subitem.url" routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }">{{ subitem.title }}</a>
+                <a (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
               </li>
             </ul>
           </li>
+          <li class="for-group mx-1" *ngIf="!viewDashBoard">
+            <a class="waves-dark" aria-expanded="false" matTooltip="Ver página principal">
+              <i class="fa fa-desktop" aria-hidden="true" (click)="functViewDashboard()"></i>
+              <label class="hide-menu ml-1" for="viewDashBoard">Página principal</label>
+            </a>
+          </li>
 
-          <li role="separator" class="divider"></li>
-          <li><a class="cursor" (click)="logout()"><i class="fa fa-power-off"></i>Salir</a></li>
+          <li role="separator" class="divider mt-5"></li>
+          <li>
+            <a class="cursor" (click)="logout()">
+              <i class="fa fa-power-off"></i>
+              Salir
+            </a>
+          </li>
           <!--<li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">Apps</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="app-calendar.html">Calendar</a></li>
@@ -340,5 +404,7 @@
       <a class="float-right mx-5">@alf8969&copy;</a>
     </div>
   </footer>
+
+
   <router-outlet> </router-outlet>
 </div>

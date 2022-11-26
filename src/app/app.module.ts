@@ -3,11 +3,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { PagesModule } from './pages/pages.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { CompaniesService } from './services/companies.service';
-
+import { GoogleMapsModule } from '@angular/google-maps';
 @NgModule({
   declarations: [
     AppComponent
@@ -16,8 +16,10 @@ import { CompaniesService } from './services/companies.service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    HttpClientJsonpModule,
     PagesModule,
     BrowserAnimationsModule,
+    GoogleMapsModule
   ],
   providers: [
     CompaniesService,

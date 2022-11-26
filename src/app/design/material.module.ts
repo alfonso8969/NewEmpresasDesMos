@@ -6,6 +6,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { getSpanishPaginatorIntl } from '../utils/spanish-paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 
 const materialModules = [
@@ -13,7 +15,9 @@ const materialModules = [
   MatPaginatorModule,
   MatSortModule,
   MatProgressSpinnerModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatCardModule,
+  MatGridListModule
 ];
 
 

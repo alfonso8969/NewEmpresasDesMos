@@ -25,6 +25,8 @@
     ]
   },
   "angularCompilerOptions": {
+    "enableIvy": true,
+    "allowEmptyCodegenFiles": true,
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,

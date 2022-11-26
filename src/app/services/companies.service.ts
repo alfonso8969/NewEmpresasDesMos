@@ -63,4 +63,8 @@ export class CompaniesService {
      return this.http.get<Empresa[]>(`${ this.url }/listCompanies.php`);
   }
 
+  public getApi(): any {
+    return this.http.get('./assets/secret/api.txt', { responseType: 'text' });
+  }
+
 }

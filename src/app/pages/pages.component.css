@@ -5,8 +5,17 @@
 }
 
 .cursor {
-    cursor: pointer;
+  cursor: pointer;
 }
+
+a {
+  cursor: pointer;
+}
+
+a:hover, a:active {
+  color: blue !important;
+}
+
 
 #container {
   margin-top: 10%;
@@ -18,3 +27,74 @@
   z-index: 99;
 }
 
+.example-card {
+  max-width: 400px;
+}
+
+#main-wrapper-mat-card {
+  margin-left: 15%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.col-md-4.first {
+  background-image: url("../../assets/images/background/R.jpeg");
+}
+
+.col-md-4.second {
+  background-image: url("../../assets/images/background/Móstoles_Plaza_del_Sol.jpg");
+}
+
+.col-md-4.third {
+  background-image: url("../../assets/images/background/mapa.jpeg");
+}
+
+.col-md-4 {
+  margin: 10px;
+  padding: 20px;
+  max-width: 400px;
+  background-size: cover;
+  display: inline;
+}
+
+.col-md-8 {
+  padding: 0;
+}
+
+.card.first {
+  color: white !important;
+}
+
+.card.second {
+  color: white !important;
+}
+
+.card.third {
+  color: black !important;
+}
+
+.card {
+  background-color: transparent;
+  font-weight: 900 !important;
+  font-family: Monserrat, Arial, Helvetica, sans-serif !important;
+}
+
+mat-card.panel {
+  padding: 0px !important;
+  margin-left: 50px !important;
+  cursor: pointer;
+}
+
+@media (max-width: 1015px) {
+  .col-md-4 {
+    flex-direction: column !important;
+    flex: auto;
+  }
+}
+
+@media (max-width: 1495px) {
+  :host ::ng-deep div.map-container {
+
+    width: auto !important;
+  }
+}
