@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Empresa } from '../class/empresa';
+import { Fields } from '../interfaces/Fileds';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +66,10 @@ export class CompaniesService {
 
   public getApi(): any {
     return this.http.get('./assets/secret/api.txt', { responseType: 'text' });
+  }
+
+  public getFields(field: string):Observable<Fields[]> {
+    return this.http.post<Fields[]>(`${ this.url }/getFields.php`, { field: field} )
   }
 
 }

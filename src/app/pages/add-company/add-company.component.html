@@ -34,6 +34,9 @@
                     <label for="sector" class="control-label">* Sector</label>
                     <select name="sector" id="sector" class="form-control" title="Sector">
                       <option value="0" selected>Seleccione sector</option>
+                      <option value="{{ dato.sector_id }}" *ngFor="let dato of sectores">
+                        {{dato.empresas_sector_name}}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -53,17 +56,18 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="email" class="control-label">* Email</label>
-                        <input type="email" class="form-control" placeholder="Email" id="email" name="email">
-                      </div>
+                  <div class="form-group">
+                    <label for="email" class="control-label">* Email</label>
+                    <input type="email" class="form-control" placeholder="Email" id="email" name="email">
+                  </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="contact_person" class="control-label">Persona contacto</label>
-                    <input type="text" class="form-control" name="contactperson" id="contact_person" placeholder="Persona contacto">
+                    <input type="text" class="form-control" name="contactperson" id="contact_person"
+                      placeholder="Persona contacto">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -79,6 +83,9 @@
                     <label for="district" class="control-label">* Distrito</label>
                     <select name="district" id="district" class="form-control" title="Distrito">
                       <option value="0" selected>Seleccione distrito</option>
+                      <option value="{{ dato.distrito_id }}" *ngFor="let dato of distritos">
+                        {{dato.distrito_name}}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -87,6 +94,9 @@
                     <label for="email" class="control-label">Polígono</label>
                     <select name="poligon" id="pologon" class="form-control" title="Polígono">
                       <option value="0" selected>Seleccione polígono</option>
+                      <option value="{{ dato.poligono_id }}" *ngFor="let dato of poligonos">
+                        {{dato.empresas_poligono_name}}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -95,7 +105,8 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="region" class="control-label">Provincía</label>
-                    <input type="text" class="form-control" name="region" id="region" placeholder="Madrid" [value]="region">
+                    <input type="text" class="form-control" name="region" id="region" placeholder="Madrid"
+                      [value]="region">
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -114,8 +125,12 @@
               </div>
             </div>
             <div class="form-actions">
-              <button type="button" class="btn btn-success" matTooltip="Elija guardar y añadir datos de red y web después"> <i class="fa fa-check"></i> Guardar </button>
-              <button type="button" routerLink="/dashboard/add-redes" class="btn btn-primary float-right p-y-2" matTooltip="Elija siguiente para añadir datos de red y web">Siguiente  <i class="fas fa-long-arrow-alt-right"></i> </button>
+              <button type="button" class="btn btn-success"
+                matTooltip="Elija guardar y añadir datos de red y web después"> <i class="fa fa-check"></i> Guardar
+              </button>
+              <button type="button" routerLink="/dashboard/add-redes" class="btn btn-primary float-right p-y-2"
+                matTooltip="Elija siguiente para añadir datos de red y web">Siguiente <i
+                  class="fas fa-long-arrow-alt-right"></i> </button>
             </div>
           </div>
         </div>
