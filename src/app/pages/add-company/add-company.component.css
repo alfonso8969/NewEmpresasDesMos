@@ -1,0 +1,10 @@
+span.err {
+    font-weight: 800!important;
+    font-family: Monserrat, Arial, Helvetica, sans-serif !important;
+    font-size: 17px !important;
+    margin-left: 0.5em;
+  }
+
+button:disabled {
+    cursor: not-allowed !important;
+}

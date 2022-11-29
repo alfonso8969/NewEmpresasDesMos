@@ -22,7 +22,7 @@ export class PagesComponent implements OnInit {
   center: google.maps.LatLngLiteral = { lat: 40.3095534, lng: -3.9005684 };
   zoom: number = 10;
 
-  viewDashBoard: boolean = true;
+  viewDashBoard: boolean = false;
 
   constructor(public companiesService: CompaniesService, private _router: Router, private httpClient: HttpClient) {
     this.companiesService.getApi()
@@ -32,7 +32,12 @@ export class PagesComponent implements OnInit {
             map(() => true),
             catchError(() => of(false))
           );
-      })
+      });
+    console.log("ruta: ", this._router.url);
+    if (this._router.url === '/dashboard' || this._router.url === '/dashboard#no-back-button') {
+      this.viewDashBoard = true;
+    }
+
   }
 
   ngOnInit(): void {

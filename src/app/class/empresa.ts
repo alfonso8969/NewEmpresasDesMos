@@ -7,7 +7,7 @@ export class Empresa extends Descripcion {
     private Id!: number;
     private Nombre: string;
     private Sector: string;
-    private Distrito?: string;
+    private Distrito?: number;
     private Poligono?: string;
     private Link?: string;
     private Empresa_det_id: number;
@@ -16,7 +16,7 @@ export class Empresa extends Descripcion {
     private fecha_baja: Date
 
     // Constructor, donde debemos pasar todos los datos
-    constructor(nombre: string, sector: string, Empresadetid: number, distrito: string = Empresa.SIN_DATOS, poligono: string = Empresa.SIN_DATOS, link: string = Empresa.SIN_DATOS) {
+    constructor(nombre: string, sector: string, Empresadetid: number, distrito: number = 0, poligono: string = Empresa.SIN_DATOS, link: string = Empresa.SIN_DATOS) {
         super();
         this.Nombre = nombre
         this.Sector = sector
@@ -52,11 +52,11 @@ export class Empresa extends Descripcion {
         this.Sector = Sector;
     }
 
-    public getDistrito(): string {
-        return this.Distrito || Empresa.SIN_DATOS;
+    public getDistrito(): number {
+        return this.Distrito || 0;
     }
 
-    public setDistrito(Distrito: string): void {
+    public setDistrito(Distrito: number): void {
         this.Distrito = Distrito;
     }
 

@@ -37,18 +37,38 @@ export class CompaniesService {
           title: 'Historial', url: '/dashboard/history-companies'
         }
       ]
-    },
+    }
+  ]
+
+  public menuAdmin = [
     {
       title: 'Usuarios',
       icon: 'fa fa-id-card',
       submenu: [
         {
           title: 'Listado usuarios', url: '/dashboard/list-users'
+        },
+        {
+          title: 'Crear usuario', url: '/dashboard/add-user'
+        },
+        {
+          title: 'Administrar usuarios', url: '/dashboard/admin-users'
+        }
+      ]
+    },
+    {
+      title: 'Administración',
+      icon: 'fa fa-toolbox',
+      submenu: [
+        {
+          title: 'Administrar Campos', url: '/dashboard/edit-delete-fields'
+        },
+        {
+          title: 'Crear Campos', url: '/dashboard/add-fields'
         }
       ]
     }
   ]
-
   constructor(private http: HttpClient) {
 
     if (isDevMode()) {
@@ -70,6 +90,10 @@ export class CompaniesService {
 
   public getFields(field: string):Observable<Fields[]> {
     return this.http.post<Fields[]>(`${ this.url }/getFields.php`, { field: field} )
+  }
+
+  public getLastEmpDetId(): Observable<number> {
+    return this.http.get<number>(`${ this.url }/getLastEmpDetId.php`);
   }
 
 }

@@ -6,10 +6,14 @@ import { ListCompaniesComponent } from './list-companies/list-companies.componen
 import { Injectable, NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { ViewCompanyComponent } from './view-company/view-company.component';
-import { ListUsersComponent } from './list-users/list-users.component';
-import { ViewUserComponent } from './view-user/view-user.component';
+import { ListUsersComponent } from './users/list-users/list-users.component';
+import { ViewUserComponent } from './users/view-user/view-user.component';
 import { Title } from '@angular/platform-browser';
 import { CompaniesOutComponent } from './companies-out/companies-out.component';
+import { AddUserComponent } from './users/add-user/add-user.component';
+import { AdminUsersComponent } from './users/admin-users/admin-users.component';
+import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
+import { AddFieldsComponent } from './admin/add-fields/add-fields.component';
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -36,7 +40,11 @@ const routes: Routes = [
       { path: 'companies-out', title: "Empresas dshabilitadas", component: CompaniesOutComponent },
       { path: 'view-company/:id', title: "Ver empresa", component: ViewCompanyComponent },
       { path: 'list-users', title: "Listado usuarios", component: ListUsersComponent },
-      { path: 'view-user/:id', title: "Ver empresa", component: ViewUserComponent }
+      { path: 'view-user/:id', title: "Ver usuario", component: ViewUserComponent },
+      { path: 'add-user', title: "Añadir usuario", component: AddUserComponent },
+      { path: 'admin-users', title: "Administrar usuarios", component: AdminUsersComponent },
+      { path: 'edit-delete-fields', title: "Administrar campos", component: AdminFieldsComponent },
+      { path: 'add-fields', title: "Crear campos", component: AddFieldsComponent },
     ]
   },
 

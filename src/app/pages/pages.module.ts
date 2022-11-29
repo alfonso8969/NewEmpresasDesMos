@@ -8,8 +8,8 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { RouterModule } from '@angular/router';
 import { ViewCompanyComponent } from './view-company/view-company.component';
-import { ListUsersComponent } from './list-users/list-users.component';
-import { ViewUserComponent } from './view-user/view-user.component';
+import { ListUsersComponent } from './users/list-users/list-users.component';
+import { ViewUserComponent } from './users/view-user/view-user.component';
 import { NgMaterialModule } from '../design/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,6 +18,10 @@ import { ComponentsModule } from '../components/components.module';
 import { CompaniesOutComponent } from './companies-out/companies-out.component';
 import { DirectivesModule } from '../events/directives.module';
 import {GoogleMapsModule} from '@angular/google-maps';
+import { AdminUsersComponent } from './users/admin-users/admin-users.component';
+import { AddUserComponent } from './users/add-user/add-user.component';
+import { AddFieldsComponent } from './admin/add-fields/add-fields.component';
+import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,11 @@ import {GoogleMapsModule} from '@angular/google-maps';
     ViewCompanyComponent,
     ListUsersComponent,
     ViewUserComponent,
-    CompaniesOutComponent
+    CompaniesOutComponent,
+    AdminUsersComponent,
+    AddUserComponent,
+    AddFieldsComponent,
+    AdminFieldsComponent
   ],
   imports: [
     CommonModule,
