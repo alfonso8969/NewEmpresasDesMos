@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { Redes } from 'src/app/class/redes';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-add-company-redes',
@@ -61,9 +62,9 @@ export class AddCompanyRedesComponent implements OnInit {
       web: [web.toLowerCase() != 'sin datos' ? web : '', Validators.pattern(/^((http:\/\/)|(https:\/\/))?([a-zA-Z0-9]+[.])+[a-zA-Z]{2,4}(:\d+)?(\/[~_.\-a-zA-Z0-9=&%@:]+)*\??[~_.\-a-zA-Z0-9=&%@:]*$/g)],
       facebook: [face.toLowerCase() != 'sin datos' ? face : '', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/g)],
       instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/g)],
-      twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/g)],
+      twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)],
       linkedin: [link.toLowerCase() != 'sin datos' ? link : '', Validators.pattern(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/g)],
-      tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/g)]
+      tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)]
     })
   }
 
@@ -79,7 +80,12 @@ export class AddCompanyRedesComponent implements OnInit {
       }
     });
     if(empty && !back) {
-      alert("No hizo ningún cambio, seleccione volver, si no desea añadir datos");
+      Swal.fire({
+        title: 'Sin cambios',
+        text: 'No hizo ningún cambio, seleccione volver, si no desea añadir datos',
+        icon: 'info',
+        confirmButtonText: 'Aceptar'
+      });
     } else {
       this.empresa.setWeb(this.addRedesForm.get('web')!.value);
       let twi = this.addRedesForm.get('twitter')!.value;

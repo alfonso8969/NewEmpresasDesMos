@@ -147,7 +147,7 @@ export class AddCompanyComponent implements OnInit {
     this.empresa.setCod_postal(this.addCompanyForm.get("cod_postal")?.value);
     let red = localStorage.getItem('redes');
     if (red && red != "undefined") {
-      this.newRedes = JSON.parse(red!);
+      this.newRedes = JSON.parse(red);
       this.empresa.setWeb(this.newRedes['Web']);
       this.empresa.setTwitter(this.newRedes['Twitter']);
       this.empresa.setFacebook(this.newRedes['Facebook']);
@@ -157,6 +157,7 @@ export class AddCompanyComponent implements OnInit {
     }
     console.log(this.empresa);
     localStorage.removeItem("empresa");
+    localStorage.removeItem("redes");
   }
 
   public setRedes(): void {
