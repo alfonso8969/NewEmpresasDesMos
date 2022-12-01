@@ -7,3 +7,34 @@
 html, body { height: 60%; }
 body { margin: 0; font-family: Montserrat, "Helvetica Neue", sans-serif; }
 
+.button {
+  background-color: #0284c7;
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.8rem 1rem 0.8rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  font-size: 1.2rem;
+  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.1), 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+}
+.button:hover {
+  background-color: #0ea5e9;
+  transform: translateY(-0.1rem);
+  box-shadow: 0 0.3rem 0.2rem rgba(0, 0, 0, 0.1), 0 0.6rem 1rem rgba(0, 0, 0, 0.3);
+}
+.button:not([disabled]):hover i {
+  transform: rotate(360deg);
+}
+.button:active {
+  transition: all 0.1s ease-out;
+  transform: translateY(0rem);
+}
+.button i {
+  transition: transform 0.3s ease-out;
+  margin-right: 0.3rem;
+  font-size: 1.5rem;
+}

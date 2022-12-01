@@ -17,84 +17,118 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-
-          <div class="card-body">
-            <div class="form-body">
-              <h3 class="card-title">Solicitud de datos de redes de la empresa</h3>
-              <hr>
-              <div class="row p-t-20">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="name" class="control-label">
-                      <i class="fa fa-globe p-2 bg-primary text-white" aria-hidden="true"></i>
-                      Página Web</label>
-                    <input id="web" name="web" type="text" class="form-control" placeholder="Página web">
+          <form [formGroup]="addRedesForm" (ngSubmit)="addRedes(false)" novalidate autocomplete="off">
+            <div class="card-body">
+              <div class="form-body">
+                <h3 class="card-title">Solicitud de datos de redes de la empresa</h3>
+                <hr>
+                <div class="row p-t-20">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="name" class="control-label">
+                        <i class="fa fa-globe p-2 bg-primary text-white" aria-hidden="true"></i>
+                        Página Web</label>
+                      <input formControlName="web" id="web" name="web" type="text" class="form-control"
+                        placeholder="Url del sitio web">
+                      <span class="err text-danger"
+                        *ngIf="addRedesForm.get('web')!.errors != null && addRedesForm.get('web')!.errors!['pattern'] && addRedesForm.get('web')?.touched">
+                        La <strong>URL</strong> no es válida
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <!--/span-->
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="facebook" class="control-label">
-                      <i class="fa fa-facebook p-2 bg-info text-white" aria-hidden="true"></i>
-                      Facebook</label>
-                    <input id="facebook" name="facebook" type="text" class="form-control" placeholder="Facebook">
-
+                  <!--/span-->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="facebook" class="control-label">
+                        <i class="fa fa-facebook p-2 bg-info text-white" aria-hidden="true"></i>
+                        Facebook</label>
+                      <input formControlName="facebook" id="facebook" name="facebook" type="text" class="form-control"
+                        placeholder="https://www.facebook.com/usuario">
+                      <span class="err text-danger"
+                        *ngIf="addRedesForm.get('facebook')!.errors != null && addRedesForm.get('facebook')!.errors!['pattern'] && addRedesForm.get('facebook')?.touched">
+                        La <strong>URL</strong> no es válida
+                      </span>
+                    </div>
                   </div>
+                  <!--/span-->
                 </div>
-                <!--/span-->
+                <!--/row-->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="instagram" class="control-label">
+                        <i class="fa fa-instagram p-2 bg-warning text-white" aria-hidden="true"></i>
+                        Instagram</label>
+                      <input formControlName="instagram" id="instagram" name="instagram" type="link" class="form-control"
+                        placeholder="https://www.instagram.com/usuario">
+                      <span class="err text-danger"
+                        *ngIf="addRedesForm.get('instagram')!.errors != null && addRedesForm.get('instagram')!.errors!['pattern'] && addRedesForm.get('instagram')?.touched">
+                        La <strong>URL</strong> no es válida
+                      </span>
+                    </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="twitter" class="control-label">
+                        <i class="fa fa-twitter p-2 bg-info text-white" aria-hidden="true"></i>
+                        Twitter</label>
+                      <input formControlName="twitter" id="twitter" name="twitter" type="link" class="form-control" placeholder="@usuario">
+                      <span class="err text-danger"
+                        *ngIf="addRedesForm.get('twitter')!.errors != null && addRedesForm.get('twitter')!.errors!['pattern'] && addRedesForm.get('twitter')?.touched">
+                        La <strong>URL</strong> no es válida
+                      </span>
+                    </div>
+                  </div>
+                  <!--/span-->
+                </div>
+                <!--/row-->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="linkedin" class="control-label">
+                        <i class="fa fa-linkedin p-2 bg-primary text-white" aria-hidden="true"></i>
+                        Linkedin</label>
+                      <input formControlName="linkedin" id="linkedin" name="linkedin" type="link" class="form-control"
+                        placeholder="https://www.linkedin.com/in/usuario">
+                      <span class="err text-danger"
+                        *ngIf="addRedesForm.get('linkedin')!.errors != null && addRedesForm.get('linkedin')!.errors!['pattern'] && addRedesForm.get('linkedin')?.touched">
+                        La <strong>URL</strong> no es válida
+                      </span>
+                    </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="tiktok" class="control-label">
+                        <img width="32" src="./assets/images/icon/tiktok-icon-black-1-logo-svgrepo-com.svg"
+                          aria-hidden="true" />
+                        Tiktok</label>
+                      <input formControlName="tiktok" id="tiktok" name="tiktok" type="link" class="form-control" placeholder="@usuario">
+                      <span class="err text-danger"
+                        *ngIf="addRedesForm.get('tiktok')!.errors != null && addRedesForm.get('tiktok')!.errors!['pattern'] && addRedesForm.get('tiktok')?.touched">
+                        La <strong>URL</strong> no es válida
+                      </span>
+                    </div>
+                  </div>
+                  <!--/span-->
+                </div>
+                <!--/row-->
               </div>
-              <!--/row-->
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="instagram" class="control-label">
-                      <i class="fa fa-instagram p-2 bg-warning text-white" aria-hidden="true"></i>
-                      Instagram</label>
-                    <input id="instagram" name="instagram" type="link" class="form-control" placeholder="nombre usuario">
-                  </div>
-                </div>
-                <!--/span-->
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="twitter" class="control-label">
-                      <i class="fa fa-twitter p-2 bg-info text-white" aria-hidden="true"></i>
-                      Twitter</label>
-                    <input id="twitter" name="twitter" type="link" class="form-control" placeholder="@usuario">
-                  </div>
-                </div>
-                <!--/span-->
+              <div class="form-actions">
+                <button type="submit" [disabled]="addRedesForm.invalid" class="button d-inline"
+                  matTooltip="Guardar datos de red y web">
+                  Guardar
+                  <i class="fa fa-save p-1"></i>
+                </button>
+                <button type="button" (click)="backToAddCompany()"
+                  class="button float-right d-inline" matTooltip="Elija volver para añadir datos de la empresa"><i
+                    class="fas fa-long-arrow-alt-left"></i>
+                  Volver</button>
               </div>
-              <!--/row-->
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="linkedin" class="control-label">
-                      <i class="fa fa-linkedin p-2 bg-primary text-white" aria-hidden="true"></i>
-                      Linkedin</label>
-                    <input id="linkedin" name="linkedin" type="link" class="form-control" placeholder="Linkedin">
-                  </div>
-                </div>
-                <!--/span-->
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="tiktok" class="control-label">
-                      <img width="32" src="./assets/images/icon/tiktok-icon-black-1-logo-svgrepo-com.svg" aria-hidden="true"/>
-                      Tiktok</label>
-                    <input id="tiktok" name="tiktok" type="link" class="form-control" placeholder="@usuario">
-                  </div>
-                </div>
-                <!--/span-->
-              </div>
-              <!--/row-->
+               <!-- <p>{{ getFormValidationErrors(addRedesForm) }}</p> -->
             </div>
-            <div class="form-actions">
-              <button type="button" class="btn btn-success" matTooltip="Guardar datos de red y web"> <i
-                  class="fa fa-check"></i> Guardar </button>
-              <button type="button" routerLink="/dashboard/add-company" class="btn btn-primary float-right p-y-2"
-                matTooltip="Elija volver para añadir datos de la empresa"><i class="fas fa-long-arrow-alt-left"></i>
-                Volver</button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

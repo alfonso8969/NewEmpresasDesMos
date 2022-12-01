@@ -47,7 +47,6 @@ const routes: Routes = [
       { path: 'add-fields', title: "Crear campos", component: AddFieldsComponent },
     ]
   },
-
 ];
 
 @NgModule({

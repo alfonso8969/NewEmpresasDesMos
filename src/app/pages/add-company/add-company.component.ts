@@ -20,24 +20,23 @@ export class AddCompanyComponent implements OnInit {
   sectores: Fields[];
   distritos: Fields[];
   poligonos: Fields[];
+  codPostalReg: RegExp = new RegExp(/289+\d{2}/gm);
+  phoneReg: RegExp = new RegExp(/[0-9]{9}/);
+  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm);
 
   addCompanyForm: FormGroup;
+  newEmp: any ;
+  newRedes: any ;
 
   constructor(private companiesService: CompaniesService, private fb: FormBuilder, private router: Router) {
-    this.addCompanyForm = this.fb.group({
-      nombre: ['', Validators.required],
-      sector: [0, Validators.required],
-      distrito: [0, Validators.required],
-      poligono: [0, Validators.required],
-      email: ['', Validators.required],
-      telefono: ['', Validators.required],
-      otherTelefono: [''],
-      direccion: ['', Validators.required],
-      localidad: [''],
-      provincia: [''],
-      cod_postal: ['', Validators.required]
+    let emp = localStorage.getItem('empresa');
+    if (emp && emp != "undefined") {
+      this.newEmp = JSON.parse(emp!);
+      this.fillFormNewEmp(this.newEmp);
+    } else {
+      this.fillForm();
+    }
 
-    })
     this.companiesService.getFields("sector").subscribe({
       next: (result: any) => {
         if (result != null) {
@@ -93,38 +92,86 @@ export class AddCompanyComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addCompany() {
+  public fillForm(): void {
+    this.addCompanyForm = this.fb.group({
+      nombre: ['' , Validators.required],
+      sector: [0 , Validators.required],
+      distrito: [0 , Validators.required],
+      poligono: [0 , Validators.required],
+      email: ['' , [Validators.required, Validators.pattern(this.emailReg)]],
+      telefono: ['' , [Validators.required, Validators.pattern(this.phoneReg)]],
+      otherTelefono: ['' , [Validators.pattern(this.phoneReg)]],
+      contactperson: [''],
+      direccion: ['', Validators.required],
+      localidad: [''],
+      provincia: [''],
+      cod_postal: ['', [Validators.required, Validators.pattern(this.codPostalReg)]]
+    });
+  }
+
+  public fillFormNewEmp(newEmp: any): void {
+    this.addCompanyForm = this.fb.group({
+      nombre: [newEmp['Nombre'] , Validators.required],
+      sector: [newEmp['Sector'] , Validators.required],
+      distrito: [newEmp['Distrito'] , Validators.required],
+      poligono: [newEmp['Poligono'] , Validators.required],
+      email: [newEmp['Email'] , [Validators.required, Validators.pattern(this.emailReg)]],
+      telefono: [newEmp['Telefono'] , [Validators.required, Validators.pattern(this.phoneReg)]],
+      otherTelefono: [newEmp['OtherTelefono'] , [Validators.pattern(this.phoneReg)]],
+      contactperson: [newEmp['Persona_contacto'] ],
+      direccion: [newEmp['Direccion'] , Validators.required],
+      localidad: [''],
+      provincia: [''],
+      cod_postal: [newEmp['Cod_postal'] , [Validators.required, Validators.pattern(this.codPostalReg)]]
+    });
+  }
+
+  public addCompany(): void {
     let local = this.addCompanyForm.get("localidad")?.value;
     let prov = this.addCompanyForm.get("provincia")?.value;
     this.empresa = new Empresa(
-      this.addCompanyForm.get("name")?.value,
+      this.addCompanyForm.get("nombre")?.value,
       this.addCompanyForm.get("sector")?.value,
       this.lastEmpDetId,
       this.addCompanyForm.get("distrito")?.value,
       this.addCompanyForm.get("poligono")?.value
     );
 
+    this.empresa.setPersonaContacto(this.addCompanyForm.get('contactperson')?.value);
     this.empresa.setEmail(this.addCompanyForm.get("email")?.value);
     this.empresa.setTelefono(this.addCompanyForm.get("telefono")?.value);
-    this.empresa.setOtherTelefono(this.addCompanyForm.get("othertelefono")?.value);
+    this.empresa.setOtherTelefono(this.addCompanyForm.get("otherTelefono")?.value);
     this.empresa.setDireccion(this.addCompanyForm.get("direccion")?.value);
     this.empresa.setLocalidad(local == "" ? this.city : local);
     this.empresa.setProvincia(prov == "" ? this.region : prov);
     this.empresa.setCod_postal(this.addCompanyForm.get("cod_postal")?.value);
+    let red = localStorage.getItem('redes');
+    if (red && red != "undefined") {
+      this.newRedes = JSON.parse(red!);
+      this.empresa.setWeb(this.newRedes['Web']);
+      this.empresa.setTwitter(this.newRedes['Twitter']);
+      this.empresa.setFacebook(this.newRedes['Facebook']);
+      this.empresa.setInstagram(this.newRedes['Instagram']);
+      this.empresa.setLinkedin(this.newRedes['Linkedin']);
+      this.empresa.setGoogle_plus(this.newRedes['Google_plus']);
+    }
     console.log(this.empresa);
+    localStorage.removeItem("empresa");
   }
 
-  setRedes() {
-
+  public setRedes(): void {
+    this.addCompany();
+    localStorage.setItem("empresa", JSON.stringify(this.empresa));
+    this.router.navigateByUrl('dashboard/add-redes');
   }
 
   isDisabled(): boolean {
     return this.addCompanyForm.get('sector')?.value == 0 || this.addCompanyForm.get('distrito')?.value == 0 || this.addCompanyForm.get('poligono')?.value == 0
   }
 
-  getFormValidationErrors(form: FormGroup) {
+  public getFormValidationErrors(form: FormGroup): string {
 
-    const result: { Campo: string; error: string;  }[] = [];
+    const result: { Campo: string; error: string; value: any }[] = [];
     Object.keys(form.controls).forEach(key => {
 
       const controlErrors: any = form!.get(key)!.errors;
@@ -132,13 +179,20 @@ export class AddCompanyComponent implements OnInit {
         Object.keys(controlErrors).forEach(keyError => {
           result.push({
              Campo: key,
-            'error': keyError
+            'error': keyError,
+            value: form!.get(key)!.value
           });
         });
       }
     });
 
     return JSON.stringify(result);
+  }
+
+  cleanForm() {
+    localStorage.removeItem("empresa");
+    localStorage.removeItem("redes");
+    this.fillForm();
   }
 
 }

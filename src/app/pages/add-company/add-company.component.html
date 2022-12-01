@@ -17,12 +17,17 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-          <h3 class="card-title p-1">Solicitud de datos de la empresa</h3>
-          <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
+          <div>
+            <h3 class="card-title p-1">Solicitud de datos de la empresa</h3>
+            <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
+            <button type="button" class="btn btn-default d-inline float-right mx-3" (click)="cleanForm()">Limpiar formulario
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+          </div>
           <div class="card-body">
             <div class="form-body">
               <hr>
-              <form [formGroup]="addCompanyForm" (ngSubmit)="addCompany()">
+              <form [formGroup]="addCompanyForm" (ngSubmit)="addCompany()" novalidate autocomplete="off">
                 <div class="row p-t-20">
                   <div class="col-md-6">
                     <div class="form-group">
@@ -58,20 +63,28 @@
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="phone" class="control-label">* Teléfono</label>
-                      <input formControlName="telefono" type="text" name="telefono" id="telefono" class="form-control"
-                        placeholder="999 99 99 99">
+                      <label for="telefono" class="control-label">* Teléfono</label>
+                      <input formControlName="telefono" type="number" name="telefono" id="telefono" class="form-control"
+                        placeholder="9999999" maxlength="9">
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('telefono')?.invalid && addCompanyForm.get('telefono')?.touched">
+                        *ngIf="addCompanyForm.get('telefono')?.invalid && addCompanyForm.get('telefono')?.touched && !addCompanyForm.get('telefono')!.errors!['pattern']">
                         El <strong>teléfono </strong>es requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('telefono')!.errors != null && addCompanyForm.get('telefono')!.errors!['pattern'] && addCompanyForm.get('telefono')?.touched">
+                        El <strong>Teléfono</strong> no es válido, debe ser 99999999
                       </span>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="otherphone" class="control-label">Otro Teléfono</label>
-                      <input type="text" name="otherphone" id="otherphone" class="form-control"
-                        placeholder="999 99 99 99">
+                      <label for="otherTelefono" class="control-label">Otro Teléfono</label>
+                      <input formControlName="otherTelefono" type="number" name="otherTelefono" id="otherTelefono"
+                        class="form-control" placeholder="9999999" maxlength="9">
+                      <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('otherTelefono')!.errors != null && addCompanyForm.get('otherTelefono')!.errors!['pattern'] && addCompanyForm.get('otherTelefono')?.touched">
+                        El <strong>Teléfono</strong> no es válido, debe ser 99999999
+                      </span>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -80,8 +93,12 @@
                       <input formControlName="email" type="email" class="form-control" placeholder="Email" id="email"
                         name="email">
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('email')?.invalid && addCompanyForm.get('email')?.touched">
+                        *ngIf="addCompanyForm.get('email')?.invalid && addCompanyForm.get('email')?.touched && !addCompanyForm.get('email')!.errors!['pattern']">
                         El <strong>email es </strong>requerido
+                      </span>
+                      <span class="err text-danger" email
+                        *ngIf="addCompanyForm.get('email')!.errors != null && addCompanyForm.get('email')!.errors!['pattern'] && addCompanyForm.get('email')?.touched">
+                        El <strong>Email</strong> no es válido
                       </span>
                     </div>
                   </div>
@@ -89,9 +106,9 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="contact_person" class="control-label">Persona contacto</label>
-                      <input type="text" class="form-control" name="contactperson" id="contact_person"
-                        placeholder="Persona contacto">
+                      <label for="contactperson" class="control-label">Persona contacto</label>
+                      <input formControlName="contactperson" type="text" class="form-control" name="contactperson"
+                        id="contactperson" placeholder="Persona contacto">
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -167,26 +184,33 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="cod_postal" class="control-label">* Código postal</label>
-                      <input formControlName="cod_postal" type="text" class="form-control" name="cod_postal"
-                        id="cod_postal" placeholder="Código postal 289--">
+                      <input formControlName="cod_postal" type="number" class="form-control" name="cod_postal"
+                        id="cod_postal" placeholder="Código postal 289--" maxlength="5">
                     </div>
                     <span class="err text-danger"
-                      *ngIf="addCompanyForm.get('cod_postal')?.invalid && addCompanyForm.get('cod_postal')?.touched">
+                      *ngIf="addCompanyForm.get('cod_postal')?.invalid && addCompanyForm.get('cod_postal')?.touched && !addCompanyForm.get('cod_postal')!.errors!['pattern']">
                       El <strong>Código postal</strong> es requerido
+                    </span>
+                    <span class="err text-danger"
+                      *ngIf="addCompanyForm.get('cod_postal')!.errors != null && addCompanyForm.get('cod_postal')!.errors!['pattern'] && addCompanyForm.get('cod_postal')?.touched">
+                      El <strong>Código postal</strong> no es válido, debe ser 289 + 2 números
                     </span>
                   </div>
                 </div>
                 <div class="form-actions">
-                  <button type="submit" [disabled]="addCompanyForm.invalid || isDisabled()" class="btn btn-success">
-                    <span [matTooltip]="addCompanyForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija guardar y añadir datos de red y web después seleccionando la empresa en la tabla (Listado de empresas)'">Guardar </span>
+                  <button type="submit" [disabled]="addCompanyForm.invalid || isDisabled()" class="btn-primary button d-inline">
+                    <span
+                      [matTooltip]="addCompanyForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija guardar y añadir datos de red y web después seleccionando la empresa en la tabla (Listado de empresas)'">Guardar
+                    </span>
                     <i class="fa fa-save p-1"></i>
                   </button>
                   <button type="button" [disabled]="addCompanyForm.invalid || isDisabled()" (click)="setRedes()"
-                    class="btn btn-primary float-right p-y-2">
+                    class="button d-inline float-right">
                     <span [matTooltip]="addCompanyForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija siguiente para añadir datos de red y web'
-                  ">Siguiente </span>
+                  ">Añadir redes </span>
                     <i class="fas fa-long-arrow-alt-right p-1"></i> </button>
                 </div>
+                <!-- <p>{{ getFormValidationErrors(addCompanyForm) }}</p> -->
               </form>
             </div>
           </div>

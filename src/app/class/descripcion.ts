@@ -4,9 +4,8 @@ import { Redes } from "./redes";
 export class Descripcion extends Redes {
 
    private Empdetid!: number;
-   private Web?: string;
    private Telefono: string;
-   private otherTelefono?: string;
+   private OtherTelefono?: string;
    private Email: string;
    private Persona_contacto?: string;
    private Direccion: string;
@@ -15,12 +14,11 @@ export class Descripcion extends Redes {
    private Cod_postal: string;
 
      // Constructor, donde debemos pasar todos los datos
-  constructor(web: string = Empresa.SIN_DATOS, telefono: string = Empresa.SIN_DATOS, othertelefono: string = Empresa.SIN_DATOS, email: string = Empresa.SIN_DATOS,
+  constructor(telefono: string = Empresa.SIN_DATOS, othertelefono: string = Empresa.SIN_DATOS, email: string = Empresa.SIN_DATOS,
     persona_contact: string = Empresa.SIN_DATOS,direccion: string = Empresa.SIN_DATOS, localidad: string = Empresa.SIN_DATOS, provincia: string = Empresa.SIN_DATOS, codpostal: string = Empresa.SIN_DATOS) {
     super();
-    this.Web = web;
     this.Telefono = telefono;
-    this.otherTelefono = othertelefono;
+    this.OtherTelefono = othertelefono;
     this.Email = email;
     this.Persona_contacto = persona_contact;
     this.Direccion = direccion;
@@ -37,14 +35,6 @@ export class Descripcion extends Redes {
         this.Empdetid = Empdetid;
     }
 
-    public getWeb(): string {
-        return this.Web || Empresa.SIN_DATOS;
-    }
-
-    public setWeb(Web: string): void {
-        this.Web = Web;
-    }
-
     public getTelefono(): string {
         return this.Telefono;
     }
@@ -54,11 +44,11 @@ export class Descripcion extends Redes {
     }
 
     public getOtherTelefono(): string | undefined {
-        return this.otherTelefono;
+        return this.OtherTelefono;
     }
 
-    public setOtherTelefono(otherTelefono: string): void {
-        this.otherTelefono = otherTelefono;
+    public setOtherTelefono(OtherTelefono: string): void {
+        this.OtherTelefono = OtherTelefono;
     }
 
     public getEmail(): string {
@@ -74,7 +64,7 @@ export class Descripcion extends Redes {
     }
 
     public setPersonaContacto(Persona_contacto: string): void {
-        this.Email = Persona_contacto;
+        this.Persona_contacto = Persona_contacto;
     }
 
     public getDireccion(): string {

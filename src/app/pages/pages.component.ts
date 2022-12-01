@@ -27,7 +27,7 @@ export class PagesComponent implements OnInit {
   constructor(public companiesService: CompaniesService, private _router: Router, private httpClient: HttpClient) {
     this.companiesService.getApi()
       .subscribe((data: any) => {
-        this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=' + data, 'callback')
+        this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=' /*+ data*/, 'callback')
           .pipe(
             map(() => true),
             catchError(() => of(false))
