@@ -30,7 +30,14 @@
                 <form [formGroup]="addUserForm" (ngSubmit)="addUser()" novalidate autocomplete="off">
                   <div class="row p-t-20">
                     <div class="col-md-6">
-                      <div class="form-group">
+                      <div class="text-center" style="background-image: url('../../../../assets/images/background/profile-bg.jpg'); background-size: cover; height:250px;">
+                        <img src="../../../../assets/images/icon/staff.png" height="200px" width="200px" style="border-radius: 50%; border: 10px solid #FEDE00;" alt="This is a small profile image"><br>
+                        <label class="label-control d-block text-light" for="userimg">Seleccione imagen</label>
+                        <input class="form-control" type="file" name="userimg" id="userimg">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group mt-5">
                         <label for="nombre" class="control-label">* Nombre</label>
                         <input formControlName="nombre" id="nombre" name="nombre" type="text" class="form-control"
                           placeholder="Nombre completo">
@@ -39,8 +46,6 @@
                           El <strong>nombre es</strong> requerido
                         </span>
                       </div>
-                    </div>
-                    <div class="col-md-6">
                       <div class="form-group">
                         <label for="apellidos" class="control-label">* Apellidos</label>
                         <input formControlName="apellidos" id="apellidos" name="apellidos" type="text" class="form-control"
@@ -52,7 +57,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row mt-5">
                     <div class="col-md-4">
                       <div class="form-group">
                         <label for="telefono" class="control-label">* Teléfono</label>

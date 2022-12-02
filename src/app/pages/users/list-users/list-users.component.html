@@ -234,8 +234,8 @@
     <div class="card">
       <div class="card-body">
         <!-- sample modal content -->
-        <div id="md" class="modal fade md-users" tabindex="-1" role="dialog"
-          aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div id="md" class="modal fade md-users" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -248,18 +248,27 @@
                     <div class="form-body">
                       <div class="row p-t-20">
                         <div class="col-md-6">
+                          <div class="text-center"
+                            style="background-image: url('../../../../assets/images/background/profile-bg.jpg'); background-size: cover; height:180px;">
+                            <img src="../../../../assets/images/icon/staff.png" height="100px" width="100px"
+                              style="border-radius: 50%; border: 10px solid #FEDE00;"
+                              alt="This is a small profile image"><br>
+                            <label class="label-control d-block text-light" for="userimg">Seleccione imagen</label>
+                            <input class="form-control" type="file" name="userimg" id="userimg">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
                           <div class="form-group">
                             <label for="nombre" class="control-label">Nombre</label>
                             <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre">
                           </div>
-                        </div>
-                        <div class="col-md-6">
                           <div class="form-group">
                             <label for="apellidos" class="control-label">Apellidos</label>
                             <input id="apellidos" name="apellidos" type="text" class="form-control"
                               placeholder="Apellidos">
                           </div>
                         </div>
+
                       </div>
                       <!--/row-->
                       <div class="row">
