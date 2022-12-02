@@ -38,3 +38,40 @@ body { margin: 0; font-family: Montserrat, "Helvetica Neue", sans-serif; }
   margin-right: 0.3rem;
   font-size: 1.5rem;
 }
+
+span.err {
+  font-weight: 800 !important;
+  font-family: Monserrat, Arial, Helvetica, sans-serif !important;
+  font-size: 12px !important;
+  margin-left: 0.5em;
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  appearance: textfield;
+}
+
+#md {
+  display: none;
+}
+
+.full-color-table.full-primary-table thead th {
+  background-color: #2b65ca;
+  border: 0;
+  color: #ffffff;
+}
+
+
