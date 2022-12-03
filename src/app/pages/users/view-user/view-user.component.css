@@ -1,0 +1,10 @@
+#div-img-user {
+    background-image: url('../../../../assets/images/background/profile-bg.jpg');
+    background-size: cover;
+    height:250px;
+  }
+  
+  #img-user {
+    border-radius: 50%;
+    border: 10px solid #FEDE00;
+  }

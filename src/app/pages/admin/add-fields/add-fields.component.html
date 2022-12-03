@@ -1,1 +1,106 @@
-<p>add-fields works!</p>
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeIn">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Registrar campos empresa</h3>
+      </div>
+      <div class="">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div>
+            <h3 class="card-title p-1">Solicitud de registro de campos de la empresa</h3>
+            <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <form [formGroup]="addFieldSectorForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">* Nombre completo sector</label>
+                      <input formControlName="nombreSector" id="nombreSector" name="nombreSector" type="text"
+                        class="form-control" placeholder="Nombre completo">
+                      <span class="err text-danger" nombreSector
+                        *ngIf="addFieldSectorForm.get('nombreSector')?.invalid && addFieldSectorForm.get('nombreSector')?.touched">
+                        El <strong>nombre del sector </strong>es requerido
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" [disabled]="addFieldSectorForm.invalid" class="btn-primary button d-inline">
+                  <span
+                    [matTooltip]="addFieldSectorForm.invalid ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                  </span>
+                  <i class="fa fa-save p-1"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <form [formGroup]="addFieldDistritoForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">* Nombre completo distrito</label>
+                      <input formControlName="nombreDistrito" id="nombreDistrito" name="nombreDistrito" type="text"
+                        class="form-control" placeholder="Nombre completo">
+                      <span class="err text-danger"
+                        *ngIf="addFieldDistritoForm.get('nombreDistrito')?.invalid && addFieldDistritoForm.get('nombreDistrito')?.touched">
+                        El <strong>nombre del distrito</strong>es requerido
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" [disabled]="addFieldDistritoForm.invalid" class="btn-primary button d-inline">
+                    <span
+                      [matTooltip]="addFieldDistritoForm.invalid ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                    </span>
+                    <i class="fa fa-save p-1"></i>
+                  </button>
+              </form>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <form [formGroup]="addFieldPoligonoForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">* Nombre completo polígono</label>
+                      <input formControlName="nombrePoligono" id="nombrePoligono" name="nombrePoligono" type="text"
+                        class="form-control" placeholder="Nombre completo">
+                      <span class="err text-danger"
+                        *ngIf="addFieldPoligonoForm.get('nombrePoligono')?.invalid && addFieldPoligonoForm.get('nombrePoligono')?.touched">
+                        El <strong>nombre del polígono</strong>es requerido
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" [disabled]="addFieldPoligonoForm.invalid" class="btn-primary button d-inline">
+                    <span
+                      [matTooltip]="addFieldPoligonoForm.invalid ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                    </span>
+                    <i class="fa fa-save p-1"></i>
+                  </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

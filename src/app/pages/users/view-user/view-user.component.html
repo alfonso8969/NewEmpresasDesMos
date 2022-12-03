@@ -1,1 +1,127 @@
-<p>view-user works!</p>
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid animated fadeIn">
+      <!-- ============================================================== -->
+      <!-- Bread crumb and right sidebar toggle -->
+      <!-- ============================================================== -->
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Perfil usuario</h3>
+        </div>
+        <div class="">
+  
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div>
+              <h3 class="card-title p-1">Solicitud cambio de datos del usuario</h3>
+              <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
+            </div>
+            <div class="card-body">
+              <div class="form-body">
+                <hr>
+                <form [formGroup]="addUserForm" (ngSubmit)="addUser()" novalidate autocomplete="off">
+                  <div class="row p-t-20">
+                    <div class="col-md-6">
+                      <div id="div-img-user" class="text-center">
+                        <img id="img-user" src="../../../../assets/images/icon/alfonso.ico" height="200px" width="200px"
+                          alt="This is a small profile image"><br>
+                        <label class="label-control d-block text-light" for="userimg">Seleccione imagen</label>
+                        <input formControlName="userimg" name="userimg" class="form-control" type="file" name="userimg"
+                          id="userimg">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group mt-5">
+                        <label for="nombre" class="control-label">* Nombre</label>
+                        <input formControlName="nombre" id="nombre" name="nombre" type="text" class="form-control"
+                          placeholder="Nombre completo">
+                        <span class="err text-danger"
+                          *ngIf="addUserForm.get('nombre')?.invalid && addUserForm.get('nombre')?.touched">
+                          El <strong>nombre es</strong> requerido
+                        </span>
+                      </div>
+                      <div class="form-group">
+                        <label for="apellidos" class="control-label">* Apellidos</label>
+                        <input formControlName="apellidos" id="apellidos" name="apellidos" type="text"
+                          class="form-control" placeholder="Apellidos">
+                        <span class="err text-danger"
+                          *ngIf="addUserForm.get('apellidos')?.invalid && addUserForm.get('apellidos')?.touched">
+                          Los <strong>apellidos son</strong> requeridos
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-5">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="telefono" class="control-label">* Teléfono</label>
+                        <input formControlName="telefono" type="number" name="telefono" id="telefono" class="form-control"
+                          placeholder="9999999" maxlength="9">
+                        <span class="err text-danger"
+                          *ngIf="addUserForm.get('telefono')?.invalid && addUserForm.get('telefono')?.touched && !addUserForm.get('telefono')!.errors!['pattern']">
+                          El <strong>teléfono </strong>es requerido
+                        </span>
+                        <span class="err text-danger"
+                          *ngIf="addUserForm.get('telefono')!.errors != null && addUserForm.get('telefono')!.errors!['pattern'] && addUserForm.get('telefono')?.touched">
+                          El <strong>Teléfono</strong> no es válido, debe ser 99999999
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="email" class="control-label">* Email</label>
+                        <input formControlName="email" type="email" class="form-control" placeholder="Email" id="email"
+                          name="email">
+                        <span class="err text-danger"
+                          *ngIf="addUserForm.get('email')?.invalid && addUserForm.get('email')?.touched && !addUserForm.get('email')!.errors!['pattern']">
+                          El <strong>email es </strong>requerido
+                        </span>
+                        <span class="err text-danger"
+                          *ngIf="addUserForm.get('email')!.errors != null && addUserForm.get('email')!.errors!['pattern'] && addUserForm.get('email')?.touched">
+                          El <strong>email</strong> no es válido
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="rol" class="control-label">* Rol</label>
+                        <select formControlName="rol" name="rol" id="rol" class="form-control w-100">
+                          <option [ngValue]=0 selected>Seleccione rol</option>
+                          <option [ngValue]=1>Administrador</option>
+                          <option [ngValue]=2>Usuario</option>
+                        </select>
+                      </div>
+                      <span class="err text-danger"
+                      *ngIf="addUserForm.get('rol')?.invalid && addUserForm.get('rol')?.touched">
+                      El <strong>rol es</strong> requerido
+                    </span>
+                    <span class="err text-danger"
+                      *ngIf="addUserForm.get('rol')?.touched && addUserForm.get('rol')?.value == 0">
+                      El <strong>rol es</strong> requerido
+                    </span>
+                    </div>
+                  </div>
+                  <div class="form-actions mb-5">
+                    <button type="submit" [disabled]="addUserForm.invalid || isDisabled()" class="btn-primary button d-inline">
+                      <span
+                        [matTooltip]="addUserForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Guardar datos usuario'" [matTooltipPosition]="'below'"
+                        aria-label="Botón que guarda la información sobre el usuario" MAT_STRATEGY>Guardar
+                      </span>
+                      <i class="fa fa-save p-1"></i>
+                    </button>
+  
+                  </div>
+                  <!-- <p>{{ getFormValidationErrors(addUserForm) }}</p> -->
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

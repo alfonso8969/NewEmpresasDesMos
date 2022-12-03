@@ -1,1 +1,148 @@
-<p>admin-fields works!</p>
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeIn">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Actualizar campos empresa</h3>
+      </div>
+      <div class="">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div>
+            <h3 class="card-title p-1">Solicitud de cambio en campos de la empresa</h3>
+            <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <form [formGroup]="addFieldSectorForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">Seleccione sector</label>
+                      <select formControlName="sector" name="sector" id="sector" class="form-control" title="Sector" (change)="changeSector($event)">
+                        <option [ngValue]=0 selected>Seleccione sector</option>
+                        <option [ngValue]="dato.sector_id" *ngFor="let dato of sectores">
+                          {{dato.empresas_sector_name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">* Nombre completo sector</label>
+                      <input formControlName="nombreSector" id="nombreSector" name="nombreSector" type="text"
+                        class="form-control" placeholder="Nombre completo">
+                      <span class="err text-danger" nombreSector
+                        *ngIf="addFieldSectorForm.get('nombreSector')?.invalid && addFieldSectorForm.get('nombreSector')?.touched">
+                        El <strong>nombre del sector </strong>es requerido
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+                <button type="submit"
+                  [disabled]="addFieldSectorForm.invalid || addFieldSectorForm.get('sector')?.value == 0"
+                  class="btn-primary button d-inline">
+                  <span
+                    [matTooltip]="addFieldSectorForm.invalid || addFieldSectorForm.get('sector')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                  </span>
+                  <i class="fa fa-save p-1"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <form [formGroup]="addFieldDistritoForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">Seleccione distrito</label>
+                      <select formControlName="distrito" name="districto" id="districto" class="form-control"
+                        title="Distrito" (change)="changeDistrito($event)">
+                        <option [ngValue]=0 selected>Seleccione distrito</option>
+                        <option [ngValue]="dato.distrito_id" *ngFor="let dato of distritos">
+                          {{dato.distrito_name}}
+                        </option>
+                      </select>                     
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombre" class="control-label">* Nombre completo distrito</label>
+                      <input formControlName="nombreDistrito" id="nombreDistrito" name="nombreDistrito" type="text"
+                        class="form-control" placeholder="Nombre completo">
+                      <span class="err text-danger"
+                        *ngIf="addFieldDistritoForm.get('nombreDistrito')?.invalid && addFieldDistritoForm.get('nombreDistrito')?.touched">
+                        El <strong>nombre del distrito</strong>es requerido
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit"
+                  [disabled]="addFieldDistritoForm.invalid || addFieldSectorForm.get('distrito')?.value == 0"
+                  class="btn-primary button d-inline">
+                  <span
+                    [matTooltip]="addFieldDistritoForm.invalid || addFieldSectorForm.get('distrito')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                  </span>
+                  <i class="fa fa-save p-1"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <form [formGroup]="addFieldPoligonoForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">Seleccione polígono</label>
+                      <select formControlName="poligono" name="poligono" id="poligono" class="form-control"
+                        title="Polígono" (change)="changePoligono($event)">
+                        <option [ngValue]=0 selected>Seleccione polígono</option>
+                        <option [ngValue]="dato.poligono_id" *ngFor="let dato of poligonos">
+                          {{dato.empresas_poligono_name}}
+                        </option>
+                      </select>                    
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombre" class="control-label">* Nombre completo polígono</label>
+                        <input formControlName="nombrePoligono" id="nombrePoligono" name="nombrePoligono" type="text"
+                          class="form-control" placeholder="Nombre completo">
+                        <span class="err text-danger"
+                          *ngIf="addFieldPoligonoForm.get('nombrePoligono')?.invalid && addFieldPoligonoForm.get('nombrePoligono')?.touched">
+                          El <strong>nombre del polígono</strong>es requerido
+                        </span>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit"
+                  [disabled]="addFieldPoligonoForm.invalid || addFieldPoligonoForm.get('poligono')?.value == 0"
+                  class="btn-primary button d-inline">
+                  <span
+                    [matTooltip]="addFieldPoligonoForm.invalid || addFieldPoligonoForm.get('poligono')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                  </span>
+                  <i class="fa fa-save p-1"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

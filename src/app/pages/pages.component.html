@@ -164,8 +164,8 @@
               <span class="hide-menu"></span>
             </a>
             <ul aria-expanded="false" class="collapse">
-              <li><a href="javascript:void()">Mi perfil </a></li>
-              <li><a href="javascript:void()">Logout</a></li>
+              <li><a (click)="navigateTo('/dashboard/view-user/1', $event)">Mi perfil </a></li>
+              <li><a (click)="logout()">Logout</a></li>
             </ul>
           </li>
           <li class="nav-devider"></li>

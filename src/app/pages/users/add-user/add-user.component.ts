@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-user',
@@ -9,8 +9,20 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class AddUserComponent implements OnInit {
 
   addUserForm: FormGroup;
+  phoneReg: RegExp = new RegExp(/[0-9]{9}/);
+  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm);
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+    this.addUserForm = this.fb.group({
+      userimg: [''],
+      nombre: ['', Validators.required],
+      apellidos: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern(this.phoneReg)]],
+      email: ['', [Validators.required, Validators.pattern(this.emailReg)]],
+      rol: [0, Validators.required]
+
+    });
+   }
 
   ngOnInit(): void {
   }
@@ -23,4 +35,27 @@ export class AddUserComponent implements OnInit {
 
   }
 
+  isDisabled(): boolean {
+    return this.addUserForm.get('rol')?.value == 0;
+  }
+
+  public getFormValidationErrors(form: FormGroup): string {
+
+    const result: { Campo: string; error: string; value: any }[] = [];
+    Object.keys(form.controls).forEach(key => {
+
+      const controlErrors: any = form!.get(key)!.errors;
+      if (controlErrors) {
+        Object.keys(controlErrors).forEach(keyError => {
+          result.push({
+            Campo: key,
+            'error': keyError,
+            value: form!.get(key)!.value
+          });
+        });
+      }
+    });
+
+    return JSON.stringify(result);
+  }
 }

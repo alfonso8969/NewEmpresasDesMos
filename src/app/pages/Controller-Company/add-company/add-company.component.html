@@ -55,7 +55,7 @@
                       </span>
                       <span class="err text-danger"
                         *ngIf="addCompanyForm.get('sector')?.touched && addCompanyForm.get('sector')?.value == 0">
-                        El <strong>distrito es</strong> requerido
+                        El <strong>sector es</strong> requerido
                       </span>
                     </div>
                   </div>
@@ -72,7 +72,7 @@
                       </span>
                       <span class="err text-danger"
                         *ngIf="addCompanyForm.get('telefono')!.errors != null && addCompanyForm.get('telefono')!.errors!['pattern'] && addCompanyForm.get('telefono')?.touched">
-                        El <strong>Teléfono</strong> no es válido, debe ser 99999999
+                        El <strong>teléfono</strong> no es válido, debe ser 99999999
                       </span>
                     </div>
                   </div>
@@ -98,7 +98,7 @@
                       </span>
                       <span class="err text-danger" email
                         *ngIf="addCompanyForm.get('email')!.errors != null && addCompanyForm.get('email')!.errors!['pattern'] && addCompanyForm.get('email')?.touched">
-                        El <strong>Email</strong> no es válido
+                        El <strong>email</strong> no es válido
                       </span>
                     </div>
                   </div>
@@ -160,7 +160,7 @@
                       </span>
                       <span class="err text-danger"
                         *ngIf="addCompanyForm.get('poligono')?.touched && addCompanyForm.get('poligono')?.value == 0">
-                        El <strong>distrito es</strong> requerido
+                        El <strong>polígono es</strong> requerido
                       </span>
                     </div>
                   </div>
@@ -189,11 +189,11 @@
                     </div>
                     <span class="err text-danger"
                       *ngIf="addCompanyForm.get('cod_postal')?.invalid && addCompanyForm.get('cod_postal')?.touched && !addCompanyForm.get('cod_postal')!.errors!['pattern']">
-                      El <strong>Código postal</strong> es requerido
+                      El <strong>código postal</strong> es requerido
                     </span>
                     <span class="err text-danger"
                       *ngIf="addCompanyForm.get('cod_postal')!.errors != null && addCompanyForm.get('cod_postal')!.errors!['pattern'] && addCompanyForm.get('cod_postal')?.touched">
-                      El <strong>Código postal</strong> no es válido, debe ser 289 + 2 números
+                      El <strong>código postal</strong> no es válido, debe ser 289 + 2 números
                     </span>
                   </div>
                 </div>

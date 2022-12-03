@@ -51,6 +51,7 @@ export class AddCompanyComponent implements OnInit {
       },
       complete: () => console.log("Complete", this.sectores)
     });
+    
     this.companiesService.getFields("distrito").subscribe({
       next: (result: any) => {
         if (result != null) {
@@ -65,6 +66,7 @@ export class AddCompanyComponent implements OnInit {
       },
       complete: () => console.log("Complete", this.distritos)
     });
+
     this.companiesService.getFields("poligono").subscribe({
       next: (result: any) => {
         if (result != null) {
@@ -79,6 +81,7 @@ export class AddCompanyComponent implements OnInit {
       },
       complete: () => console.log("Complete", this.poligonos)
     });
+
     this.companiesService.getLastEmpDetId().subscribe({
       next: (result: any) => this.lastEmpDetId = result,
       error: (error: any) => {

@@ -325,13 +325,14 @@
     <div class="card">
       <div class="card-body">
         <!-- sample modal content -->
-        <div id="md" class="modal fade md-users" tabindex="-1" role="dialog"
-          aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div id="md" class="modal fade md-users" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog modal-md">
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">Editar rol</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'"
+                  data-dismiss="modal" aria-hidden="true">×</button>
               </div>
               <div class="card">
                 <form>
@@ -351,21 +352,37 @@
                         <fieldset class="mx-3">
                           <legend>Modificar rol</legend>
                           <div class="col-md-12">
-                            <div class="form-group">
-                              <label for="rol" class="label-control">Rol</label>
-                              <select name="rol" id="rol" class="form-control w-100">
-                                <option value=0 selected>Seleccione rol</option>
-                                <option value=1>Administrador</option>
-                                <option value=2>Usuario</option>
-                              </select>
-                            </div>
+                            <form [formGroup]="editUserRolForm" (ngSubmit)="editUserRol()" novalidate autocomplete="off">
+                              <div class="form-group">
+                                <label for="rol" class="label-control">Rol</label>
+                                <select formControlName="rol" name="rol" id="rol" class="form-control w-100">
+                                  <option [ngValue]=0 selected>Seleccione rol</option>
+                                  <option [ngValue]=1>Administrador</option>
+                                  <option [ngValue]=2>Usuario</option>
+                                </select>
+                                <span class="err text-danger"
+                                  *ngIf="editUserRolForm.get('rol')?.invalid && editUserRolForm.get('rol')?.touched">
+                                  El <strong>rol es</strong> requerido
+                                </span>
+                                <span class="err text-danger"
+                                  *ngIf="editUserRolForm.get('rol')?.touched && editUserRolForm.get('rol')?.value == 0">
+                                  El <strong>rol es</strong> requerido
+                                </span>
+                              </div>
+                            </form>
                           </div>
                         </fieldset>
                       </div>
                       <!--/row-->
                     </div>
                     <div class="form-actions">
-                      <button type="button" class="button">Guardar<i class="fa fa-save mx-2"></i>
+                      <button type="submit" [disabled]="editUserRolForm.get('rol')?.value == 0" class="btn-primary button d-inline">
+                        <span
+                          [matTooltip]="editUserRolForm.get('rol')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos rol usuario'"
+                          [matTooltipPosition]="'before'"
+                          aria-label="Botón que guarda la información sobre el usuario">Guardar
+                        </span>
+                        <i class="fa fa-save p-1"></i>
                       </button>
                     </div>
                   </div>

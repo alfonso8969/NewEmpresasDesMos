@@ -2,6 +2,11 @@
   position: fixed;
 }
 
+.close {
+  cursor: pointer;
+  font-size: 35px;
+}
+
 .table1 {
   display: flex;
   flex-flow: column;
@@ -48,7 +53,4 @@ tbody tr:hover {
   tr {
     table-layout: auto;
   }
-
-
-
 }

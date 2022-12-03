@@ -43,3 +43,19 @@ tbody tr:hover {
     table-layout: auto;
   }
 }
+
+#div-img-user {
+  background-image: url('../../../../assets/images/background/profile-bg.jpg');
+  background-size: cover;
+  height: 100px;
+}
+
+#img-user {
+  border-radius: 50%;
+  border: 10px solid #FEDE00;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 35px;
+}

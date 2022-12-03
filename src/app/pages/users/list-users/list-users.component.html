@@ -18,7 +18,7 @@
               </div>
               <div class="ml-auto">
                 <div class="form-group">
-                  <input id="demo-input-search1" type="text" placeholder="Buscar por nombre" autocomplete="off">
+                  <input id="input-search" type="text" placeholder="Buscar por nombre" autocomplete="off">
                 </div>
               </div>
             </div>
@@ -240,32 +240,40 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">Modificar datos del usuario</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&Cross;</button>
+                <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'" data-dismiss="modal" aria-hidden="true">&Cross;</button>
               </div>
               <div class="card">
-                <form>
+                <form [formGroup]="editUserForm" (ngSubmit)="editUser()" novalidate autocomplete="off">
                   <div class="card-body">
                     <div class="form-body">
                       <div class="row p-t-20">
                         <div class="col-md-6">
-                          <div class="text-center"
-                            style="background-image: url('../../../../assets/images/background/profile-bg.jpg'); background-size: cover; height:180px;">
-                            <img src="../../../../assets/images/icon/staff.png" height="100px" width="100px"
-                              style="border-radius: 50%; border: 10px solid #FEDE00;"
-                              alt="This is a small profile image"><br>
+                          <div id="div-img-user" class="text-center">
+                            <img id="img-user" src="../../../../assets/images/icon/staff.png" height="100px"
+                              width="100px" alt="This is a small profile image"><br>
                             <label class="label-control d-block text-light" for="userimg">Seleccione imagen</label>
-                            <input class="form-control" type="file" name="userimg" id="userimg">
+                            <input formControlName="userimg" class="form-control" type="file" name="userimg"
+                              id="userimg">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="nombre" class="control-label">Nombre</label>
-                            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre">
+                            <input formControlName="nombre" type="text" id="nombre" name="nombre" class="form-control"
+                              placeholder="Nombre">
+                            <span class="err text-danger"
+                              *ngIf="editUserForm.get('nombre')?.invalid && editUserForm.get('nombre')?.touched">
+                              El <strong>nombre es</strong> requerido
+                            </span>
                           </div>
                           <div class="form-group">
                             <label for="apellidos" class="control-label">Apellidos</label>
-                            <input id="apellidos" name="apellidos" type="text" class="form-control"
-                              placeholder="Apellidos">
+                            <input formControlName="apellidos" id="apellidos" name="apellidos" type="text"
+                              class="form-control" placeholder="Apellidos">
+                            <span class="err text-danger"
+                              *ngIf="editUserForm.get('apellidos')?.invalid && editUserForm.get('apellidos')?.touched">
+                              Los <strong>apellidos son</strong> requeridos
+                            </span>
                           </div>
                         </div>
 
@@ -275,24 +283,45 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="telefono" class="control-label">Teléfono</label>
-                            <input type="number" id="telefono" name="telefono" class="form-control"
+                            <input formControlName="telefono" type="number" id="telefono" name="telefono" class="form-control"
                               placeholder="999999999">
+                            <span class="err text-danger"
+                              *ngIf="editUserForm.get('telefono')?.invalid && editUserForm.get('telefono')?.touched && !editUserForm.get('telefono')!.errors!['pattern']">
+                              El <strong>teléfono </strong>es requerido
+                            </span>
+                            <span class="err text-danger"
+                              *ngIf="editUserForm.get('telefono')!.errors != null && editUserForm.get('telefono')!.errors!['pattern'] && editUserForm.get('telefono')?.touched">
+                              El <strong>Teléfono</strong> no es válido, debe ser 99999999
+                            </span>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="email" class="control-label">Email</label>
-                            <input type="text" id="email" name="email" class="form-control" placeholder="Email">
+                            <input formControlName="email" type="text" id="email" name="email" class="form-control" placeholder="Email">
+                            <span class="err text-danger"
+                            *ngIf="editUserForm.get('email')?.invalid && editUserForm.get('email')?.touched && !editUserForm.get('email')!.errors!['pattern']">
+                            El <strong>teléfono </strong>es requerido
+                          </span>
+                          <span class="err text-danger"
+                            *ngIf="editUserForm.get('email')!.errors != null && editUserForm.get('email')!.errors!['pattern'] && editUserForm.get('email')?.touched">
+                            El <strong>email</strong> no es válido
+                          </span>
                           </div>
                         </div>
                       </div>
                       <!--/row-->
                     </div>
                     <div class="form-actions">
-                      <button type="button" class="button">Guardar<i class="fa fa-save mx-2"></i>
+                      <button type="submit" [disabled]="editUserForm.invalid" class="btn-primary button d-inline">
+                        <span [matTooltip]="editUserForm.invalid ? 'Faltan campos obligatorios' : 'Guardar datos usuario'" [matTooltipPosition]="'before'"
+                          aria-label="Botón que guarda la información sobre el usuario">Guardar
+                        </span>
+                        <i class="fa fa-save p-1"></i>
                       </button>
                     </div>
                   </div>
+                  <!-- <p>{{ getFormValidationErrors(editUserForm) }}</p> -->
                 </form>
               </div>
             </div>
