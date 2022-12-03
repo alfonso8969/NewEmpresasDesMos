@@ -6,7 +6,9 @@
     <!-- ============================================================== -->
     <!-- Start Page Content -->
     <!-- ============================================================== -->
-    <div class="row">
+    <app-mat-spinner-overlay *ngIf="viewSpinner">
+    </app-mat-spinner-overlay>
+    <div class="row" *ngIf="!viewSpinner">
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
@@ -27,204 +29,33 @@
               <table class="table full-color-table full-primary-table hover-table">
                 <thead>
                   <tr>
-                    <th>Nombre</th>
+                    <th >Nombre</th>
                     <th>Apellidos</th>
                     <th>Teléfono</th>
                     <th>Email</th>
                     <th>Rol</th>
-                    <th>Fec. Alta</th>
-                    <th>Rol</th>
-                    <th>Eliminar</th>
+                    <th>Fecha Alta</th>
+                    <th >Rol</th>
+                    <th >Eliminar</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
+                  <tr *ngFor="let user of usersHab">
+                    <td >{{ user.user_name }}</td>
+                    <td>{{ user.user_lastName }}</td>
+                    <td>{{ user.user_phone }}</td>
+                    <td>{{ user.user_email }}</td>
+                    <td>{{ user.rol_name }}</td>
+                    <td>{{ user.fecha_alta | date: 'dd-MM-yyyy' }}</td>
+                    <td >
                       <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
+                          class="fa fa-user-plus" (click)="getUser(user)"></i></a>
                     </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                    <td >
+                      <a class="btn btn-danger" (click)="deleteUser(user)"><i class="fa fa-trash"></i></a>
                     </td>
                   </tr>
-                  <tr>
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
 
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>15-10-2021</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus"></i></a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                    </td>
-                  </tr>
 
                 </tbody>
               </table>
@@ -234,7 +65,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="!viewSpinner">
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
@@ -261,48 +92,20 @@
                     <th>Teléfono</th>
                     <th>Email</th>
                     <th>Fecha baja</th>
-                    <th>Habilitar</th>
+                    <th >Habilitar</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>Fechabaja</td>
-                    <td>
-                      <a class="btn btn-warning"><i class="fa fa-unlock"></i></a>
+                  <tr *ngFor="let user of usersInHab">
+                    <td>{{ user.user_name }}</td>
+                    <td>{{ user.user_lastName }}</td>
+                    <td>{{ user.user_phone }}</td>
+                    <td>{{ user.user_email }}</td>
+                    <td>{{ user.fecha_baja | date: 'dd-MM-yyyy' }}</td>
+                    <td >
+                      <a class="btn btn-warning" (click)="toAbleUser(user)"><i
+                          class="fa fa-user-plus"></i></a>
                     </td>
-
-
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>Fechabaja</td>
-                    <td>
-                      <a class="btn btn-warning"><i class="fa fa-unlock"></i></a>
-                    </td>
-
-
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>Fechabaja</td>
-                    <td>
-                      <a class="btn btn-warning"><i class="fa fa-unlock"></i></a>
-                    </td>
-
-
                   </tr>
                 </tbody>
               </table>
@@ -335,7 +138,6 @@
                   data-dismiss="modal" aria-hidden="true">×</button>
               </div>
               <div class="card">
-                <form>
                   <div class="card-body">
                     <div class="form-body">
                       <div class="row p-t-20">
@@ -355,8 +157,8 @@
                             <form [formGroup]="editUserRolForm" (ngSubmit)="editUserRol()" novalidate autocomplete="off">
                               <div class="form-group">
                                 <label for="rol" class="label-control">Rol</label>
-                                <select formControlName="rol" name="rol" id="rol" class="form-control w-100">
-                                  <option [ngValue]=0 selected>Seleccione rol</option>
+                                <select formControlName="rol" name="rol" id="rol" class="form-control w-100" (change)="changeRol($event)">
+                                  <option [ngValue]=0>Seleccione rol</option>
                                   <option [ngValue]=1>Administrador</option>
                                   <option [ngValue]=2>Usuario</option>
                                 </select>
@@ -386,7 +188,6 @@
                       </button>
                     </div>
                   </div>
-                </form>
               </div>
             </div>
             <!-- /.modal-content -->

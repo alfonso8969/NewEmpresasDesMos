@@ -47,7 +47,7 @@ tbody tr:hover {
 #div-img-user {
   background-image: url('../../../../assets/images/background/profile-bg.jpg');
   background-size: cover;
-  height: 100px;
+  height: 250px;
 }
 
 #img-user {
@@ -58,4 +58,24 @@ tbody tr:hover {
 .close {
   cursor: pointer;
   font-size: 35px;
+}
+
+.inputfile {
+  display: none;
+}
+
+.container {
+  display: inline-block;
+  width: 100%;
+}
+
+.file-button {
+  background: transparent;
+  font-weight: 600;
+  padding: 5px;
+  position: relative;
+  border: 1px solid;
+  top: 10px;
+  right: 0px;
+  cursor: pointer;
 }

@@ -32,11 +32,16 @@
                 <div class="row p-t-20">
                   <div class="col-md-6">
                     <div id="div-img-user" class="text-center">
-                      <img id="img-user" src="../../../../assets/images/icon/staff.png" height="200px" width="200px"
+                      <img id="img-user" src="./assets/images/icon/staff.png" height="200px" width="200px"
                         alt="This is a small profile image"><br>
-                      <label class="label-control d-block text-light" for="userimg">Seleccione imagen</label>
-                      <input formControlName="userimg" name="userimg" class="form-control" type="file" name="userimg"
-                        id="userimg">
+                      <input accept="image/png,image/jpeg,image/jpg" formControlName="userimg" type="file"
+                        name="userimg" id="userimg" class="inputfile" (change)='uploadFile($event)'>
+                      <label class="label-control d-block text-light" for="userimg">
+                        <span class="file-button">
+                          <i class="fa fa-upload" aria-hidden="true"></i>
+                          Seleccione imagen
+                        </span>
+                      </label>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -101,20 +106,22 @@
                       </select>
                     </div>
                     <span class="err text-danger"
-                    *ngIf="addUserForm.get('rol')?.invalid && addUserForm.get('rol')?.touched">
-                    El <strong>rol es</strong> requerido
-                  </span>
-                  <span class="err text-danger"
-                    *ngIf="addUserForm.get('rol')?.touched && addUserForm.get('rol')?.value == 0">
-                    El <strong>rol es</strong> requerido
-                  </span>
+                      *ngIf="addUserForm.get('rol')?.invalid && addUserForm.get('rol')?.touched">
+                      El <strong>rol es</strong> requerido
+                    </span>
+                    <span class="err text-danger"
+                      *ngIf="addUserForm.get('rol')?.touched && addUserForm.get('rol')?.value == 0">
+                      El <strong>rol es</strong> requerido
+                    </span>
                   </div>
                 </div>
                 <div class="form-actions mb-5">
-                  <button type="submit" [disabled]="addUserForm.invalid || isDisabled()" class="btn-primary button d-inline">
+                  <button type="submit" [disabled]="addUserForm.invalid || isDisabled()"
+                    class="btn-primary button d-inline">
                     <span
-                      [matTooltip]="addUserForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Guardar datos usuario'" [matTooltipPosition]="'below'"
-                      aria-label="Botón que guarda la información sobre el usuario" MAT_STRATEGY>Guardar
+                      [matTooltip]="addUserForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Guardar datos usuario'"
+                      [matTooltipPosition]="'below'" aria-label="Botón que guarda la información sobre el usuario"
+                      MAT_STRATEGY>Guardar
                     </span>
                     <i class="fa fa-save p-1"></i>
                   </button>

@@ -22,8 +22,9 @@ export class AddUserComponent implements OnInit {
       rol: [0, Validators.required]
 
     });
-   }
+  }
 
+  
   ngOnInit(): void {
   }
 
@@ -31,8 +32,20 @@ export class AddUserComponent implements OnInit {
 
   }
 
-  public cleanForm():void {
+  public cleanForm(): void {
 
+  }
+
+  public uploadFile(elem: any): void {
+    let img = document.getElementById('img-user');
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      img?.setAttribute('src', e.target!.result!.toString());
+    }
+
+    reader.readAsDataURL(elem.target.files[0]);
+
+    console.log(elem)
   }
 
   isDisabled(): boolean {

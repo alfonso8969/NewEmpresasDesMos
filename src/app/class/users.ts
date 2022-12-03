@@ -1,16 +1,20 @@
-export class User {
-    private id_user: number;
-    private user_password: string;
-    private user_name: string;
-    private user_lastName: string;
-    private user_phone: string;
-    private user_rol: number;
-    private habilitado: number;
-    private fecha_alta: Date;
-    private fecha_baja: Date;
+import { Rol } from "./rol";
+
+export class User extends Rol {
+    public id_user: number;
+    public user_img: string;
+    public user_password: string;
+    public user_name: string;
+    public user_lastName: string;
+    public user_phone: string;
+    public user_email: string;
+    public user_rol: number;
+    public habilitado: number;
+    public fecha_alta: Date;
+    public fecha_baja: Date;
 
     constructor() {
-
+        super();
     }
 
     public getId_user(): number {
@@ -19,6 +23,14 @@ export class User {
 
     public setId_user(id_user: number): void {
         this.id_user = id_user;
+    }
+
+    public getUser_img(): string {
+        return this.user_img;
+    }
+
+    public setUser_img(user_img: string): void {
+        this.user_img = user_img;
     }
 
     public getUser_password(): string {

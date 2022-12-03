@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Empresa } from '../class/empresa';
 import { Fields } from '../interfaces/Fileds';
 
@@ -9,10 +10,8 @@ import { Fields } from '../interfaces/Fileds';
 })
 export class CompaniesService {
 
-  url: String;
-  urlDevMode: string = "http://localhost/api-angular-php"
-  urlProdMode: string = "https://alfonsogonz.es/api-angular-php"
-
+  url: String = environment.apiUrl;
+  
   public menu = [
     {
       title: 'Empresas',
@@ -72,11 +71,9 @@ export class CompaniesService {
   constructor(private http: HttpClient) {
 
     if (isDevMode()) {
-      console.log('Development!');
-      this.url = this.urlDevMode ;
+      console.log('Development!:', this.url);
     } else {
-      console.log('Production!');
-      this.url = this.urlProdMode;
+      console.log('Production!: ', this.url);
     }
    }
 

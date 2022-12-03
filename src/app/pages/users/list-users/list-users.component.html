@@ -6,7 +6,9 @@
     <!-- ============================================================== -->
     <!-- Start Page Content -->
     <!-- ============================================================== -->
-    <div class="row">
+    <app-mat-spinner-overlay *ngIf="viewSpinner">
+    </app-mat-spinner-overlay>
+    <div class="row" *ngIf="!viewSpinner">
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
@@ -35,184 +37,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
+                  <tr *ngFor="let user of users">
+                    <td>{{ user.user_name }}</td>
+                    <td>{{ user.user_lastName }}</td>
+                    <td>{{ user.user_phone }}</td>
+                    <td>{{ user.user_email }}</td>
+                    <td>{{ user.rol_name }}</td>
                     <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>NomUser</td>
-                    <td>AppUser</td>
-                    <td>TelUser</td>
-                    <td>EmailUser</td>
-                    <td>RolUserUser</td>
-                    <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-edit"></i></a>
+                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users" (click)="getUser(user)"><i
+                          class="fa fa-user-plus"></i></a>
                     </td>
                   </tr>
                 </tbody>
@@ -240,7 +73,8 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">Modificar datos del usuario</h4>
-                <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'" data-dismiss="modal" aria-hidden="true">&Cross;</button>
+                <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'"
+                  data-dismiss="modal" aria-hidden="true">&Cross;</button>
               </div>
               <div class="card">
                 <form [formGroup]="editUserForm" (ngSubmit)="editUser()" novalidate autocomplete="off">
@@ -249,14 +83,19 @@
                       <div class="row p-t-20">
                         <div class="col-md-6">
                           <div id="div-img-user" class="text-center">
-                            <img id="img-user" src="../../../../assets/images/icon/staff.png" height="100px"
-                              width="100px" alt="This is a small profile image"><br>
-                            <label class="label-control d-block text-light" for="userimg">Seleccione imagen</label>
-                            <input formControlName="userimg" class="form-control" type="file" name="userimg"
-                              id="userimg">
+                            <img id="img-user" [src]="user != undefined  ? './assets/images/users/' + user.user_img : './assets/images/icon/staff.png'" height="200px" width="200px"
+                              alt="This is a small profile image"><br>
+                            <input accept="image/png,image/jpeg,image/jpg" formControlName="userimg" type="file"
+                              name="userimg" id="userimg" class="inputfile" (change)='uploadFile($event)'>
+                            <label class="label-control d-block text-light" for="userimg">
+                              <span class="file-button">
+                                <i class="fa fa-upload" aria-hidden="true"></i>
+                                Seleccione imagen
+                              </span>
+                            </label>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-5">
                           <div class="form-group">
                             <label for="nombre" class="control-label">Nombre</label>
                             <input formControlName="nombre" type="text" id="nombre" name="nombre" class="form-control"
@@ -279,12 +118,12 @@
 
                       </div>
                       <!--/row-->
-                      <div class="row">
+                      <div class="row mt-3">
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="telefono" class="control-label">Teléfono</label>
-                            <input formControlName="telefono" type="number" id="telefono" name="telefono" class="form-control"
-                              placeholder="999999999">
+                            <input formControlName="telefono" type="number" id="telefono" name="telefono"
+                              class="form-control" placeholder="999999999">
                             <span class="err text-danger"
                               *ngIf="editUserForm.get('telefono')?.invalid && editUserForm.get('telefono')?.touched && !editUserForm.get('telefono')!.errors!['pattern']">
                               El <strong>teléfono </strong>es requerido
@@ -298,15 +137,16 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="email" class="control-label">Email</label>
-                            <input formControlName="email" type="text" id="email" name="email" class="form-control" placeholder="Email">
+                            <input formControlName="email" type="text" id="email" name="email" class="form-control"
+                              placeholder="Email">
                             <span class="err text-danger"
-                            *ngIf="editUserForm.get('email')?.invalid && editUserForm.get('email')?.touched && !editUserForm.get('email')!.errors!['pattern']">
-                            El <strong>teléfono </strong>es requerido
-                          </span>
-                          <span class="err text-danger"
-                            *ngIf="editUserForm.get('email')!.errors != null && editUserForm.get('email')!.errors!['pattern'] && editUserForm.get('email')?.touched">
-                            El <strong>email</strong> no es válido
-                          </span>
+                              *ngIf="editUserForm.get('email')?.invalid && editUserForm.get('email')?.touched && !editUserForm.get('email')!.errors!['pattern']">
+                              El <strong>teléfono </strong>es requerido
+                            </span>
+                            <span class="err text-danger"
+                              *ngIf="editUserForm.get('email')!.errors != null && editUserForm.get('email')!.errors!['pattern'] && editUserForm.get('email')?.touched">
+                              El <strong>email</strong> no es válido
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -314,7 +154,9 @@
                     </div>
                     <div class="form-actions">
                       <button type="submit" [disabled]="editUserForm.invalid" class="btn-primary button d-inline">
-                        <span [matTooltip]="editUserForm.invalid ? 'Faltan campos obligatorios' : 'Guardar datos usuario'" [matTooltipPosition]="'before'"
+                        <span
+                          [matTooltip]="editUserForm.invalid ? 'Faltan campos obligatorios' : 'Guardar datos usuario'"
+                          [matTooltipPosition]="'before'"
                           aria-label="Botón que guarda la información sobre el usuario">Guardar
                         </span>
                         <i class="fa fa-save p-1"></i>
