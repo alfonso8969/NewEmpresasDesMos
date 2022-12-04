@@ -4,16 +4,17 @@ export class Empresa extends Descripcion {
 
     static SIN_DATOS: string = "Sin datos";
 
-    private Id!: number;
-    private Nombre: string;
-    private Sector: string;
-    private Distrito?: number;
-    private Poligono?: string;
-    private Link?: string;
-    private Empresa_det_id: number;
-    private Habilitada: number
-    private fecha_alta: Date
-    private fecha_baja: Date
+    public Id!: number;
+    public Nombre: string;
+    public Sector: string;
+    public Distrito?: number;
+    public Poligono?: string;
+    public Link?: string;
+    public Empresa_det_id: number;
+    public Habilitada: number
+    public fecha_alta: Date
+    public fecha_baja: Date
+    public user_id_baja?: number;
 
     // Constructor, donde debemos pasar todos los datos
     constructor(nombre: string, sector: string, Empresadetid: number, distrito: number = 0, poligono: string = Empresa.SIN_DATOS, link: string = Empresa.SIN_DATOS) {
@@ -106,5 +107,13 @@ export class Empresa extends Descripcion {
 
     public setFecha_baja(fecha_baja: Date): void {
         this.fecha_baja = fecha_baja;
+    }
+
+    public getUser_id_baja(): number | undefined {
+        return this.user_id_baja;
+    }
+
+    public setUser_id_baja(user_id_baja: number): void {
+        this.user_id_baja = user_id_baja;
     }
 }

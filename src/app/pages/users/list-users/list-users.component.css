@@ -12,6 +12,7 @@
 thead {
   padding-right: 13px;
   flex: 0 0 auto;
+
 }
 
 tbody {
@@ -32,7 +33,6 @@ tbody tr:hover {
   font-weight: 700;
   cursor: pointer;
 }
-
 
 @media (max-width: 1440px) {
   .page-wrapper {

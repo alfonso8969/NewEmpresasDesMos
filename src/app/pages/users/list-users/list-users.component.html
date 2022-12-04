@@ -83,7 +83,7 @@
                       <div class="row p-t-20">
                         <div class="col-md-6">
                           <div id="div-img-user" class="text-center">
-                            <img id="img-user" [src]="user != undefined  ? './assets/images/users/' + user.user_img : './assets/images/icon/staff.png'" height="200px" width="200px"
+                            <img id="img-user" [src]="user != undefined  ? url + '/uploads/' + user.user_img : './assets/images/icon/staff.png'" height="200px" width="200px"
                               alt="This is a small profile image"><br>
                             <input accept="image/png,image/jpeg,image/jpg" formControlName="userimg" type="file"
                               name="userimg" id="userimg" class="inputfile" (change)='uploadFile($event)'>

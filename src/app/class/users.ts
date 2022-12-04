@@ -65,6 +65,14 @@ export class User extends Rol {
         this.user_phone = user_phone;
     }
 
+    public getUser_email(): string {
+        return this.user_email;
+    }
+
+    public setUser_email(user_email: string): void {
+        this.user_email = user_email;
+    }
+
     public getUser_rol(): number {
         return this.user_rol;
     }

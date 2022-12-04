@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost/api-angular-php"
+  apiUrl: "http://localhost/api-angular-php",
+  apiLocal: 'http://localhost:4200'
 };
 
 /*

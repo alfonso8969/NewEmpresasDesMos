@@ -57,6 +57,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
     });
 
     this.editUserRolForm = this.fb.group({
+      nombre: [''],
       rol: [0, Validators.required]
     });
   }
@@ -64,6 +65,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   public getUser(user: User): void {
     console.log(user)
     this.editUserRolForm = this.fb.group({
+      nombre: [user.user_name + ' ' + user.user_lastName],
       rol: [Number(user.user_rol), Validators.required]
     });
   }

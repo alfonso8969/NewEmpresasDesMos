@@ -1,1 +1,119 @@
-<p>history-companies works!</p>
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <app-mat-spinner-overlay *ngIf="viewSpinner">
+    </app-mat-spinner-overlay>
+    <div class="row" *ngIf="!viewSpinner">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex animated fadeIn">
+                <div class="mr-auto">
+                  <div class="form-group">
+                    <h3 class="text-themecolor">Historial empresas habilitadas</h3>
+                  </div>
+                </div>
+                <div class="ml-auto">
+                  <div class="form-group">
+                    <input id="demo-input-search1" type="text" placeholder="Buscar por nombre" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+  
+              <div class="table1 table-responsive animated fadeInDown">
+                <table class="table full-color-table full-primary-table hover-table">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Email</th>
+                      <th>Teléfono</th>
+                      <th>Fecha Alta</th>
+                      <th>Usuario alta</th>
+                      <th>Deshabilitar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let emp of empresasHab">
+                      <td>{{ emp['Nombre'] }}</td>
+                      <td>{{ emp['Email'] }}</td>
+                      <td>{{ emp['Telefono'] }}</td>
+                      <td>{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
+                      <td>{{ emp['Usuario alta'] }}</td>
+                      <td>
+                        <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i class="fa fa-check"
+                            (click)="getEpresaHab(emp)"></i></a>
+                      </td>
+                    </tr>
+  
+  
+                  </tbody>
+                </table>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="row" *ngIf="!viewSpinner">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex animated fadeIn">
+              <div class="mr-auto">
+                <div class="form-group">
+                  <h3 class="text-themecolor">Historial empresas inhabilitadas</h3>
+                </div>
+              </div>
+              <div class="ml-auto">
+                <div class="form-group">
+                  <input id="demo-input-search1" type="text" placeholder="Buscar por nombre" autocomplete="off">
+                </div>
+              </div>
+            </div>
+
+            <div class="table1 table-responsive animated fadeInDown">
+              <table class="table full-color-table full-primary-table hover-table">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Fecha Alta</th>
+                    <th>Usuario alta</th>
+                    <th>Fecha Baja</th>
+                    <th>Usuario baja</th>
+                    <th>Habilitar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let emp of empresas">
+                    <td>{{ emp['Nombre'] }}</td>
+                    <td>{{ emp['Email'] }}</td>
+                    <td>{{ emp['Telefono'] }}</td>
+                    <td>{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
+                    <td>{{ emp['Usuario alta'] }}</td>
+                    <td>{{ emp['Fecha baja'] | date: 'dd-MM-yyyy' }}</td>
+                    <td>{{ emp['Usuario baja'] }}</td>
+                    <td>
+                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i class="fa fa-check"
+                          (click)="getEpresa(emp)"></i></a>
+                    </td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

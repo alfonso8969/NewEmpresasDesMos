@@ -21,6 +21,11 @@
   height: 300px;
 }
 
+tbody tr td {
+  font-size: 13px !important;
+}
+
+
 thead {
   padding-right: 13px;
   flex: 0 0 auto;

@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { CompaniesService } from './services/companies.service';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { FileUploadService } from './services/file-upload.service';
 @NgModule({
   declarations: [
     AppComponent
@@ -23,6 +24,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
   ],
   providers: [
     CompaniesService,
+    FileUploadService,
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy

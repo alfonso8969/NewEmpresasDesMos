@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatTooltip } from '@angular/material/tooltip';
 import * as d3 from 'd3';
 import { User } from 'src/app/class/users';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 import { UsersService } from 'src/app/services/users.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-list-users',
@@ -16,11 +17,15 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   phoneReg: RegExp = new RegExp(/[0-9]{9}/);
   emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
 
+  url: string = environment.apiUrl;
+  fileUp: File;
+  fileName: string;
+  img: HTMLElement | null;
   user: User;
   users: User[];
 
   viewSpinner: boolean = true;
-  constructor(private fb: FormBuilder, private usersService: UsersService) {
+  constructor(private fb: FormBuilder, private usersService: UsersService, private uploadService: FileUploadService) {
     this.usersService.getUsers().subscribe({
       next: (users: any) => {
         if (users != null) {
@@ -49,15 +54,15 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    d3.selectAll(".close").on('mouseover', function(event) { 
+    d3.selectAll(".close").on('mouseover', function(event) {
       d3.select(this).style("color", "red");
     });
-    d3.selectAll(".close").on('mouseout', function(event) { 
+    d3.selectAll(".close").on('mouseout', function(event) {
       d3.select(this).style("color", "black");
     });
   }
 
-  filUser(user: User): void {
+  fillUserForm(user: User): void {
     this.editUserForm = this.fb.group({
       userimg: [''],
       nombre: [user.user_name, Validators.required],
@@ -73,19 +78,54 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
 
   public getUser(user: User): void {
     this.user = user;
-    this.filUser(user);
+    this.fillUserForm(user);
     console.log(user)
   }
 
   public editUser(): void {
-    
+
+    this.user.user_name = this.editUserForm.get('nombre')!.value;
+    this.user.user_lastName = this.editUserForm.get('apellidos')!.value;
+    this.user.user_phone = this.editUserForm.get('telefono')!.value;
+    this.user.user_email = this.editUserForm.get('email')!.value;
+    if (this.fileUp) {
+
+      let name = this.fileUp.name;
+      if (name != this.user.user_img) {
+        this.fileName = (this.user.user_name.split(' ')[0] + Math.ceil((Math.random()*10000 + 1)) + '.' + name.split('.')[1]).toLowerCase();
+
+        this.uploadService.uploadFile(this.fileUp, this.fileName)
+        .subscribe({
+          next: (data: any) =>  {
+             console.log("Data: ", data)
+              if(data.type === 4) {
+                console.log(data.body.data);
+                this.user.user_img = this.fileName;
+              }
+            },
+            error: (err: any) => {
+              console.log("Error: ", err);
+
+              if (err.error && err.error.message) {
+                console.log("Error: ", err.error.message);
+              } else {
+                console.log('Could not upload the file!');
+              }
+            }
+        });
+
+      }
+
+    }
   }
 
   public uploadFile(elem: any): void {
-    let img = document.getElementById('img-user');
+    this.img = document.getElementById('img-user');
+    this.fileUp = elem.target.files[0];
+
     let reader = new FileReader();
-    reader.onload = function (e) {
-      img?.setAttribute('src', e.target!.result!.toString());
+    reader.onload = (e) => {
+      this.img?.setAttribute('src', e.target!.result!.toString());
     }
 
     reader.readAsDataURL(elem.target.files[0]);

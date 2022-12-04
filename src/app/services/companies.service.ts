@@ -9,7 +9,7 @@ import { Fields } from '../interfaces/Fileds';
   providedIn: 'root'
 })
 export class CompaniesService {
-
+ 
   url: String = environment.apiUrl;
   
   public menu = [
@@ -79,6 +79,18 @@ export class CompaniesService {
 
   public getCompanies(): Observable<Empresa[]> {
      return this.http.get<Empresa[]>(`${ this.url }/listCompanies.php`);
+  }
+
+  getCompaniesInha() {
+    return this.http.get<Empresa[]>(`${ this.url }/listCompaniesInha.php`);
+  }
+
+  getComapniesHistory() {
+    return this.http.get<Empresa[]>(`${ this.url }/listCompaniesHistory.php`);
+  }
+  
+  getComapniesHistoryHab() {
+    return this.http.get<Empresa[]>(`${ this.url }/listCompaniesHistoryHab.php`);
   }
 
   public getApi(): any {

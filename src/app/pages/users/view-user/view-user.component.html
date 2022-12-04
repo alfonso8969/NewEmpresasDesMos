@@ -28,11 +28,16 @@
                   <div class="row p-t-20">
                     <div class="col-md-6">
                       <div id="div-img-user" class="text-center">
-                        <img id="img-user" src="./assets/images/icon/alfonso.ico" height="200px" width="200px"
+                        <img id="img-user" src="./assets/images/icon/staff.png" height="200px" width="200px"
                           alt="This is a small profile image"><br>
-                        <label class="label-control d-block text-light" for="userimg">Seleccione imagen</label>
-                        <input accept="image/png,image/jpeg,image/jpg" formControlName="userimg" name="userimg" class="form-control" type="file" name="userimg"
-                          id="userimg">
+                        <input accept="image/png,image/jpeg,image/jpg" formControlName="userimg" type="file"
+                          name="userimg" id="userimg" class="inputfile" (change)='uploadFile($event)'>
+                        <label class="label-control d-block text-light" for="userimg">
+                          <span class="file-button">
+                            <i class="fa fa-upload" aria-hidden="true"></i>
+                            Seleccione imagen
+                          </span>
+                        </label>
                       </div>
                     </div>
                     <div class="col-md-6">
