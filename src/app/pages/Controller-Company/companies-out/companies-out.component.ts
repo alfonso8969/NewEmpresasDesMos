@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { CompaniesService } from 'src/app/services/companies.service';
 
@@ -36,7 +37,7 @@ export class CompaniesOutComponent implements OnInit {
   viewSpinner: boolean = true;
   message: string;
 
-  constructor(private companiesService: CompaniesService) {
+  constructor(private companiesService: CompaniesService, private route: Router) {
     this.listEmpresas = [];
     this.getCompanies();
   }
@@ -72,7 +73,8 @@ export class CompaniesOutComponent implements OnInit {
   }
 
   view(item: Empresa) {
-    console.log(item);
+    console.log(item.Empresa_det_id);
+    this.route.navigate(['dashboard/view-company', item.Empresa_det_id]);
   }
 
   private delay(ms: number) {

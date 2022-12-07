@@ -9,9 +9,9 @@ import { Fields } from '../interfaces/Fileds';
   providedIn: 'root'
 })
 export class CompaniesService {
- 
+
   url: String = environment.apiUrl;
-  
+
   public menu = [
     {
       title: 'Empresas',
@@ -81,16 +81,24 @@ export class CompaniesService {
      return this.http.get<Empresa[]>(`${ this.url }/listCompanies.php`);
   }
 
+  public getCompany(id: number): Observable<Empresa> {
+     return this.http.post<Empresa>(`${ this.url }/getCompany.php`, { id: id });
+  }
+
   getCompaniesInha() {
     return this.http.get<Empresa[]>(`${ this.url }/listCompaniesInha.php`);
   }
 
-  getComapniesHistory() {
+  getComapniesHistory(): Observable<Empresa[]> {
     return this.http.get<Empresa[]>(`${ this.url }/listCompaniesHistory.php`);
   }
-  
-  getComapniesHistoryHab() {
+
+  getComapniesHistoryHab(): Observable<Empresa[]> {
     return this.http.get<Empresa[]>(`${ this.url }/listCompaniesHistoryHab.php`);
+  }
+
+  addCompany(emp: Empresa): Observable<number> {
+    return this.http.post<number>(`${ this.url }/addCompany.php`, { empresa: emp });
   }
 
   public getApi(): any {

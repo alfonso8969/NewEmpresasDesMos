@@ -4,6 +4,7 @@ import { Fields } from 'src/app/interfaces/Fileds';
 import { CompaniesService } from 'src/app/services/companies.service';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-add-company',
@@ -31,7 +32,7 @@ export class AddCompanyComponent implements OnInit {
   constructor(private companiesService: CompaniesService, private fb: FormBuilder, private router: Router) {
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
-      this.newEmp = JSON.parse(emp!);
+      this.newEmp = JSON.parse(emp);
       this.fillFormNewEmp(this.newEmp);
     } else {
       this.fillForm();
@@ -51,7 +52,7 @@ export class AddCompanyComponent implements OnInit {
       },
       complete: () => console.log("Complete", this.sectores)
     });
-    
+
     this.companiesService.getFields("distrito").subscribe({
       next: (result: any) => {
         if (result != null) {
@@ -129,7 +130,7 @@ export class AddCompanyComponent implements OnInit {
     });
   }
 
-  public addCompany(): void {
+  public addCompany(redes: boolean = false): void {
     let local = this.addCompanyForm.get("localidad")?.value;
     let prov = this.addCompanyForm.get("provincia")?.value;
     this.empresa = new Empresa(
@@ -159,12 +160,42 @@ export class AddCompanyComponent implements OnInit {
       this.empresa.setGoogle_plus(this.newRedes['Google_plus']);
     }
     console.log(this.empresa);
+    if (!redes) {
+      this.saveEmpresa(this.empresa);
+    }
+  }
+
+  public saveEmpresa(empresa: Empresa): void {
     localStorage.removeItem("empresa");
     localStorage.removeItem("redes");
+    this.companiesService.addCompany(empresa).subscribe({
+      next: (data: number) => {
+        if (data === 1) {
+          Swal.fire({
+            title: 'Añadir empresa',
+            text: `La empresa ${ empresa.getNombre() } se añadio exitosamente`,
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+          this.router.navigate(['dashboard/list-companies']);
+        } else {
+          throw new Error(`Se produjo un error al añadir la empresa ${ empresa.getNombre() } `);
+        }
+      }, error: (error: any) => { 
+        console.log(`Se produjo un error al añadir la empresa: ${ error } `);
+        Swal.fire({
+          title: 'Añadir empresa',
+          text: `Se produjo un error al añadir la empresa ${ empresa.getNombre() } `,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      },
+      complete: () => console.log('Se completo la inserción de empresa')
+    });    
   }
 
   public setRedes(): void {
-    this.addCompany();
+    this.addCompany(true);
     localStorage.setItem("empresa", JSON.stringify(this.empresa));
     this.router.navigateByUrl('dashboard/add-redes');
   }

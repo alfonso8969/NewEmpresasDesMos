@@ -85,6 +85,12 @@ mat-card.panel {
   cursor: pointer;
 }
 
+.nav-sup-menu {
+  font-weight: 600 !important;
+  font-family: Monserrat, Arial, Helvetica, sans-serif !important;
+  font-size: 1.2em !important;
+}
+
 @media (max-width: 1015px) {
   .col-md-4 {
     flex-direction: column !important;
