@@ -105,10 +105,15 @@ export class AddCompanyRedesComponent implements OnInit {
       )
       localStorage.setItem("redes", JSON.stringify(this.redes));
       console.log(this.redes);
+      console.log(this.empresa);
+      Swal.fire({
+        title: 'Cambios guardados',
+        text: 'Se guardaron los cambios realizados',
+        icon: 'info',
+        confirmButtonText: 'Aceptar'
+      });
+      this.router.navigateByUrl('dashboard/add-company');
     }
-
-
-    console.log(this.empresa);
   }
 
 

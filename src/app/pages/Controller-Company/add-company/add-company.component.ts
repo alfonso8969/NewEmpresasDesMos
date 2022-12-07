@@ -5,6 +5,7 @@ import { CompaniesService } from 'src/app/services/companies.service';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2'
+import { User } from 'src/app/class/users';
 
 @Component({
   selector: 'app-add-company',
@@ -14,6 +15,7 @@ import Swal from 'sweetalert2'
 export class AddCompanyComponent implements OnInit {
 
   empresa: Empresa;
+  user: User;
   city: string = "Móstoles";
   region: string = "Madrid";
   lastEmpDetId: number;
@@ -30,6 +32,8 @@ export class AddCompanyComponent implements OnInit {
   newRedes: any ;
 
   constructor(private companiesService: CompaniesService, private fb: FormBuilder, private router: Router) {
+    this.user = new User();
+    this.user.setId_user(1);
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
       this.newEmp = JSON.parse(emp);
@@ -140,7 +144,8 @@ export class AddCompanyComponent implements OnInit {
       this.addCompanyForm.get("distrito")?.value,
       this.addCompanyForm.get("poligono")?.value
     );
-
+    
+    this.empresa.setUser_id_alta(this.user.getId_user());
     this.empresa.setPersonaContacto(this.addCompanyForm.get('contactperson')?.value);
     this.empresa.setEmail(this.addCompanyForm.get("email")?.value);
     this.empresa.setTelefono(this.addCompanyForm.get("telefono")?.value);
@@ -166,8 +171,7 @@ export class AddCompanyComponent implements OnInit {
   }
 
   public saveEmpresa(empresa: Empresa): void {
-    localStorage.removeItem("empresa");
-    localStorage.removeItem("redes");
+    
     this.companiesService.addCompany(empresa).subscribe({
       next: (data: number) => {
         if (data === 1) {
@@ -177,6 +181,8 @@ export class AddCompanyComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          localStorage.removeItem("empresa");
+          localStorage.removeItem("redes");
           this.router.navigate(['dashboard/list-companies']);
         } else {
           throw new Error(`Se produjo un error al añadir la empresa ${ empresa.getNombre() } `);

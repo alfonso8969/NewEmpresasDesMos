@@ -40,7 +40,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of usersHab">
+                  <tr *ngFor="let user of usersHab; index as i">
                     <td >{{ user.user_name }}</td>
                     <td>{{ user.user_lastName }}</td>
                     <td>{{ user.user_phone }}</td>
@@ -48,11 +48,11 @@
                     <td>{{ user.rol_name }}</td>
                     <td>{{ user.fecha_alta | date: 'dd-MM-yyyy' }}</td>
                     <td >
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i
-                          class="fa fa-user-plus" (click)="getUser(user)"></i></a>
+                      <a class="btn btn-warning" (click)="getUser(i)" data-toggle="modal" data-target=".md-users"><i
+                          class="fa fa-user-plus" ></i></a>
                     </td>
                     <td >
-                      <a class="btn btn-danger" (click)="deleteUser(user)"><i class="fa fa-trash"></i></a>
+                      <a class="btn btn-danger" (click)="deleteUser(i)"><i class="fa fa-trash"></i></a>
                     </td>
                   </tr>
 

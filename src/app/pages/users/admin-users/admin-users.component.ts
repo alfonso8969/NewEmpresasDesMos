@@ -62,8 +62,10 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public getUser(user: User): void {
-    console.log(user)
+  public getUser(index: number): void {
+    console.log(index);
+    let user = this.usersHab[index];
+    console.log(user);
     this.editUserRolForm = this.fb.group({
       nombre: [user.user_name + ' ' + user.user_lastName],
       rol: [Number(user.user_rol), Validators.required]
@@ -77,7 +79,8 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
     console.log(this.rolstr)
   }
 
-  public deleteUser(user: User): void {
+  public deleteUser(index: number): void {
+    let user = this.usersHab[index];
     user.habilitado = 0;
     user.fecha_baja = new Date();
     console.log(user)
