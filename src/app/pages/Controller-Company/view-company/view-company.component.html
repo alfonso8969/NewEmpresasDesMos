@@ -1,292 +1,359 @@
 <div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeIn">
     <!-- ============================================================== -->
-    <!-- Container fluid  -->
+    <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
-    <div class="container-fluid animated fadeIn">
-      <!-- ============================================================== -->
-      <!-- Bread crumb and right sidebar toggle -->
-      <!-- ============================================================== -->
-      <div class="row page-titles">
-        <div class="col-md-5 align-self-center">
-          <h3 *ngIf="!isEdited" class="text-themecolor">Ver empresa {{ empresa != undefined && empresa.Nombre  }}</h3>
-          <h3 *ngIf="isEdited" class="text-themecolor">Editar empresa {{ empresa != undefined && empresa.Nombre }}</h3>
-        </div>
-        <div class="">
-
-        </div>
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 *ngIf="!isEdited" class="text-themecolor">Ver empresa {{ empresa != undefined && empresa.Nombre }}</h3>
+        <h3 *ngIf="isEdited" class="text-themecolor">Editar empresa {{ empresa != undefined && empresa.Nombre }}</h3>
       </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="p-3" *ngIf="!isEdited">
-              <h3 class="card-title  d-inline" >Vista de datos de la empresa</h3>
-              <button type="button" class="btn-primary button d-inline float-right" (click)="edit()">
-                  <span
-                    matTooltip="Elija editar para cambiar los datos de la empresa">Editar
-                  </span>
-                  <i class="fa fa-edit p-1"></i>
-                </button>
-            </div>
-            <div *ngIf="isEdited">
-              <h3 class="card-title p-1">Cambio de datos de la empresa</h3>
-              <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
-              <button type="button" class="btn btn-default d-inline float-right mx-3" (click)="cleanForm()">Limpiar formulario
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </button>
-            </div>
-            <div class="card-body">
-              <div class="form-body">
-                <hr>
-                <form [formGroup]="editCompanyForm" (ngSubmit)="addCompany()" novalidate autocomplete="off">
-                  <div class="row p-t-20">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="nombre" class="control-label">* Nombre completo</label>
-                        <input formControlName="nombre" id="nombre" name="nombre" type="text" class="form-control"
-                          placeholder="Nombre completo">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('nombre')?.invalid && editCompanyForm.get('nombre')?.touched">
-                          El <strong>nombre es</strong> requerido
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="sector" class="control-label">* Sector</label>
-                        <select formControlName="sector" name="sector" id="sector" class="form-control" title="Sector">
-                          <option [ngValue]=0 selected>Seleccione sector</option>
-                          <option [ngValue]="dato.sector_id" *ngFor="let dato of sectores">
-                            {{dato.empresas_sector_name}}
-                          </option>
-                        </select>
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('sector')?.invalid && editCompanyForm.get('sector')?.touched">
-                          El <strong>sector es</strong> requerido
-                        </span>
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('sector')?.touched && editCompanyForm.get('sector')?.value == 0">
-                          El <strong>sector es</strong> requerido
-                        </span>
-                      </div>
+      <div class="">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="p-3" *ngIf="!isEdited">
+            <h3 class="card-title  d-inline">Vista de datos de la empresa</h3>
+            <button type="button" class="btn-primary button d-inline float-right" (click)="edit()">
+              <span matTooltip="Elija editar para cambiar los datos de la empresa">Editar
+              </span>
+              <i class="fa fa-edit p-1"></i>
+            </button>
+          </div>
+          <div *ngIf="isEdited">
+            <h3 class="card-title p-1">Cambio de datos de la empresa</h3>
+            <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
+            <button type="button" class="btn btn-default d-inline float-right mx-3" (click)="cleanForm()">Limpiar
+              formulario
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <form [formGroup]="editCompanyForm" (ngSubmit)="addCompany()" novalidate autocomplete="off">
+                <div class="row p-t-20">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">* Nombre completo</label>
+                      <input formControlName="nombre" id="nombre" name="nombre" type="text" class="form-control"
+                        placeholder="Nombre completo">
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('nombre')?.invalid && editCompanyForm.get('nombre')?.touched">
+                        El <strong>nombre es</strong> requerido
+                      </span>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label for="telefono" class="control-label">* Teléfono</label>
-                        <input formControlName="telefono" type="number" name="telefono" id="telefono" class="form-control"
-                          placeholder="9999999" maxlength="9">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('telefono')?.invalid && editCompanyForm.get('telefono')?.touched && !editCompanyForm.get('telefono')!.errors!['pattern']">
-                          El <strong>teléfono </strong>es requerido
-                        </span>
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('telefono')!.errors != null && editCompanyForm.get('telefono')!.errors!['pattern'] && editCompanyForm.get('telefono')?.touched">
-                          El <strong>teléfono</strong> no es válido, debe ser 99999999
-                        </span>
-                      </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="sector" class="control-label">* Sector</label>
+                      <select formControlName="sector" name="sector" id="sector" class="form-control" title="Sector">
+                        <option [ngValue]=0 selected>Seleccione sector</option>
+                        <option [ngValue]="dato.sector_id" *ngFor="let dato of sectores">
+                          {{dato.empresas_sector_name}}
+                        </option>
+                      </select>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('sector')?.invalid && editCompanyForm.get('sector')?.touched">
+                        El <strong>sector es</strong> requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('sector')?.touched && editCompanyForm.get('sector')?.value == 0">
+                        El <strong>sector es</strong> requerido
+                      </span>
                     </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label for="otherTelefono" class="control-label">Otro Teléfono</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="telefono" class="control-label">* Teléfono</label>
+                      <div class="input-container">
+                        <input formControlName="telefono" type="number" name="telefono" id="telefono"
+                          class="form-control" placeholder="9999999" maxlength="9">
+                        <a *ngIf="empresa['Habilitada'] == 1 && editCompanyForm.get('telefono')?.value != ''"
+                          href="tel: +34{{ editCompanyForm.get('telefono')?.value }}" matTooltip="Click para llamar">
+                          <i class="fa fa-phone bg-success p-2 text-white inp" aria-hidden="true"></i>
+                        </a>
+                      </div>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('telefono')?.invalid && editCompanyForm.get('telefono')?.touched && !editCompanyForm.get('telefono')!.errors!['pattern']">
+                        El <strong>teléfono </strong>es requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('telefono')!.errors != null && editCompanyForm.get('telefono')!.errors!['pattern'] && editCompanyForm.get('telefono')?.touched">
+                        El <strong>teléfono</strong> no es válido, debe ser 99999999
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="otherTelefono" class="control-label">Otro Teléfono</label>
+                      <div class="input-container">
                         <input formControlName="otherTelefono" type="number" name="otherTelefono" id="otherTelefono"
                           class="form-control" placeholder="9999999" maxlength="9">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('otherTelefono')!.errors != null && editCompanyForm.get('otherTelefono')!.errors!['pattern'] && editCompanyForm.get('otherTelefono')?.touched">
-                          El <strong>Teléfono</strong> no es válido, debe ser 99999999
-                        </span>
+                          <a *ngIf="empresa['Habilitada'] == 1 && editCompanyForm.get('otherTelefono')?.value != ''"
+                          href="tel: +34{{ editCompanyForm.get('otherTelefono')?.value }}" matTooltip="Click para llamar">
+                          <i class="fa fa-phone bg-success p-2 text-white inp" aria-hidden="true"></i>
+                        </a>
                       </div>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('otherTelefono')!.errors != null && editCompanyForm.get('otherTelefono')!.errors!['pattern'] && editCompanyForm.get('otherTelefono')?.touched">
+                        El <strong>Teléfono</strong> no es válido, debe ser 99999999
+                      </span>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="email" class="control-label">* Email</label>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="email" class="control-label">* Email</label>
+                      <div class="input-container">
                         <input formControlName="email" type="email" class="form-control" placeholder="Email" id="email"
                           name="email">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('email')?.invalid && editCompanyForm.get('email')?.touched && !editCompanyForm.get('email')!.errors!['pattern']">
-                          El <strong>email es </strong>requerido
-                        </span>
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('email')!.errors != null && editCompanyForm.get('email')!.errors!['pattern'] && editCompanyForm.get('email')?.touched">
-                          El <strong>email</strong> no es válido
-                        </span>
+                          <a *ngIf="empresa['Habilitada'] == 1 && editCompanyForm.get('email')?.value != ''"
+                          href="mailto:{{ editCompanyForm.get('email')?.value }}" matTooltip="Click para email">
+                          <i class="fa fa-mail-bulk bg-primary p-2 text-white inp" aria-hidden="true"></i>
+                        </a>
                       </div>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('email')?.invalid && editCompanyForm.get('email')?.touched && !editCompanyForm.get('email')!.errors!['pattern']">
+                        El <strong>email es </strong>requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('email')!.errors != null && editCompanyForm.get('email')!.errors!['pattern'] && editCompanyForm.get('email')?.touched">
+                        El <strong>email</strong> no es válido
+                      </span>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="contactperson" class="control-label">Persona contacto</label>
-                        <input formControlName="contactperson" type="text" class="form-control" name="contactperson"
-                          id="contactperson" placeholder="Persona contacto">
-                      </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="contactperson" class="control-label">Persona contacto</label>
+                      <input formControlName="contactperson" type="text" class="form-control" name="contactperson"
+                        id="contactperson" placeholder="Persona contacto">
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="address" class="control-label">* Dirección</label>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="address" class="control-label">* Dirección</label>
+                      <div class="input-container">
                         <input formControlName="direccion" type="text" class="form-control" name="direccion"
                           id="direccion" placeholder="Dirección">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('direccion')?.invalid && editCompanyForm.get('direccion')?.touched">
-                          La <strong>direccion</strong> es requerida
-                        </span>
+                          <a *ngIf="empresa['Habilitada'] == 1 && editCompanyForm.get('direccion')?.value != ''" target="_blank" rel="noopener noreferrer"
+                          href="https://www.google.com/maps/search/?api=1&query={{ editCompanyForm.get('nombre')?.value }}+{{ editCompanyForm.get('direccion')?.value }}+{{ editCompanyForm.get('cod_postal')?.value }}" matTooltip="Click para ver en mapa">
+                          <i class="fa fa-map-marked-alt bg-danger p-2 text-white inp" aria-hidden="true"></i>
+                        </a>
                       </div>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('direccion')?.invalid && editCompanyForm.get('direccion')?.touched">
+                        La <strong>direccion</strong> es requerida
+                      </span>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="district" class="control-label">* Distrito</label>
-                        <select formControlName="distrito" name="districto" id="districto" class="form-control"
-                          title="Distrito">
-                          <option [ngValue]=0 selected>Seleccione distrito</option>
-                          <option [ngValue]="dato.distrito_id" *ngFor="let dato of distritos">
-                            {{dato.distrito_name}}
-                          </option>
-                        </select>
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('distrito')?.invalid && editCompanyForm.get('distrito')?.touched">
-                          El <strong>distrito es</strong> requerido
-                        </span>
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('distrito')?.touched && editCompanyForm.get('distrito')?.value == 0">
-                          El <strong>distrito es</strong> requerido
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="email" class="control-label">* Polígono</label>
-                        <select formControlName="poligono" name="poligono" id="pologono" class="form-control"
-                          title="Polígono">
-                          <option [ngValue]=0 selected>Seleccione polígono</option>
-                          <option [ngValue]="dato.poligono_id" *ngFor="let dato of poligonos">
-                            {{dato.empresas_poligono_name}}
-                          </option>
-                        </select>
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('poligono')?.invalid && editCompanyForm.get('poligono')?.touched">
-                          El <strong>polígono es</strong> requerido
-                        </span>
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('poligono')?.touched && editCompanyForm.get('poligono')?.value == 0">
-                          El <strong>polígono es</strong> requerido
-                        </span>
-                      </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="district" class="control-label">* Distrito</label>
+                      <select formControlName="distrito" name="districto" id="districto" class="form-control"
+                        title="Distrito">
+                        <option [ngValue]=0 selected>Seleccione distrito</option>
+                        <option [ngValue]="dato.distrito_id" *ngFor="let dato of distritos">
+                          {{dato.distrito_name}}
+                        </option>
+                      </select>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('distrito')?.invalid && editCompanyForm.get('distrito')?.touched">
+                        El <strong>distrito es</strong> requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('distrito')?.touched && editCompanyForm.get('distrito')?.value == 0">
+                        El <strong>distrito es</strong> requerido
+                      </span>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label for="provincia" class="control-label">Provincía</label>
-                        <input formControlName="provincia" type="text" class="form-control"
-                          name="provincia" id="provincia" placeholder="Madrid" [value]="region">
-                      </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="email" class="control-label">* Polígono</label>
+                      <select formControlName="poligono" name="poligono" id="pologono" class="form-control"
+                        title="Polígono">
+                        <option [ngValue]=0 selected>Seleccione polígono</option>
+                        <option [ngValue]="dato.poligono_id" *ngFor="let dato of poligonos">
+                          {{dato.empresas_poligono_name}}
+                        </option>
+                      </select>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('poligono')?.invalid && editCompanyForm.get('poligono')?.touched">
+                        El <strong>polígono es</strong> requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('poligono')?.touched && editCompanyForm.get('poligono')?.value == 0">
+                        El <strong>polígono es</strong> requerido
+                      </span>
                     </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label for="localidad" class="control-label">Localidad</label>
-                        <input formControlName="localidad" type="text" class="form-control"
-                          name="localidad" id="localidad" placeholder="Móstoles" [value]="city">
-                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="provincia" class="control-label">Provincía</label>
+                      <input formControlName="provincia" type="text" class="form-control" name="provincia"
+                        id="provincia" placeholder="Madrid" [value]="region">
                     </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="localidad" class="control-label">Localidad</label>
+                      <input formControlName="localidad" type="text" class="form-control" name="localidad"
+                        id="localidad" placeholder="Móstoles" [value]="city">
+                    </div>
+                  </div>
 
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label for="cod_postal" class="control-label">* Código postal</label>
-                        <input formControlName="cod_postal" type="number" class="form-control" name="cod_postal"
-                          id="cod_postal" placeholder="Código postal 289--" maxlength="5">
-                      </div>
-                      <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('cod_postal')?.invalid && editCompanyForm.get('cod_postal')?.touched && !editCompanyForm.get('cod_postal')!.errors!['pattern']">
-                        El <strong>código postal</strong> es requerido
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="cod_postal" class="control-label">* Código postal</label>
+                      <input formControlName="cod_postal" type="number" class="form-control" name="cod_postal"
+                        id="cod_postal" placeholder="Código postal 289--" maxlength="5">
+                    </div>
+                    <span class="err text-danger"
+                      *ngIf="isEdited && editCompanyForm.get('cod_postal')?.invalid && editCompanyForm.get('cod_postal')?.touched && !editCompanyForm.get('cod_postal')!.errors!['pattern']">
+                      El <strong>código postal</strong> es requerido
+                    </span>
+                    <span class="err text-danger"
+                      *ngIf="isEdited && editCompanyForm.get('cod_postal')!.errors != null && editCompanyForm.get('cod_postal')!.errors!['pattern'] && editCompanyForm.get('cod_postal')?.touched">
+                      El <strong>código postal</strong> no es válido, debe ser 289 + 2 números
+                    </span>
+                  </div>
+                </div>
+                <div class="row p-t-20">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="name" class="control-label">
+                        <i class="fa fa-globe p-2 bg-primary text-white" aria-hidden="true"></i>
+                        Página Web</label>
+                      <input formControlName="web" id="web" name="web" type="text" class="form-control"
+                        placeholder="Url del sitio web">
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('web')!.errors != null && editCompanyForm.get('web')!.errors!['pattern'] && editCompanyForm.get('web')?.touched">
+                        La <strong>URL</strong> no es válida
                       </span>
-                      <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('cod_postal')!.errors != null && editCompanyForm.get('cod_postal')!.errors!['pattern'] && editCompanyForm.get('cod_postal')?.touched">
-                        El <strong>código postal</strong> no es válido, debe ser 289 + 2 números
+                    </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="facebook" class="control-label">
+                        <i class="fa fa-facebook p-2 bg-info text-white" aria-hidden="true"></i>
+                        Facebook</label>
+                      <input formControlName="facebook" id="facebook" name="facebook" type="text" class="form-control"
+                        placeholder="https://www.facebook.com/usuario">
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('facebook')!.errors != null && editCompanyForm.get('facebook')!.errors!['pattern'] && editCompanyForm.get('facebook')?.touched">
+                        La <strong>URL</strong> no es válida
                       </span>
                     </div>
                   </div>
-                  <div class="row p-t-20">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="name" class="control-label">
-                          <i class="fa fa-globe p-2 bg-primary text-white" aria-hidden="true"></i>
-                          Página Web</label>
-                        <input formControlName="web" id="web" name="web" type="text" class="form-control"
-                          placeholder="Url del sitio web">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('web')!.errors != null && editCompanyForm.get('web')!.errors!['pattern'] && editCompanyForm.get('web')?.touched">
-                          La <strong>URL</strong> no es válida
-                        </span>
-                      </div>
-                    </div>
-                    <!--/span-->
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="facebook" class="control-label">
-                          <i class="fa fa-facebook p-2 bg-info text-white" aria-hidden="true"></i>
-                          Facebook</label>
-                        <input formControlName="facebook" id="facebook" name="facebook" type="text" class="form-control"
-                          placeholder="https://www.facebook.com/usuario">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('facebook')!.errors != null && editCompanyForm.get('facebook')!.errors!['pattern'] && editCompanyForm.get('facebook')?.touched">
-                          La <strong>URL</strong> no es válida
-                        </span>
-                      </div>
-                    </div>
-                    <!--/span-->
-                  </div>
-                  <!--/row-->
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="instagram" class="control-label">
-                          <i class="fa fa-instagram p-2 bg-warning text-white" aria-hidden="true"></i>
-                          Instagram</label>
-                        <input formControlName="instagram" id="instagram" name="instagram" type="link" class="form-control"
-                          placeholder="https://www.instagram.com/usuario">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('instagram')!.errors != null && editCompanyForm.get('instagram')!.errors!['pattern'] && editCompanyForm.get('instagram')?.touched">
-                          La <strong>URL</strong> no es válida
-                        </span>
-                      </div>
-                    </div>
-                    <!--/span-->
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="twitter" class="control-label">
-                          <i class="fa fa-twitter p-2 bg-info text-white" aria-hidden="true"></i>
-                          Twitter</label>
-                        <input formControlName="twitter" id="twitter" name="twitter" type="link" class="form-control" placeholder="@usuario">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('twitter')!.errors != null && editCompanyForm.get('twitter')!.errors!['pattern'] && editCompanyForm.get('twitter')?.touched">
-                          El <strong>usuario</strong> no es válido
-                        </span>
-                      </div>
-                    </div>
-                    <!--/span-->
-                  </div>
-                  <!--/row-->
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="linkedin" class="control-label">
-                          <i class="fa fa-linkedin p-2 bg-primary text-white" aria-hidden="true"></i>
-                          Linkedin</label>
-                        <input formControlName="linkedin" id="linkedin" name="linkedin" type="link" class="form-control"
-                          placeholder="https://www.linkedin.com/in/usuario">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('linkedin')!.errors != null && editCompanyForm.get('linkedin')!.errors!['pattern'] && editCompanyForm.get('linkedin')?.touched">
-                          La <strong>URL</strong> no es válida
-                        </span>
-                      </div>
-                    </div>
-                    <!--/span-->
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="tiktok" class="control-label">
-                          <img width="32" src="./assets/images/icon/tiktok-icon-black-1-logo-svgrepo-com.svg"
-                            aria-hidden="true" />
-                          Tiktok</label>
-                        <input formControlName="tiktok" id="tiktok" name="tiktok" type="link" class="form-control" placeholder="@usuario">
-                        <span class="err text-danger" *ngIf="isEdited && editCompanyForm.get('tiktok')!.errors != null && editCompanyForm.get('tiktok')!.errors!['pattern'] && editCompanyForm.get('tiktok')?.touched">
-                          El <strong>usuario</strong> no es válido
-                        </span>
-                      </div>
-                    </div>
-                    <!--/span-->
-                  </div>
-                  <div class="form-actions" *ngIf="isEdited">
-                    <button type="submit" [disabled]="editCompanyForm.invalid || isDisabled()" class="btn-primary button d-inline">
-                      <span
-                        [matTooltip]="editCompanyForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija guardar y añadir datos de red y web después seleccionando la empresa en la tabla (Listado de empresas)'">Guardar
+                  <!--/span-->
+                </div>
+                <!--/row-->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="instagram" class="control-label">
+                        <i class="fa fa-instagram p-2 bg-warning text-white" aria-hidden="true"></i>
+                        Instagram</label>
+                      <input formControlName="instagram" id="instagram" name="instagram" type="link"
+                        class="form-control" placeholder="https://www.instagram.com/usuario">
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('instagram')!.errors != null && editCompanyForm.get('instagram')!.errors!['pattern'] && editCompanyForm.get('instagram')?.touched">
+                        La <strong>URL</strong> no es válida
                       </span>
-                      <i class="fa fa-save p-1"></i>
-                    </button>
+                    </div>
                   </div>
-                  <!-- <p>{{ getFormValidationErrors(editCompanyForm) }}</p> -->
-                </form>
+                  <!--/span-->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="twitter" class="control-label">
+                        <i class="fa fa-twitter p-2 bg-info text-white" aria-hidden="true"></i>
+                        Twitter</label>
+                      <input formControlName="twitter" id="twitter" name="twitter" type="link" class="form-control"
+                        placeholder="@usuario">
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('twitter')!.errors != null && editCompanyForm.get('twitter')!.errors!['pattern'] && editCompanyForm.get('twitter')?.touched">
+                        El <strong>usuario</strong> no es válido
+                      </span>
+                    </div>
+                  </div>
+                  <!--/span-->
+                </div>
+                <!--/row-->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="linkedin" class="control-label">
+                        <i class="fa fa-linkedin p-2 bg-primary text-white" aria-hidden="true"></i>
+                        Linkedin</label>
+                      <input formControlName="linkedin" id="linkedin" name="linkedin" type="link" class="form-control"
+                        placeholder="https://www.linkedin.com/in/usuario">
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('linkedin')!.errors != null && editCompanyForm.get('linkedin')!.errors!['pattern'] && editCompanyForm.get('linkedin')?.touched">
+                        La <strong>URL</strong> no es válida
+                      </span>
+                    </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="tiktok" class="control-label">
+                        <img width="32" src="./assets/images/icon/tiktok-icon-black-1-logo-svgrepo-com.svg"
+                          aria-hidden="true" />
+                        Tiktok</label>
+                      <input formControlName="tiktok" id="tiktok" name="tiktok" type="link" class="form-control"
+                        placeholder="@usuario">
+                      <span class="err text-danger"
+                        *ngIf="isEdited && editCompanyForm.get('tiktok')!.errors != null && editCompanyForm.get('tiktok')!.errors!['pattern'] && editCompanyForm.get('tiktok')?.touched">
+                        El <strong>usuario</strong> no es válido
+                      </span>
+                    </div>
+                  </div>
+                  <!--/span-->
+                </div>
+                <div class="form-actions" *ngIf="isEdited">
+                  <button type="submit"
+                    [disabled]="editCompanyForm.touched && (editCompanyForm.invalid || isDisabled())"
+                    class="btn-primary button d-inline">
+                    <span
+                      [matTooltip]="editCompanyForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija guardar y actualizar los datos de la empresa'">Guardar
+                    </span>
+                    <i class="fa fa-save p-1"></i>
+                  </button>
+                  
+                </div>
+              </form>
+             <div *ngIf="isEdited && editCompanyForm.touched && (editCompanyForm.invalid || isDisabled())" class="row">
+                <div class="col-offset-2 col-md-6">
+                  <table  class="table table-striped text-danger">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Campo</th>
+                        <th>Error</th>
+                        <th>Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let field of getFormValidationErrors(editCompanyForm)">
+                        <td>{{ field.Campo | titlecase }}</td>
+                        <td>{{ field.Error }}</td>
+                        <td>{{ field.Valor }}</td>
+                      </tr>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -294,4 +361,4 @@
       </div>
     </div>
   </div>
-
+</div>

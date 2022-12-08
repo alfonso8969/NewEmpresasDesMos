@@ -13,12 +13,16 @@ export class UsersService {
 
   constructor(private http: HttpClient) {
     if (isDevMode()) {
-      console.log('Development!:', this.url);
+      console.log()//('Development!:', this.url);
     } else {
-      console.log('Production!: ', this.url);
+      console.log()//('Production!: ', this.url);
     }
   }
 
+
+  public getUser(id: number): Observable<User> {
+    return this.http.post<User>(`${this.url}/getUser.php`, { id: id });
+  }
 
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.url}/listUsers.php`);
@@ -27,7 +31,7 @@ export class UsersService {
   public getUsersHab(): Observable<User[]> {
     return this.http.get<User[]>(`${this.url}/listUsersHab.php`);
   }
-  
+
   public getUsersInha(): Observable<User[]> {
     return this.http.get<User[]>(`${this.url}/listUsersInha.php`);
   }

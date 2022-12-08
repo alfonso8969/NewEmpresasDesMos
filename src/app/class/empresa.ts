@@ -2,7 +2,7 @@ import { Descripcion } from "./descripcion";
 
 export class Empresa extends Descripcion {
 
-    static SIN_DATOS: string = "Sin datos";
+    static SIN_DATOS: string = "sin datos";
 
     public Id!: number;
     public Nombre: string;
@@ -12,7 +12,7 @@ export class Empresa extends Descripcion {
     public Link?: string;
     public Empresa_det_id: number;
     public Habilitada: number
-    public fecha_alta: Date
+    public fecha_alta?: Date
     public fecha_baja: Date
     public user_id_baja?: number;
     public user_id_alta?: number;
@@ -97,7 +97,7 @@ export class Empresa extends Descripcion {
         this.Habilitada = Habilitada;
     }
 
-    public getFecha_alta(): Date {
+    public getFecha_alta(): Date | undefined {
         return this.fecha_alta;
     }
 

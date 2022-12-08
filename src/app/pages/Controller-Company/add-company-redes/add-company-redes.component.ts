@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { Redes } from 'src/app/class/redes';
+import { Result } from 'src/app/interfaces/result';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -17,6 +18,7 @@ export class AddCompanyRedesComponent implements OnInit {
   newEmp: any;
 
   addRedesForm: FormGroup;
+
   constructor(private fb: FormBuilder, private router: Router) {
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
@@ -24,20 +26,9 @@ export class AddCompanyRedesComponent implements OnInit {
       this.empresa = new Empresa(
         this.newEmp['Nombre'],
         this.newEmp['Sector'],
-        this.newEmp['Empresa_det_id'],
-        this.newEmp['Distrito'],
-        this.newEmp['Poligono'],
+        this.newEmp['Empresa_det_id']
       );
 
-      this.empresa.setPersonaContacto(this.newEmp['Persona_contacto']);
-      this.empresa.setEmail(this.newEmp['Email']);
-      this.empresa.setTelefono(this.newEmp['Telefono']);
-      this.empresa.setOtherTelefono(this.newEmp['OtherTelefono']);
-      this.empresa.setDireccion(this.newEmp['Direccion']);
-      this.empresa.setLocalidad(this.newEmp['Localidad']);
-      this.empresa.setProvincia(this.newEmp['Provincia']);
-      this.empresa.setCod_postal(this.newEmp['Cod_postal']);
-      this.empresa.setFecha_alta(this.newEmp['fecha_alta']);
       this.empresa.setWeb(this.newEmp['Web']);
       this.empresa.setFacebook(this.newEmp['Facebook']);
       this.empresa.setInstagram(this.newEmp['Instagram']);
@@ -86,7 +77,7 @@ export class AddCompanyRedesComponent implements OnInit {
         icon: 'info',
         confirmButtonText: 'Aceptar'
       });
-    } else {
+    } else if(!empty)  {
       this.empresa.setWeb(this.addRedesForm.get('web')!.value);
       let twi = this.addRedesForm.get('twitter')!.value;
       this.empresa.setTwitter(twi != '' ? 'https://twitter.com/' + this.addRedesForm.get('twitter')!.value : twi);
@@ -104,8 +95,8 @@ export class AddCompanyRedesComponent implements OnInit {
         this.empresa.getLinkedin()
       )
       localStorage.setItem("redes", JSON.stringify(this.redes));
-      console.log(this.redes);
-      console.log(this.empresa);
+      console.log()//("addRedes redes", this.redes);
+      console.log()//("addRedes empresa", this.empresa);
       Swal.fire({
         title: 'Cambios guardados',
         text: 'Se guardaron los cambios realizados',
@@ -113,34 +104,49 @@ export class AddCompanyRedesComponent implements OnInit {
         confirmButtonText: 'Aceptar'
       });
       this.router.navigateByUrl('dashboard/add-company');
+    } else {
+      this.router.navigateByUrl('dashboard/add-company');
     }
   }
-
 
   public backToAddCompany(): void {
     if (this.addRedesForm.valid) {
       this.addRedes(true);
+    } else {
+      Swal.fire({
+        title: 'Cambios',
+        text: 'Hay errores en el formulario',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
-    this.router.navigateByUrl('dashboard/add-company');
   }
 
-  public getFormValidationErrors(form: FormGroup): string {
+  public getFormValidationErrors(form: FormGroup): Result[] {
 
-    const result: { Campo: string; error: string; value: any }[] = [];
+    const result: Result[] = [];
     Object.keys(form.controls).forEach(key => {
-
       const controlErrors: any = form!.get(key)!.errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
+         
+          keyError == 'required' && (keyError = 'requerido');
+          keyError == 'pattern' && (keyError = 'no válido');
+          let value = form!.get(key)!.value;
           result.push({
             Campo: key,
-            'error': keyError,
-            value: form!.get(key)!.value
+            Error: keyError,
+            Valor: value == "" ? "Sin valor" : value
           });
         });
       }
     });
 
-    return JSON.stringify(result);
+    return result;
+  }
+
+  cleanForm() {
+    localStorage.removeItem("redes");
+    this.fillForm();
   }
 }

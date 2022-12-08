@@ -1,9 +1,11 @@
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { User } from 'src/app/class/users';
 import { FileUploadService } from 'src/app/services/file-upload.service';
-
+import { UsersService } from 'src/app/services/users.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-add-user',
@@ -19,9 +21,12 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   img: HTMLElement | null;
 
   phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm);
+  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private uploadService: FileUploadService) {
+  constructor(private fb: FormBuilder, private http: HttpClient,
+              private uploadService: FileUploadService,
+              private userSevice: UsersService,
+              private router: Router) {
     this.fillForm();
   }
 
@@ -66,24 +71,53 @@ export class AddUserComponent implements OnInit, AfterViewInit {
       this.uploadService.uploadFile(this.fileUp, this.fileName)
       .subscribe({
         next: (data: any) =>  {
-           console.log("Data: ", data)
+           console.log()//("Data: ", data)
             if(data.type === 4) {
-              console.log(data.body.data);
+              console.log()//(data.body.data);
               this.user.setUser_img(this.fileName);
+              this.saveUser(this.user);
             }
           },
           error: (err: any) => {
-            console.log("Error: ", err);
+            console.log()//("Error: ", err);
 
             if (err.error && err.error.message) {
-              console.log("Error: ", err.error.message);
+              console.log()//("Error: ", err.error.message);
             } else {
-              console.log('Could not upload the file!');
+              console.log()//('Could not upload the file!');
             }
           }
       });
+    } else {
+      this.saveUser(this.user);
     }
+  }
 
+  public saveUser(user: User): void {
+    this.userSevice.addUser(user).subscribe({
+      next: (data: number) => {
+        if (data === 1) {
+          Swal.fire({
+            title: 'Añadir usuario',
+            text: `El usuario ${ user.getUser_name() } se añadio exitosamente`,
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+          this.router.navigate(['dashboard/list-users']);
+        } else {
+          throw new Error(`Se produjo un error al añadir al usuario ${ user.getUser_name() } `);
+        }
+      }, error: (error: any) => {
+        console.log()//(`Se produjo un error al añadir al usuario: ${ error } `);
+        Swal.fire({
+          title: 'Añadir usuario',
+          text: `Se produjo un error al añadir al usuario ${ user.getUser_name() } `,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      },
+      complete: () => console.log()//('Se completo la inserción del usuario')
+    });
   }
 
   public cleanForm(): void {
@@ -100,7 +134,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
 
     reader.readAsDataURL(elem.target.files[0]);
 
-    console.log(elem)
+    console.log()//(elem)
   }
 
   isDisabled(): boolean {

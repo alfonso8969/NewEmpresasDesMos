@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/f
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2'
 import { User } from 'src/app/class/users';
+import { keyframes } from '@angular/animations';
+import { Result } from 'src/app/interfaces/result';
 
 @Component({
   selector: 'app-add-company',
@@ -25,7 +27,7 @@ export class AddCompanyComponent implements OnInit {
   poligonos: Fields[];
   codPostalReg: RegExp = new RegExp(/289+\d{2}/gm);
   phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm);
+  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9](\-){0,1})+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
 
   addCompanyForm: FormGroup;
   newEmp: any ;
@@ -36,6 +38,7 @@ export class AddCompanyComponent implements OnInit {
     this.user.setId_user(1);
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
+      console.log()//('localstorage empresa: ', JSON.parse(localStorage.getItem('empresa')!))
       this.newEmp = JSON.parse(emp);
       this.fillFormNewEmp(this.newEmp);
     } else {
@@ -51,10 +54,10 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log(error);
+        console.log()//(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.sectores)
+      complete: () => console.log()//("Complete sectores", this.sectores)
     });
 
     this.companiesService.getFields("distrito").subscribe({
@@ -66,10 +69,10 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log(error);
+        console.log()//(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.distritos)
+      complete: () => console.log()//("Complete distritos", this.distritos)
     });
 
     this.companiesService.getFields("poligono").subscribe({
@@ -81,19 +84,19 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log(error);
+        console.log()//(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.poligonos)
+      complete: () => console.log()//("Complete poligonos", this.poligonos)
     });
 
     this.companiesService.getLastEmpDetId().subscribe({
       next: (result: any) => this.lastEmpDetId = result,
       error: (error: any) => {
-        console.log(error);
+        console.log()//(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.lastEmpDetId)
+      complete: () => console.log()//("Complete lastEmpDetId", this.lastEmpDetId)
     })
   }
 
@@ -138,13 +141,13 @@ export class AddCompanyComponent implements OnInit {
     let local = this.addCompanyForm.get("localidad")?.value;
     let prov = this.addCompanyForm.get("provincia")?.value;
     this.empresa = new Empresa(
-      this.addCompanyForm.get("nombre")?.value,
+      this.addCompanyForm.get("nombre")?.value.toUpperCase(),
       this.addCompanyForm.get("sector")?.value,
       this.lastEmpDetId,
       this.addCompanyForm.get("distrito")?.value,
       this.addCompanyForm.get("poligono")?.value
     );
-    
+
     this.empresa.setUser_id_alta(this.user.getId_user());
     this.empresa.setPersonaContacto(this.addCompanyForm.get('contactperson')?.value);
     this.empresa.setEmail(this.addCompanyForm.get("email")?.value);
@@ -164,14 +167,14 @@ export class AddCompanyComponent implements OnInit {
       this.empresa.setLinkedin(this.newRedes['Linkedin']);
       this.empresa.setGoogle_plus(this.newRedes['Google_plus']);
     }
-    console.log(this.empresa);
+    console.log()//("addCompany", this.empresa);
     if (!redes) {
       this.saveEmpresa(this.empresa);
     }
   }
 
   public saveEmpresa(empresa: Empresa): void {
-    
+
     this.companiesService.addCompany(empresa).subscribe({
       next: (data: number) => {
         if (data === 1) {
@@ -187,8 +190,8 @@ export class AddCompanyComponent implements OnInit {
         } else {
           throw new Error(`Se produjo un error al añadir la empresa ${ empresa.getNombre() } `);
         }
-      }, error: (error: any) => { 
-        console.log(`Se produjo un error al añadir la empresa: ${ error } `);
+      }, error: (error: any) => {
+        console.log()//(`Se produjo un error al añadir la empresa: ${ error } `);
         Swal.fire({
           title: 'Añadir empresa',
           text: `Se produjo un error al añadir la empresa ${ empresa.getNombre() } `,
@@ -196,8 +199,8 @@ export class AddCompanyComponent implements OnInit {
           confirmButtonText: 'Aceptar'
         });
       },
-      complete: () => console.log('Se completo la inserción de empresa')
-    });    
+      complete: () => console.log()//('Se completo la inserción de la empresa')
+    });
   }
 
   public setRedes(): void {
@@ -210,24 +213,34 @@ export class AddCompanyComponent implements OnInit {
     return this.addCompanyForm.get('sector')?.value == 0 || this.addCompanyForm.get('distrito')?.value == 0 || this.addCompanyForm.get('poligono')?.value == 0
   }
 
-  public getFormValidationErrors(form: FormGroup): string {
+  public getFormValidationErrors(form: FormGroup): Result[] {
 
-    const result: { Campo: string; error: string; value: any }[] = [];
+    const result: Result[] = [];
     Object.keys(form.controls).forEach(key => {
-
+      if (form!.get(key)!.value === 0) {
+        result.push({
+          Campo: key,
+          Error: 'requerido',
+          Valor: form!.get(key)!.value
+        });
+      }
       const controlErrors: any = form!.get(key)!.errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
+         
+          keyError == 'required' && (keyError = 'requerido');
+          keyError == 'pattern' && (keyError = 'no válido');
+          let value = form!.get(key)!.value;
           result.push({
-             Campo: key,
-            'error': keyError,
-            value: form!.get(key)!.value
+            Campo: key,
+            Error: keyError,
+            Valor: value == "" ? "Sin valor" : value
           });
         });
       }
     });
 
-    return JSON.stringify(result);
+    return result;
   }
 
   cleanForm() {

@@ -54,7 +54,7 @@ export class ViewUserComponent implements OnInit {
 
     reader.readAsDataURL(elem.target.files[0]);
 
-    console.log(elem)
+    console.log()//(elem)
   }
 
   public getFormValidationErrors(form: FormGroup): string {

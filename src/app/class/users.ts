@@ -3,6 +3,7 @@ import { Rol } from "./rol";
 export class User extends Rol {
     public id_user: number;
     public user_img: string;
+    public newuser_img?: string;
     public user_password: string;
     public user_name: string;
     public user_lastName: string;
@@ -31,6 +32,14 @@ export class User extends Rol {
 
     public setUser_img(user_img: string): void {
         this.user_img = user_img;
+    }
+
+    public getNewuser_img(): string | undefined {
+        return this.newuser_img;
+    }
+
+    public setNewuser_img?(newuser_img: string): void {
+        this.newuser_img = newuser_img;
     }
 
     public getUser_password(): string {

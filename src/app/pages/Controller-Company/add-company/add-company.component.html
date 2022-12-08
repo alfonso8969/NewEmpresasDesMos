@@ -209,9 +209,29 @@
                     <span [matTooltip]="addCompanyForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija siguiente para añadir datos de red y web'
                   ">Añadir redes </span>
                     <i class="fas fa-long-arrow-alt-right p-1"></i> </button>
-                </div>
-                <!-- <p>{{ getFormValidationErrors(addCompanyForm) }}</p> -->
+                  </div>
+                  <!-- <p class="d-inline text-danger mx-5" *ngIf="addCompanyForm.touched && (addCompanyForm.invalid || isDisabled())">{{ getFormValidationErrors(addCompanyForm) | json }}</p> -->
+
               </form>
+              <div *ngIf="addCompanyForm.touched && (addCompanyForm.invalid || isDisabled())" class="row">
+                <div class="col-offset-2 col-md-6">
+                  <table  class="table table-striped text-danger">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Campo</th>
+                        <th>Error</th>
+                        <th>Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let field of getFormValidationErrors(addCompanyForm)">
+                        <td>{{ field.Campo | titlecase }}</td>
+                        <td>{{ field.Error }}</td>
+                        <td>{{ field.Valor }}</td>
+                      </tr>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>

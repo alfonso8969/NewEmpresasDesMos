@@ -71,9 +71,9 @@ export class CompaniesService {
   constructor(private http: HttpClient) {
 
     if (isDevMode()) {
-      console.log('Development!:', this.url);
+      console.log()//('Development!:', this.url);
     } else {
-      console.log('Production!: ', this.url);
+      console.log()//('Production!: ', this.url);
     }
    }
 
@@ -100,6 +100,10 @@ export class CompaniesService {
   addCompany(emp: Empresa): Observable<number> {
     return this.http.post<number>(`${ this.url }/addCompany.php`, { empresa: emp });
   }
+
+  public updateCompany(emp: Empresa): Observable<number> {
+    return this.http.post<number>(`${ this.url }/updateCompany.php`, { empresa: emp });
+ }
 
   public getApi(): any {
     return this.http.get('./assets/secret/api.txt', { responseType: 'text' });

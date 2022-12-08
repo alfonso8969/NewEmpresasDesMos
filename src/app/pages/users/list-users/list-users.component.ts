@@ -5,6 +5,7 @@ import { User } from 'src/app/class/users';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { UsersService } from 'src/app/services/users.service';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-list-users',
@@ -25,7 +26,9 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   users: User[];
 
   viewSpinner: boolean = true;
-  constructor(private fb: FormBuilder, private usersService: UsersService, private uploadService: FileUploadService) {
+  constructor(private fb: FormBuilder,
+              private usersService: UsersService,
+              private uploadService: FileUploadService) {
     this.usersService.getUsers().subscribe({
       next: (users: any) => {
         if (users != null) {
@@ -36,11 +39,11 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
         this.viewSpinner = false;
       },
       error: (error: any) => {
-        console.log(error);
+        console.log()//(error);
         this.viewSpinner = false;
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.users)
+      complete: () => console.log()//("Complete", this.users)
     });
 
 
@@ -79,7 +82,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   public getUser(user: User): void {
     this.user = user;
     this.fillUserForm(user);
-    console.log(user)
+    console.log()//(user)
   }
 
   public editUser(): void {
@@ -97,26 +100,53 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
         this.uploadService.uploadFile(this.fileUp, this.fileName)
         .subscribe({
           next: (data: any) =>  {
-             console.log("Data: ", data)
+             console.log()//("Data: ", data)
               if(data.type === 4) {
-                console.log(data.body.data);
-                this.user.user_img = this.fileName;
+                console.log()//(data.body.data);
+                this.user.newuser_img = this.fileName;
+                this.saveUser(this.user);
               }
             },
             error: (err: any) => {
-              console.log("Error: ", err);
+              console.log()//("Error: ", err);
 
               if (err.error && err.error.message) {
-                console.log("Error: ", err.error.message);
+                console.log()//("Error: ", err.error.message);
               } else {
-                console.log('Could not upload the file!');
+                console.log()//('Could not upload the file!');
               }
             }
         });
-
       }
-
+    } else {
+      this.saveUser(this.user);
     }
+  }
+
+  public saveUser(user: User): void {
+    this.usersService.updateUser(user).subscribe({
+      next: (data: number) => {
+        if (data === 1) {
+          Swal.fire({
+            title: 'Actualizar usuario',
+            text: `El usuario ${ user.user_name } se actualizó exitosamente`,
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+        } else {
+          throw new Error(`Se produjo un error al actualizar al usuario ${ user.user_name } `);
+        }
+      }, error: (error: any) => {
+        console.log()//(`Se produjo un error al actualizar al usuario: ${ error } `);
+        Swal.fire({
+          title: 'Actualizar usuario',
+          text: `Se produjo un error al actualizar al usuario ${ user.user_name } `,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      },
+      complete: () => console.log()//('Se completo la actualización del usuario')
+    });
   }
 
   public uploadFile(elem: any): void {
@@ -130,7 +160,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
 
     reader.readAsDataURL(elem.target.files[0]);
 
-    console.log(elem)
+    console.log()//(elem)
   }
 
   public getFormValidationErrors(form: FormGroup): string {

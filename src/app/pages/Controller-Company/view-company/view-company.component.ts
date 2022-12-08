@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { Fields } from 'src/app/interfaces/Fileds';
+import { Result } from 'src/app/interfaces/result';
 import { CompaniesService } from 'src/app/services/companies.service';
 import Swal from 'sweetalert2'
 
@@ -14,17 +15,17 @@ import Swal from 'sweetalert2'
 export class ViewCompanyComponent implements OnInit {
 
   empresa: Empresa;
+  empresaTmp: Empresa;
   Empresa_det_id: number;
   city: string = "Móstoles";
   region: string = "Madrid";
-  lastEmpDetId: number;
 
   sectores: Fields[];
   distritos: Fields[];
   poligonos: Fields[];
   codPostalReg: RegExp = new RegExp(/289+\d{2}/);
   phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
+  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9](\-){0,1})+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
 
   editCompanyForm: FormGroup;
   newEmp: any;
@@ -45,16 +46,18 @@ export class ViewCompanyComponent implements OnInit {
           next: (result: any) => {
             if (result != null) {
               this.empresa = result;
+              this.empresaTmp = JSON.parse(JSON.stringify(this.empresa));
+              console.log()//("Deep copy", this.empresaTmp)
               this.fillEditFormEmp(this.empresa);
             } else {
               alert("Hubo un error")
             }
           },
           error: (error: any) => {
-            console.log(error);
+            console.log()//(error);
             alert(error.message)
           },
-          complete: () => console.log("Complete", this.empresa)
+          complete: () => console.log()//("Complete", this.empresa)
         });
       });
 
@@ -67,10 +70,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log(error);
+        console.log()//(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.sectores)
+      complete: () => console.log()//("Complete", this.sectores)
     });
 
     this.companiesService.getFields("distrito").subscribe({
@@ -82,10 +85,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log(error);
+        console.log()//(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.distritos)
+      complete: () => console.log()//("Complete", this.distritos)
     });
 
     this.companiesService.getFields("poligono").subscribe({
@@ -97,10 +100,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log(error);
+        console.log()//(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.poligonos)
+      complete: () => console.log()//("Complete", this.poligonos)
     });
 
   }
@@ -135,6 +138,7 @@ export class ViewCompanyComponent implements OnInit {
     let twi = this.empresa['Twitter'];
     let link = this.empresa['Linkedin'];
     let tik = this.empresa['Google_plus'];
+    let otherTlefono = emp['OtherTelefono'];
 
     this.editCompanyForm = this.fb.group({
       nombre: [emp['Nombre'], Validators.required],
@@ -143,7 +147,7 @@ export class ViewCompanyComponent implements OnInit {
       poligono: [emp['Poligono'], Validators.required],
       email: [emp['Email'], [Validators.required, Validators.pattern(this.emailReg)]],
       telefono: [emp['Telefono'], [Validators.required, Validators.pattern(this.phoneReg)]],
-      otherTelefono: [emp['OtherTelefono'], [Validators.pattern(this.phoneReg)]],
+      otherTelefono: [otherTlefono != 'sin datos' ? otherTlefono : '', [Validators.pattern(this.phoneReg)]],
       contactperson: [emp['Persona_contacto']],
       direccion: [emp['Direccion'], Validators.required],
       localidad: [emp['Localidad']],
@@ -151,9 +155,9 @@ export class ViewCompanyComponent implements OnInit {
       cod_postal: [emp['Cod_postal'], [Validators.required, Validators.pattern(this.codPostalReg)]],
       web: [web?.toLowerCase() != 'sin datos' ? web : '', Validators.pattern(/^((http:\/\/)|(https:\/\/))?([a-zA-Z0-9]+[.])+[a-zA-Z]{2,4}(:\d+)?(\/[~_.\-a-zA-Z0-9=&%@:]+)*\??[~_.\-a-zA-Z0-9=&%@:]*$/)],
       facebook: [face.toLowerCase() != 'sin datos' ? face : '', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/)],
-      instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/g)],
+      instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/)],
       twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)],
-      linkedin: [link.toLowerCase() != 'sin datos' ? link : '', Validators.pattern(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/g)],
+      linkedin: [link.toLowerCase() != 'sin datos' ? link : '', Validators.pattern(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/)],
       tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)]
     });
     this.setFormControlsReadOnly(this.editCompanyForm);
@@ -169,15 +173,19 @@ export class ViewCompanyComponent implements OnInit {
     this.empresa = new Empresa(
       this.editCompanyForm.get("nombre")?.value,
       this.editCompanyForm.get("sector")?.value,
-      this.lastEmpDetId,
+      this.Empresa_det_id,
       this.editCompanyForm.get("distrito")?.value,
       this.editCompanyForm.get("poligono")?.value
     );
 
+    delete this.empresa['fecha_alta'];
+    delete this.empresa['Link'];
+
     this.empresa.setPersonaContacto(this.editCompanyForm.get('contactperson')?.value);
     this.empresa.setEmail(this.editCompanyForm.get("email")?.value);
     this.empresa.setTelefono(this.editCompanyForm.get("telefono")?.value);
-    this.empresa.setOtherTelefono(this.editCompanyForm.get("otherTelefono")?.value);
+    let otherTelefono = this.editCompanyForm.get("otherTelefono")?.value;
+    this.empresa.setOtherTelefono(otherTelefono != '' ? otherTelefono : 'sin datos');
     this.empresa.setDireccion(this.editCompanyForm.get("direccion")?.value);
     this.empresa.setLocalidad(local == "" ? this.city : local);
     this.empresa.setProvincia(prov == "" ? this.region : prov);
@@ -190,9 +198,70 @@ export class ViewCompanyComponent implements OnInit {
     this.empresa.setLinkedin(this.editCompanyForm.get('linkedin')!.value);
     let tik = this.editCompanyForm.get('tiktok')!.value;
     this.empresa.setGoogle_plus(tik != '' ? 'https://www.tiktok.com/' + this.editCompanyForm.get('tiktok')!.value : tik);
+    console.log()//("Después de del: ", this.empresa);
+    this.saveEmpresa(this.empresa);
   }
 
-  isDisabled(): boolean {
+  public saveEmpresa(empresa: Empresa): void {
+    const shallowComparison = this.compareResults();
+    if (shallowComparison) {
+      Swal.fire({
+        title: 'Actualizar empresa',
+        text: `La empresa ${ this.empresaTmp['Nombre'] } no ha sido modificada`,
+        icon: 'info',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
+    }
+
+    this.companiesService.updateCompany(empresa).subscribe({
+      next: (data: number) => {
+        if (data === 1) {
+          Swal.fire({
+            title: 'Actualizar empresa',
+            text: `La empresa ${ empresa.getNombre() } se actualizó exitosamente`,
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+          this.router.navigate(['dashboard/list-companies']);
+        } else {
+          throw new Error(`Se produjo un error al actualizar la empresa ${ this.empresaTmp['Nombre'] } `);
+        }
+      }, error: (error: any) => {
+        console.log()//(`Se produjo un error al actualizar la empresa: ${ error } `);
+        Swal.fire({
+          title: 'Actualizar empresa',
+          text: `Se produjo un error al actualizar la empresa ${ this.empresaTmp['Nombre']  } `,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      },
+      complete: () => console.log()//('Se completo la actualización de la empresa')
+    });
+  }
+
+  public compareResults(): boolean {
+    return this.empresa['Nombre'] == this.empresaTmp['Nombre'] &&
+    this.empresa['Sector'] == this.empresaTmp['Sector'] &&
+    this.empresa['Distrito'] == this.empresaTmp['Distrito'] &&
+    this.empresa['Poligono'] == this.empresaTmp['Poligono'] &&
+    this.empresa['Telefono'] == this.empresaTmp['Telefono'] &&
+    this.empresa['OtherTelefono'] == this.empresaTmp['OtherTelefono'] &&
+    this.empresa['Email'] == this.empresaTmp['Email'] &&
+    this.empresa['Persona_contacto'] == this.empresaTmp['Persona_contacto'] &&
+    this.empresa['Direccion'] == this.empresaTmp['Direccion'] &&
+    this.empresa['Localidad'] == this.empresaTmp['Localidad'] &&
+    this.empresa['Provincia'] == this.empresaTmp['Provincia'] &&
+    this.empresa['Cod_postal'] == this.empresaTmp['Cod_postal'] &&
+    this.empresa['Web'] == this.empresaTmp['Web'] &&
+    this.empresa['Facebook'] == this.empresaTmp['Facebook'] &&
+    this.empresa['Instagram'] == this.empresaTmp['Instagram'] &&
+    this.empresa['Twitter'] == this.empresaTmp['Twitter'] &&
+    this.empresa['Linkedin'] == this.empresaTmp['Linkedin'] &&
+    this.empresa['Google_plus'] == this.empresaTmp['Google_plus'];
+  }
+
+  public isDisabled(): boolean {
     return this.editCompanyForm.get('sector')?.value == 0 || this.editCompanyForm.get('distrito')?.value == 0 || this.editCompanyForm.get('poligono')?.value == 0
   }
 
@@ -233,23 +302,33 @@ export class ViewCompanyComponent implements OnInit {
     });
   }
 
-  public getFormValidationErrors(form: FormGroup): string {
+  public getFormValidationErrors(form: FormGroup): Result[] {
 
-    const result: { Campo: string; error: string; value: any }[] = [];
+    const result: Result[] = [];
     Object.keys(form.controls).forEach(key => {
-
+      if (form!.get(key)!.value === 0) {
+        result.push({
+          Campo: key,
+          Error: 'requerido',
+          Valor: form!.get(key)!.value
+        });
+      }
       const controlErrors: any = form!.get(key)!.errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
+         
+          keyError == 'required' && (keyError = 'requerido');
+          keyError == 'pattern' && (keyError = 'no válido');
+          let value = form!.get(key)!.value;
           result.push({
             Campo: key,
-            'error': keyError,
-            value: form!.get(key)!.value
+            Error: keyError,
+            Valor: value == "" ? "Sin valor" : value
           });
         });
       }
     });
 
-    return JSON.stringify(result);
+    return result;
   }
 }
