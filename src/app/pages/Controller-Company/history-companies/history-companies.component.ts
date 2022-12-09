@@ -26,11 +26,11 @@ export class HistoryCompaniesComponent implements OnInit {
         this.viewSpinner = false;
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         this.viewSpinner = false;
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.empresas)
+      complete: () => console.log("Complete", this.empresas)
     });
 
     this.companiesService.getComapniesHistoryHab().subscribe({
@@ -43,11 +43,11 @@ export class HistoryCompaniesComponent implements OnInit {
         this.viewSpinner = false;
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         this.viewSpinner = false;
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.empresasHab)
+      complete: () => console.log("Complete", this.empresasHab)
     });
    }
 
@@ -55,11 +55,11 @@ export class HistoryCompaniesComponent implements OnInit {
   }
 
   public getEpresa(emp: Empresa): void {
-    console.log()//(emp);
+    console.log(emp);
   }
   
   public getEpresaHab(emp: Empresa): void {
-    console.log()//(emp);
+    console.log(emp);
   }
 
 }

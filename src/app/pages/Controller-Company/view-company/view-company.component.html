@@ -7,9 +7,14 @@
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
     <div class="row page-titles">
-      <div class="col-md-5 align-self-center">
-        <h3 *ngIf="!isEdited" class="text-themecolor">Ver empresa {{ empresa != undefined && empresa.Nombre }}</h3>
-        <h3 *ngIf="isEdited" class="text-themecolor">Editar empresa {{ empresa != undefined && empresa.Nombre }}</h3>
+      <div class="col-md-12 align-self-center">
+        <h3 *ngIf="!isEdited" class="text-themecolor d-inline">Ver empresa {{ empresa != undefined && empresa.Nombre }}</h3>
+        <h3 *ngIf="isEdited" class="text-themecolor d-inline">Editar empresa {{ empresa != undefined && empresa.Nombre }}</h3>
+        <button type="button" class="btn-info d-inline float-right align-self-center" [routerLink]="['/dashboard/list-companies']">
+          <i class="fa fa-long-arrow-alt-left p-1"></i>
+          <span matTooltip="Elija editar para cambiar los datos de la empresa"> Volver al listado
+          </span>
+        </button>
       </div>
       <div class="">
 
@@ -77,7 +82,7 @@
                       <div class="input-container">
                         <input formControlName="telefono" type="number" name="telefono" id="telefono"
                           class="form-control" placeholder="9999999" maxlength="9">
-                        <a *ngIf="empresa['Habilitada'] == 1 && editCompanyForm.get('telefono')?.value != ''"
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('telefono')?.value != ''"
                           href="tel: +34{{ editCompanyForm.get('telefono')?.value }}" matTooltip="Click para llamar">
                           <i class="fa fa-phone bg-success p-2 text-white inp" aria-hidden="true"></i>
                         </a>
@@ -98,8 +103,9 @@
                       <div class="input-container">
                         <input formControlName="otherTelefono" type="number" name="otherTelefono" id="otherTelefono"
                           class="form-control" placeholder="9999999" maxlength="9">
-                          <a *ngIf="empresa['Habilitada'] == 1 && editCompanyForm.get('otherTelefono')?.value != ''"
-                          href="tel: +34{{ editCompanyForm.get('otherTelefono')?.value }}" matTooltip="Click para llamar">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('otherTelefono')?.value != ''"
+                          href="tel: +34{{ editCompanyForm.get('otherTelefono')?.value }}"
+                          matTooltip="Click para llamar">
                           <i class="fa fa-phone bg-success p-2 text-white inp" aria-hidden="true"></i>
                         </a>
                       </div>
@@ -115,7 +121,7 @@
                       <div class="input-container">
                         <input formControlName="email" type="email" class="form-control" placeholder="Email" id="email"
                           name="email">
-                          <a *ngIf="empresa['Habilitada'] == 1 && editCompanyForm.get('email')?.value != ''"
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('email')?.value != ''"
                           href="mailto:{{ editCompanyForm.get('email')?.value }}" matTooltip="Click para email">
                           <i class="fa fa-mail-bulk bg-primary p-2 text-white inp" aria-hidden="true"></i>
                         </a>
@@ -145,8 +151,10 @@
                       <div class="input-container">
                         <input formControlName="direccion" type="text" class="form-control" name="direccion"
                           id="direccion" placeholder="Dirección">
-                          <a *ngIf="empresa['Habilitada'] == 1 && editCompanyForm.get('direccion')?.value != ''" target="_blank" rel="noopener noreferrer"
-                          href="https://www.google.com/maps/search/?api=1&query={{ editCompanyForm.get('nombre')?.value }}+{{ editCompanyForm.get('direccion')?.value }}+{{ editCompanyForm.get('cod_postal')?.value }}" matTooltip="Click para ver en mapa">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('direccion')?.value != ''"
+                          target="_blank" rel="noopener noreferrer"
+                          href="https://www.google.com/maps/search/?api=1&query={{ editCompanyForm.get('nombre')?.value | trim }}+{{ editCompanyForm.get('direccion')?.value }}+{{ editCompanyForm.get('cod_postal')?.value }}"
+                          matTooltip="Click para ver en mapa">
                           <i class="fa fa-map-marked-alt bg-danger p-2 text-white inp" aria-hidden="true"></i>
                         </a>
                       </div>
@@ -237,8 +245,15 @@
                       <label for="name" class="control-label">
                         <i class="fa fa-globe p-2 bg-primary text-white" aria-hidden="true"></i>
                         Página Web</label>
-                      <input formControlName="web" id="web" name="web" type="text" class="form-control"
-                        placeholder="Url del sitio web">
+                      <div class="input-container">
+                        <input formControlName="web" id="web" name="web" type="text" class="form-control"
+                          placeholder="Url del sitio web">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('web')?.value != ''"
+                          target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('web')?.value }}"
+                          matTooltip="Click para ir a url">
+                          <i class="fa fa-link bg-danger p-2 text-white inp" aria-hidden="true"></i>
+                        </a>
+                      </div>
                       <span class="err text-danger"
                         *ngIf="isEdited && editCompanyForm.get('web')!.errors != null && editCompanyForm.get('web')!.errors!['pattern'] && editCompanyForm.get('web')?.touched">
                         La <strong>URL</strong> no es válida
@@ -251,8 +266,15 @@
                       <label for="facebook" class="control-label">
                         <i class="fa fa-facebook p-2 bg-info text-white" aria-hidden="true"></i>
                         Facebook</label>
-                      <input formControlName="facebook" id="facebook" name="facebook" type="text" class="form-control"
-                        placeholder="https://www.facebook.com/usuario">
+                      <div class="input-container">
+                        <input formControlName="facebook" id="facebook" name="facebook" type="text" class="form-control"
+                          placeholder="https://www.facebook.com/usuario">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('facebook')?.value != ''"
+                          target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('facebook')?.value }}"
+                          matTooltip="Click para ir al facebook">
+                          <i class="fa fa-link bg-info p-2 text-white inp" aria-hidden="true"></i>
+                        </a>
+                      </div>
                       <span class="err text-danger"
                         *ngIf="isEdited && editCompanyForm.get('facebook')!.errors != null && editCompanyForm.get('facebook')!.errors!['pattern'] && editCompanyForm.get('facebook')?.touched">
                         La <strong>URL</strong> no es válida
@@ -268,8 +290,15 @@
                       <label for="instagram" class="control-label">
                         <i class="fa fa-instagram p-2 bg-warning text-white" aria-hidden="true"></i>
                         Instagram</label>
-                      <input formControlName="instagram" id="instagram" name="instagram" type="link"
-                        class="form-control" placeholder="https://www.instagram.com/usuario">
+                      <div class="input-container">
+                        <input formControlName="instagram" id="instagram" name="instagram" type="link"
+                          class="form-control" placeholder="https://www.instagram.com/usuario">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('instagram')?.value != ''"
+                          target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('instagram')?.value }}"
+                          matTooltip="Click para ir al instagram">
+                          <i class="fa fa-link bg-warning p-2 text-white inp" aria-hidden="true"></i>
+                        </a>
+                      </div>
                       <span class="err text-danger"
                         *ngIf="isEdited && editCompanyForm.get('instagram')!.errors != null && editCompanyForm.get('instagram')!.errors!['pattern'] && editCompanyForm.get('instagram')?.touched">
                         La <strong>URL</strong> no es válida
@@ -282,8 +311,15 @@
                       <label for="twitter" class="control-label">
                         <i class="fa fa-twitter p-2 bg-info text-white" aria-hidden="true"></i>
                         Twitter</label>
-                      <input formControlName="twitter" id="twitter" name="twitter" type="link" class="form-control"
-                        placeholder="@usuario">
+                      <div class="input-container">
+                        <input formControlName="twitter" id="twitter" name="twitter" type="link" class="form-control"
+                          placeholder="@usuario">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('twitter')?.value != ''"
+                          target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('twitter')?.value }}"
+                          matTooltip="Click para ir al twitter">
+                          <i class="fa fa-link bg-primary p-2 text-white inp" aria-hidden="true"></i>
+                        </a>
+                      </div>
                       <span class="err text-danger"
                         *ngIf="isEdited && editCompanyForm.get('twitter')!.errors != null && editCompanyForm.get('twitter')!.errors!['pattern'] && editCompanyForm.get('twitter')?.touched">
                         El <strong>usuario</strong> no es válido
@@ -299,8 +335,15 @@
                       <label for="linkedin" class="control-label">
                         <i class="fa fa-linkedin p-2 bg-primary text-white" aria-hidden="true"></i>
                         Linkedin</label>
-                      <input formControlName="linkedin" id="linkedin" name="linkedin" type="link" class="form-control"
-                        placeholder="https://www.linkedin.com/in/usuario">
+                        <div class="input-container">
+                          <input formControlName="linkedin" id="linkedin" name="linkedin" type="link" class="form-control"
+                            placeholder="https://www.linkedin.com/in/usuario">
+                            <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('linkedin')?.value != ''"
+                            target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('linkedin')?.value }}"
+                            matTooltip="Click para ir al linkedin">
+                            <i class="fa fa-link bg-primary p-2 text-white inp" aria-hidden="true"></i>
+                          </a> 
+                        </div>
                       <span class="err text-danger"
                         *ngIf="isEdited && editCompanyForm.get('linkedin')!.errors != null && editCompanyForm.get('linkedin')!.errors!['pattern'] && editCompanyForm.get('linkedin')?.touched">
                         La <strong>URL</strong> no es válida
@@ -314,8 +357,15 @@
                         <img width="32" src="./assets/images/icon/tiktok-icon-black-1-logo-svgrepo-com.svg"
                           aria-hidden="true" />
                         Tiktok</label>
-                      <input formControlName="tiktok" id="tiktok" name="tiktok" type="link" class="form-control"
-                        placeholder="@usuario">
+                        <div class="input-container">
+                          <input formControlName="tiktok" id="tiktok" name="tiktok" type="link" class="form-control"
+                            placeholder="@usuario">
+                            <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('tiktok')?.value != ''"
+                            target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('tiktok')?.value }}"
+                            matTooltip="Click para ir al tiktok">
+                            <i class="fa fa-link bg-dark p-2 text-white inp" aria-hidden="true"></i>
+                          </a>
+                        </div>
                       <span class="err text-danger"
                         *ngIf="isEdited && editCompanyForm.get('tiktok')!.errors != null && editCompanyForm.get('tiktok')!.errors!['pattern'] && editCompanyForm.get('tiktok')?.touched">
                         El <strong>usuario</strong> no es válido
@@ -333,12 +383,12 @@
                     </span>
                     <i class="fa fa-save p-1"></i>
                   </button>
-                  
+
                 </div>
               </form>
-             <div *ngIf="isEdited && editCompanyForm.touched && (editCompanyForm.invalid || isDisabled())" class="row">
+              <div *ngIf="isEdited && editCompanyForm.touched && (editCompanyForm.invalid || isDisabled())" class="row">
                 <div class="col-offset-2 col-md-6">
-                  <table  class="table table-striped text-danger">
+                  <table class="table table-striped text-danger">
                     <thead class="thead-dark">
                       <tr>
                         <th>Campo</th>

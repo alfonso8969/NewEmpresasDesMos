@@ -95,8 +95,8 @@ export class AddCompanyRedesComponent implements OnInit {
         this.empresa.getLinkedin()
       )
       localStorage.setItem("redes", JSON.stringify(this.redes));
-      console.log()//("addRedes redes", this.redes);
-      console.log()//("addRedes empresa", this.empresa);
+      console.log("addRedes redes", this.redes);
+      console.log("addRedes empresa", this.empresa);
       Swal.fire({
         title: 'Cambios guardados',
         text: 'Se guardaron los cambios realizados',

@@ -71,20 +71,20 @@ export class AddUserComponent implements OnInit, AfterViewInit {
       this.uploadService.uploadFile(this.fileUp, this.fileName)
       .subscribe({
         next: (data: any) =>  {
-           console.log()//("Data: ", data)
+           console.log("Data: ", data)
             if(data.type === 4) {
-              console.log()//(data.body.data);
+              console.log(data.body.data);
               this.user.setUser_img(this.fileName);
               this.saveUser(this.user);
             }
           },
           error: (err: any) => {
-            console.log()//("Error: ", err);
+            console.log("Error: ", err);
 
             if (err.error && err.error.message) {
-              console.log()//("Error: ", err.error.message);
+              console.log("Error: ", err.error.message);
             } else {
-              console.log()//('Could not upload the file!');
+              console.log('Could not upload the file!');
             }
           }
       });
@@ -108,7 +108,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
           throw new Error(`Se produjo un error al añadir al usuario ${ user.getUser_name() } `);
         }
       }, error: (error: any) => {
-        console.log()//(`Se produjo un error al añadir al usuario: ${ error } `);
+        console.log(`Se produjo un error al añadir al usuario: ${ error } `);
         Swal.fire({
           title: 'Añadir usuario',
           text: `Se produjo un error al añadir al usuario ${ user.getUser_name() } `,
@@ -116,7 +116,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
           confirmButtonText: 'Aceptar'
         });
       },
-      complete: () => console.log()//('Se completo la inserción del usuario')
+      complete: () => console.log('Se completo la inserción del usuario')
     });
   }
 
@@ -134,7 +134,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
 
     reader.readAsDataURL(elem.target.files[0]);
 
-    console.log()//(elem)
+    console.log(elem)
   }
 
   isDisabled(): boolean {

@@ -45,10 +45,10 @@ export class AdminFieldsComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.sectores)
+      complete: () => console.log("Complete", this.sectores)
     });
     
     this.companiesService.getFields("distrito").subscribe({
@@ -60,10 +60,10 @@ export class AdminFieldsComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.distritos)
+      complete: () => console.log("Complete", this.distritos)
     });
 
     this.companiesService.getFields("poligono").subscribe({
@@ -75,10 +75,10 @@ export class AdminFieldsComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.poligonos)
+      complete: () => console.log("Complete", this.poligonos)
     });
    }
 

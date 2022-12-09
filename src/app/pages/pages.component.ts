@@ -37,14 +37,14 @@ export class PagesComponent implements OnInit {
 
     this.companiesService.getApi()
       .subscribe((data: any) => {
-        this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=' + data, 'callback')
+        this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=' /*+ data*/, 'callback')
           .pipe(
             map(() => true),
             catchError(() => of(false))
           );
       });
 
-    console.log()//("ruta: ", this._router.url);
+    console.log("ruta: ", this._router.url);
 
     if (this._router.url === '/dashboard' || this._router.url === '/dashboard#no-back-button') {
       this.viewDashBoard = true;

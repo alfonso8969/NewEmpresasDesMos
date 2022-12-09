@@ -38,7 +38,7 @@ export class AddCompanyComponent implements OnInit {
     this.user.setId_user(1);
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
-      console.log()//('localstorage empresa: ', JSON.parse(localStorage.getItem('empresa')!))
+      console.log('localstorage empresa: ', JSON.parse(localStorage.getItem('empresa')!))
       this.newEmp = JSON.parse(emp);
       this.fillFormNewEmp(this.newEmp);
     } else {
@@ -54,10 +54,10 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete sectores", this.sectores)
+      complete: () => console.log("Complete sectores", this.sectores)
     });
 
     this.companiesService.getFields("distrito").subscribe({
@@ -69,10 +69,10 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete distritos", this.distritos)
+      complete: () => console.log("Complete distritos", this.distritos)
     });
 
     this.companiesService.getFields("poligono").subscribe({
@@ -84,19 +84,19 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete poligonos", this.poligonos)
+      complete: () => console.log("Complete poligonos", this.poligonos)
     });
 
     this.companiesService.getLastEmpDetId().subscribe({
       next: (result: any) => this.lastEmpDetId = result,
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete lastEmpDetId", this.lastEmpDetId)
+      complete: () => console.log("Complete lastEmpDetId", this.lastEmpDetId)
     })
   }
 
@@ -167,7 +167,7 @@ export class AddCompanyComponent implements OnInit {
       this.empresa.setLinkedin(this.newRedes['Linkedin']);
       this.empresa.setGoogle_plus(this.newRedes['Google_plus']);
     }
-    console.log()//("addCompany", this.empresa);
+    console.log("addCompany", this.empresa);
     if (!redes) {
       this.saveEmpresa(this.empresa);
     }
@@ -191,7 +191,7 @@ export class AddCompanyComponent implements OnInit {
           throw new Error(`Se produjo un error al añadir la empresa ${ empresa.getNombre() } `);
         }
       }, error: (error: any) => {
-        console.log()//(`Se produjo un error al añadir la empresa: ${ error } `);
+        console.log(`Se produjo un error al añadir la empresa: ${ error } `);
         Swal.fire({
           title: 'Añadir empresa',
           text: `Se produjo un error al añadir la empresa ${ empresa.getNombre() } `,
@@ -199,7 +199,7 @@ export class AddCompanyComponent implements OnInit {
           confirmButtonText: 'Aceptar'
         });
       },
-      complete: () => console.log()//('Se completo la inserción de la empresa')
+      complete: () => console.log('Se completo la inserción de la empresa')
     });
   }
 

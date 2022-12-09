@@ -47,17 +47,17 @@ export class ViewCompanyComponent implements OnInit {
             if (result != null) {
               this.empresa = result;
               this.empresaTmp = JSON.parse(JSON.stringify(this.empresa));
-              console.log()//("Deep copy", this.empresaTmp)
+              console.log("Deep copy", this.empresaTmp)
               this.fillEditFormEmp(this.empresa);
             } else {
               alert("Hubo un error")
             }
           },
           error: (error: any) => {
-            console.log()//(error);
+            console.log(error);
             alert(error.message)
           },
-          complete: () => console.log()//("Complete", this.empresa)
+          complete: () => console.log("Complete", this.empresa)
         });
       });
 
@@ -70,10 +70,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.sectores)
+      complete: () => console.log("Complete", this.sectores)
     });
 
     this.companiesService.getFields("distrito").subscribe({
@@ -85,10 +85,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.distritos)
+      complete: () => console.log("Complete", this.distritos)
     });
 
     this.companiesService.getFields("poligono").subscribe({
@@ -100,10 +100,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.poligonos)
+      complete: () => console.log("Complete", this.poligonos)
     });
 
   }
@@ -198,7 +198,7 @@ export class ViewCompanyComponent implements OnInit {
     this.empresa.setLinkedin(this.editCompanyForm.get('linkedin')!.value);
     let tik = this.editCompanyForm.get('tiktok')!.value;
     this.empresa.setGoogle_plus(tik != '' ? 'https://www.tiktok.com/' + this.editCompanyForm.get('tiktok')!.value : tik);
-    console.log()//("Después de del: ", this.empresa);
+    console.log("Después de del: ", this.empresa);
     this.saveEmpresa(this.empresa);
   }
 
@@ -228,7 +228,7 @@ export class ViewCompanyComponent implements OnInit {
           throw new Error(`Se produjo un error al actualizar la empresa ${ this.empresaTmp['Nombre'] } `);
         }
       }, error: (error: any) => {
-        console.log()//(`Se produjo un error al actualizar la empresa: ${ error } `);
+        console.log(`Se produjo un error al actualizar la empresa: ${ error } `);
         Swal.fire({
           title: 'Actualizar empresa',
           text: `Se produjo un error al actualizar la empresa ${ this.empresaTmp['Nombre']  } `,
@@ -236,7 +236,7 @@ export class ViewCompanyComponent implements OnInit {
           confirmButtonText: 'Aceptar'
         });
       },
-      complete: () => console.log()//('Se completo la actualización de la empresa')
+      complete: () => console.log('Se completo la actualización de la empresa')
     });
   }
 
@@ -275,13 +275,13 @@ export class ViewCompanyComponent implements OnInit {
     if (this.empresa['Habilitada'] == 0) {
       Swal.fire({
         title: 'Empresa deshabilitada',
-        text: 'No se pueden editar los datos de una empresa deshabilitada, vaya a historial de empresas y habilitela',
+        text: 'No se pueden editar los datos de una empresa deshabilitada, vaya a \"Historial empresas->Historial\" y habilitela',
         icon: 'info',
         confirmButtonText: 'Aceptar'
       });
     } else {
       this.isEdited = true;
-      this.setFormControlsReadOnly(this.editCompanyForm, false);
+      this.setFormControlsReadOnly(this.editCompanyForm, false); 
     }
   }
 

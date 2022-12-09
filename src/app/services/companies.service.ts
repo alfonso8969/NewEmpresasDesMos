@@ -71,9 +71,9 @@ export class CompaniesService {
   constructor(private http: HttpClient) {
 
     if (isDevMode()) {
-      console.log()//('Development!:', this.url);
+      console.log('Development!:', this.url);
     } else {
-      console.log()//('Production!: ', this.url);
+      console.log('Production!: ', this.url);
     }
    }
 

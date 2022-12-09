@@ -22,6 +22,8 @@ import { AdminUsersComponent } from './users/admin-users/admin-users.component';
 import { AddUserComponent } from './users/add-user/add-user.component';
 import { AddFieldsComponent } from './admin/add-fields/add-fields.component';
 import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
+import { TrimPipe } from '../pipes/trim.pipe';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.componen
     AdminUsersComponent,
     AddUserComponent,
     AddFieldsComponent,
-    AdminFieldsComponent
+    AdminFieldsComponent,
+    TrimPipe
   ],
   imports: [
     CommonModule,

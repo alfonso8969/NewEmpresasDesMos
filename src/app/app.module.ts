@@ -9,6 +9,7 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { CompaniesService } from './services/companies.service';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { FileUploadService } from './services/file-upload.service';
+
 @NgModule({
   declarations: [
     AppComponent

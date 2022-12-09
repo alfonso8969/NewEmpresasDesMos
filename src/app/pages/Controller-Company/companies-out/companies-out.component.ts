@@ -63,17 +63,17 @@ export class CompaniesOutComponent implements OnInit {
         this.viewSpinner = false;
       },
       error: (error: any) => {
-        console.log()//(error);
+        console.log(error);
         this.viewSpinner = false;
         this.div.className = "page-wrapper";
         alert(error.message)
       },
-      complete: () => console.log()//("Complete", this.listEmpresas)
+      complete: () => console.log("Complete", this.listEmpresas)
     });
   }
 
   view(item: Empresa) {
-    console.log()//(item.Empresa_det_id);
+    console.log(item.Empresa_det_id);
     this.route.navigate(['dashboard/view-company', item.Empresa_det_id]);
   }
 
