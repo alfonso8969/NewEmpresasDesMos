@@ -30,11 +30,15 @@
                     <div class="form-group">
                       <label for="nombre" class="control-label">* Nombre completo sector</label>
                       <input formControlName="nombreSector" id="nombreSector" name="nombreSector" type="text"
-                        class="form-control" placeholder="Nombre completo">
-                      <span class="err text-danger" nombreSector
-                        *ngIf="addFieldSectorForm.get('nombreSector')?.invalid && addFieldSectorForm.get('nombreSector')?.touched">
+                        class="form-control" placeholder="Nombre completo sector" maxlength="250" oninput="this.value = this.value.toUpperCase()">
+                      <span class="err text-danger"
+                        *ngIf="addFieldSectorForm.get('nombreSector')?.invalid && addFieldSectorForm.get('nombreSector')?.touched && !addFieldSectorForm.get('nombreSector')!.errors!['pattern']">
                         El <strong>nombre del sector </strong>es requerido
                       </span>
+                      <span class="err text-danger" email
+                      *ngIf="addFieldSectorForm.get('nombreSector')!.errors != null && addFieldSectorForm.get('nombreSector')!.errors!['pattern'] && addFieldSectorForm.get('nombreSector')?.touched">
+                      El <strong>sector</strong> no es válido
+                    </span>
                     </div>
                   </div>
                 </div>
@@ -50,17 +54,21 @@
           <div class="card-body">
             <div class="form-body">
               <hr>
-              <form [formGroup]="addFieldDistritoForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+              <form [formGroup]="addFieldDistritoForm" (ngSubmit)="addFieldDistrito()" novalidate autocomplete="off">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="nombre" class="control-label">* Nombre completo distrito</label>
                       <input formControlName="nombreDistrito" id="nombreDistrito" name="nombreDistrito" type="text"
-                        class="form-control" placeholder="Nombre completo">
+                        class="form-control" placeholder="Nombre completo distrito (e.j. Norte o Norte-Sur solo una palabra unida por -)" maxlength="250">
                       <span class="err text-danger"
-                        *ngIf="addFieldDistritoForm.get('nombreDistrito')?.invalid && addFieldDistritoForm.get('nombreDistrito')?.touched">
-                        El <strong>nombre del distrito</strong>es requerido
+                        *ngIf="addFieldDistritoForm.get('nombreDistrito')?.invalid && addFieldDistritoForm.get('nombreDistrito')?.touched && !addFieldDistritoForm.get('nombreDistrito')!.errors!['pattern']">
+                        El <strong>nombre del distrito</strong> es requerido
                       </span>
+                      <span class="err text-danger"
+                      *ngIf="addFieldDistritoForm.get('nombreDistrito')!.errors != null && addFieldDistritoForm.get('nombreDistrito')!.errors!['pattern'] && addFieldDistritoForm.get('nombreDistrito')?.touched">
+                      El <strong>distrito</strong> no es válido
+                    </span>
                     </div>
                   </div>
                 </div>
@@ -76,17 +84,21 @@
           <div class="card-body">
             <div class="form-body">
               <hr>
-              <form [formGroup]="addFieldPoligonoForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+              <form [formGroup]="addFieldPoligonoForm" (ngSubmit)="addFieldPoligono()" novalidate autocomplete="off">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="nombre" class="control-label">* Nombre completo polígono</label>
                       <input formControlName="nombrePoligono" id="nombrePoligono" name="nombrePoligono" type="text"
-                        class="form-control" placeholder="Nombre completo">
+                        class="form-control" placeholder="Nombre completo polígono" maxlength="250">
                       <span class="err text-danger"
-                        *ngIf="addFieldPoligonoForm.get('nombrePoligono')?.invalid && addFieldPoligonoForm.get('nombrePoligono')?.touched">
-                        El <strong>nombre del polígono</strong>es requerido
+                        *ngIf="addFieldPoligonoForm.get('nombrePoligono')?.invalid && addFieldPoligonoForm.get('nombrePoligono')?.touched && !addFieldPoligonoForm.get('nombrePoligono')!.errors!['pattern']">
+                        El <strong>nombre del polígono</strong> es requerido
                       </span>
+                      <span class="err text-danger"
+                      *ngIf="addFieldPoligonoForm.get('nombrePoligono')!.errors != null && addFieldPoligonoForm.get('nombrePoligono')!.errors!['pattern'] && addFieldPoligonoForm.get('nombrePoligono')?.touched">
+                      El <strong>polígono</strong> no es válido
+                    </span>
                     </div>
                   </div>
                 </div>

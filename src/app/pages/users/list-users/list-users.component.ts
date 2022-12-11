@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import * as d3 from 'd3';
 import { User } from 'src/app/class/users';
 import { FileUploadService } from 'src/app/services/file-upload.service';
@@ -82,6 +82,12 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   public getUser(user: User): void {
     this.user = user;
     this.fillUserForm(user);
+    
+    if (this.user.fecha_baja) {
+      this.setFormControlsReadOnly(this.editUserForm, true);
+    } else {
+      this.setFormControlsReadOnly(this.editUserForm, false);      
+    }
     console.log(user)
   }
 
@@ -181,5 +187,22 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
     });
 
     return JSON.stringify(result);
+  }
+
+  public setFormControlsReadOnly(form: FormGroup, enabled: boolean = true): void {
+    Object.keys(form.controls).forEach(key => {
+      const control: AbstractControl = form!.get(key)!;
+      if (control && enabled) {
+        control.disable({
+          emitEvent: enabled,
+          onlySelf: enabled
+        });
+      } else {
+        control.enable({
+          emitEvent: enabled,
+          onlySelf: enabled
+        });
+      }
+    });
   }
 }

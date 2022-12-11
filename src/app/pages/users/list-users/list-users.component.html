@@ -72,7 +72,8 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Modificar datos del usuario</h4>
+                <h4 class="modal-title" id="myLargeModalLabel" *ngIf="user && !user.fecha_baja">Modificar datos del usuario</h4>
+                <h4 class="modal-title text-danger" id="myLargeModalLabel2" *ngIf="user && user.fecha_baja">No se pueden modificar datos de un usuario de baja</h4>
                 <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'"
                   data-dismiss="modal" aria-hidden="true">&Cross;</button>
               </div>

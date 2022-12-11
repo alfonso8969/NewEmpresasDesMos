@@ -40,10 +40,10 @@ const routes: Routes = [
       { path: 'companies-out', title: "Empresas dshabilitadas", component: CompaniesOutComponent },
       { path: 'view-company/:id', title: "Ver empresa", component: ViewCompanyComponent },
       { path: 'list-users', title: "Listado usuarios", component: ListUsersComponent },
-      { path: 'view-user/:id', title: "Ver usuario", component: ViewUserComponent },
+      { path: 'view-user/:id', title: "Perfil usuario", component: ViewUserComponent },
       { path: 'add-user', title: "Añadir usuario", component: AddUserComponent },
       { path: 'admin-users', title: "Administrar usuarios", component: AdminUsersComponent },
-      { path: 'edit-delete-fields', title: "Administrar campos", component: AdminFieldsComponent },
+      { path: 'edit-fields', title: "Administrar campos", component: AdminFieldsComponent },
       { path: 'add-fields', title: "Crear campos", component: AddFieldsComponent },
     ]
   },

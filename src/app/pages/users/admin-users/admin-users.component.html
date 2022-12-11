@@ -174,18 +174,18 @@
                             </div>
                           </fieldset>
                         </div>
+                        <div class="form-actions">
+                          <button type="submit" [disabled]="editUserRolForm.get('rol')?.value == 0" class="btn-primary button d-inline">
+                            <span
+                              [matTooltip]="editUserRolForm.get('rol')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos rol usuario'"
+                              [matTooltipPosition]="'before'"
+                              aria-label="Botón que guarda la información sobre el usuario">Guardar
+                            </span>
+                            <i class="fa fa-save p-1"></i>
+                          </button>
+                        </div>
                       </form>
                       <!--/row-->
-                    </div>
-                    <div class="form-actions">
-                      <button type="submit" [disabled]="editUserRolForm.get('rol')?.value == 0" class="btn-primary button d-inline">
-                        <span
-                          [matTooltip]="editUserRolForm.get('rol')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos rol usuario'"
-                          [matTooltipPosition]="'before'"
-                          aria-label="Botón que guarda la información sobre el usuario">Guardar
-                        </span>
-                        <i class="fa fa-save p-1"></i>
-                      </button>
                     </div>
                   </div>
               </div>

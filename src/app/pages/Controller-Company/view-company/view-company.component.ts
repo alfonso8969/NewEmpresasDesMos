@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
-import { Fields } from 'src/app/interfaces/Fileds';
+import { Fields } from 'src/app/interfaces/fields';
 import { Result } from 'src/app/interfaces/result';
 import { CompaniesService } from 'src/app/services/companies.service';
+import { FieldsService } from 'src/app/services/fields.service';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -34,6 +35,7 @@ export class ViewCompanyComponent implements OnInit {
   isEdited: boolean = false;
 
   constructor(private companiesService: CompaniesService,
+    private fieldsService: FieldsService,
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute) {
@@ -61,7 +63,7 @@ export class ViewCompanyComponent implements OnInit {
         });
       });
 
-    this.companiesService.getFields("sector").subscribe({
+    this.fieldsService.getFields("sector").subscribe({
       next: (result: any) => {
         if (result != null) {
           this.sectores = result.data;
@@ -76,7 +78,7 @@ export class ViewCompanyComponent implements OnInit {
       complete: () => console.log("Complete", this.sectores)
     });
 
-    this.companiesService.getFields("distrito").subscribe({
+    this.fieldsService.getFields("distrito").subscribe({
       next: (result: any) => {
         if (result != null) {
           this.distritos = result.data;
@@ -91,7 +93,7 @@ export class ViewCompanyComponent implements OnInit {
       complete: () => console.log("Complete", this.distritos)
     });
 
-    this.companiesService.getFields("poligono").subscribe({
+    this.fieldsService.getFields("poligono").subscribe({
       next: (result: any) => {
         if (result != null) {
           this.poligonos = result.data;
@@ -281,7 +283,7 @@ export class ViewCompanyComponent implements OnInit {
       });
     } else {
       this.isEdited = true;
-      this.setFormControlsReadOnly(this.editCompanyForm, false); 
+      this.setFormControlsReadOnly(this.editCompanyForm, false);
     }
   }
 
@@ -316,7 +318,7 @@ export class ViewCompanyComponent implements OnInit {
       const controlErrors: any = form!.get(key)!.errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
-         
+
           keyError == 'required' && (keyError = 'requerido');
           keyError == 'pattern' && (keyError = 'no válido');
           let value = form!.get(key)!.value;

@@ -96,7 +96,7 @@
                         *ngIf="addCompanyForm.get('email')?.invalid && addCompanyForm.get('email')?.touched && !addCompanyForm.get('email')!.errors!['pattern']">
                         El <strong>email es </strong>requerido
                       </span>
-                      <span class="err text-danger" email
+                      <span class="err text-danger"
                         *ngIf="addCompanyForm.get('email')!.errors != null && addCompanyForm.get('email')!.errors!['pattern'] && addCompanyForm.get('email')?.touched">
                         El <strong>email</strong> no es válido
                       </span>

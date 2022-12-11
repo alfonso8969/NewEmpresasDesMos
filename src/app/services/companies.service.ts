@@ -3,7 +3,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Empresa } from '../class/empresa';
-import { Fields } from '../interfaces/Fileds';
+import { Fields } from '../interfaces/fields';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +60,7 @@ export class CompaniesService {
       icon: 'fa fa-toolbox',
       submenu: [
         {
-          title: 'Administrar Campos', url: '/dashboard/edit-delete-fields'
+          title: 'Administrar Campos', url: '/dashboard/edit-fields'
         },
         {
           title: 'Crear Campos', url: '/dashboard/add-fields'
@@ -107,10 +107,6 @@ export class CompaniesService {
 
   public getApi(): any {
     return this.http.get('./assets/secret/api.txt', { responseType: 'text' });
-  }
-
-  public getFields(field: string):Observable<Fields[]> {
-    return this.http.post<Fields[]>(`${ this.url }/getFields.php`, { field: field} )
   }
 
   public getLastEmpDetId(): Observable<number> {

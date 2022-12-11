@@ -24,12 +24,12 @@
           <div class="card-body">
             <div class="form-body">
               <hr>
-              <form [formGroup]="addFieldSectorForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+              <form [formGroup]="updateFieldSectorForm" (ngSubmit)="askUpdateFieldSector()" novalidate autocomplete="off">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="nombre" class="control-label">Seleccione sector</label>
-                      <select formControlName="sector" name="sector" id="sector" class="form-control" title="Sector" (change)="changeSector($event)">
+                      <select formControlName="sector" name="sector" id="sector" class="form-control" matTooltip="Sector" (change)="changeSector($event)">
                         <option [ngValue]=0 selected>Seleccione sector</option>
                         <option [ngValue]="dato.sector_id" *ngFor="let dato of sectores">
                           {{dato.empresas_sector_name}}
@@ -41,20 +41,24 @@
                     <div class="form-group">
                       <label for="nombre" class="control-label">* Nombre completo sector</label>
                       <input formControlName="nombreSector" id="nombreSector" name="nombreSector" type="text"
-                        class="form-control" placeholder="Nombre completo">
-                      <span class="err text-danger" nombreSector
-                        *ngIf="addFieldSectorForm.get('nombreSector')?.invalid && addFieldSectorForm.get('nombreSector')?.touched">
+                        class="form-control" placeholder="Nombre completo sector" maxlength="250" oninput="this.value = this.value.toUpperCase()" matTooltip="Sector">
+                        <span class="err text-danger"
+                        *ngIf="updateFieldSectorForm.get('nombreSector')?.invalid && updateFieldSectorForm.get('nombreSector')?.touched && !updateFieldSectorForm.get('nombreSector')!.errors!['pattern']">
                         El <strong>nombre del sector </strong>es requerido
                       </span>
+                      <span class="err text-danger"
+                      *ngIf="updateFieldSectorForm.get('nombreSector')!.errors != null && updateFieldSectorForm.get('nombreSector')!.errors!['pattern'] && updateFieldSectorForm.get('nombreSector')?.touched">
+                      El <strong>sector</strong> no es válido
+                    </span>
                     </div>
                   </div>
 
                 </div>
                 <button type="submit"
-                  [disabled]="addFieldSectorForm.invalid || addFieldSectorForm.get('sector')?.value == 0"
+                  [disabled]="updateFieldSectorForm.invalid || updateFieldSectorForm.get('sector')?.value == 0"
                   class="btn-primary button d-inline">
                   <span
-                    [matTooltip]="addFieldSectorForm.invalid || addFieldSectorForm.get('sector')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                    [matTooltip]="updateFieldSectorForm.invalid || updateFieldSectorForm.get('sector')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
                   </span>
                   <i class="fa fa-save p-1"></i>
                 </button>
@@ -64,37 +68,41 @@
           <div class="card-body">
             <div class="form-body">
               <hr>
-              <form [formGroup]="addFieldDistritoForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+              <form [formGroup]="updateFieldDistritoForm" (ngSubmit)="askUpdateFieldDistrito()" novalidate autocomplete="off">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="nombre" class="control-label">Seleccione distrito</label>
                       <select formControlName="distrito" name="districto" id="districto" class="form-control"
-                        title="Distrito" (change)="changeDistrito($event)">
+                      matTooltip="Distrito" (change)="changeDistrito($event)">
                         <option [ngValue]=0 selected>Seleccione distrito</option>
                         <option [ngValue]="dato.distrito_id" *ngFor="let dato of distritos">
                           {{dato.distrito_name}}
                         </option>
-                      </select>                     
+                      </select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="nombre" class="control-label">* Nombre completo distrito</label>
                       <input formControlName="nombreDistrito" id="nombreDistrito" name="nombreDistrito" type="text"
-                        class="form-control" placeholder="Nombre completo">
-                      <span class="err text-danger"
-                        *ngIf="addFieldDistritoForm.get('nombreDistrito')?.invalid && addFieldDistritoForm.get('nombreDistrito')?.touched">
-                        El <strong>nombre del distrito</strong>es requerido
+                        class="form-control" placeholder="Nombre completo distrito (e.j. Norte o Norte-Sur solo una palabra unida por -)" maxlength="250" matTooltip="Distrito">
+                        <span class="err text-danger"
+                          *ngIf="updateFieldDistritoForm.get('nombreDistrito')?.invalid && updateFieldDistritoForm.get('nombreDistrito')?.touched && !updateFieldDistritoForm.get('nombreDistrito')!.errors!['pattern']">
+                          El <strong>nombre del distrito</strong> es requerido
+                        </span>
+                        <span class="err text-danger"
+                        *ngIf="updateFieldDistritoForm.get('nombreDistrito')!.errors != null && updateFieldDistritoForm.get('nombreDistrito')!.errors!['pattern'] && updateFieldDistritoForm.get('nombreDistrito')?.touched">
+                        El <strong>distrito</strong> no es válido
                       </span>
                     </div>
                   </div>
                 </div>
                 <button type="submit"
-                  [disabled]="addFieldDistritoForm.invalid || addFieldSectorForm.get('distrito')?.value == 0"
+                  [disabled]="updateFieldDistritoForm.invalid || updateFieldSectorForm.get('distrito')?.value == 0"
                   class="btn-primary button d-inline">
                   <span
-                    [matTooltip]="addFieldDistritoForm.invalid || addFieldSectorForm.get('distrito')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                    [matTooltip]="updateFieldDistritoForm.invalid || updateFieldSectorForm.get('distrito')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
                   </span>
                   <i class="fa fa-save p-1"></i>
                 </button>
@@ -104,37 +112,41 @@
           <div class="card-body">
             <div class="form-body">
               <hr>
-              <form [formGroup]="addFieldPoligonoForm" (ngSubmit)="addFieldSector()" novalidate autocomplete="off">
+              <form [formGroup]="updateFieldPoligonoForm" (ngSubmit)="askUpdateFieldPoligono()" novalidate autocomplete="off">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="nombre" class="control-label">Seleccione polígono</label>
                       <select formControlName="poligono" name="poligono" id="poligono" class="form-control"
-                        title="Polígono" (change)="changePoligono($event)">
+                      matTooltip="Polígono" (change)="changePoligono($event)">
                         <option [ngValue]=0 selected>Seleccione polígono</option>
                         <option [ngValue]="dato.poligono_id" *ngFor="let dato of poligonos">
                           {{dato.empresas_poligono_name}}
                         </option>
-                      </select>                    
+                      </select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="nombre" class="control-label">* Nombre completo polígono</label>
                         <input formControlName="nombrePoligono" id="nombrePoligono" name="nombrePoligono" type="text"
-                          class="form-control" placeholder="Nombre completo">
-                        <span class="err text-danger"
-                          *ngIf="addFieldPoligonoForm.get('nombrePoligono')?.invalid && addFieldPoligonoForm.get('nombrePoligono')?.touched">
-                          El <strong>nombre del polígono</strong>es requerido
+                          class="form-control" placeholder="Nombre completo polígono" maxlength="250"  matTooltip="Polígono">
+                          <span class="err text-danger"
+                            *ngIf="updateFieldPoligonoForm.get('nombrePoligono')?.invalid && updateFieldPoligonoForm.get('nombrePoligono')?.touched && !updateFieldPoligonoForm.get('nombrePoligono')!.errors!['pattern']">
+                            El <strong>nombre del polígono</strong> es requerido
+                          </span>
+                          <span class="err text-danger"
+                          *ngIf="updateFieldPoligonoForm.get('nombrePoligono')!.errors != null && updateFieldPoligonoForm.get('nombrePoligono')!.errors!['pattern'] && updateFieldPoligonoForm.get('nombrePoligono')?.touched">
+                          El <strong>polígono</strong> no es válido
                         </span>
                     </div>
                   </div>
                 </div>
                 <button type="submit"
-                  [disabled]="addFieldPoligonoForm.invalid || addFieldPoligonoForm.get('poligono')?.value == 0"
+                  [disabled]="updateFieldPoligonoForm.invalid || updateFieldPoligonoForm.get('poligono')?.value == 0"
                   class="btn-primary button d-inline">
                   <span
-                    [matTooltip]="addFieldPoligonoForm.invalid || addFieldPoligonoForm.get('poligono')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
+                    [matTooltip]="updateFieldPoligonoForm.invalid || updateFieldPoligonoForm.get('poligono')?.value == 0 ? 'Faltan campos obligatorios' : 'Guardar datos nuevo sector'">Guardar
                   </span>
                   <i class="fa fa-save p-1"></i>
                 </button>

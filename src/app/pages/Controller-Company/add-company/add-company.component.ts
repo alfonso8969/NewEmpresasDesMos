@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Empresa } from 'src/app/class/empresa';
-import { Fields } from 'src/app/interfaces/Fileds';
+
 import { CompaniesService } from 'src/app/services/companies.service';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2'
 import { User } from 'src/app/class/users';
-import { keyframes } from '@angular/animations';
 import { Result } from 'src/app/interfaces/result';
+import { FieldsService } from 'src/app/services/fields.service';
+import { Fields } from 'src/app/interfaces/fields';
 
 @Component({
   selector: 'app-add-company',
@@ -33,7 +34,10 @@ export class AddCompanyComponent implements OnInit {
   newEmp: any ;
   newRedes: any ;
 
-  constructor(private companiesService: CompaniesService, private fb: FormBuilder, private router: Router) {
+  constructor(private companiesService: CompaniesService,
+              private fieldsService: FieldsService,
+              private fb: FormBuilder,
+              private router: Router) {
     this.user = new User();
     this.user.setId_user(1);
     let emp = localStorage.getItem('empresa');
@@ -45,7 +49,7 @@ export class AddCompanyComponent implements OnInit {
       this.fillForm();
     }
 
-    this.companiesService.getFields("sector").subscribe({
+    this.fieldsService.getFields("sector").subscribe({
       next: (result: any) => {
         if (result != null) {
           this.sectores = result.data;
@@ -60,7 +64,7 @@ export class AddCompanyComponent implements OnInit {
       complete: () => console.log("Complete sectores", this.sectores)
     });
 
-    this.companiesService.getFields("distrito").subscribe({
+    this.fieldsService.getFields("distrito").subscribe({
       next: (result: any) => {
         if (result != null) {
           this.distritos = result.data;
@@ -75,7 +79,7 @@ export class AddCompanyComponent implements OnInit {
       complete: () => console.log("Complete distritos", this.distritos)
     });
 
-    this.companiesService.getFields("poligono").subscribe({
+    this.fieldsService.getFields("poligono").subscribe({
       next: (result: any) => {
         if (result != null) {
           this.poligonos = result.data;
@@ -217,20 +221,20 @@ export class AddCompanyComponent implements OnInit {
 
     const result: Result[] = [];
     Object.keys(form.controls).forEach(key => {
-      if (form!.get(key)!.value === 0) {
+      if (form.get(key)!.value === 0) {
         result.push({
           Campo: key,
           Error: 'requerido',
-          Valor: form!.get(key)!.value
+          Valor: form.get(key)!.value
         });
       }
       const controlErrors: any = form!.get(key)!.errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
-         
+
           keyError == 'required' && (keyError = 'requerido');
           keyError == 'pattern' && (keyError = 'no válido');
-          let value = form!.get(key)!.value;
+          let value = form.get(key)!.value;
           result.push({
             Campo: key,
             Error: keyError,

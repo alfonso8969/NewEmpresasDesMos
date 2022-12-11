@@ -3,6 +3,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../class/users';
+import { Fields } from '../interfaces/fields';
 
 @Injectable({
   providedIn: 'root'
@@ -42,5 +43,13 @@ export class UsersService {
 
   public updateUser(user: User): Observable<number> {
     return this.http.post<number>(`${this.url}/updateUser.php`, { user: user });
+  }
+
+  public updateRolUser(user: User): Observable<number> {
+    return this.http.post<number>(`${this.url}/updateRolUser.php`, { user: user });
+  }
+
+  public toAbleDisableUser(user: User): Observable<number> {
+    return this.http.post<number>(`${this.url}/ableDisableUser.php`, { user: user });
   }
 }
