@@ -45,8 +45,7 @@
                       <td>{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
                       <td>{{ emp['Usuario alta'] }}</td>
                       <td>
-                        <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i class="fa fa-check"
-                            (click)="getEpresaHab(emp)"></i></a>
+                        <a class="btn btn-warning" (click)="getEmpresaHab(emp)"><i class="fa fa-check"></i></a>
                       </td>
                     </tr>
   
@@ -100,8 +99,7 @@
                     <td>{{ emp['Fecha baja'] | date: 'dd-MM-yyyy' }}</td>
                     <td>{{ emp['Usuario baja'] }}</td>
                     <td>
-                      <a class="btn btn-warning" data-toggle="modal" data-target=".md-users"><i class="fa fa-check"
-                          (click)="getEpresa(emp)"></i></a>
+                      <a class="btn btn-warning" (click)="getEmpresa(emp)" ><i class="fa fa-check"></i></a>
                     </td>
                   </tr>
 

@@ -8,7 +8,7 @@
       <!-- Logo -->
       <!-- ============================================================== -->
       <div class="navbar-header">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" (click)="functViewDashboard()">
           <!-- Logo icon --><b>
             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
             <!-- Dark Logo icon -->
@@ -21,7 +21,7 @@
             <!-- dark Logo text -->
             <img src="./assets/images/logo-text.png" alt="homepage" class="dark-logo" />
             <!-- Light Logo text -->
-            <img src="./assets/images/logo-light-text.png" class="light-logo" alt="homepage" /></span> </a>
+            <img src="./assets/images/logo-light-text.png" class="light-logo mx-1" alt="homepage" /></span> </a>
       </div>
       <!-- ============================================================== -->
       <!-- End Logo -->
@@ -79,7 +79,7 @@
 
                 <li role="separator" class="divider"></li>
                 <li><a class="cursor" (click)="logout()"><i class="fa fa-power-off mx-2"></i>Salir</a></li>
-                
+
               </ul>
             </div>
           </li>

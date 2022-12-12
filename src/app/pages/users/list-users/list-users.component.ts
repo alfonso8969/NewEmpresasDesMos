@@ -83,11 +83,6 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
     this.user = user;
     this.fillUserForm(user);
     
-    if (this.user.fecha_baja) {
-      this.setFormControlsReadOnly(this.editUserForm, true);
-    } else {
-      this.setFormControlsReadOnly(this.editUserForm, false);      
-    }
     console.log(user)
   }
 
@@ -187,22 +182,5 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
     });
 
     return JSON.stringify(result);
-  }
-
-  public setFormControlsReadOnly(form: FormGroup, enabled: boolean = true): void {
-    Object.keys(form.controls).forEach(key => {
-      const control: AbstractControl = form!.get(key)!;
-      if (control && enabled) {
-        control.disable({
-          emitEvent: enabled,
-          onlySelf: enabled
-        });
-      } else {
-        control.enable({
-          emitEvent: enabled,
-          onlySelf: enabled
-        });
-      }
-    });
   }
 }

@@ -113,4 +113,8 @@ export class CompaniesService {
     return this.http.get<number>(`${ this.url }/getLastEmpDetId.php`);
   }
 
+  public toAbleDisableCompany(emp: Empresa): Observable<number> {
+    return this.http.post<number>(`${this.url}/ableDisableCompany.php`, { empresa: emp });
+  }
+
 }

@@ -131,7 +131,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
             if (result === 1) {
               Swal.fire({
                 title: title + ' usuario',
-                text: 'El usuario ' +  user.user_name + ' ' + user.user_lastName + ' fue ' + title.toLowerCase() + ' correctamente',
+                text: 'El usuario ' +  user.user_name + ' ' + user.user_lastName + ' se pudo ' + title.toLowerCase() + ' correctamente',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
               });
@@ -139,7 +139,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
             } else{
               Swal.fire({
                 title: title + ' usuario',
-                text: 'El usuario ' +  user.user_name + ' ' + user.user_lastName + ' no pudo ser ' + title.toLowerCase() + ' correctamente',
+                text: 'El usuario ' +  user.user_name + ' ' + user.user_lastName + ' no se pudo ' + title.toLowerCase() + ' correctamente',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });
