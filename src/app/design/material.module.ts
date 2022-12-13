@@ -8,6 +8,8 @@ import { getSpanishPaginatorIntl } from '../utils/spanish-paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 
 const materialModules = [
@@ -17,7 +19,9 @@ const materialModules = [
   MatProgressSpinnerModule,
   MatTooltipModule,
   MatCardModule,
-  MatGridListModule
+  MatGridListModule,
+  MatInputModule,
+  MatSelectModule
 ];
 
 

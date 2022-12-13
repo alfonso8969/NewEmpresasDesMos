@@ -4,16 +4,13 @@
   font-size: 1.2em !important;
 }
 
-.cursor {
-  cursor: pointer;
-}
-
-a, #welcome {
+a, #welcome, .cursor {
   cursor: pointer;
 }
 
 a:hover, a:active {
   color: blue !important;
+  background: transparent !important;
 }
 
 
@@ -100,7 +97,6 @@ mat-card.panel {
 
 @media (max-width: 1495px) {
   :host ::ng-deep div.map-container {
-
     width: auto !important;
   }
 }

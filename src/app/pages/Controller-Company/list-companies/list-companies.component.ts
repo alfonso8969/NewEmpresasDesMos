@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
+import { Fields } from 'src/app/interfaces/fields';
 import { CompaniesService } from 'src/app/services/companies.service';
+import { FieldsService } from 'src/app/services/fields.service';
 
 @Component({
   selector: 'app-list-companies',
@@ -15,10 +18,9 @@ export class ListCompaniesComponent implements OnInit {
 
   listEmpresas: Empresa[]
   div: Element;
-
-
+  sectores: Fields[];
+  
   displayedColumns: string[] = ['Nombre', 'Sector', 'Distrito', 'Poligono'];
-
   dataSource: MatTableDataSource<Empresa>;
 
   @ViewChild(MatPaginator, {static: false})
@@ -35,16 +37,42 @@ export class ListCompaniesComponent implements OnInit {
   }
 
   viewSpinner: boolean = true;
-  message: string;
 
-  constructor(private companiesService: CompaniesService, private route: Router) {
+  constructor(private companiesService: CompaniesService, private route: Router, private fieldsService: FieldsService) {
     this.listEmpresas = [];
     this.getCompanies();
+
+    this.fieldsService.getFields("sector").subscribe({
+      next: (result: any) => {
+        if (result != null) {
+          this.sectores = result.data;
+        } else {
+          alert("Hubo un error")
+        }
+      },
+      error: (error: any) => {
+        console.log(error);
+        alert(error.message)
+      },
+      complete: () => console.log("Complete", this.sectores)
+    });
   }
 
   ngOnInit(): void {
     this.div = document.getElementsByClassName('page-wrapper')[0];
     this.div.className = "viewSpinner";
+  }
+
+  public applyFilter(filterValue: any): void {
+    console.log(filterValue.target.value)
+    filterValue = filterValue.target.value.trim().toLowerCase(); 
+    this.dataSource.filter = filterValue;
+  }
+
+  public select(value: number): void {
+    console.log(value);
+    let sector = this.sectores.filter((sec: Fields) => sec.sector_id == value);
+    this.dataSource.filter = sector.length > 0 ? sector[0].empresas_sector_name.trim().toLowerCase() : '';
   }
 
 

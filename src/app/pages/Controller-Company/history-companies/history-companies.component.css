@@ -7,25 +7,37 @@
   font-size: 35px;
 }
 
-.table1 {
+/* .table1 {
   display: flex;
   flex-flow: column;
   width: 100%;
   height: 300px;
-}
+  overflow-y: auto;
+  overflow-x: auto;
+} */
 
-.table2 {
+.table2, .table1 {
   display: flex;
   flex-flow: column;
   width: 100%;
   height: 300px;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
-th {
+.tdName {
+  width: 22%;
+}
+
+.tdEmail {
+  width: 20%;
+}
+
+ th {
   position: sticky !important;
   top: 0 !important;
 }
-
+/*
 thead {
   padding-right: 13px;
   flex: 0 0 auto;
@@ -46,7 +58,7 @@ tr {
   width: 100%;
   display: table;
   table-layout: fixed;
-}
+} */
 
 tbody tr:hover {
   background-color: #cfd6e2;
@@ -59,7 +71,4 @@ tbody tr:hover {
     position: relative !important;
   }
 
-  tr {
-    table-layout: auto;
-  }
 }

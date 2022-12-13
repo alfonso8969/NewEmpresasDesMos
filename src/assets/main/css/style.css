@@ -933,12 +933,12 @@ When click on sidebar toggler and also for tablet
   .mini-sidebar > .label {
     display: none; }
   .mini-sidebar .nav-devider {
-    width: 70px; }
+    width: 60px; }
   .mini-sidebar .sidebar-nav {
     background: transparent; }
   .mini-sidebar .sidebar-nav #sidebarnav > li > a {
     padding: 12px 24px;
-    width: 70px; }
+    width: 60px; }
   .mini-sidebar .sidebar-nav #sidebarnav > li:hover > a {
     width: 290px;
     background: #edf0f5; }

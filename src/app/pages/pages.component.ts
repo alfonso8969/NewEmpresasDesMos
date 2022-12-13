@@ -55,6 +55,8 @@ export class PagesComponent implements OnInit {
   }
 
   navigateTo(url: string, event: any) {
+    let aes = document.querySelectorAll('a');
+    aes.forEach(a => a.classList.remove('active'));
     event.target.className = "active " + event.target.className;
     this.viewDashBoard = false;
     this._router.navigateByUrl(url);

@@ -1,14 +1,14 @@
-import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { PagesModule } from './pages/pages.module';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { CompaniesService } from './services/companies.service';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { CompaniesService } from './services/companies.service';
 import { FileUploadService } from './services/file-upload.service';
+import { PagesModule } from './pages/pages.module';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [

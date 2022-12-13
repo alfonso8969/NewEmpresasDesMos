@@ -7,11 +7,12 @@
       <!-- ============================================================== -->
       <!-- Logo -->
       <!-- ============================================================== -->
-      <div class="navbar-header">
+      <div class="navbar-header align-self-center align-items-center justify-content-center d-flex">
         <a class="navbar-brand" (click)="functViewDashboard()">
-          <!-- Logo icon --><b>
+          <!-- Logo icon -->
             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
             <!-- Dark Logo icon -->
+          <b>
             <img src="./assets/images/icon/favicon-32x32.png" alt="homepage" class="dark-logo" />
             <!-- Light Logo icon -->
             <img src="./assets/images/icon/favicon-32x32.png" alt="homepage" class="light-logo" />
@@ -48,8 +49,9 @@
           <!-- ============================================================== -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false"><img src="./assets/images/icon/alfonso.ico" alt="user"
-                class="profile-pic" /></a>
+              aria-haspopup="true" aria-expanded="false">
+              <img src="./assets/images/icon/alfonso.ico" alt="user" class="profile-pic" />             
+            </a>
             <div class="dropdown-menu dropdown-menu-right animated flipInY">
               <ul class="dropdown-user">
                 <li>
@@ -155,7 +157,7 @@
           <li class="user-profile">
             <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
               <img src="./assets/images/icon/alfonso.ico" alt="user" />
-              <span class="hide-menu"></span>
+              <span class="hide-menu" style="font-size: 1.1em !important;"> {{ user.user_name }}</span>
             </a>
             <ul aria-expanded="false" class="collapse">
               <li><a (click)="navigateTo('/dashboard/view-user/1', $event)">Mi perfil </a></li>
@@ -163,9 +165,9 @@
             </ul>
           </li>
           <li class="nav-devider"></li>
-          <li class="nav-small-cap">Indicadores</li>
+          <li class="nav-small-cap text-light">Indicadores</li>
 
-          <li class="mb-5" *ngFor="let item of companiesService.menu">
+          <li class="mb-3" *ngFor="let item of companiesService.menu">
             <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
@@ -176,7 +178,7 @@
               </li>
             </ul>
           </li>
-          <li class="mb-5" *ngFor="let item of companiesService.menuAdmin">
+          <li class="mb-3" *ngFor="let item of companiesService.menuAdmin">
             <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
@@ -196,7 +198,7 @@
             </a>
           </li>
 
-          <li role="separator" class="divider mt-5"></li>
+          <li role="separator" class="divider mt-3"></li>
           <li>
             <a class="cursor" (click)="logout()">
               <i class="fa fa-power-off"></i>
@@ -216,11 +218,13 @@
   <footer id="sticky-footer" class="flex-shrink-0 py-2 bg-dark text-white-50 fixed-bottom">
     <div class="container text-center">
       <a href="https://twitter.com/alfonso8969" target="_blank" rel="noreferrer noopener nofollow"><i
-          class="fab fa-twitter"></i>Twitter</a>
+          class="fab fa-twitter p-1"></i>Twitter</a>
       <a href="https://www.instagram.com/alfonsojose8969/" target="_blank" rel="noreferrer noopener nofollow"
-        class="mx-5"><i class="fab fa-instagram"></i>Instagram</a>
+        class="mx-5"><i class="fab fa-instagram p-1"></i>Instagram</a>
       <a href="https://www.facebook.com/alfonsojose.gonzalezdelgado" target="_blank"
-        rel="noreferrer noopener nofollow"><i class="fab fa-facebook"></i>Facebook</a>
+        rel="noreferrer noopener nofollow"><i class="fab fa-facebook p-1"></i>Facebook</a>
+      <a href="https://alfonsogonz.es/alf-blog/politica-de-privacidad/" target="_blank"
+        rel="noreferrer noopener nofollow" class="mx-5"><i class="fa fa-file p-1"></i>Privacidad</a>
       <a class="float-right mx-5">@alf8969&copy;</a>
     </div>
   </footer>

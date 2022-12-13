@@ -3,7 +3,6 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Empresa } from '../class/empresa';
-import { Fields } from '../interfaces/fields';
 
 @Injectable({
   providedIn: 'root'
