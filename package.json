@@ -29,6 +29,7 @@
     "d3": "^7.6.1",
     "file-saver": "^2.0.5",
     "fs-web": "^1.0.1",
+    "ngx-cookie-service": "^14.0.1",
     "rxjs": "~7.5.0",
     "sweetalert2": "^11.4.8",
     "tslib": "^2.3.0",

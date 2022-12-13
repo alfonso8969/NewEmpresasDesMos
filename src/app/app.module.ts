@@ -9,6 +9,8 @@ import { CompaniesService } from './services/companies.service';
 import { FileUploadService } from './services/file-upload.service';
 import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
+import { CookieService } from 'ngx-cookie-service';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,11 +23,13 @@ import { AppComponent } from './app.component';
     HttpClientJsonpModule,
     PagesModule,
     BrowserAnimationsModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    SharedModule
   ],
   providers: [
     CompaniesService,
     FileUploadService,
+    CookieService,
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy

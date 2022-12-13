@@ -25,7 +25,6 @@ import { ChartsComponent } from './charts/charts/charts.component';
 import { DirectivesModule } from '../events/directives.module';
 import { TrimPipe } from '../pipes/trim.pipe';
 
-
 @NgModule({
   declarations: [
     PagesComponent,
