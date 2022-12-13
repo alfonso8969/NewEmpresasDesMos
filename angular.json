@@ -16,7 +16,7 @@
             "allowedCommonJsDependencies": [
               "sweetalert2"
             ],
-            "outputPath": "C:\\Users\\alfon\\source\\repos\\Proyecto Des Mostoles\\Empresas ms prod",
+            "outputPath": "dist/new-empresas-ms",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",

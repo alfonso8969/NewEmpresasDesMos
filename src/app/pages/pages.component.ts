@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { DetailComponent } from 'src/shared/components/detail/detail.component';
 import { User } from '../class/users';
 import { CompaniesService } from '../services/companies.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-pages',
@@ -18,6 +20,16 @@ export class PagesComponent implements OnInit {
   from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
   originally bred for hunting.`;
 
+    
+  @ViewChild(DetailComponent, { static: false }) parentDetail: DetailComponent;
+
+  // tslint:disable-next-line: no-output-native
+  @Output() close: EventEmitter<boolean>;
+
+  linkMoreIfoCookies: string;
+  public showDetail: boolean;
+  private cookieExists: boolean;
+
   user: User;
   url: string = environment.apiUrl;
 
@@ -29,7 +41,11 @@ export class PagesComponent implements OnInit {
 
   viewDashBoard: boolean = false;
 
-  constructor(public companiesService: CompaniesService, private _router: Router, private httpClient: HttpClient) {
+  constructor(public companiesService: CompaniesService, 
+              private _router: Router, 
+              private httpClient: HttpClient, 
+              private cookieService: CookieService
+              ) {
     this.user = new User();
     this.user.setUser_name("Alfonso José");
     this.user.setUser_email("alfonso8969@gmail.com");
@@ -37,7 +53,7 @@ export class PagesComponent implements OnInit {
 
     this.companiesService.getApi()
       .subscribe((data: any) => {
-        this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=' /*+ data*/, 'callback')
+        this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=' /*+ data*/, 'callback')
           .pipe(
             map(() => true),
             catchError(() => of(false))
@@ -49,6 +65,16 @@ export class PagesComponent implements OnInit {
     if (this._router.url === '/dashboard' || this._router.url === '/dashboard#no-back-button') {
       this.viewDashBoard = true;
     }
+
+    
+    this.cookieExists = cookieService.check('Cookie');
+    // Event when closing the detail
+    this.close = new EventEmitter<boolean>();
+
+    this.linkMoreIfoCookies = `https://policies.google.com/technologies/cookies?hl=es-419`;
+    this.cookieExists ?
+    this.showDetail = false :
+    this.showDetailsetTime();
   }
 
   ngOnInit(): void {
@@ -68,6 +94,39 @@ export class PagesComponent implements OnInit {
         window.location.reload();
       });
   }
+
+    /**
+   * Close the detail
+   * @param $event Window status
+   */
+    closeDetail($event: boolean) {
+      this.animationClose();
+      this.close.emit($event);
+    }
+
+    public showDetailsetTime(): void {
+      setTimeout(() => {
+        this.showDetail = true;
+      }, 600);
+    }
+  
+    saveGDPR() {
+      this.cookieService.set('Cookie', 'GDPR');
+      this.animationClose();
+      this.parentDetail.closeDetail();
+    }
+  
+    refuseCookies() {
+      this.cookieService.set('Cookie', 'No-GDPR');
+      this.animationClose();
+      this.parentDetail.closeDetail();
+    }
+  
+    animationClose() {
+      setTimeout(() => {
+        this.showDetail = false;
+      }, 600);
+    }
 
   logout() {
     this._router.navigateByUrl('/login')

@@ -10,7 +10,6 @@ import { FileUploadService } from './services/file-upload.service';
 import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
 import { CookieService } from 'ngx-cookie-service';
-import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -23,8 +22,7 @@ import { SharedModule } from 'src/shared/shared.module';
     HttpClientJsonpModule,
     PagesModule,
     BrowserAnimationsModule,
-    GoogleMapsModule,
-    SharedModule
+    GoogleMapsModule
   ],
   providers: [
     CompaniesService,

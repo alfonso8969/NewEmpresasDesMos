@@ -24,6 +24,7 @@ import { ComponentsModule } from '../components/components.module';
 import { ChartsComponent } from './charts/charts/charts.component';
 import { DirectivesModule } from '../events/directives.module';
 import { TrimPipe } from '../pipes/trim.pipe';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { TrimPipe } from '../pipes/trim.pipe';
     BrowserAnimationsModule,
     ComponentsModule,
     DirectivesModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    SharedModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

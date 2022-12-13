@@ -10,8 +10,8 @@
       <div class="navbar-header align-self-center align-items-center justify-content-center d-flex">
         <a class="navbar-brand" (click)="functViewDashboard()">
           <!-- Logo icon -->
-            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-            <!-- Dark Logo icon -->
+          <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+          <!-- Dark Logo icon -->
           <b>
             <img src="./assets/images/icon/favicon-32x32.png" alt="homepage" class="dark-logo" />
             <!-- Light Logo icon -->
@@ -50,7 +50,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
-              <img src="./assets/images/icon/alfonso.ico" alt="user" class="profile-pic" />             
+              <img src="./assets/images/icon/alfonso.ico" alt="user" class="profile-pic" />
             </a>
             <div class="dropdown-menu dropdown-menu-right animated flipInY">
               <ul class="dropdown-user">
@@ -231,4 +231,38 @@
 
 
   <router-outlet> </router-outlet>
+  <app-detail *ngIf="showDetail" (close)="closeDetail($event)">
+    <div detail-title class="row text-center ml-1">
+      <div class="col-12">
+        <h1 class="title">Ley Orgánica de Protección de Datos</h1>
+      </div>
+    </div>
+    <div detail-content class="row text-center">
+      <div class="col-12">
+        <div class="alert alert-warning" role="alert">
+          <p>
+            <strong>RGPD (Reglamento General Protección de Datos)</strong>
+            <br>
+          </p>
+          <pre>
+                    Utilizamos cookies propias y de terceros para mejorar nuestros servicios.
+                    Mostrarte publicidad relacionada con tus preferencias mediante el análisis de tus hábitos de navegación.
+                    Pulse el botón ACEPTAR, para confirmar que ha leído y aceptado la información presentada. 
+                    Después de aceptar no volveremos a mostrar este mensaje.
+                    Puede obtener más información en nuestra politica de privacidad
+  <a href="https://alfonsogonz.es/alf-blog/politica-de-privacidad/" target="_blank" rel="noopener noreferrer">Ir a politica de privacidad</a>
+  </pre>
+        </div>
+      </div>
+      <div class="row no-gutters mt-1">
+        <div class="btn-group btn-group-lg col-12 mt-2">
+          <button type="button" class="btn btn-warning ml-3" (click)="saveGDPR()" title="Aceptar">Aceptar</button>
+          <button type="button" class="btn btn-secondary ml-3" (click)="refuseCookies()"
+            title="Denegar">Denegar</button><br>
+        </div>
+        <a [href]="linkMoreIfoCookies" class="mt-1 ml-3 pl-1 d-block" target="_blank" rel="noopener noreferrer"> Más
+          información sobre Privacidad y Condiciones</a>
+      </div>
+    </div>
+  </app-detail>
 </div>

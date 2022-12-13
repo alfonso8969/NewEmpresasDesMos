@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.router.navigate(["/dashboard"])
+    this.router.navigateByUrl("/dashboard")
     .then(() => {
       window.location.reload();
     });
