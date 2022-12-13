@@ -1,5 +1,6 @@
 .page-wrapper {
   position: fixed;
+  min-width: 80%;
 }
 
 .close {
@@ -37,18 +38,14 @@
   position: sticky !important;
   top: 0 !important;
 }
+
 /*
 thead {
   padding-right: 13px;
   flex: 0 0 auto;
 }
 
-tbody {
-  flex: 1 1 auto;
-  display: block;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+
 
 tbody tr td {
   font-size: 13px !important;
@@ -62,13 +59,20 @@ tr {
 
 tbody tr:hover {
   background-color: #cfd6e2;
-  font-weight: 700;
   cursor: pointer;
 }
 
 @media (max-width: 1440px) {
   .page-wrapper {
     position: relative !important;
+  }
+
+  .tdName {
+    width: 12%;
+  }
+  
+  .tdEmail {
+    width: 10%;
   }
 
 }

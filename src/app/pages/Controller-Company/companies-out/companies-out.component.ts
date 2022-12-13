@@ -72,9 +72,15 @@ export class CompaniesOutComponent implements OnInit {
     });
   }
 
+  public applyFilter(filterValue: any): void {
+    console.log(filterValue.target.value)
+    filterValue = filterValue.target.value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
+
   view(item: Empresa) {
     console.log(item.Empresa_det_id);
-    this.route.navigate(['dashboard/view-company', item.Empresa_det_id]);
+    this.route.navigate(['dashboard/view-company', { id: item.Empresa_det_id, url: '/dashboard/companies-out' }]);
   }
 
   private delay(ms: number) {

@@ -21,9 +21,11 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   url: string = environment.apiUrl;
   fileUp: File;
   fileName: string;
+  filterValueAct: string = '';
   img: HTMLElement | null;
   user: User;
   users: User[];
+  usersTemp: User[];
 
   viewSpinner: boolean = true;
   constructor(private fb: FormBuilder,
@@ -33,6 +35,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
       next: (users: any) => {
         if (users != null) {
           this.users = users.data;
+          this.usersTemp = JSON.parse(JSON.stringify(this.users));
         } else {
           alert("Hubo un error")
         }
@@ -84,6 +87,22 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
     this.fillUserForm(user);
     
     console.log(user)
+  }
+
+  public applyFilter(filterValue: any): void {
+    console.log(filterValue.target.value)
+    if (filterValue.target.value === '') { 
+      this.users = this.usersTemp;      
+    }
+
+    if (this.filterValueAct.length > filterValue.target.value.length) {
+      this.filterValueAct = filterValue.target.value.trim().toLowerCase();
+      this.users = this.usersTemp;      
+      this.users = this.users.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
+    } else {
+      this.filterValueAct = filterValue.target.value.trim().toLowerCase();
+        this.users = this.users.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(this.filterValueAct));
+    }
   }
 
   public editUser(): void {

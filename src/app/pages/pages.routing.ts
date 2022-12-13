@@ -38,7 +38,7 @@ const routes: Routes = [
       { path: 'list-companies', title: "Listado empresas", component: ListCompaniesComponent },
       { path: 'history-companies', title: "Historial empresa", component: HistoryCompaniesComponent },
       { path: 'companies-out', title: "Empresas dshabilitadas", component: CompaniesOutComponent },
-      { path: 'view-company/:id', title: "Ver empresa", component: ViewCompanyComponent },
+      { path: 'view-company', title: "Ver empresa", component: ViewCompanyComponent},
       { path: 'list-users', title: "Listado usuarios", component: ListUsersComponent },
       { path: 'view-user/:id', title: "Perfil usuario", component: ViewUserComponent },
       { path: 'add-user', title: "Añadir usuario", component: AddUserComponent },

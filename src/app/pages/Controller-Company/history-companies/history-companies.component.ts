@@ -13,10 +13,13 @@ export class HistoryCompaniesComponent implements OnInit {
 
   user: User;
   empresa: Empresa;
-  empresas: any[];
-  empresasHab: any;
+  empresas: Empresa[];
+  empresasHab: Empresa[];
+  empresasTmp: Empresa[];
+  empresasHabTmp: Empresa[];
 
   viewSpinner: boolean = true;
+  filterValueAct: string = '';
   constructor(private companiesService: CompaniesService) {
     this.user = new User();
     this.user.id_user = 1;
@@ -31,6 +34,7 @@ export class HistoryCompaniesComponent implements OnInit {
       next: async (result: any) => {
         if (result != null) {
           this.empresas = result.data;
+          this.empresasTmp = JSON.parse(JSON.stringify(this.empresas));
         } else {
           alert("Hubo un error")
         }
@@ -48,6 +52,7 @@ export class HistoryCompaniesComponent implements OnInit {
       next: async (result: any) => {
         if (result != null) {
           this.empresasHab = result.data;
+          this.empresasHabTmp = JSON.parse(JSON.stringify(this.empresasHab));
         } else {
           alert("Hubo un error")
         }
@@ -69,13 +74,39 @@ export class HistoryCompaniesComponent implements OnInit {
     console.log(this.empresa);
     this.toAbledisabledUser(this.empresa);
   }
-  
+
   public getEmpresaHab(emp: Empresa): void {
     this.empresa = emp;
     this.empresa.Habilitada = 0;
-    this.empresa.user_id_baja = this.user.id_user;  
+    this.empresa.user_id_baja = this.user.id_user;
     console.log(this.empresa);
     this.toAbledisabledUser(this.empresa);
+  }
+
+  public applyFilter(filterValue: any, hab: number): void {
+    console.log(filterValue.target.value)
+    if (filterValue.target.value === '') { 
+      this.empresas = this.empresasTmp;      
+      this.empresasHab = this.empresasHabTmp;
+    }
+
+    if (this.filterValueAct.length > filterValue.target.value.length) {
+      this.filterValueAct = filterValue.target.value.trim().toLowerCase();
+      this.empresas = this.empresasTmp;      
+      this.empresasHab = this.empresasHabTmp;
+      if (hab === 0) {
+        this.empresas = this.empresas.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
+      } else {
+        this.empresasHab = this.empresasHab.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
+      }
+    } else {
+      this.filterValueAct = filterValue.target.value.trim().toLowerCase();
+      if (hab === 0) {
+        this.empresas = this.empresas.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(this.filterValueAct));
+      } else {
+        this.empresasHab = this.empresasHab.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(this.filterValueAct));
+      }
+    }  
   }
 
   public toAbledisabledUser(empresa: Empresa): void {
@@ -108,7 +139,7 @@ export class HistoryCompaniesComponent implements OnInit {
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });
-            }  
+            }
           },
           error: (error: any) => {
             console.log(error);

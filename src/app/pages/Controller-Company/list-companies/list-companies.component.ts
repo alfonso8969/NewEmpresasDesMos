@@ -19,7 +19,7 @@ export class ListCompaniesComponent implements OnInit {
   listEmpresas: Empresa[]
   div: Element;
   sectores: Fields[];
-  
+
   displayedColumns: string[] = ['Nombre', 'Sector', 'Distrito', 'Poligono'];
   dataSource: MatTableDataSource<Empresa>;
 
@@ -65,7 +65,7 @@ export class ListCompaniesComponent implements OnInit {
 
   public applyFilter(filterValue: any): void {
     console.log(filterValue.target.value)
-    filterValue = filterValue.target.value.trim().toLowerCase(); 
+    filterValue = filterValue.target.value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
   }
 
@@ -102,7 +102,7 @@ export class ListCompaniesComponent implements OnInit {
 
   view(item: Empresa) {
     console.log(item.Empresa_det_id);
-    this.route.navigate(['dashboard/view-company', item.Empresa_det_id]);
+    this.route.navigate(['dashboard/view-company', { id: item.Empresa_det_id, url: '/dashboard/list-companies' } ]);
   }
 
   private delay(ms: number) {

@@ -20,11 +20,13 @@
                 </div>
                 <div class="ml-auto">
                   <div class="form-group">
-                    <input id="demo-input-search" type="text" placeholder="Buscar por nombre" autocomplete="off">
+                    <mat-form-field>
+                      <input matInput (keyup)="applyFilter($event, 1)" placeholder="Buscar por nombre...">
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
-  
+
               <div class="table1 table-responsive animated fadeInDown">
                 <table class="table full-color-table full-primary-table hover-table">
                   <thead>
@@ -38,7 +40,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let emp of empresasHab" [routerLink]="['/dashboard/view-company', emp.Empresa_det_id]">
+                    <tr *ngFor="let emp of empresasHab" [routerLink]="['/dashboard/view-company', { id: emp.Empresa_det_id, url: '/dashboard/history-companies' }]">
                       <td class="tdName">{{ emp['Nombre'] | titlecase }}</td>
                       <td class="tdEmail">{{ emp['Email'] }}</td>
                       <td>{{ emp['Telefono'] }}</td>
@@ -48,11 +50,11 @@
                         <a class="btn btn-warning" (click)="getEmpresaHab(emp)"><i class="fa fa-check"></i></a>
                       </td>
                     </tr>
-  
-  
+
+
                   </tbody>
                 </table>
-  
+
               </div>
             </div>
           </div>
@@ -70,7 +72,9 @@
               </div>
               <div class="ml-auto">
                 <div class="form-group">
-                  <input id="demo-input-search1" type="text" placeholder="Buscar por nombre" autocomplete="off">
+                  <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event, 0)" placeholder="Buscar por nombre...">
+                  </mat-form-field>
                 </div>
               </div>
             </div>
@@ -90,7 +94,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let emp of empresas">
+                  <tr *ngFor="let emp of empresas" [routerLink]="['/dashboard/view-company', { id: emp.Empresa_det_id, url: '/dashboard/history-companies' }]">
                     <td>{{ emp['Nombre'] }}</td>
                     <td>{{ emp['Email'] }}</td>
                     <td>{{ emp['Telefono'] }}</td>

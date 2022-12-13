@@ -15,10 +15,13 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   user: User;
   usersHab: User[];
   usersInHab: User[];
+  usersHabTmp: User[];
+  usersInHabTmp: User[];
 
   viewSpinner: boolean = true;
   rolvalue: number;
   rolstr: string;
+  filterValueAct: string = '';
 
   editUserRolForm: FormGroup
 
@@ -37,6 +40,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
       next: (users: any) => {
         if (users != null) {
           this.usersHab = users.data;
+          this.usersHabTmp = JSON.parse(JSON.stringify(this.usersHab));
         } else {
           alert("Hubo un error")
         }
@@ -54,6 +58,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
       next: (users: any) => {
         if (users != null) {
           this.usersInHab = users.data;
+          this.usersInHabTmp = JSON.parse(JSON.stringify(this.usersInHab));
         } else {
           alert("Hubo un error")
         }
@@ -159,6 +164,32 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
         });
       }
     })
+  }
+
+  public applyFilter(filterValue: any, hab: number): void {
+    console.log(filterValue.target.value)
+    if (filterValue.target.value === '') { 
+      this.usersHab = this.usersHabTmp;      
+      this.usersInHab = this.usersInHabTmp;
+    }
+
+    if (this.filterValueAct.length > filterValue.target.value.length) {
+      this.filterValueAct = filterValue.target.value.trim().toLowerCase();
+      this.usersHab = this.usersHabTmp;      
+      this.usersInHab = this.usersInHabTmp;
+      if (hab === 1) {
+        this.usersHab = this.usersHab.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
+      } else {
+        this.usersInHab = this.usersInHab.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
+      }
+    } else {
+      this.filterValueAct = filterValue.target.value.trim().toLowerCase();
+      if (hab === 1) {
+        this.usersHab = this.usersHab.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(this.filterValueAct));
+      } else {
+        this.usersInHab = this.usersInHab.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(this.filterValueAct));
+      }
+    }  
   }
 
   public editUserRol(): void {

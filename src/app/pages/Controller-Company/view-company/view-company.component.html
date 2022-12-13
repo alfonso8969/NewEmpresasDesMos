@@ -10,7 +10,7 @@
       <div class="col-md-12 align-self-center">
         <h3 *ngIf="!isEdited" class="text-themecolor d-inline">Ver empresa {{ empresa != undefined && empresa.Nombre }}</h3>
         <h3 *ngIf="isEdited" class="text-themecolor d-inline">Editar empresa {{ empresa != undefined && empresa.Nombre }}</h3>
-        <button type="button" class="btn-info d-inline float-right align-self-center" [routerLink]="['/dashboard/list-companies']">
+        <button type="button" class="btn-info d-inline float-right align-self-center" [routerLink]="[url]">
           <i class="fa fa-long-arrow-alt-left p-1"></i>
           <span matTooltip="Elija editar para cambiar los datos de la empresa"> Volver al listado
           </span>
@@ -342,7 +342,7 @@
                             target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('linkedin')?.value }}"
                             matTooltip="Click para ir al linkedin">
                             <i class="fa fa-link bg-primary p-2 text-white inp" aria-hidden="true"></i>
-                          </a> 
+                          </a>
                         </div>
                       <span class="err text-danger"
                         *ngIf="isEdited && editCompanyForm.get('linkedin')!.errors != null && editCompanyForm.get('linkedin')!.errors!['pattern'] && editCompanyForm.get('linkedin')?.touched">

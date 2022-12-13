@@ -39,6 +39,7 @@ th.cdk-column-Distrito {
 }
 
 mat-paginator {
+  margin-bottom: 0;
   position: fixed;
 }
 

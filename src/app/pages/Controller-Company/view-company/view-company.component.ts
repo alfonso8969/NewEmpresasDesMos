@@ -18,6 +18,7 @@ export class ViewCompanyComponent implements OnInit {
   empresa: Empresa;
   empresaTmp: Empresa;
   Empresa_det_id: number;
+  url: string;
   city: string = "Móstoles";
   region: string = "Madrid";
 
@@ -44,6 +45,8 @@ export class ViewCompanyComponent implements OnInit {
     this.route.paramMap
       .subscribe((params: any) => {
         this.Empresa_det_id = params.get('id');
+        this.url = params.get('url');
+        console.log(this.url);
         this.companiesService.getCompany(this.Empresa_det_id).subscribe({
           next: (result: any) => {
             if (result != null) {

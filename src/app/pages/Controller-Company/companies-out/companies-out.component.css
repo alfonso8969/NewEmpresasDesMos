@@ -1,7 +1,7 @@
 .mat-table {
     overflow-y: auto;
   }
-  
+
   .tblList th {
     text-align: center;
     font-weight: 700 !important;
@@ -10,7 +10,7 @@
     padding: .5em 5em !important;
     vertical-align: middle !important;
   }
-  
+
   .tblList td {
     font-weight: 900 !important;
     font-family: Monserrat, Arial, Helvetica, sans-serif !important;
@@ -18,24 +18,24 @@
     color: cadetblue;
     padding: .5rem .5rem .5rem .5rem !important;
   }
-  
+
   .table>thead {
     vertical-align: middle !important;
   }
-  
+
   table {
     width: 50% !important;
   }
-  
+
   .tblList {
     background-color: azure;
     cursor: pointer;
   }
-  
+
   th.cdk-column-Nombre {
     width: 25% !important;
   }
-  
+
   th.cdk-column-Distrito {
     width: 20% !important;
   }
@@ -43,20 +43,26 @@
   th.cdk-column-Fecha-baja {
     width: 40% !important;
   }
-  
+
   mat-paginator {
     position: fixed;
   }
-  
+
+  .example-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+    display: inline;
+  }
+
   .fx {
     position: fixed !important;
   }
-  
+
   .fx1 {
     position: fixed !important;
     margin-top: -2%
   }
-  
+
   @media (max-width: 1440px) {
     .fx, .fx1 {
       position: relative !important;
@@ -65,4 +71,3 @@
       position: relative;
     }
   }
-  

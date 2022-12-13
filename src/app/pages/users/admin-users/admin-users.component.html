@@ -20,7 +20,9 @@
               </div>
               <div class="ml-auto">
                 <div class="form-group">
-                  <input id="demo-input-search1" type="text" placeholder="Buscar por nombre" autocomplete="off">
+                  <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event, 1)" placeholder="Buscar por nombre...">
+                  </mat-form-field>
                 </div>
               </div>
             </div>
@@ -77,7 +79,9 @@
               </div>
               <div class="ml-auto">
                 <div class="form-group">
-                  <input id="demo-input-search2" type="text" placeholder="Buscar por nombre" autocomplete="off">
+                  <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event, 0)" placeholder="Buscar por nombre...">
+                  </mat-form-field>
                 </div>
               </div>
             </div>

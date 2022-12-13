@@ -16,6 +16,10 @@ export class Empresa extends Descripcion {
     public fecha_baja: Date
     public user_id_baja?: number;
     public user_id_alta?: number;
+    public 'Fecha alta'?: Date
+    public 'Fecha baja'?: Date
+    public 'Usuario baja'?: number;
+    public 'Usuario alta'?: number;
 
  
 
