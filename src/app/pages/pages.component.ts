@@ -20,7 +20,7 @@ export class PagesComponent implements OnInit {
   from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
   originally bred for hunting.`;
 
-    
+
   @ViewChild(DetailComponent, { static: false }) parentDetail: DetailComponent;
 
   // tslint:disable-next-line: no-output-native
@@ -41,9 +41,9 @@ export class PagesComponent implements OnInit {
 
   viewDashBoard: boolean = false;
 
-  constructor(public companiesService: CompaniesService, 
-              private _router: Router, 
-              private httpClient: HttpClient, 
+  constructor(public companiesService: CompaniesService,
+              private _router: Router,
+              private httpClient: HttpClient,
               private cookieService: CookieService
               ) {
     this.user = new User();
@@ -66,7 +66,7 @@ export class PagesComponent implements OnInit {
       this.viewDashBoard = true;
     }
 
-    
+
     this.cookieExists = cookieService.check('Cookie');
     // Event when closing the detail
     this.close = new EventEmitter<boolean>();
@@ -109,19 +109,19 @@ export class PagesComponent implements OnInit {
         this.showDetail = true;
       }, 600);
     }
-  
+
     saveGDPR() {
       this.cookieService.set('Cookie', 'GDPR');
       this.animationClose();
       this.parentDetail.closeDetail();
     }
-  
+
     refuseCookies() {
       this.cookieService.set('Cookie', 'No-GDPR');
       this.animationClose();
       this.parentDetail.closeDetail();
     }
-  
+
     animationClose() {
       setTimeout(() => {
         this.showDetail = false;

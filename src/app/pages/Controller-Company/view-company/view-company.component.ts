@@ -130,9 +130,9 @@ export class ViewCompanyComponent implements OnInit {
       web: ['', Validators.pattern(/((http|https)\:\/\/||www)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/g)],
       facebook: ['', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/)],
       instagram: ['', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/)],
-      twitter: ['', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)],
+      twitter: ['', Validators.pattern(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]{5,15}(\?(\w+=\w+&?)*)?/)],
       linkedin: ['', Validators.pattern(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/)],
-      tiktok: ['', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)]
+      tiktok: ['', Validators.pattern(/((https?:\/\/)?(www\.)?tiktok\.com\/\@[a-zA-Z0-9_%]*)/)]
     });
   }
 
@@ -161,9 +161,9 @@ export class ViewCompanyComponent implements OnInit {
       web: [web?.toLowerCase() != 'sin datos' ? web : '', Validators.pattern(/^((http:\/\/)|(https:\/\/))?([a-zA-Z0-9]+[.])+[a-zA-Z]{2,4}(:\d+)?(\/[~_.\-a-zA-Z0-9=&%@:]+)*\??[~_.\-a-zA-Z0-9=&%@:]*$/)],
       facebook: [face.toLowerCase() != 'sin datos' ? face : '', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/)],
       instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/)],
-      twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)],
+      twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_@]{5,15}(\?(\w+=\w+&?)*)?/)],
       linkedin: [link.toLowerCase() != 'sin datos' ? link : '', Validators.pattern(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/)],
-      tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)]
+      tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(/((https?:\/\/)?(www\.)?tiktok\.com\/\@[a-zA-Z0-9_%]*)/)]
     });
     this.setFormControlsReadOnly(this.editCompanyForm);
   }
@@ -196,13 +196,11 @@ export class ViewCompanyComponent implements OnInit {
     this.empresa.setProvincia(prov == "" ? this.region : prov);
     this.empresa.setCod_postal(this.editCompanyForm.get("cod_postal")?.value);
     this.empresa.setWeb(this.editCompanyForm.get('web')!.value);
-    let twi = this.editCompanyForm.get('twitter')!.value;
-    this.empresa.setTwitter(twi != '' ? 'https://twitter.com/' + this.editCompanyForm.get('twitter')!.value : twi);
+    this.empresa.setTwitter(this.editCompanyForm.get('twitter')!.value);
     this.empresa.setFacebook(this.editCompanyForm.get('facebook')!.value);
     this.empresa.setInstagram(this.editCompanyForm.get('instagram')!.value);
     this.empresa.setLinkedin(this.editCompanyForm.get('linkedin')!.value);
-    let tik = this.editCompanyForm.get('tiktok')!.value;
-    this.empresa.setGoogle_plus(tik != '' ? 'https://www.tiktok.com/' + this.editCompanyForm.get('tiktok')!.value : tik);
+    this.empresa.setGoogle_plus(this.editCompanyForm.get('tiktok')!.value);
     console.log("Después de del: ", this.empresa);
     this.saveEmpresa(this.empresa);
   }

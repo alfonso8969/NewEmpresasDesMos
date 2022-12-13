@@ -313,7 +313,7 @@
                         Twitter</label>
                       <div class="input-container">
                         <input formControlName="twitter" id="twitter" name="twitter" type="link" class="form-control"
-                          placeholder="@usuario">
+                          placeholder="https://twitter.com/usuario ó https://twitter.com/@usuario">
                         <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('twitter')?.value != ''"
                           target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('twitter')?.value }}"
                           matTooltip="Click para ir al twitter">
@@ -359,7 +359,7 @@
                         Tiktok</label>
                         <div class="input-container">
                           <input formControlName="tiktok" id="tiktok" name="tiktok" type="link" class="form-control"
-                            placeholder="@usuario">
+                            placeholder="https://www.tiktok.com/@usuario">
                             <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('tiktok')?.value != ''"
                             target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('tiktok')?.value }}"
                             matTooltip="Click para ir al tiktok">
