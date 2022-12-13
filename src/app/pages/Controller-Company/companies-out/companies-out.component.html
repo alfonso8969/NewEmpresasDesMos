@@ -22,7 +22,7 @@
             <div class="card">
               <div class="card-body">
                 <div class="form-body">
-                  <h3 class="text-themecolor mx-5">Nº de registros {{ listEmpresas.length }}</h3>
+                  <h3 class="text-themecolor mx-5">Nº de registros {{ dataSource.filteredData.length }}</h3>
                   <div class="example-header mt-3">
                     <mat-form-field>
                       <input matInput (keyup)="applyFilter($event)" placeholder="Buscar...">

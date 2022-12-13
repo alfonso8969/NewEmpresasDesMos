@@ -75,7 +75,6 @@ export class ListCompaniesComponent implements OnInit {
     this.dataSource.filter = sector.length > 0 ? sector[0].empresas_sector_name.trim().toLowerCase() : '';
   }
 
-
   public getCompanies(): void {
     this.companiesService.getCompanies().subscribe({
       next: async (result: any) => {
@@ -100,7 +99,7 @@ export class ListCompaniesComponent implements OnInit {
     });
   }
 
-  view(item: Empresa) {
+  public view(item: Empresa): void {
     console.log(item.Empresa_det_id);
     this.route.navigate(['dashboard/view-company', { id: item.Empresa_det_id, url: '/dashboard/list-companies' } ]);
   }
