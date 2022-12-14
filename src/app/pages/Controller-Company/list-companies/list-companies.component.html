@@ -38,11 +38,11 @@
                         <mat-label>Seleccione sector</mat-label>
                         <mat-select (selectionChange)="select($event.value)"  required>
                           <mat-option>Todos</mat-option>
-                          <mat-option *ngFor="let sector of sectores" [value]="sector.sector_id">
+                          <mat-option *ngFor="let sector of sectores" [value]="sector.sector_id" [matTooltip]="sector.empresas_sector_name" >
                             {{sector.empresas_sector_name}}
                           </mat-option>
                         </mat-select>
-                        
+
                       </mat-form-field>
                     </div>
                     <div class="table-responsive">

@@ -59,7 +59,7 @@ mat-paginator {
   }
 
   .row {
-    display: block !important; 
+    display: block !important;
   }
 
   .container-fluid {
@@ -69,5 +69,9 @@ mat-paginator {
 
   mat-paginator {
     position: relative;
+  }
+
+  .example-header.select .mat-form-field {
+    width: 20em !important;
   }
 }
