@@ -1,18 +1,29 @@
 .input-container {
-    display: flex;
-    align-items: center;
-    padding: 4px;
-    gap: 4px;
-  }
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  gap: 4px;
+}
 
-  .input-container i {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.input-container i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .inp {
-    height: 36px;
-    line-height: 36px;
-    cursor: pointer;
-  }
+.inp {
+  height: 36px;
+  line-height: 36px;
+  cursor: pointer;
+}
+
+.back {
+  cursor: pointer;
+}
+
+
+::ng-deep .mat-tooltip {
+  white-space: pre-line !important;
+  background-color: rgb(43, 43, 212) !important;
+  font-size: 16px !important;
+}
