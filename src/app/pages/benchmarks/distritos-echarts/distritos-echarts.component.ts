@@ -151,8 +151,8 @@ export class DistritosEchartsComponent implements OnInit {
 
   initOpts: any = {
     renderer: 'svg',
-    width: 400,
-    height: 600
+    width: 1200,
+    height: 500
   };
 
   constructor(private benchmarksService: BenchmarksService) {

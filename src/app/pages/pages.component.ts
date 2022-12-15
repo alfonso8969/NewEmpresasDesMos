@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, isDevMode } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -55,14 +55,15 @@ export class PagesComponent implements OnInit {
 
     this.companiesService.getApi()
       .subscribe((data: any) => {
-        this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key='/* + data*/, 'callback')
+        let key  = isDevMode() ? '' : data;
+        this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key='  + key, 'callback')
           .pipe(
             map(() => true),
             catchError(() => of(false))
           );
       });
 
-    console.log()//("ruta: ", this._router.url);
+    console.log("ruta: ", this._router.url);
 
     if (this._router.url === '/dashboard' || this._router.url === '/dashboard#no-back-button') {
       this.viewDashBoard = true;
@@ -134,3 +135,4 @@ export class PagesComponent implements OnInit {
     this._router.navigateByUrl('/login')
   }
 }
+
