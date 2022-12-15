@@ -14,6 +14,9 @@ import { AddUserComponent } from './users/add-user/add-user.component';
 import { AdminUsersComponent } from './users/admin-users/admin-users.component';
 import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
 import { AddFieldsComponent } from './admin/add-fields/add-fields.component';
+import { SectoresEchartsComponent } from './benchmarks/sectores-echarts/sectores-echarts.component';
+import { DistritosEchartsComponent } from './benchmarks/distritos-echarts/distritos-echarts.component';
+import { PoligonosEchartsComponent } from './benchmarks/poligonos-echarts/poligonos-echarts.component';
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -45,6 +48,9 @@ const routes: Routes = [
       { path: 'admin-users', title: "Administrar usuarios", component: AdminUsersComponent },
       { path: 'edit-fields', title: "Administrar campos", component: AdminFieldsComponent },
       { path: 'add-fields', title: "Crear campos", component: AddFieldsComponent },
+      { path: 'graph-sectores', title: "Gráficas sectores", component: SectoresEchartsComponent },
+      { path: 'graph-distritos', title: "Gráficas distritos", component: DistritosEchartsComponent },
+      { path: 'graph-poligonos', title: "Gráficas polígonos", component: PoligonosEchartsComponent },
     ]
   },
 ];

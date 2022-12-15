@@ -8,8 +8,13 @@ a, #welcome, .cursor {
   cursor: pointer;
 }
 
-a:hover, a:active {
-  color: blue !important;
+a:active {
+  color: rgb(104, 104, 122) !important;
+  background: transparent !important;
+}
+
+a:hover {
+  color: rgb(35, 35, 233) !important;
   background: transparent !important;
 }
 

@@ -21,10 +21,13 @@ import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.componen
 import { PagesComponent } from './pages.component';
 import { NgMaterialModule } from '../design/material.module';
 import { ComponentsModule } from '../components/components.module';
-import { ChartsComponent } from './charts/charts/charts.component';
 import { DirectivesModule } from '../events/directives.module';
 import { TrimPipe } from '../pipes/trim.pipe';
 import { SharedModule } from 'src/shared/shared.module';
+import { DistritosEchartsComponent } from './benchmarks/distritos-echarts/distritos-echarts.component';
+import { PoligonosEchartsComponent } from './benchmarks/poligonos-echarts/poligonos-echarts.component';
+import { SectoresEchartsComponent } from './benchmarks/sectores-echarts/sectores-echarts.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -42,8 +45,10 @@ import { SharedModule } from 'src/shared/shared.module';
     AddUserComponent,
     AddFieldsComponent,
     AdminFieldsComponent,
-    ChartsComponent,
-    TrimPipe
+    TrimPipe,
+    DistritosEchartsComponent,
+    PoligonosEchartsComponent,
+    SectoresEchartsComponent
   ],
   imports: [
     CommonModule,
@@ -55,6 +60,9 @@ import { SharedModule } from 'src/shared/shared.module';
     ComponentsModule,
     DirectivesModule,
     GoogleMapsModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+    }),
     SharedModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

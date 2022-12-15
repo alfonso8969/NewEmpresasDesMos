@@ -1,0 +1,39 @@
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid animated fadeIn">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Gráficas</h3>
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div>
+                        <h3 class="card-title p-1">Gráfica de empresas por sectores</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-body">
+                            <hr>
+                            <div echarts [options]="options" class="demo-chart" 
+                                (chartClick)="onChartEvent($event, 'chartClick')"
+                                (chartContextMenu)="onChartEvent($event, 'chartContextMenu')"
+                                (chartMouseOver)="onChartMouseOver($event, 'chartMouseOver')"
+                                [matTooltip]="message" 
+                                matTooltipPosition="above" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

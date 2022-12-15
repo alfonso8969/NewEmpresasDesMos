@@ -1,0 +1,41 @@
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid animated fadeIn">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Gráficas</h3>
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div>
+                        <h3 class="card-title p-1">Gráfica de empresas por distritos</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-body">
+                            <hr>
+                            <div class="button-groups">
+                              <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme='macarons'"
+                                  nz-button nzType="default">Tema claro</button>
+                                <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme='dark'"
+                                    nz-button nzType="default">Tema Oscuro</button>
+                                <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme=coolTheme"
+                                    nz-button nzType="default">Tema cool</button>
+                            </div>
+                            <div echarts [options]="options" [theme]="theme" class="demo-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

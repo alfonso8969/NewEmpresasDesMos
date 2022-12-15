@@ -1,0 +1,10 @@
+.card {
+    height: 600px !important;
+}
+
+@media (max-width: 1440px) {
+
+    .card {
+       overflow-x: auto;
+    }
+}

@@ -11,62 +11,8 @@ export class CompaniesService {
 
   url: String = environment.apiUrl;
 
-  public menu = [
-    {
-      title: 'Empresas',
-      icon: 'fa fa-building',
-      submenu: [
-        {
-          title: 'Listado empresas', url: '/dashboard/list-companies'
-        },
-        {
-          title: 'Crear empresa', url: '/dashboard/add-company'
-        }
-      ]
-    },
-    {
-      title: 'Historial empresas',
-      icon: 'fa fa-archive',
-      submenu: [
-        {
-          title: 'Empresas deshabilitadas', url: '/dashboard/companies-out'
-        },
-        {
-          title: 'Historial', url: '/dashboard/history-companies'
-        }
-      ]
-    }
-  ]
 
-  public menuAdmin = [
-    {
-      title: 'Usuarios',
-      icon: 'fa fa-id-card',
-      submenu: [
-        {
-          title: 'Listado usuarios', url: '/dashboard/list-users'
-        },
-        {
-          title: 'Crear usuario', url: '/dashboard/add-user'
-        },
-        {
-          title: 'Administrar usuarios', url: '/dashboard/admin-users'
-        }
-      ]
-    },
-    {
-      title: 'Administración',
-      icon: 'fa fa-toolbox',
-      submenu: [
-        {
-          title: 'Administrar Campos', url: '/dashboard/edit-fields'
-        },
-        {
-          title: 'Crear Campos', url: '/dashboard/add-fields'
-        }
-      ]
-    }
-  ]
+
   constructor(private http: HttpClient) {
 
     if (isDevMode()) {

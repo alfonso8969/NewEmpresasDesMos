@@ -71,7 +71,16 @@ mat-paginator {
     position: relative;
   }
 
+}
+
+@media (max-width: 768px) {
   .example-header.select .mat-form-field {
     width: 20em !important;
+    overflow-y: auto;
+  }
+
+  mat-option {
+    overflow-y: auto;
   }
 }
+

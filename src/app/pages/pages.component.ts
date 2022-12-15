@@ -8,6 +8,7 @@ import { DetailComponent } from 'src/shared/components/detail/detail.component';
 import { User } from '../class/users';
 import { CompaniesService } from '../services/companies.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MenuService } from '../services/menu.service';
 
 @Component({
   selector: 'app-pages',
@@ -16,9 +17,9 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class PagesComponent implements OnInit {
 
-  longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
-  from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
-  originally bred for hunting.`;
+  longText = `Establecer ojetivos es el primer paso para convertir lo invisible en visible.`;
+  longText2 = `Nuestras vidas están definidas por oportunidades, incluso las que perdemos.`;
+  longText3 = `No son los individuos los que hacen las empresas exitosas, sino los equipos.`;
 
 
   @ViewChild(DetailComponent, { static: false }) parentDetail: DetailComponent;
@@ -41,7 +42,8 @@ export class PagesComponent implements OnInit {
 
   viewDashBoard: boolean = false;
 
-  constructor(public companiesService: CompaniesService,
+  constructor(public menuService: MenuService,
+              public companiesService: CompaniesService,
               private _router: Router,
               private httpClient: HttpClient,
               private cookieService: CookieService

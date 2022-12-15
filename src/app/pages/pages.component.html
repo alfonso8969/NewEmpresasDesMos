@@ -65,7 +65,7 @@
                     </div>
                   </div>
                 </li>
-                <li *ngFor="let item of companiesService.menu">
+                <li *ngFor="let item of menuService.menu">
                   <a class="waves-effect waves-dark" aria-expanded="false">
                     <i [class]="item.icon"></i>
                     <span class="nav-sup-menu p-2">{{ item.title }}</span>
@@ -100,12 +100,12 @@
           <mat-card class="card panel first">
             <mat-card-header>
               <mat-card-title-group>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-subtitle>Large</mat-card-subtitle>
+                <mat-card-title>Empresa</mat-card-title>
+                <mat-card-subtitle><cite>@Candidman</cite></mat-card-subtitle>
               </mat-card-title-group>
             </mat-card-header>
             <mat-card-content>
-              {{longText}}
+              {{longText3}}
             </mat-card-content>
           </mat-card>
         </div>
@@ -113,12 +113,12 @@
           <mat-card class="card panel second">
             <mat-card-header>
               <mat-card-title-group>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-subtitle>Large</mat-card-subtitle>
+                <mat-card-title class="text-light">Oportunidades</mat-card-title>
+                <mat-card-subtitle><cite class="text-light">Benjamin Button</cite></mat-card-subtitle>
               </mat-card-title-group>
             </mat-card-header>
             <mat-card-content>
-              {{longText}}
+              {{longText2}}
             </mat-card-content>
           </mat-card>
         </div>
@@ -126,8 +126,8 @@
           <mat-card class="card panel third">
             <mat-card-header>
               <mat-card-title-group>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-subtitle>Large</mat-card-subtitle>
+                <mat-card-title>Motivación</mat-card-title>
+                <mat-card-subtitle><cite>Tony Robbins</cite></mat-card-subtitle>
               </mat-card-title-group>
             </mat-card-header>
             <mat-card-content>
@@ -167,8 +167,8 @@
           <li class="nav-devider"></li>
           <li class="nav-small-cap text-light">Indicadores</li>
 
-          <li class="mb-3" *ngFor="let item of companiesService.menu">
-            <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
+          <li class="mb-3" *ngFor="let item of menuService.menu">
+            <a class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -178,8 +178,8 @@
               </li>
             </ul>
           </li>
-          <li class="mb-3" *ngFor="let item of companiesService.menuAdmin">
-            <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
+          <li class="mb-3" *ngFor="let item of menuService.menuAdmin">
+            <a class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -189,7 +189,19 @@
               </li>
             </ul>
           </li>
-          <li role="separator" class="divider"></li>
+          <li role="separator" class="nav-devider"></li>
+          <li class="mb-3" *ngFor="let item of menuService.menuGraphs">
+            <a class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+              <i [class]="item.icon"></i>
+              <span class="hide-menu">{{ item.title }}</span>
+            </a>
+            <ul aria-expanded="false">
+              <li class="mt-3" *ngFor="let subitem of item.submenu">
+                <a (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
+              </li>
+            </ul>
+          </li>
+          <li role="separator" class="nav-devider" *ngIf="!viewDashBoard"></li>
           <li class="for-group mx-1" *ngIf="!viewDashBoard">
             <a class="waves-dark" aria-expanded="false" matTooltip="Ver página principal"
               (click)="functViewDashboard()">
@@ -198,9 +210,9 @@
             </a>
           </li>
 
-          <li role="separator" class="divider mt-3"></li>
+          <li role="separator" class="nav-devider mt-3"></li>
           <li>
-            <a class="cursor" (click)="logout()">
+            <a class="cursor" (click)="logout()" matTooltip="Logout">
               <i class="fa fa-power-off"></i>
               Salir
             </a>
@@ -247,7 +259,7 @@
           <pre>
                     Utilizamos cookies propias y de terceros para mejorar nuestros servicios.
                     Mostrarte publicidad relacionada con tus preferencias mediante el análisis de tus hábitos de navegación.
-                    Pulse el botón ACEPTAR, para confirmar que ha leído y aceptado la información presentada. 
+                    Pulse el botón ACEPTAR, para confirmar que ha leído y aceptado la información presentada.
                     Después de aceptar no volveremos a mostrar este mensaje.
                     Puede obtener más información en nuestra politica de privacidad
   <a href="https://alfonsogonz.es/alf-blog/politica-de-privacidad/" target="_blank" rel="noopener noreferrer">Ir a politica de privacidad</a>
