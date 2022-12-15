@@ -24,20 +24,20 @@ export class DistritosEchartsComponent implements OnInit {
       '#e6f2ff',
       '#eeeeee'
     ],
-  
+
     title: {
       fontWeight: 'normal',
       color: '#00aecd'
     },
-  
+
     visualMap: {
       color: ['#00aecd', '#a2d4e6']
     },
-  
+
     toolbox: {
       color: ['#00aecd', '#00aecd', '#00aecd', '#00aecd']
     },
-  
+
     tooltip: {
       backgroundColor: 'rgba(0,0,0,0.5)',
       axisPointer: {
@@ -57,14 +57,14 @@ export class DistritosEchartsComponent implements OnInit {
         }
       }
     },
-  
+
     // Area scaling controller
     dataZoom: {
       dataBackgroundColor: '#eee', // Data background color
       fillerColor: 'rgba(144,197,237,0.2)', // Fill the color
       handleColor: '#00aecd' // Handle color
     },
-  
+
     timeline: {
       lineStyle: {
         color: '#00aecd'
@@ -74,7 +74,7 @@ export class DistritosEchartsComponent implements OnInit {
         borderColor: '00aecd'
       }
     },
-  
+
     candlestick: {
       itemStyle: {
         color: '#00aecd',
@@ -90,7 +90,7 @@ export class DistritosEchartsComponent implements OnInit {
         color0: '#0b5ea8'
       }
     },
-  
+
     chord: {
       padding: 4,
       itemStyle: {
@@ -105,7 +105,7 @@ export class DistritosEchartsComponent implements OnInit {
         color: '#0b5ea8'
       }
     },
-  
+
     graph: {
       itemStyle: {
         color: '#b21ab4'
@@ -114,7 +114,7 @@ export class DistritosEchartsComponent implements OnInit {
         color: '#2a2073'
       }
     },
-  
+
     map: {
       itemStyle: {
         color: '#c12e34'
@@ -126,7 +126,7 @@ export class DistritosEchartsComponent implements OnInit {
         color: '#c12e34'
       }
     },
-  
+
     gauge: {
       axisLine: {
         lineStyle: {
@@ -148,6 +148,12 @@ export class DistritosEchartsComponent implements OnInit {
   data_result: BenchMarks[];
   distritos_name: Array<string> = [];
   data_values: data_value[] = [];
+
+  initOpts: any = {
+    renderer: 'svg',
+    width: 400,
+    height: 600
+  };
 
   constructor(private benchmarksService: BenchmarksService) {
     this.benchmarksService.getFieldsForBenchMarks('distrito')
@@ -172,7 +178,7 @@ export class DistritosEchartsComponent implements OnInit {
           },
           legend: {
             align: 'auto',
-            bottom: 20,
+            bottom: 10,
             data: [ ...this.distritos_name ]
           },
           calculable: true,
@@ -183,12 +189,12 @@ export class DistritosEchartsComponent implements OnInit {
               radius: [30, 110],
               roseType: 'area',
               data: [
-                ...this.data_values    
+                ...this.data_values
               ]
             }
           ]
         };
-       
+
       },
       error: (error: any) =>  {
         console.log(error);
@@ -196,7 +202,7 @@ export class DistritosEchartsComponent implements OnInit {
       },
       complete: () => console.log("Complete: ", this.data_result)
     })
-    
+
    }
 
   ngOnInit(): void {

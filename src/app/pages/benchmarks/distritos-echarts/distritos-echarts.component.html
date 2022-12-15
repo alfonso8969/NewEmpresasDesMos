@@ -20,18 +20,18 @@
                     <div>
                         <h3 class="card-title p-1">Gráfica de empresas por distritos</h3>
                     </div>
-                    <div class="card-body">
+                    <hr>
+                    <div class="button-groups">
+                      <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme='macarons'"
+                          nz-button nzType="default">Tema claro</button>
+                        <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme='dark'"
+                            nz-button nzType="default">Tema Oscuro</button>
+                        <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme=coolTheme"
+                            nz-button nzType="default">Tema cool</button>
+                    </div>
+                    <div class="card-body ml-auto mr-auto">
                         <div class="form-body">
-                            <hr>
-                            <div class="button-groups">
-                              <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme='macarons'"
-                                  nz-button nzType="default">Tema claro</button>
-                                <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme='dark'"
-                                    nz-button nzType="default">Tema Oscuro</button>
-                                <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme=coolTheme"
-                                    nz-button nzType="default">Tema cool</button>
-                            </div>
-                            <div echarts [options]="options" [theme]="theme" class="demo-chart"></div>
+                            <div echarts [initOpts]="initOpts" [options]="options" [theme]="theme" class="demo-chart"></div>
                         </div>
                     </div>
                 </div>

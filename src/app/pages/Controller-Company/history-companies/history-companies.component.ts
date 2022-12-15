@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { User } from 'src/app/class/users';
 import { CompaniesService } from 'src/app/services/companies.service';
@@ -20,7 +21,7 @@ export class HistoryCompaniesComponent implements OnInit {
 
   viewSpinner: boolean = true;
   filterValueAct: string = '';
-  constructor(private companiesService: CompaniesService) {
+  constructor(private companiesService: CompaniesService, private router: Router) {
     this.user = new User();
     this.user.id_user = 1;
     this.fillTables();
@@ -67,7 +68,11 @@ export class HistoryCompaniesComponent implements OnInit {
     });
   }
 
-  public getEmpresa(emp: Empresa): void {
+  public getEmpresa(emp: Empresa, navigate: boolean): void {
+    if (navigate) {
+      this.router.navigate(['/dashboard/view-company', { id: emp.Empresa_det_id, url: '/dashboard/history-companies' }]);
+      return;
+    }
     this.empresa = emp;
     this.empresa.Habilitada = 1;
     this.empresa.user_id_alta = this.user.id_user;
@@ -75,7 +80,11 @@ export class HistoryCompaniesComponent implements OnInit {
     this.toAbledisabledUser(this.empresa);
   }
 
-  public getEmpresaHab(emp: Empresa): void {
+  public getEmpresaHab(emp: Empresa, navigate: boolean): void {
+    if (navigate) {
+      this.router.navigate(['/dashboard/view-company', { id: emp.Empresa_det_id, url: '/dashboard/history-companies' }]);
+      return;
+    }
     this.empresa = emp;
     this.empresa.Habilitada = 0;
     this.empresa.user_id_baja = this.user.id_user;
@@ -111,10 +120,10 @@ export class HistoryCompaniesComponent implements OnInit {
 
   public toAbledisabledUser(empresa: Empresa): void {
     let title = empresa.Habilitada == 1 ? 'Habilitar' : 'Deshabilitar';
-    let message = empresa.Habilitada == 1 ? '¿Está seguro que desea habilitar la empresa ' : '¿Está seguro que desea deshabilitar la empresa ';
+    let message = `¿Está seguro que desea ${ title.toLowerCase() } la empresa ${ empresa.Nombre }?`;
     Swal.fire({
       title: title + ' empresa',
-      html: message  + empresa.Nombre + '?',
+      html: message,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

@@ -40,14 +40,14 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let emp of empresasHab" [routerLink]="['/dashboard/view-company', { id: emp.Empresa_det_id, url: '/dashboard/history-companies' }]">
-                      <td class="tdName">{{ emp['Nombre'] | titlecase }}</td>
-                      <td class="tdEmail">{{ emp['Email'] }}</td>
-                      <td>{{ emp['Telefono'] }}</td>
-                      <td>{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
-                      <td>{{ emp['Usuario alta'] }}</td>
+                    <tr *ngFor="let emp of empresasHab">
+                      <td class="tdName" (click)="getEmpresaHab(emp, true)" >{{ emp['Nombre'] | titlecase }}</td>
+                      <td class="tdEmail" (click)="getEmpresaHab(emp, true)" >{{ emp['Email'] }}</td>
+                      <td (click)="getEmpresaHab(emp, true)" >{{ emp['Telefono'] }}</td>
+                      <td (click)="getEmpresaHab(emp, true)" >{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
+                      <td (click)="getEmpresaHab(emp, true)" >{{ emp['Usuario alta'] }}</td>
                       <td>
-                        <a class="btn btn-warning" (click)="getEmpresaHab(emp)"><i class="fa fa-check"></i></a>
+                        <a class="btn btn-warning" (click)="getEmpresaHab(emp, false)"><i class="fa fa-check"></i></a>
                       </td>
                     </tr>
 
@@ -94,16 +94,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let emp of empresas" [routerLink]="['/dashboard/view-company', { id: emp.Empresa_det_id, url: '/dashboard/history-companies' }]">
-                    <td>{{ emp['Nombre'] }}</td>
-                    <td>{{ emp['Email'] }}</td>
-                    <td>{{ emp['Telefono'] }}</td>
-                    <td>{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
-                    <td>{{ emp['Usuario alta'] }}</td>
-                    <td>{{ emp['Fecha baja'] | date: 'dd-MM-yyyy' }}</td>
-                    <td>{{ emp['Usuario baja'] }}</td>
+                  <tr *ngFor="let emp of empresas">
+                    <td (click)="getEmpresa(emp, true)">{{ emp['Nombre'] }}</td>
+                    <td (click)="getEmpresa(emp, true)">{{ emp['Email'] }}</td>
+                    <td (click)="getEmpresa(emp, true)">{{ emp['Telefono'] }}</td>
+                    <td (click)="getEmpresa(emp, true)">{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
+                    <td (click)="getEmpresa(emp, true)">{{ emp['Usuario alta'] }}</td>
+                    <td (click)="getEmpresa(emp, true)">{{ emp['Fecha baja'] | date: 'dd-MM-yyyy' }}</td>
+                    <td (click)="getEmpresa(emp, true)">{{ emp['Usuario baja'] }}</td>
                     <td>
-                      <a class="btn btn-warning" (click)="getEmpresa(emp)" ><i class="fa fa-check"></i></a>
+                      <a class="btn btn-warning" (click)="getEmpresa(emp, false)" ><i class="fa fa-check"></i></a>
                     </td>
                   </tr>
 

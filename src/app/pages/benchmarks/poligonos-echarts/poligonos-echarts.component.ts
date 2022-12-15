@@ -13,10 +13,10 @@ export class PoligonosEchartsComponent implements OnInit {
   data_result: BenchMarks[];
   poligonos_name: Array<string> = [];
   data_count: Array<number> = [];
-  
+
   initOpts: any = {
     renderer: 'svg',
-    width: 500,
+    width: 1000,
     height: 500
   };
 
@@ -36,7 +36,7 @@ export class PoligonosEchartsComponent implements OnInit {
           color: ['#3398DB'],
           tooltip: {
             trigger: 'axis',
-            axisPointer: { 
+            axisPointer: {
               type: 'shadow'
             }
           },
@@ -65,7 +65,7 @@ export class PoligonosEchartsComponent implements OnInit {
             data: [ ...this.data_count ]
           }]
         }
-       
+
       },
       error: (error: any) =>  {
         console.log(error);
