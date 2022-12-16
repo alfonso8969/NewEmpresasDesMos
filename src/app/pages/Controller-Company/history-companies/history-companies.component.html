@@ -42,19 +42,19 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let emp of empresasHab | paginate: { id: 'hab', itemsPerPage: 20, currentPage: page }">
-                      <td class="tdName" (click)="getEmpresaHab(emp, true)" >{{ emp['Nombre'] | titlecase }}</td>
-                      <td class="tdEmail" (click)="getEmpresaHab(emp, true)" >{{ emp['Email'] }}</td>
-                      <td (click)="getEmpresaHab(emp, true)" >{{ emp['Telefono'] }}</td>
-                      <td (click)="getEmpresaHab(emp, true)" >{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
-                      <td (click)="getEmpresaHab(emp, true)" >{{ emp['Usuario alta'] }}</td>
+                      <td class="tdName" (click)="getEmpresa(emp, true)" >{{ emp['Nombre'] | titlecase }}</td>
+                      <td class="tdEmail" (click)="getEmpresa(emp, true)" >{{ emp['Email'] }}</td>
+                      <td (click)="getEmpresa(emp, true)" >{{ emp['Telefono'] }}</td>
+                      <td (click)="getEmpresa(emp, true)" >{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
+                      <td (click)="getEmpresa(emp, true)" >{{ emp['Usuario alta'] }}</td>
                       <td>
-                        <a class="btn btn-warning" (click)="getEmpresaHab(emp, false)"><i class="fa fa-check"></i></a>
+                        <a class="btn btn-warning" (click)="getEmpresa(emp, false, 0)"><i class="fa fa-check"></i></a>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="mt-2">
+              <div class="animated fadeInDown mt-2">
                 <pagination-controls id="hab" (pageChange)="page = $event" [previousLabel]="anterior" [nextLabel]="siguiente" [responsive]="true"></pagination-controls>
               </div>
             </div>
@@ -104,13 +104,13 @@
                     <td (click)="getEmpresa(emp, true)">{{ emp['Fecha baja'] | date: 'dd-MM-yyyy' }}</td>
                     <td (click)="getEmpresa(emp, true)">{{ emp['Usuario baja'] }}</td>
                     <td>
-                      <a class="btn btn-warning" (click)="getEmpresa(emp, false)" ><i class="fa fa-check"></i></a>
+                      <a class="btn btn-warning" (click)="getEmpresa(emp, false, 1)" ><i class="fa fa-check"></i></a>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div class="mt-2">
+            <div class="animated fadeInDown mt-2">
               <pagination-controls id="inHab" (pageChange)="page2 = $event" [previousLabel]="anterior" [nextLabel]="siguiente" [responsive]="true" [autoHide]="true"></pagination-controls>
             </div>
           </div>

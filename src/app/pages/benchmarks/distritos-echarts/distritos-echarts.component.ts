@@ -146,8 +146,10 @@ export class DistritosEchartsComponent implements OnInit {
   coolTheme = this.CoolTheme;
 
   data_result: BenchMarks[];
-  distritos_name: Array<string> = [];
   data_values: data_value[] = [];
+
+  totalEmpresas: number = 0;
+  distritos_name: Array<string> = [];
 
   initOpts: any = {
     renderer: 'svg',
@@ -161,6 +163,7 @@ export class DistritosEchartsComponent implements OnInit {
       next: (dataResult: BenchMarks[]) => {
         this.data_result = dataResult;
         this.data_result.forEach((item: BenchMarks) => {
+          this.totalEmpresas += Number(item.count!);
           this.distritos_name.push(item.distrito!);
           this.data_values.push({value: item.count!, name: item.distrito!});
         });
@@ -168,8 +171,8 @@ export class DistritosEchartsComponent implements OnInit {
         this.options = {
           title: {
             left: '50%',
-            text: 'Rose Diagram',
-            subtext: 'Empresas distritos',
+            text: 'Empresas por distritos',
+            subtext: `Total de empresas ${ this.totalEmpresas }`,
             textAlign: 'center',
           },
           tooltip: {

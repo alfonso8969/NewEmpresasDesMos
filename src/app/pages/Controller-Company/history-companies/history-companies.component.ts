@@ -75,28 +75,20 @@ export class HistoryCompaniesComponent implements OnInit {
     });
   }
 
-  public getEmpresa(emp: Empresa, navigate: boolean): void {
-    if (navigate) {
+  public getEmpresa(emp: Empresa, navigate: boolean, hab: number = 3): void {
+    if (navigate && hab == 3) {
       this.router.navigate(['/dashboard/view-company', { id: emp.Empresa_det_id, url: '/dashboard/history-companies' }]);
       return;
     }
     this.empresa = emp;
-    this.empresa.Habilitada = 1;
-    this.empresa.user_id_alta = this.user.id_user;
-    console.log(this.empresa);
-    this.toAbledisabledUser(this.empresa);
-  }
-
-  public getEmpresaHab(emp: Empresa, navigate: boolean): void {
-    if (navigate) {
-      this.router.navigate(['/dashboard/view-company', { id: emp.Empresa_det_id, url: '/dashboard/history-companies' }]);
-      return;
+    this.empresa.Habilitada = hab;
+    if (hab === 0) {
+      this.empresa.user_id_baja = this.user.id_user;
+    } else {
+      this.empresa.user_id_alta = this.user.id_user;
     }
-    this.empresa = emp;
-    this.empresa.Habilitada = 0;
-    this.empresa.user_id_baja = this.user.id_user;
     console.log(this.empresa);
-    this.toAbledisabledUser(this.empresa);
+    this.toAbledisabledCompany(this.empresa);
   }
 
   public applyFilter(filterValue: any, hab: number): void {
@@ -125,7 +117,7 @@ export class HistoryCompaniesComponent implements OnInit {
     }  
   }
 
-  public toAbledisabledUser(empresa: Empresa): void {
+  public toAbledisabledCompany(empresa: Empresa): void {
     let title = empresa.Habilitada == 1 ? 'Habilitar' : 'Deshabilitar';
     let message = `¿Está seguro que desea ${ title.toLowerCase() } la empresa ${ empresa.Nombre }?`;
     Swal.fire({
