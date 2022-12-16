@@ -15,8 +15,6 @@ export class SectoresEchartsComponent implements OnInit {
   data_result: BenchMarks[];
   dataAxis: Array<number> = [];
   data_count: Array<number> = [];
-  sectores_name: Array<string> = [];
-  sector: string = '';
   message: string = '';
 
   constructor(private benchmarksService: BenchmarksService) {
@@ -27,7 +25,6 @@ export class SectoresEchartsComponent implements OnInit {
         this.data_result.forEach((item: BenchMarks) => {
           this.dataAxis.push(item.sector_id!);
           this.data_count.push(item.count!);
-          this.sectores_name.push(item.sector!);
         });
         const dataAxis = [
           ...this.dataAxis
@@ -125,10 +122,11 @@ export class SectoresEchartsComponent implements OnInit {
   }
 
   onChartEvent(event: any, type: string) {
-    this.sector = this.sectores_name[event.name];
+    let sector = this.data_result.find((item: BenchMarks) => item.sector_id == event.name);
+    console.log("Sector:", sector);
     Swal.fire({
       title: 'Empresas por sectores',
-      html: `<p>El sector: ${ this.sector }</p><p>nº sector ${ event.name }</p><p>tiene ${ event.value } empresas</p>`,	
+      html: `<p>El sector: ${ sector?.sector }</p><p>nº sector ${ sector?.sector_id }</p><p>tiene ${ sector?.count } empresas</p>`,	
       icon: 'info',
       confirmButtonText: 'Aceptar'
 
@@ -136,9 +134,9 @@ export class SectoresEchartsComponent implements OnInit {
   }
 
   onChartMouseOver(event: any, type: string) {
-    this.sector = this.sectores_name[event.name];
-    this.message = `El sector: ${ this.sector }
-                    Nº sector ${ event.name }
-                    Tiene ${ event.value } empresas`;
+    let sector = this.data_result.find((item: BenchMarks) => item.sector_id == event.name);
+    this.message = `El sector: ${ sector?.sector }
+                    Nº sector ${ sector?.sector_id }
+                    Tiene ${ sector?.count } empresas`;
   }
 }
