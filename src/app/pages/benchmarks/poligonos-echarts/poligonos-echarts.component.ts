@@ -55,16 +55,18 @@ export class PoligonosEchartsComponent implements OnInit {
                   title: 'Mostrar datos',
                   backgroundColor: '#4080FF',
                   textColor: '#FA6F27',
-                  iconStyle: {}
+                  iconStyle: { color: '#2A9EE0' }
                 },
                 magicType: { 
                   show: true, 
                   type: ['line', 'bar'],
-                  title: { line: 'Cambiar a lineas', bar: 'Cambiar a barras' }
+                  title: { line: 'Cambiar a lineas', bar: 'Cambiar a barras' },
+                  iconStyle: { color: '#24F52E' }
                 },
                 restore: { 
                   show: true,
-                  title: 'Actualizar'
+                  title: 'Actualizar',
+                  iconStyle: { color: '#FA8125' }
                 },
                 saveAsImage : { 
                   show: true, 
@@ -72,6 +74,7 @@ export class PoligonosEchartsComponent implements OnInit {
                   backgroundColor: '#4080FF',
                   name: 'empresas_por_poligonos',
                   type: 'png',
+                  iconStyle: { color: '#645CFF' }
                 }
               }
             },

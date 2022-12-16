@@ -189,15 +189,21 @@ export class DistritosEchartsComponent implements OnInit {
                     title: 'Mostrar datos', 
                     backgroundColor: '#4080FF', 
                     textColor: '#FA6F27',
-                    iconStyle: { }
+                    iconStyle: { color: '#2A9EE0' }
                   },
-                  restore : { show: true, title: 'Actualizar'},
+                  restore : { 
+                    show: true, 
+                    title: 'Actualizar',
+                    iconStyle: { color: '#FA8125' }
+                  },
+                 
                   saveAsImage : { 
                     show: true, 
                     title: 'Guardar como imagen',
                     backgroundColor: '#4080FF',
                     name: 'empresas_por_distritos',
                     type: 'jpeg',
+                    iconStyle: { color: '#645CFF' }
                   }
               }
           },
