@@ -28,6 +28,7 @@ import { DistritosEchartsComponent } from './benchmarks/distritos-echarts/distri
 import { PoligonosEchartsComponent } from './benchmarks/poligonos-echarts/poligonos-echarts.component';
 import { SectoresEchartsComponent } from './benchmarks/sectores-echarts/sectores-echarts.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
     }),
+    NgxPaginationModule,
     SharedModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

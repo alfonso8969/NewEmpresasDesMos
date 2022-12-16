@@ -22,6 +22,11 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   rolvalue: number;
   rolstr: string;
   filterValueAct: string = '';
+  public page: number = 1;
+  public page2: number = 1;
+
+  public siguiente: string = "Siguiente";
+  public anterior: string = "Anterior";
 
   editUserRolForm: FormGroup
 

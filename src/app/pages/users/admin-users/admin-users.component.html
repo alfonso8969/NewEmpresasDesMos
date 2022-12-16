@@ -42,7 +42,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of usersHab; index as i">
+                  <tr *ngFor="let user of usersHab  | paginate: { id: 'userHab', itemsPerPage: 5, currentPage: page }; index as i">
                     <td >{{ user.user_name }}</td>
                     <td>{{ user.user_lastName }}</td>
                     <td>{{ user.user_phone }}</td>
@@ -57,11 +57,11 @@
                       <a class="btn btn-danger" (click)="deleteUser(i)"><i class="fa fa-trash"></i></a>
                     </td>
                   </tr>
-
-
                 </tbody>
               </table>
-
+            </div>
+            <div class="mt-2">
+              <pagination-controls id="userHab" (pageChange)="page = $event" [previousLabel]="anterior" [nextLabel]="siguiente" [responsive]="true" [autoHide]="true"></pagination-controls>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of usersInHab">
+                  <tr *ngFor="let user of usersInHab | paginate: { id: 'userInHab', itemsPerPage: 5, currentPage: page2 }">
                     <td>{{ user.user_name }}</td>
                     <td>{{ user.user_lastName }}</td>
                     <td>{{ user.user_phone }}</td>
@@ -113,7 +113,9 @@
                   </tr>
                 </tbody>
               </table>
-
+            </div>
+            <div class="mt-2">
+              <pagination-controls id="userInHab" (pageChange)="page2 = $event" [previousLabel]="anterior" [nextLabel]="siguiente" [responsive]="true" [autoHide]="true"></pagination-controls>
             </div>
           </div>
         </div>

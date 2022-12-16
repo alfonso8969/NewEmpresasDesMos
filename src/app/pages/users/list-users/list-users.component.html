@@ -39,7 +39,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of users">
+                  <tr *ngFor="let user of users | paginate: { id: 'users', itemsPerPage: 10, currentPage: page }">
                     <td>{{ user.user_name }}</td>
                     <td>{{ user.user_lastName }}</td>
                     <td>{{ user.user_phone }}</td>
@@ -52,6 +52,9 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div class="mt-2">
+              <pagination-controls id="users" (pageChange)="page = $event" [previousLabel]="anterior" [nextLabel]="siguiente" [responsive]="true" [autoHide]="true"></pagination-controls>
             </div>
           </div>
         </div>

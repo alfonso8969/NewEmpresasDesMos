@@ -14,13 +14,20 @@ export class HistoryCompaniesComponent implements OnInit {
 
   user: User;
   empresa: Empresa;
-  empresas: Empresa[];
+  empresasInHab: Empresa[];
   empresasHab: Empresa[];
   empresasTmp: Empresa[];
   empresasHabTmp: Empresa[];
 
   viewSpinner: boolean = true;
   filterValueAct: string = '';
+
+  public page: number = 1;
+  public page2: number = 1;
+
+  public siguiente: string = "Siguiente";
+  public anterior: string = "Anterior";
+
   constructor(private companiesService: CompaniesService, private router: Router) {
     this.user = new User();
     this.user.id_user = 1;
@@ -34,8 +41,8 @@ export class HistoryCompaniesComponent implements OnInit {
     this.companiesService.getComapniesHistory().subscribe({
       next: async (result: any) => {
         if (result != null) {
-          this.empresas = result.data;
-          this.empresasTmp = JSON.parse(JSON.stringify(this.empresas));
+          this.empresasInHab = result.data;
+          this.empresasTmp = JSON.parse(JSON.stringify(this.empresasInHab));
         } else {
           alert("Hubo un error")
         }
@@ -46,7 +53,7 @@ export class HistoryCompaniesComponent implements OnInit {
         this.viewSpinner = false;
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.empresas)
+      complete: () => console.log("Complete", this.empresasInHab)
     });
 
     this.companiesService.getComapniesHistoryHab().subscribe({
@@ -95,23 +102,23 @@ export class HistoryCompaniesComponent implements OnInit {
   public applyFilter(filterValue: any, hab: number): void {
     console.log(filterValue.target.value)
     if (filterValue.target.value === '') { 
-      this.empresas = this.empresasTmp;      
+      this.empresasInHab = this.empresasTmp;      
       this.empresasHab = this.empresasHabTmp;
     }
 
     if (this.filterValueAct.length > filterValue.target.value.length) {
       this.filterValueAct = filterValue.target.value.trim().toLowerCase();
-      this.empresas = this.empresasTmp;      
+      this.empresasInHab = this.empresasTmp;      
       this.empresasHab = this.empresasHabTmp;
       if (hab === 0) {
-        this.empresas = this.empresas.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
+        this.empresasInHab = this.empresasInHab.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
       } else {
         this.empresasHab = this.empresasHab.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
       }
     } else {
       this.filterValueAct = filterValue.target.value.trim().toLowerCase();
       if (hab === 0) {
-        this.empresas = this.empresas.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(this.filterValueAct));
+        this.empresasInHab = this.empresasInHab.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(this.filterValueAct));
       } else {
         this.empresasHab = this.empresasHab.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(this.filterValueAct));
       }

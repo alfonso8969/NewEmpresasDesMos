@@ -25,6 +25,7 @@
                     </mat-form-field>
                   </div>
                 </div>
+                <hr>
               </div>
 
               <div class="table1 table-responsive animated fadeInDown">
@@ -40,7 +41,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let emp of empresasHab">
+                    <tr *ngFor="let emp of empresasHab | paginate: { id: 'hab', itemsPerPage: 20, currentPage: page }">
                       <td class="tdName" (click)="getEmpresaHab(emp, true)" >{{ emp['Nombre'] | titlecase }}</td>
                       <td class="tdEmail" (click)="getEmpresaHab(emp, true)" >{{ emp['Email'] }}</td>
                       <td (click)="getEmpresaHab(emp, true)" >{{ emp['Telefono'] }}</td>
@@ -50,11 +51,11 @@
                         <a class="btn btn-warning" (click)="getEmpresaHab(emp, false)"><i class="fa fa-check"></i></a>
                       </td>
                     </tr>
-
-
                   </tbody>
                 </table>
-
+              </div>
+              <div class="mt-2">
+                <pagination-controls id="hab" (pageChange)="page = $event" [previousLabel]="anterior" [nextLabel]="siguiente" [responsive]="true"></pagination-controls>
               </div>
             </div>
           </div>
@@ -94,7 +95,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let emp of empresas">
+                  <tr *ngFor="let emp of empresasInHab | paginate: { id: 'inHab', itemsPerPage: 5, currentPage: page2 }">
                     <td (click)="getEmpresa(emp, true)">{{ emp['Nombre'] }}</td>
                     <td (click)="getEmpresa(emp, true)">{{ emp['Email'] }}</td>
                     <td (click)="getEmpresa(emp, true)">{{ emp['Telefono'] }}</td>
@@ -106,11 +107,11 @@
                       <a class="btn btn-warning" (click)="getEmpresa(emp, false)" ><i class="fa fa-check"></i></a>
                     </td>
                   </tr>
-
-
                 </tbody>
               </table>
-
+            </div>
+            <div class="mt-2">
+              <pagination-controls id="inHab" (pageChange)="page2 = $event" [previousLabel]="anterior" [nextLabel]="siguiente" [responsive]="true" [autoHide]="true"></pagination-controls>
             </div>
           </div>
         </div>

@@ -26,6 +26,11 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   user: User;
   users: User[];
   usersTemp: User[];
+  public page: number = 1;
+  public page2: number = 1;
+
+  public siguiente: string = "Siguiente";
+  public anterior: string = "Anterior";
 
   viewSpinner: boolean = true;
   constructor(private fb: FormBuilder,

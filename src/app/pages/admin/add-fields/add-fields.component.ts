@@ -28,12 +28,12 @@ export class AddFieldsComponent implements OnInit {
     this.field = {
       field_name: '',
       empresas_sector_name: '',
-      distrito_name: '',      
+      distrito_name: '',
       empresas_poligono_name: ''
     }
 
-    this.fieldsService.getLastDistrito().subscribe({ 
-      next: (result: number) => { 
+    this.fieldsService.getLastDistrito().subscribe({
+      next: (result: number) => {
         if (result != null) {
           this.lastDistrito = result;
         } else {
@@ -54,21 +54,21 @@ export class AddFieldsComponent implements OnInit {
     this.addFieldDistritoForm = this.fb.group({
       nombreDistrito: ['', [Validators.required, Validators.pattern(this.regex2)]]
     });
-    
+
     this.addFieldPoligonoForm = this.fb.group({
       nombrePoligono: ['', [Validators.required, Validators.pattern(this.regex3)]]
     });
    }
 
   ngOnInit(): void {
-   
+
   }
 
   public addFieldSector(): void {
     this.field.field_name = 'sector';
     this.field.empresas_sector_name = this.addFieldSectorForm.get('nombreSector')?.value;
     this.fieldsService.addField(this.field).subscribe({
-      next: (result: number) => { 
+      next: (result: number) => {
         if (result === 1) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
@@ -79,12 +79,11 @@ export class AddFieldsComponent implements OnInit {
         } else {
           throw new Error(`Se produjo un error al añadir el campo ${ this.field.empresas_sector_name } `);
         }
-        
+
       },
       error: (error: any) => {
         console.log("Sector error: ", error);
-        this.addFieldSectorForm.get('nombreSector')?.setValue('');
-        this.addFieldSectorForm.markAsUntouched();
+        this.cleanFormSector();
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
@@ -102,9 +101,9 @@ export class AddFieldsComponent implements OnInit {
 
         }
       },
-      complete: () =>  { 
+      complete: () =>  {
         console.log(`El campo ${ this.field.empresas_sector_name} se insertó correctamente`);
-        this.addFieldSectorForm.get('nombreSector')?.setValue('');
+        this.cleanFormSector();
       }
     });
   }
@@ -112,19 +111,18 @@ export class AddFieldsComponent implements OnInit {
   public addFieldDistrito(): void {
     this.field.field_name = 'distrito';
     this.field.distrito_name =`Distrito ${ this.addFieldDistritoForm.get('nombreDistrito')?.value } (Nº ${ this.lastDistrito + 1 })`;
-    if (this.field.distrito_name.toLowerCase().includes('distrito') || this.addFieldDistritoForm.get('nombreDistrito')?.value.split(' ').length > 1) {
+    if (this.addFieldDistritoForm.get('nombreDistrito')?.value.toLowerCase().includes('distrito') || this.addFieldDistritoForm.get('nombreDistrito')?.value.split(' ').length > 1) {
       Swal.fire({
         title: 'Añadir campo: ' + this.field.field_name,
         text: `Se produjo un error al añadir el campo ${ this.field.distrito_name } `,
         icon: 'error',
         confirmButtonText: 'Aceptar'
       });
-      this.addFieldDistritoForm.get('nombreDistrito')?.setValue('');
-      this.addFieldDistritoForm.markAsUntouched();
+      this.cleanFormDistrito();
       return;
     }
     this.fieldsService.addField(this.field).subscribe({
-      next: (result: number) => { 
+      next: (result: number) => {
         if (result === 1) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
@@ -135,12 +133,11 @@ export class AddFieldsComponent implements OnInit {
         } else {
           throw new Error(`Se produjo un error al añadir el campo ${ this.field.distrito_name } `);
         }
-        
+
       },
       error: (error: any) => {
         console.log("Distrito error: ", error);
-        this.addFieldDistritoForm.get('nombreDistrito')?.setValue('');
-        this.addFieldDistritoForm.markAsUntouched();
+        this.cleanFormDistrito();
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
@@ -159,7 +156,7 @@ export class AddFieldsComponent implements OnInit {
       },
       complete: () =>  {
         console.log(`El campo ${ this.field.distrito_name} se insertó correctamente`);
-        this.addFieldSectorForm.get('nombreDistrito')?.setValue('');
+        this.cleanFormDistrito();
       }
     });
   }
@@ -168,7 +165,7 @@ export class AddFieldsComponent implements OnInit {
     this.field.field_name = 'poligono';
     this.field.empresas_poligono_name = this.addFieldPoligonoForm.get('nombrePoligono')?.value;
     this.fieldsService.addField(this.field).subscribe({
-      next: (result: number) => { 
+      next: (result: number) => {
         if (result === 1) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
@@ -179,12 +176,11 @@ export class AddFieldsComponent implements OnInit {
         } else {
           throw new Error(`Se produjo un error al añadir el campo ${ this.field.empresas_poligono_name } `);
         }
-        
+
       },
       error: (error: any) => {
         console.log("Poligono error: ", error);
-        this.addFieldPoligonoForm.get('nombrePoligono')?.setValue('');
-        this.addFieldPoligonoForm.markAsUntouched();
+        this.cleanFormPoligono();
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
@@ -201,23 +197,26 @@ export class AddFieldsComponent implements OnInit {
           });
         }
       },
-      complete: () =>  { 
-        console.log(`El campo ${ this.field.empresas_poligono_name} se insertó correctamente`); 
-        this.addFieldSectorForm.get('nombrePoligono')?.setValue('');
+      complete: () =>  {
+        console.log(`El campo ${ this.field.empresas_poligono_name} se insertó correctamente`);
+        this.cleanFormPoligono();
        }
     });
   }
 
   public cleanFormSector(): void {
     this.addFieldSectorForm.get('sector')?.setValue('');
+    this.addFieldSectorForm.markAsUntouched();
   }
 
   public cleanFormDistrito(): void {
-    this.addFieldDistritoForm.get('distrito')?.setValue('');    
+    this.addFieldDistritoForm.get('distrito')?.setValue('');
+    this.addFieldDistritoForm.markAsUntouched();
   }
 
   public cleanFormPoligono(): void {
-    this.addFieldPoligonoForm.get('poligono')?.setValue('');      
+    this.addFieldPoligonoForm.get('poligono')?.setValue('');
+    this.addFieldPoligonoForm.markAsUntouched();
   }
 
 }
