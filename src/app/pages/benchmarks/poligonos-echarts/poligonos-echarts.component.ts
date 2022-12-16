@@ -24,56 +24,85 @@ export class PoligonosEchartsComponent implements OnInit {
 
   constructor(private benchmarksService: BenchmarksService) {
     this.benchmarksService.getFieldsForBenchMarks('poligono')
-    .subscribe({
-      next: (dataResult: BenchMarks[]) => {
-        this.data_result = dataResult;
-        this.data_result.forEach((item: BenchMarks) => {
-          this.data_count.push(item.count!);
-          this.poligonos_name.push(item.poligono!);
-        });
+      .subscribe({
+        next: (dataResult: BenchMarks[]) => {
+          this.data_result = dataResult;
+          this.data_result.forEach((item: BenchMarks) => {
+            this.data_count.push(item.count!);
+            this.poligonos_name.push(item.poligono!);
+          });
 
-        this.options = {
-          color: ['#3398DB'],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          grid: {
-            left: '1%',
-            right: '2%',
-            bottom: '1%',
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              data: [ ...this.poligonos_name ],
-              axisTick: {
-                alignWithLabel: true
+          this.options = {
+            color: ['#3398DB'],
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'shadow'
               }
-            }
-          ],
-          yAxis: [{
-            type: 'value'
-          }],
-          series: [{
-            name: 'Nº Empresas',
-            type: 'bar',
-            barWidth: '70%',
-            data: [ ...this.data_count ]
-          }]
-        }
+            },
+            grid: {
+              left: '1%',
+              right: '2%',
+              bottom: '1%',
+              containLabel: true
+            },
+            toolbox: {
+              show: true,
+              feature: {
+                dataView: {
+                  show: true,
+                  readOnly: false,
+                  title: 'Mostrar datos',
+                  backgroundColor: '#4080FF',
+                  textColor: '#FA6F27',
+                  iconStyle: {}
+                },
+                magicType: { 
+                  show: true, 
+                  type: ['line', 'bar'],
+                  title: { line: 'Cambiar a lineas', bar: 'Cambiar a barras' }
+                },
+                restore: { 
+                  show: true,
+                  title: 'Actualizar'
+                },
+                saveAsImage : { 
+                  show: true, 
+                  title: 'Guardar como imagen',
+                  backgroundColor: '#4080FF',
+                  name: 'empresas_por_poligonos',
+                  type: 'png',
+                }
+              }
+            },
+            xAxis: [
+              {
+                type: 'category',
+                data: [...this.poligonos_name],
+                axisTick: {
+                  alignWithLabel: true
+                }
+              }
+            ],
+            yAxis: [{
+              type: 'value'
+            }],
+            series: [{
+              name: 'Nº Empresas',
+              type: 'bar',
+              barWidth: '70%',
+              data: [...this.data_count]
+            }]
+          }
 
-      },
-      error: (error: any) =>  {
-        console.log(error);
-        alert(error);
-      },
-      complete: () => console.log("Complete: ", this.data_result)
-    });
-   }
+        },
+        error: (error: any) => {
+          console.log(error);
+          alert(error);
+        },
+        complete: () => console.log("Complete: ", this.data_result)
+      });
+  }
 
   ngOnInit(): void {
   }

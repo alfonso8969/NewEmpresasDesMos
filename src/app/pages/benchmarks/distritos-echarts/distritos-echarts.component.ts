@@ -179,6 +179,28 @@ export class DistritosEchartsComponent implements OnInit {
             trigger: 'item',
             formatter: '{a} <br/>{b} : {c} ({d}%)'
           },
+
+          toolbox: {
+              show : true,
+              feature : {
+                  dataView : { 
+                    show: true, 
+                    readOnly: false, 
+                    title: 'Mostrar datos', 
+                    backgroundColor: '#4080FF', 
+                    textColor: '#FA6F27',
+                    iconStyle: { }
+                  },
+                  restore : { show: true, title: 'Actualizar'},
+                  saveAsImage : { 
+                    show: true, 
+                    title: 'Guardar como imagen',
+                    backgroundColor: '#4080FF',
+                    name: 'empresas_por_distritos',
+                    type: 'jpeg',
+                  }
+              }
+          },
           legend: {
             align: 'auto',
             bottom: 10,

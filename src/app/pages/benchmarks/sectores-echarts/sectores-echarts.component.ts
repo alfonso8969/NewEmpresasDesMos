@@ -34,15 +34,36 @@ export class SectoresEchartsComponent implements OnInit {
         ];
         const yMax = 100;
         const dataShadow = [];
-    
+
         // tslint:disable-next-line: prefer-for-of
-        for (let i = 0; i < data.length; i++) {
+        for (const element of data) {
           dataShadow.push(yMax);
         }
-    
+
         this.options = {
           title: {
             text: 'Click sobre la barra para información sobre el sector',
+          },
+          toolbox: {
+              show : true,
+              feature : {
+                magicType: { 
+                  show: true, 
+                  type: ['line', 'bar'],
+                  title: { line: 'Cambiar a lineas', bar: 'Cambiar a barras' }
+                },
+                restore: { 
+                  show: true,
+                  title: 'Actualizar'
+                },
+                  saveAsImage : { 
+                    show: true, 
+                    title: 'Guardar como imagen',
+                    backgroundColor: '#4080FF',
+                    name: 'empresas_por_sectores',
+                    type: 'png',
+                  }
+              }
           },
           xAxis: {
             data: dataAxis,
@@ -118,7 +139,7 @@ export class SectoresEchartsComponent implements OnInit {
    }
 
   ngOnInit(): void {
-  
+
   }
 
   onChartEvent(event: any, type: string) {
@@ -126,7 +147,7 @@ export class SectoresEchartsComponent implements OnInit {
     console.log("Sector:", sector);
     Swal.fire({
       title: 'Empresas por sectores',
-      html: `<p>El sector: ${ sector?.sector }</p><p>nº sector ${ sector?.sector_id }</p><p>tiene ${ sector?.count } empresas</p>`,	
+      html: `<p>El sector: ${ sector?.sector }</p><p>nº sector ${ sector?.sector_id }</p><p>tiene ${ sector?.count } empresas</p>`,
       icon: 'info',
       confirmButtonText: 'Aceptar'
 
