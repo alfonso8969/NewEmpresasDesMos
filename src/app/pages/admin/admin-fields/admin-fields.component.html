@@ -28,7 +28,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="nombre" class="control-label">Seleccione sector</label>
+                      <label for="nombre" class="control-label">* Seleccione sector</label>
                       <select formControlName="sector" name="sector" id="sector" class="form-control" matTooltip="Sector" (change)="changeSector($event)">
                         <option [ngValue]=0 selected>Seleccione sector</option>
                         <option [ngValue]="dato.sector_id" *ngFor="let dato of sectores">
@@ -72,7 +72,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="nombre" class="control-label">Seleccione distrito</label>
+                      <label for="nombre" class="control-label">* Seleccione distrito</label>
                       <select formControlName="distrito" name="districto" id="districto" class="form-control"
                       matTooltip="Distrito" (change)="changeDistrito($event)">
                         <option [ngValue]=0 selected>Seleccione distrito</option>
@@ -116,7 +116,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="nombre" class="control-label">Seleccione polígono</label>
+                      <label for="nombre" class="control-label">* Seleccione polígono</label>
                       <select formControlName="poligono" name="poligono" id="poligono" class="form-control"
                       matTooltip="Polígono" (change)="changePoligono($event)">
                         <option [ngValue]=0 selected>Seleccione polígono</option>
