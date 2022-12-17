@@ -9,6 +9,8 @@ import { User } from '../class/users';
 import { CompaniesService } from '../services/companies.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MenuService } from '../services/menu.service';
+import { LoginService } from '../services/login.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-pages',
@@ -43,20 +45,22 @@ export class PagesComponent implements OnInit {
   viewDashBoard: boolean = false;
 
   constructor(public menuService: MenuService,
-              public companiesService: CompaniesService,
-              private _router: Router,
-              private httpClient: HttpClient,
-              private cookieService: CookieService
-              ) {
-    this.user = new User();
-    this.user.setUser_name("Alfonso José");
-    this.user.setUser_email("alfonso8969@gmail.com");
-    this.user.setUser_img("alfonso.jpg");
+    public companiesService: CompaniesService,
+    private _router: Router,
+    private httpClient: HttpClient,
+    private cookieService: CookieService,
+    private loginService: LoginService
+  ) {
+    let userLogged = localStorage.getItem('userlogged');
+    if (userLogged && userLogged != "undefined") {
+      console.log('localstorage userlogged: ', JSON.parse(localStorage.getItem('userlogged')!))
+      this.user = JSON.parse(userLogged);
+    }
 
     this.companiesService.getApi()
       .subscribe((data: any) => {
-        let key  = isDevMode() ? '' : data;
-        this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key='  + key, 'callback')
+        let key = isDevMode() ? '' : data;
+        this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=' + key, 'callback')
           .pipe(
             map(() => true),
             catchError(() => of(false))
@@ -76,8 +80,8 @@ export class PagesComponent implements OnInit {
 
     this.linkMoreIfoCookies = `https://policies.google.com/technologies/cookies?hl=es-419`;
     this.cookieExists ?
-    this.showDetail = false :
-    this.showDetailsetTime();
+      this.showDetail = false :
+      this.showDetailsetTime();
   }
 
   ngOnInit(): void {
@@ -98,41 +102,67 @@ export class PagesComponent implements OnInit {
       });
   }
 
-    /**
-   * Close the detail
-   * @param $event Window status
-   */
-    closeDetail($event: boolean) {
-      this.animationClose();
-      this.close.emit($event);
-    }
+  /**
+ * Close the detail
+ * @param $event Window status
+ */
+  closeDetail($event: boolean) {
+    this.animationClose();
+    this.close.emit($event);
+  }
 
-    public showDetailsetTime(): void {
-      setTimeout(() => {
-        this.showDetail = true;
-      }, 600);
-    }
+  public showDetailsetTime(): void {
+    setTimeout(() => {
+      this.showDetail = true;
+    }, 600);
+  }
 
-    saveGDPR() {
-      this.cookieService.set('Cookie', 'GDPR');
-      this.animationClose();
-      this.parentDetail.closeDetail();
-    }
+  saveGDPR() {
+    this.cookieService.set('Cookie', 'GDPR');
+    this.animationClose();
+    this.parentDetail.closeDetail();
+  }
 
-    refuseCookies() {
-      this.cookieService.set('Cookie', 'No-GDPR');
-      this.animationClose();
-      this.parentDetail.closeDetail();
-    }
+  refuseCookies() {
+    this.cookieService.set('Cookie', 'No-GDPR');
+    this.animationClose();
+    this.parentDetail.closeDetail();
+  }
 
-    animationClose() {
-      setTimeout(() => {
-        this.showDetail = false;
-      }, 600);
-    }
+  animationClose() {
+    setTimeout(() => {
+      this.showDetail = false;
+    }, 600);
+  }
 
   logout() {
-    this._router.navigateByUrl('/login')
+    let remember = localStorage.getItem('remember');
+    let title = remember ? '¿Está seguro de querer cerrar la sesión?' : 'Salir';
+    let message = remember ? 'Si cierra la sesión, deberá volver a iniciar sesión para poder acceder a la aplicación'
+        : '¿Está seguro de querer salir de la aplicación?';
+
+    let confirmButtonText = remember ? 'Si, cerrar sessión' : 'Si, salir';
+    
+    Swal.fire({
+      title: title,
+      html: message,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: confirmButtonText
+    }).then((confirm) => {
+      if (confirm.isConfirmed) {
+        this.loginService.logout();
+        this._router.navigateByUrl('/login')
+      }
+    });
+  }
+
+  exit() {
+    this._router.navigateByUrl('exit').then(() => {
+      window.location.reload();
+    });;
   }
 }
 

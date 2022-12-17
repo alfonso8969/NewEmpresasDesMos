@@ -30,7 +30,7 @@ import { CookieService } from 'ngx-cookie-service';
     CookieService,
     {
       provide: LocationStrategy,
-      useClass: PathLocationStrategy
+      useClass: PathLocationStrategy 
     }
     ],
   bootstrap: [AppComponent]

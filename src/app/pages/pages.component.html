@@ -50,7 +50,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
-              <img src="./assets/images/icon/alfonso.ico" alt="user" class="profile-pic" />
+              <img [src]="url + '/uploads/' + user.user_img" alt="user" class="profile-pic" />
             </a>
             <div class="dropdown-menu dropdown-menu-right animated flipInY">
               <ul class="dropdown-user">
@@ -77,11 +77,9 @@
                     </li>
                   </ul>
                 </li>
-
-
                 <li role="separator" class="divider"></li>
-                <li><a class="cursor" (click)="logout()"><i class="fa fa-power-off mx-2"></i>Salir</a></li>
-
+                <li><a class="cursor" (click)="logout()" matTooltip="Cerrar sesión"><i
+                      class="fa fa-power-off mx-2"></i>Cerrar sesión</a></li>
               </ul>
             </div>
           </li>
@@ -156,12 +154,12 @@
         <ul id="sidebarnav">
           <li class="user-profile">
             <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
-              <img src="./assets/images/icon/alfonso.ico" alt="user" />
+              <img [src]="url + '/uploads/' + user.user_img" alt="user" />
               <span class="hide-menu" style="font-size: 1.1em !important;"> {{ user.user_name }}</span>
             </a>
             <ul aria-expanded="false" class="collapse">
               <li><a (click)="navigateTo('/dashboard/view-user/1', $event)">Mi perfil </a></li>
-              <li><a (click)="logout()">Logout</a></li>
+              <li><a (click)="logout()" matTooltip="Cerrar sesión">Cerrar sesión</a></li>
             </ul>
           </li>
           <li class="nav-devider"></li>
@@ -212,7 +210,7 @@
 
           <li role="separator" class="nav-devider mt-3"></li>
           <li>
-            <a class="cursor" (click)="logout()" matTooltip="Logout">
+            <a class="cursor" (click)="exit()" matTooltip="Salir">
               <i class="fa fa-power-off"></i>
               Salir
             </a>

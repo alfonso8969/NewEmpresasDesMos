@@ -20,7 +20,8 @@
           <div>
             <h3 class="card-title p-1">Solicitud de datos del usuario</h3>
             <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
-            <button type="button" matTooltip="Limpiar el formulario" class="btn btn-default d-inline float-right mx-3" (click)="cleanForm()">Limpiar
+            <button type="button" matTooltip="Limpiar el formulario" class="btn btn-default d-inline float-right mx-3"
+              (click)="cleanForm()">Limpiar
               formulario
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
@@ -115,11 +116,70 @@
                     </span>
                   </div>
                 </div>
+                <div class="row mt-5">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="newPassword" class="control-label">* Nueva contraseña</label>
+                      <input formControlName="newPassword" type="password" name="newPassword" id="newPassword"
+                        class="form-control" placeholder="contraseña actual" maxlength="10" minlength="6"
+                        autocomplete="new-password">
+                      <i class="far fa-eye" style="margin-left: -30px;cursor: pointer; color: #045FB4"
+                        id="toggleNewPassword"></i>
+                      <span class="err text-danger"
+                        *ngIf="addUserForm.get('newPassword')?.invalid && addUserForm.get('newPassword')?.touched && !addUserForm.get('newPassword')!.errors!['pattern']">
+                        La <strong>contraseña</strong> es requerida
+                      </span>
+                      <span class="err text-danger" newPassword
+                        *ngIf="addUserForm.get('newPassword')!.errors != null && addUserForm.get('newPassword')!.errors!['pattern'] && addUserForm.get('newPassword')?.touched">
+                        La <strong>contraseña</strong> no es válida, debe contener
+                        <pre>
+                        - 10 caracteres max
+                        - 6 caracteres min
+                        - 1 mayúscula
+                        - 1 minúscula
+                        - 1 número
+                        - 1 caracter especial
+                      </pre>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="rol" class="control-label">*
+                        Escriba de nuevo la contraseña</label>
+                      <input formControlName="comparePasswords" type="password" class="form-control"
+                        placeholder="contraseña nueva" id="comparePasswords" name="comparePasswords" maxlength="10"
+                        minlength="6" autocomplete="new-password">
+                      <i class="far fa-eye" style=" margin-left: -30px;  cursor: pointer; color: #045FB4"
+                        id="toggleCompPassword"></i>
+                        <span class="err text-danger"
+                        *ngIf="addUserForm.get('comparePasswords')?.invalid && addUserForm.get('comparePasswords')?.touched && !addUserForm.get('comparePasswords')!.errors!['pattern']">
+                        La <strong>contraseña</strong> es requerida
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addUserForm.get('comparePasswords')!.errors != null && addUserForm.get('comparePasswords')!.errors!['pattern'] && addUserForm.get('comparePasswords')?.touched">
+                        La <strong>contraseña</strong> no es válida, debe contener
+                        <pre>
+                          - 10 caracteres max
+                          - 6 caracteres min
+                          - 1 mayúscula
+                          - 1 minúscula
+                          - 1 número
+                          - 1 caracter especial
+                        </pre>
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="(addUserForm.get('newPassword')!.valid && addUserForm.get('comparePasswords')!.valid) && (addUserForm.get('newPassword')!.value != addUserForm.get('comparePasswords')!.value)">
+                        Las <strong>contraseñas </strong>no coinciden
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-actions mb-5">
-                  <button type="submit" [disabled]="addUserForm.invalid || isDisabled()"
+                  <button type="submit" [disabled]="addUserForm.invalid || isDisabled() || (addUserForm.get('newPassword')!.value != addUserForm.get('comparePasswords')!.value)"
                     class="btn-primary button d-inline">
                     <span
-                      [matTooltip]="addUserForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Guardar datos usuario'"
+                      [matTooltip]="addUserForm.invalid || isDisabled() || (addUserForm.get('newPassword')!.value != addUserForm.get('comparePasswords')!.value) ? 'Faltan campos obligatorios' : 'Guardar datos usuario'"
                       [matTooltipPosition]="'below'" aria-label="Botón que guarda la información sobre el usuario"
                       MAT_STRATEGY>Guardar
                     </span>

@@ -17,6 +17,7 @@ import { AddFieldsComponent } from './admin/add-fields/add-fields.component';
 import { SectoresEchartsComponent } from './benchmarks/sectores-echarts/sectores-echarts.component';
 import { DistritosEchartsComponent } from './benchmarks/distritos-echarts/distritos-echarts.component';
 import { PoligonosEchartsComponent } from './benchmarks/poligonos-echarts/poligonos-echarts.component';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -35,6 +36,7 @@ export class TemplatePageTitleStrategy extends TitleStrategy {
 const routes: Routes = [
   {
     path: 'dashboard', title: "Página principal", component: PagesComponent,
+    canActivate: [ AuthGuard ],
     children: [
       { path: 'add-company', title: "Crear empresa", component: AddCompanyComponent },
       { path: 'add-redes', title: "Añadir redes", component: AddCompanyRedesComponent },

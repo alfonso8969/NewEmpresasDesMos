@@ -29,6 +29,8 @@ import { PoligonosEchartsComponent } from './benchmarks/poligonos-echarts/poligo
 import { SectoresEchartsComponent } from './benchmarks/sectores-echarts/sectores-echarts.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { LogoutComponent } from './login/logout.component';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     TrimPipe,
     DistritosEchartsComponent,
     PoligonosEchartsComponent,
-    SectoresEchartsComponent
+    SectoresEchartsComponent,
+    LogoutComponent
   ],
   imports: [
     CommonModule,

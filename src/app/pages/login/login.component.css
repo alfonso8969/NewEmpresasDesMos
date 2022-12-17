@@ -1,11 +1,17 @@
 div.login {
-    background-image: url(../../../assets/images/background/urjc2.jpeg);
+  background-image: url(../../../assets/images/background/urjc2.jpeg);
 }
 
 
 span.err {
-    font-weight: 800!important;
-    font-family: Monserrat, Arial, Helvetica, sans-serif !important;
-    font-size: 17px !important;
-    margin-left: 0.5em;
-  }
+  font-weight: 800 !important;
+  font-family: Monserrat, Arial, Helvetica, sans-serif !important;
+  font-size: 17px !important;
+  margin-left: 0.5em;
+}
+
+::ng-deep .mat-tooltip {
+  white-space: pre-line !important;
+  background-color: rgb(43, 43, 212) !important;
+  font-size: 16px !important;
+}

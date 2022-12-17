@@ -20,13 +20,20 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   user: User;
   img: HTMLElement | null;
 
+  newPasswordHtml: HTMLElement;
+  compPasswordHtml: HTMLElement;
+
+  newPasswordIcon: HTMLElement;
+  compPasswordIcon: HTMLElement;
+
   phoneReg: RegExp = new RegExp(/[0-9]{9}/);
   emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
+  passReg: RegExp = new RegExp(/(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/g);
 
   constructor(private fb: FormBuilder, private http: HttpClient,
-              private uploadService: FileUploadService,
-              private userSevice: UsersService,
-              private router: Router) {
+    private uploadService: FileUploadService,
+    private userSevice: UsersService,
+    private router: Router) {
     this.fillForm();
   }
 
@@ -34,7 +41,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
     this.img = document.getElementById('img-user');
   }
 
-  public fillForm():void {
+  public fillForm(): void {
 
     this.addUserForm = this.fb.group({
       userimg: [''],
@@ -42,13 +49,44 @@ export class AddUserComponent implements OnInit, AfterViewInit {
       apellidos: ['', Validators.required],
       telefono: ['', [Validators.required, Validators.pattern(this.phoneReg)]],
       email: ['', [Validators.required, Validators.pattern(this.emailReg)]],
-      rol: [0, Validators.required]
+      rol: [0, Validators.required],
+      newPassword: ['', [Validators.required, Validators.pattern(this.passReg)]],
+      comparePasswords: ['', [Validators.required, Validators.pattern(this.passReg)]],
 
     });
   }
 
 
   ngOnInit(): void {
+
+    this.newPasswordIcon = document.getElementById('toggleNewPassword')!;
+    this.compPasswordIcon = document.getElementById('toggleCompPassword')!;
+
+    this.newPasswordHtml = document.getElementById('newPassword')!;
+    this.compPasswordHtml = document.getElementById('comparePasswords')!;
+
+    this.newPasswordIcon.addEventListener('click', (e) => {
+      this.changeEye(this.newPasswordIcon, this.newPasswordHtml);
+      this.changeEyeTime(this.newPasswordIcon, this.newPasswordHtml);
+    });
+
+    this.compPasswordIcon.addEventListener('click', (e) => {
+      this.changeEye(this.compPasswordIcon, this.compPasswordHtml);
+      this.changeEyeTime(this.compPasswordIcon, this.compPasswordHtml);
+    });
+  }
+
+  public changeEye(element: HTMLElement, elementClose: HTMLElement): void {
+    const type = elementClose.getAttribute('type') === 'password' ? 'text' : 'password';
+    elementClose.setAttribute('type', type);
+    const clase = element.getAttribute('class') === 'far fa-eye' ? 'far fa-eye-slash' : 'far fa-eye';
+    element.setAttribute('class', clase)!;
+  }
+
+  public changeEyeTime(element: HTMLElement, elementClose: HTMLElement): void {
+    setTimeout(() => {
+      this.changeEye(element, elementClose);
+    }, 2000);
   }
 
   public addUser(): void {
@@ -59,20 +97,20 @@ export class AddUserComponent implements OnInit, AfterViewInit {
     this.user.setUser_email(this.addUserForm.get('email')!.value);
     this.user.setUser_rol(this.addUserForm.get('rol')!.value);
     this.user.setFecha_alta(new Date());
-    this.user.setUser_password('@agd4Rt55');
+    this.user.setUser_password(this.addUserForm.get('newPassword')!.value);
     this.user.setHabilitado(1);
 
     if (this.fileUp) {
 
       let name = this.fileUp.name;
 
-      this.fileName = (this.user.user_name.split(' ')[0] + Math.ceil((Math.random()*10000 + 1)) + '.' + name.split('.')[1]).toLowerCase();
+      this.fileName = (this.user.user_name.split(' ')[0] + Math.ceil((Math.random() * 10000 + 1)) + '.' + name.split('.')[1]).toLowerCase();
 
       this.uploadService.uploadFile(this.fileUp, this.fileName)
-      .subscribe({
-        next: (data: any) =>  {
-           console.log("Data: ", data)
-            if(data.type === 4) {
+        .subscribe({
+          next: (data: any) => {
+            console.log("Data: ", data)
+            if (data.type === 4) {
               console.log(data.body.data);
               this.user.setUser_img(this.fileName);
               this.saveUser(this.user);
@@ -87,7 +125,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
               console.log('Could not upload the file!');
             }
           }
-      });
+        });
     } else {
       this.saveUser(this.user);
     }
@@ -99,22 +137,31 @@ export class AddUserComponent implements OnInit, AfterViewInit {
         if (data === 1) {
           Swal.fire({
             title: 'Añadir usuario',
-            text: `El usuario ${ user.getUser_name() } se añadio exitosamente`,
+            text: `El usuario ${user.user_name} se añadio exitosamente`,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
           this.router.navigate(['dashboard/list-users']);
         } else {
-          throw new Error(`Se produjo un error al añadir al usuario ${ user.getUser_name() } `);
+          throw new Error(`Se produjo un error al añadir al usuario ${user.getUser_name()} `);
         }
       }, error: (error: any) => {
         console.log(`Se produjo un error al añadir al usuario: ${ error } `);
-        Swal.fire({
-          title: 'Añadir usuario',
-          text: `Se produjo un error al añadir al usuario ${ user.getUser_name() } `,
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        });
+        if (error.error.text.includes("Duplicate")) {
+          Swal.fire({
+            title: 'Añadir usuario: ' + user.user_name,
+            text: `El email ${ user.user_email } ya exite`,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        } else {
+          Swal.fire({
+            title: 'Añadir usuario',
+            text: `Se produjo un error al añadir al usuario ${ user.user_name } `,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
       },
       complete: () => console.log('Se completo la inserción del usuario')
     });
