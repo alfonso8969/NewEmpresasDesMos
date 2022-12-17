@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -10,20 +10,6 @@ import { Subscription } from 'rxjs';
 export class AppComponent  implements OnDestroy {
   title = 'NewEmpresasMs';
 
-
-  @HostListener('window:unload', [ '$event' ])
-  unloadHandler(event: any) {
-   console.log('window:unload', event);
-
-    alert('¿Está seguro de querer cerrar la sesión?');
-
-  }
-  @HostListener('window:beforeunload', [ '$event' ])
-   beforeUnloadHandler(event: any) {
-    console.log('window:beforeunload', event)
-    alert('¿Está seguro de querer cerrar la sesión?');
-
-   }
 
   private mySubscription: Subscription;
 

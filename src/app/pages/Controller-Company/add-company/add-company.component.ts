@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Empresa } from 'src/app/class/empresa';
-
 import { CompaniesService } from 'src/app/services/companies.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,6 +15,18 @@ import { Fields } from 'src/app/interfaces/fields';
   styleUrls: ['./add-company.component.css']
 })
 export class AddCompanyComponent implements OnInit {
+
+  @HostListener('window:unload', [ '$event' ])
+    unloadHandler(event: any) {
+    console.log('window:unload', event);
+    return false;
+  }
+
+  @HostListener('window:beforeunload', [ '$event' ])
+   beforeUnloadHandler(event: any) {
+    console.log('window:beforeunload', event)
+    return false;
+   }
 
   empresa: Empresa;
   user: User;

@@ -1,5 +1,5 @@
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/class/users';
@@ -13,6 +13,19 @@ import Swal from 'sweetalert2'
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit, AfterViewInit {
+
+  @HostListener('window:unload', [ '$event' ])
+  unloadHandler(event: any) {
+   console.log('window:unload', event);
+
+    alert('¿Está seguro de querer cerrar la sesión?');
+
+  }
+  @HostListener('window:beforeunload', [ '$event' ])
+   beforeUnloadHandler(event: any) {
+    console.log('window:beforeunload', event)
+    return false;
+   }
 
   addUserForm: FormGroup;
   fileUp: File;

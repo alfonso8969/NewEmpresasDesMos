@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
@@ -12,6 +12,18 @@ import Swal from 'sweetalert2'
   styleUrls: ['./add-company-redes.component.css']
 })
 export class AddCompanyRedesComponent implements OnInit {
+
+  @HostListener('window:unload', [ '$event' ])
+    unloadHandler(event: any) {
+      console.log('window:unload', event);
+      alert('¿Está seguro de querer cerrar la sesión?');
+    }
+
+  @HostListener('window:beforeunload', [ '$event' ])
+    beforeUnloadHandler(event: any) {
+        console.log('window:beforeunload', event)
+        return false;
+      }
 
   empresa: Empresa;
   redes: Redes;

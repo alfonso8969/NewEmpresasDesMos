@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import * as d3 from 'd3';
 import { User } from 'src/app/class/users';
@@ -13,6 +13,18 @@ import Swal from 'sweetalert2'
   styleUrls: ['./list-users.component.css']
 })
 export class ListUsersComponent implements OnInit, AfterViewInit {
+
+  @HostListener('window:unload', [ '$event' ])
+    unloadHandler(event: any) {
+      console.log('window:unload', event);
+      alert('¿Está seguro de querer cerrar la sesión?');
+   }
+   
+  @HostListener('window:beforeunload', [ '$event' ])
+   beforeUnloadHandler(event: any) {
+    console.log('window:beforeunload', event)
+    return false;
+   }
 
   editUserForm: FormGroup;
   phoneReg: RegExp = new RegExp(/[0-9]{9}/);
