@@ -30,6 +30,7 @@ import { SectoresEchartsComponent } from './benchmarks/sectores-echarts/sectores
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LogoutComponent } from './login/logout.component';
+import { NotFoundComponent } from './login/notfound.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { LogoutComponent } from './login/logout.component';
     DistritosEchartsComponent,
     PoligonosEchartsComponent,
     SectoresEchartsComponent,
-    LogoutComponent
+    LogoutComponent,
+    NotFoundComponent
   ],
   imports: [
     CommonModule,

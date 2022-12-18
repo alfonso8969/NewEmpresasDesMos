@@ -5,7 +5,7 @@ import { take } from 'rxjs/operators';
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'app-notFound',
-  template: './notFound.component.html',
+  templateUrl: './notFound.component.html',
   styleUrls: ['./notFound.component.css']
 })
 export class NotFoundComponent implements OnInit {

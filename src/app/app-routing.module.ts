@@ -1,8 +1,8 @@
 import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
 
-import { LoginComponent } from './pages/login/login.component';
 import { InjectionToken, NgModule } from '@angular/core';
 import { PagesRoutingModule } from './pages/pages.routing';
+import { LoginComponent } from './pages/login/login.component';
 import { LogoutComponent } from './pages/login/logout.component';
 import { NotFoundComponent } from './pages/login/notfound.component';
 
