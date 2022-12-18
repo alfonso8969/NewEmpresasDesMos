@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
+import { User } from 'src/app/class/users';
 import { Fields } from 'src/app/interfaces/fields';
 import { Result } from 'src/app/interfaces/result';
 import { CompaniesService } from 'src/app/services/companies.service';
@@ -22,6 +23,9 @@ export class ViewCompanyComponent implements OnInit {
   city: string = "Móstoles";
   region: string = "Madrid";
 
+  user: User;
+  admin: boolean;
+
   sectores: Fields[];
   distritos: Fields[];
   poligonos: Fields[];
@@ -40,6 +44,12 @@ export class ViewCompanyComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute) {
+    let userLogged = localStorage.getItem('userlogged');
+    if (userLogged && userLogged != "undefined") {
+      console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
+      this.user = JSON.parse(userLogged);
+    }
+    this.admin = Number(this.user.user_rol) === 1 ? true : false;
     this.fillEditForm();
 
     this.route.paramMap

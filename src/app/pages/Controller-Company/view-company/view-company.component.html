@@ -25,7 +25,7 @@
         <div class="card">
           <div class="p-3" *ngIf="!isEdited">
             <h3 class="card-title  d-inline">Vista de datos de la empresa</h3>
-            <button type="button" class="btn-primary button d-inline float-right" (click)="edit()">
+            <button *ngIf="admin" type="button" class="btn-primary button d-inline float-right" (click)="edit()">
               <span matTooltip="Elija editar para cambiar los datos de la empresa">Editar
               </span>
               <i class="fa fa-edit p-1"></i>

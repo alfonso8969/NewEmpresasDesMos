@@ -72,7 +72,7 @@
                   </a>
                   <ul aria-expanded="false">
                     <li *ngFor="let subitem of item.submenu">
-                      <a (click)="navigateTo(subitem.url, $event)" routerLinkActive="active"
+                      <a *ngIf="subitem.rol" (click)="navigateTo(subitem.url, $event)" routerLinkActive="active"
                         [routerLinkActiveOptions]="{ exact: true }">{{ subitem.title }}</a>
                     </li>
                   </ul>
@@ -166,24 +166,35 @@
           <li class="nav-small-cap text-light">Indicadores</li>
 
           <li class="mb-3" *ngFor="let item of menuService.menu">
-            <a class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a  class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
             <ul aria-expanded="false">
               <li class="mt-3" *ngFor="let subitem of item.submenu">
-                <a (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
+                <a *ngIf="subitem.rol" (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
               </li>
             </ul>
           </li>
-          <li class="mb-3" *ngFor="let item of menuService.menuAdmin">
+          <li class="mb-3" *ngFor="let item of menuService.menuAdminUsers">
             <a class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
-            <ul aria-expanded="false">
+            <ul  aria-expanded="false">
               <li class="mt-3" *ngFor="let subitem of item.submenu">
-                <a (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
+                <a *ngIf="subitem.rol" (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
+              </li>
+            </ul>
+          </li>
+          <li class="mb-3" *ngFor="let item of menuService.menuAdminFields">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+              <i [class]="item.icon"></i>
+              <span class="hide-menu">{{ item.title }}</span>
+            </a>
+            <ul  aria-expanded="false">
+              <li class="mt-3" *ngFor="let subitem of item.submenu">
+                <a  (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
               </li>
             </ul>
           </li>

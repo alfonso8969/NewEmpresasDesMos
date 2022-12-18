@@ -37,7 +37,7 @@
                       <th>Teléfono</th>
                       <th>Fecha Alta</th>
                       <th>Usuario alta</th>
-                      <th>Deshabilitar</th>
+                      <th *ngIf="admin">Deshabilitar</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -47,7 +47,7 @@
                       <td (click)="getEmpresa(emp, true)" >{{ emp['Telefono'] }}</td>
                       <td (click)="getEmpresa(emp, true)" >{{ emp['Fecha alta'] | date: 'dd-MM-yyyy' }}</td>
                       <td (click)="getEmpresa(emp, true)" >{{ emp['Usuario alta'] }}</td>
-                      <td>
+                      <td *ngIf="admin">
                         <a class="btn btn-warning" (click)="getEmpresa(emp, false, 0)"><i class="fa fa-check"></i></a>
                       </td>
                     </tr>
@@ -91,7 +91,7 @@
                     <th>Usuario alta</th>
                     <th>Fecha Baja</th>
                     <th>Usuario baja</th>
-                    <th>Habilitar</th>
+                    <th *ngIf="admin">Habilitar</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -103,7 +103,7 @@
                     <td (click)="getEmpresa(emp, true)">{{ emp['Usuario alta'] }}</td>
                     <td (click)="getEmpresa(emp, true)">{{ emp['Fecha baja'] | date: 'dd-MM-yyyy' }}</td>
                     <td (click)="getEmpresa(emp, true)">{{ emp['Usuario baja'] }}</td>
-                    <td>
+                    <td *ngIf="admin">
                       <a class="btn btn-warning" (click)="getEmpresa(emp, false, 1)" ><i class="fa fa-check"></i></a>
                     </td>
                   </tr>

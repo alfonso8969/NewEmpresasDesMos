@@ -13,6 +13,7 @@ import Swal from 'sweetalert2'
 export class HistoryCompaniesComponent implements OnInit {
 
   user: User;
+  admin: boolean;
   empresa: Empresa;
   empresasInHab: Empresa[];
   empresasHab: Empresa[];
@@ -29,8 +30,12 @@ export class HistoryCompaniesComponent implements OnInit {
   public anterior: string = "Anterior";
 
   constructor(private companiesService: CompaniesService, private router: Router) {
-    this.user = new User();
-    this.user.id_user = 1;
+    let userLogged = localStorage.getItem('userlogged');
+    if (userLogged && userLogged != "undefined") {
+      console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
+      this.user = JSON.parse(userLogged);
+    }
+    this.admin = Number(this.user.user_rol) === 1 ? true : false;
     this.fillTables();
    }
 

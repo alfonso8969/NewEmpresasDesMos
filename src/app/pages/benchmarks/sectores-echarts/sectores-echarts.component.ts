@@ -42,7 +42,7 @@ export class SectoresEchartsComponent implements OnInit {
 
         this.options = {
           title: {
-            text: 'Click sobre la barra para información sobre el sector',
+            text: 'Click para información',
           },
           toolbox: {
               show : true,

@@ -34,7 +34,7 @@ export class ViewUserComponent implements OnInit {
   emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
   passReg: RegExp = new RegExp(/(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/g);
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
               private uploadService: FileUploadService,
               private loginService: LoginService,
               private userSevice: UsersService) {
@@ -100,12 +100,12 @@ export class ViewUserComponent implements OnInit {
       this.changeEye(element, elementClose);
     }, 2000);
   }
-  
+
   public edit() {
     this.isEdited = true;
     this.setFormControlsReadOnly(this.addUserForm, false);
   }
-  
+
   public addUser(): void {
     let newUser = new User();
     newUser.id_user = this.user.id_user;
@@ -119,20 +119,20 @@ export class ViewUserComponent implements OnInit {
     if (this.fileUp) {
 
       let name = this.fileUp.name;
-      
+
       this.fileName = (this.user.user_name.split(' ')[0] + Math.ceil((Math.random() * 10000 + 1)) + '.' + name.split('.')[1]).toLowerCase();
-      
+
       this.uploadService.uploadFile(this.fileUp, this.fileName)
       .subscribe({
         next: (data: any) => {
           console.log("Data: ", data)
           if (data.type === 4) {
             console.log(data.body.data);
-            newUser.newuser_img = this.fileName;   
+            newUser.newuser_img = this.fileName;
           }
         },
         error: (err: any) => {
-          console.log("Error: ", err);     
+          console.log("Error: ", err);
           if (err.error && err.error.message) {
             console.log("Error: ", err.error.message);
           } else {
@@ -144,7 +144,7 @@ export class ViewUserComponent implements OnInit {
 
     if (this.addUserForm.get('actPassword')!.value != '') {
       this.user.user_password = this.addUserForm.get('actPassword')!.value;
-      this.loginService.checkPassword(this.user).subscribe({ 
+      this.loginService.checkPassword(this.user).subscribe({
         next: (result: boolean) => {
           if (result) {
             newUser.user_password = this.addUserForm.get('newPassword')!.value;
@@ -152,7 +152,7 @@ export class ViewUserComponent implements OnInit {
           } else {
             Swal.fire({
               title: 'Actualizar usuario',
-              text: `La contraseña actual del usario ${ this.user.user_name } no es válida `,
+              text: `La contraseña actual del usuario ${ this.user.user_name } no es válida `,
               icon: 'error',
               confirmButtonText: 'Aceptar'
             });
@@ -165,7 +165,7 @@ export class ViewUserComponent implements OnInit {
               icon: 'error',
               confirmButtonText: 'Aceptar'
             });
-            this.cleanForm();        
+            this.cleanForm();
         },
         complete: () => console.log('Se completo el cotejar la contraseña del usuario')
       });
@@ -196,12 +196,12 @@ export class ViewUserComponent implements OnInit {
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
-          this.cleanForm();        
+          this.cleanForm();
       },
       complete: () => console.log('Se completo la actualización del usuario')
     });
   }
-  
+
   public cleanForm(): void {
     this.fillFormUser(this.user);
     this.isEdited = false;
@@ -256,7 +256,7 @@ export class ViewUserComponent implements OnInit {
         Object.keys(controlErrors).forEach(keyError => {
           result.push({
             Campo: key,
-            'error': keyError,
+            error: keyError,
             value: form.get(key)!.value
           });
         });

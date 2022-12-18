@@ -40,10 +40,7 @@ export class LoginService {
 
   public isLoggedIn() {
     const userToken = this.getToken();
-    if (userToken != null){
-      return true;
-    }
-    return false;
+    return userToken != null;
   }
 
   public logout(): void {

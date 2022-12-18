@@ -108,7 +108,7 @@
                       El <strong>email</strong> no es válido
                     </span>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4" *ngIf="user.user_rol == 1">
                     <div class="form-group">
                       <label for="rol" class="control-label">* Rol</label>
                       <select formControlName="rol" name="rol" id="rol" class="form-control w-100">

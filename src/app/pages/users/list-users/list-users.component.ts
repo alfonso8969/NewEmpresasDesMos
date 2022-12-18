@@ -31,16 +31,23 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
 
   url: string = environment.apiUrl;
+
+  admin: boolean;
+  
   fileUp: File;
   fileName: string;
+
   filterValueAct: string = '';
+
   img: HTMLElement | null;
+
   user: User;
+  userLogged: User;
   users: User[];
   usersTemp: User[];
+
   public page: number = 1;
   public page2: number = 1;
-
   public siguiente: string = "Siguiente";
   public anterior: string = "Anterior";
 
@@ -48,6 +55,14 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   constructor(private fb: FormBuilder,
               private usersService: UsersService,
               private uploadService: FileUploadService) {
+
+    let userLogged = localStorage.getItem('userlogged');
+    if (userLogged && userLogged != "undefined") {
+      console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
+      this.userLogged = JSON.parse(userLogged);
+    }
+    this.admin = Number(this.userLogged.user_rol) === 1 ? true : false;
+
     this.usersService.getUsers().subscribe({
       next: (users: any) => {
         if (users != null) {
