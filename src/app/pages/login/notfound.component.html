@@ -1,0 +1,18 @@
+
+<div class="login-register login">
+  <div class="login-box card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card-body">
+            <div class="container">
+              <h2 *ngIf="path">
+                404 - página {{path}} no se enconcuentra
+              </h2>
+              <p *ngIf="path">Es posible que desee ir a <a [routerLink]="['login']">"{{ content }}" página</a></p>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

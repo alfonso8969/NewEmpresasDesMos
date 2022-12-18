@@ -3,6 +3,7 @@ import { BenchMarks } from 'src/app/interfaces/benchmarks';
 import { BenchmarksService } from 'src/app/services/benchmarks.service';
 import LinearGradient from 'zrender/lib/graphic/LinearGradient';
 import Swal from 'sweetalert2'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sectores-echarts',
@@ -17,7 +18,8 @@ export class SectoresEchartsComponent implements OnInit {
   data_count: Array<number> = [];
   message: string = '';
 
-  constructor(private benchmarksService: BenchmarksService) {
+  constructor(private benchmarksService: BenchmarksService,
+              private router: Router) {
     this.benchmarksService.getFieldsForBenchMarks('sector')
     .subscribe({
       next: (dataResult: BenchMarks[]) => {
@@ -150,11 +152,18 @@ export class SectoresEchartsComponent implements OnInit {
     console.log("Sector:", sector);
     Swal.fire({
       title: 'Empresas por sectores',
-      html: `<p>El sector: ${ sector?.sector }</p><p>nº sector ${ sector?.sector_id }</p><p>tiene ${ sector?.count } empresas</p>`,
+      html: `<p>El sector: ${ sector?.sector }</p><p>nº sector ${ sector?.sector_id }</p><p>Tiene ${ sector?.count } empresas</p>`,
       icon: 'info',
-      confirmButtonText: 'Aceptar'
-
-    })
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: "Aceptar",
+      confirmButtonText: "Ver empresas"
+    }).then((confirm) => {
+      if (confirm.isConfirmed) {
+        this.router.navigate(['dashboard/list-companies', { filter: sector?.sector, filterSended: 'true', field: 'Sector', id: sector?.sector_id, url: '/dashboard/graph-sectores' } ]);
+      }
+    });
   }
 
   onChartMouseOver(event: any, type: string) {

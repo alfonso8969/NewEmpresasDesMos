@@ -23,7 +23,7 @@
                     </div>
                     <div class="card-body ml-auto mr-auto">
                         <div class="form-body">
-                            <div [initOpts]="initOpts" echarts [options]="options" theme="macarons" class="demo-chart"></div>
+                            <div [initOpts]="initOpts" echarts [options]="options" theme="macarons" class="demo-chart" (chartClick)="onChartEvent($event)"></div>
                         </div>
                     </div>
                 </div>

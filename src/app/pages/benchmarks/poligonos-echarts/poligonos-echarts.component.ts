@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { EChartsOption } from 'echarts';
 import { BenchMarks } from 'src/app/interfaces/benchmarks';
 import { BenchmarksService } from 'src/app/services/benchmarks.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-poligonos-echarts',
@@ -22,7 +24,8 @@ export class PoligonosEchartsComponent implements OnInit {
 
   options: EChartsOption;
 
-  constructor(private benchmarksService: BenchmarksService) {
+  constructor(private benchmarksService: BenchmarksService,
+              private router: Router) {
     this.benchmarksService.getFieldsForBenchMarks('poligono')
       .subscribe({
         next: (dataResult: BenchMarks[]) => {
@@ -108,6 +111,28 @@ export class PoligonosEchartsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  public onChartEvent(event: any): void {
+    console.log(event) 
+    let poligono = event.name;
+    let value = event.value;
+    console.log(poligono);
+    console.log(value);
+    Swal.fire({
+      title: 'Empresas por polígonos',
+      html: `<p>El polígono: ${ poligono }</p><p>Tiene ${ value } empresas</p>`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: "Aceptar",
+      confirmButtonText: "Ver empresas"
+    }).then((confirm) => {
+      if (confirm.isConfirmed) {
+        this.router.navigate(['dashboard/list-companies', { filter: poligono, filterSended: 'true', field: 'Polígono', id: 0, url: '/dashboard/graph-poligonos' } ]);
+      }
+    });
   }
 
 }

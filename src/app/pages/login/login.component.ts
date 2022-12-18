@@ -65,6 +65,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.user = new User();
     let remember = this.loginForm.get('checkboxsignup')!.value;
+    localStorage.removeItem('remember');
     if (remember) {
       localStorage.setItem('remember', "true");
     }

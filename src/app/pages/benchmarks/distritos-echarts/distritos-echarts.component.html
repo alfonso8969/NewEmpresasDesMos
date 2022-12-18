@@ -31,7 +31,7 @@
                 <button type="button" class="btn btn-sm p-2 mx-1 btn-default" (click)="theme=coolTheme" nz-button
                   nzType="default">Tema cool</button>
               </div>
-              <div echarts [initOpts]="initOpts" [options]="options" [theme]="theme" class="demo-chart"></div>
+              <div echarts [initOpts]="initOpts" [options]="options" [theme]="theme" class="demo-chart" (chartClick)="onChartEvent($event)"></div>
             </div>
           </div>
         </div>

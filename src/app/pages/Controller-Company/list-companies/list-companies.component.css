@@ -79,14 +79,31 @@ mat-paginator {
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .example-header.select .mat-form-field {
-    width: 20em !important;
+    width: 15em !important;
     overflow-y: auto;
   }
 
+  #btnNewCompany {
+    font-size: 12px;
+    margin-right: 1px !important;
+    margin-top: -30px;
+  }
+  
+  .text-themecolor {
+    font-size: 14px;
+    margin-left: 1px !important;
+  }
+
+  .filter{
+    font-size: 10px;
+    display: block !important;
+    margin-bottom: 40px;
+  }
+
   mat-option {
-    overflow-y: auto;
+    overflow-y: visible;
   }
 }
 

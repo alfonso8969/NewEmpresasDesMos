@@ -23,8 +23,15 @@
             <div class="card-body">
               <div class="form-body">
                 <h3 class="d-inline text-themecolor mx-5">Nº de registros {{ dataSource.filteredData.length }}</h3>
-                <button type="button" name="" id="" class="btn btn-primary float-left mx-5" matTooltip="Crear nueva empresa"
-                  routerLink="/dashboard/add-company">Nueva empresa</button>
+                <p *ngIf="filterSended" class="filter d-inline text-success">Filtro desde gráfica {{ field }} :
+                  {{ filter }}
+                <a type="button" class="btn btn-info btn-sm" [routerLink]="url">
+                  <i class="fa fa-chart-bar" aria-hidden="true"></i>
+                  Vover a gráficas
+                </a>
+                </p>
+                <button type="button" id="btnNewCompany" class="btn btn-primary float-right mx-5"
+                  matTooltip="Crear nueva empresa" routerLink="/dashboard/add-company">Nueva empresa</button>
                 <hr>
                 <div class="row">
                   <div class="col-md-12">
@@ -34,16 +41,19 @@
                       </mat-form-field>
                     </div>
                     <div class="example-header select">
-                      <mat-form-field appearance="fill">
-                        <mat-label>Seleccione sector</mat-label>
-                        <mat-select (selectionChange)="select($event.value)"  required>
-                          <mat-option>Todos</mat-option>
-                          <mat-option *ngFor="let sector of sectores" [value]="sector.sector_id" [matTooltip]="sector.empresas_sector_name" >
-                            {{sector.empresas_sector_name}}
-                          </mat-option>
-                        </mat-select>
+                      <form [formGroup]="selectSector" novalidate autocomplete="off" class="d-inline">
+                        <mat-form-field appearance="fill">
+                          <mat-label>Seleccione sector</mat-label>
+                          <mat-select formControlName="nombreSector" id="nombreSector" name="nombreSector" (selectionChange)="select($event.value)" required>
+                            <mat-option [value]="0">Todos</mat-option>
+                            <mat-option *ngFor="let sector of sectores" [value]="sector.sector_id"
+                              [matTooltip]="sector.empresas_sector_name">
+                              {{sector.empresas_sector_name}}
+                            </mat-option>
+                          </mat-select>
 
-                      </mat-form-field>
+                        </mat-form-field>
+                      </form>
                     </div>
                     <div class="table-responsive">
                       <table mat-table [dataSource]="dataSource" matSort
@@ -80,7 +90,8 @@
             </div>
             <div class="row fx1">
               <div class="col-md-12 float-right">
-                <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+                <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[10, 25, 50, 100]"
+                  showFirstLastButtons></mat-paginator>
               </div>
               <!--/span-->
             </div>
@@ -91,7 +102,7 @@
       <div *ngIf="listEmpresas.length == 0 && !viewSpinner" class="row mt-5">
         <h4>No hay empresas para mostrar</h4>
       </div>
-      </div>
+    </div>
 
   </div>
 </div>

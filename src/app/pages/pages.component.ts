@@ -150,6 +150,7 @@ export class PagesComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
+      cancelButtonText: "Cancelar",
       confirmButtonText: confirmButtonText
     }).then((confirm) => {
       if (confirm.isConfirmed) {
@@ -160,9 +161,7 @@ export class PagesComponent implements OnInit {
   }
 
   exit() {
-    this._router.navigateByUrl('exit').then(() => {
-      window.location.reload();
-    });;
+    this._router.navigateByUrl('exit');
   }
 }
 

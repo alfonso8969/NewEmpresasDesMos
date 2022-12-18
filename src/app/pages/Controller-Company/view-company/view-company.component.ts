@@ -52,11 +52,11 @@ export class ViewCompanyComponent implements OnInit {
     this.admin = Number(this.user.user_rol) === 1 ? true : false;
     this.fillEditForm();
 
-    this.route.paramMap
-      .subscribe((params: any) => {
+    this.route.paramMap.subscribe((params: any) => {
         this.Empresa_det_id = params.get('id');
         this.url = params.get('url');
         console.log(this.url);
+        
         this.companiesService.getCompany(this.Empresa_det_id).subscribe({
           next: (result: any) => {
             if (result != null) {

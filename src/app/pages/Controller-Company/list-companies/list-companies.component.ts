@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { Fields } from 'src/app/interfaces/fields';
 import { CompaniesService } from 'src/app/services/companies.service';
@@ -14,31 +14,50 @@ import { FieldsService } from 'src/app/services/fields.service';
   templateUrl: './list-companies.component.html',
   styleUrls: ['./list-companies.component.css']
 })
-export class ListCompaniesComponent implements OnInit {
+export class ListCompaniesComponent implements OnInit, AfterViewInit {
 
   listEmpresas: Empresa[]
-  div: Element;
   sectores: Fields[];
+
+  div: Element;
+  slc: Element;
+  filter: string;
+  filterSended: boolean = false;
+  field: string;
+  id: string;
+  url: string;
+
+  selectSector: FormGroup;
 
   displayedColumns: string[] = ['Nombre', 'Sector', 'Distrito', 'Poligono'];
   dataSource: MatTableDataSource<Empresa>;
 
-  @ViewChild(MatPaginator, {static: false})
+  @ViewChild(MatPaginator, { static: false })
   set paginator(value: MatPaginator) {
-    if (this.dataSource){
+    if (this.dataSource) {
       this.dataSource.paginator = value;
     }
   }
-  @ViewChild(MatSort, {static: false})
+  @ViewChild(MatSort, { static: false })
   set sort(value: MatSort) {
-    if (this.dataSource){
+    if (this.dataSource) {
       this.dataSource.sort = value;
     }
   }
 
   viewSpinner: boolean = true;
 
-  constructor(private companiesService: CompaniesService, private route: Router, private fieldsService: FieldsService) {
+  constructor(private companiesService: CompaniesService,
+    private router: Router,
+    private fieldsService: FieldsService,
+    private route: ActivatedRoute,
+    private fb: FormBuilder) {
+
+    this.selectSector = this.fb.group({
+      nombreSector: ['']
+    });
+
+
     this.listEmpresas = [];
     this.getCompanies();
 
@@ -58,19 +77,40 @@ export class ListCompaniesComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      if (params.keys.length > 0) {
+        this.filter = params.get('filter')!;
+        this.field = params.get('field')!;
+        this.filterSended = Boolean(params.get('filterSended'))!;
+        this.url = params.get('url')!;
+        this.id = params.get('id')!;
+        console.log(this.filter);
+        setTimeout(() => {
+          this.applyFilter(this.filter);
+          this.selectSector.get('nombreSector')!.setValue(this.id);
+        }, 600);
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.div = document.getElementsByClassName('page-wrapper')[0];
     this.div.className = "viewSpinner";
   }
 
   public applyFilter(filterValue: any): void {
-    console.log(filterValue.target.value)
-    filterValue = filterValue.target.value.trim().toLowerCase();
+    console.log(filterValue)
+    if (typeof (filterValue) !== 'string') {
+      filterValue = filterValue.target.value.trim().toLowerCase();
+      this.filterSended = false;
+    }
     this.dataSource.filter = filterValue;
   }
 
   public select(value: number): void {
     console.log(value);
+    this.filterSended = false;
     let sector = this.sectores.filter((sec: Fields) => sec.sector_id == value);
     this.dataSource.filter = sector.length > 0 ? sector[0].empresas_sector_name.trim().toLowerCase() : '';
   }
@@ -101,7 +141,7 @@ export class ListCompaniesComponent implements OnInit {
 
   public view(item: Empresa): void {
     console.log(item.Empresa_det_id);
-    this.route.navigate(['dashboard/view-company', { id: item.Empresa_det_id, url: '/dashboard/list-companies' } ]);
+    this.router.navigate(['dashboard/view-company', { id: item.Empresa_det_id, url: '/dashboard/list-companies' }]);
   }
 
   private delay(ms: number) {

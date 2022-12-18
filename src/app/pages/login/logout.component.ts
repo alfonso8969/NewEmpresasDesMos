@@ -12,7 +12,8 @@ export class LogoutComponent implements OnInit {
   isActive: boolean = true;
   title: string = "Admin Empresas";
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
 
   ngOnInit(): void {
     this.showMessage();
@@ -30,9 +31,9 @@ export class LogoutComponent implements OnInit {
         confirmButtonText: 'Si, salir'
       }).then((confirm) => {
         if (confirm.isConfirmed) {
-          this.isActive = false;
+          this.router.navigate(['/externalRedirect', { externalUrl: 'https:/alfonsogonz.es/' }]);
         } else {
-          this.router.navigate(['login']);
+          this.isActive = false;
         }
       })
     }, 600);

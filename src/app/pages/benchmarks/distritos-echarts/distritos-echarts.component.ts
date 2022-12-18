@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { EChartsOption } from 'echarts';
 import { ThemeOption } from 'ngx-echarts';
 import { BenchMarks } from 'src/app/interfaces/benchmarks';
 import { BenchmarksService } from 'src/app/services/benchmarks.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-distritos-echarts',
@@ -10,7 +12,7 @@ import { BenchmarksService } from 'src/app/services/benchmarks.service';
   styleUrls: ['./distritos-echarts.component.css']
 })
 export class DistritosEchartsComponent implements OnInit {
-
+  
   CoolTheme: any = {
     color: [
       '#b21ab4',
@@ -157,7 +159,8 @@ export class DistritosEchartsComponent implements OnInit {
     height: 500
   };
 
-  constructor(private benchmarksService: BenchmarksService) {
+  constructor(private benchmarksService: BenchmarksService,
+              private router: Router) {
     this.benchmarksService.getFieldsForBenchMarks('distrito')
     .subscribe({
       next: (dataResult: BenchMarks[]) => {
@@ -237,6 +240,31 @@ export class DistritosEchartsComponent implements OnInit {
    }
 
   ngOnInit(): void {
+  }
+
+  onChartEvent(event: any) {
+    console.log(event) 
+    let distrito = event.name;
+    let percent = event.percent;
+    let value = event.value;
+    console.log(distrito);
+    console.log(percent);
+    console.log(value);
+
+    Swal.fire({
+      title: 'Empresas por ditritos',
+      html: `<p>El ditrito: ${ distrito }</p><p>Tiene ${ value } empresas</p><p>que representa el ${ percent }% de empresas</p>`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: "Aceptar",
+      confirmButtonText: "Ver empresas"
+    }).then((confirm) => {
+      if (confirm.isConfirmed) {
+        this.router.navigate(['dashboard/list-companies', { filter: distrito, filterSended: 'true', field: 'Distrito', id: 0, url: '/dashboard/graph-distritos' } ]);
+      }
+    });
   }
 
 }
