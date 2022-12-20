@@ -199,6 +199,7 @@ export class LoginComponent implements OnInit {
                 }, error: (error: any) => {
                   console.log(error)
                   alert("Hubo un error al resetear la contraseña")
+                  this.load = false;
                 }
               });
             } else {
