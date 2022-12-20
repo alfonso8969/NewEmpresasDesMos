@@ -150,7 +150,7 @@ export class LoginComponent implements OnInit {
     a.innerText = a.innerText == "Olvidó la contraseña?" ? "Cerrar olvidó" : "Olvidó la contraseña?"
     let form = document.getElementById('recoverform')!;
     let clase = form.getAttribute('class')!;
-    if (clase?.includes('showRecoverForm')) { 
+    if (clase?.includes('showRecoverForm')) {
       let clases: string[] = clase.split(' ');
       clases.splice(clases.indexOf('showRecoverForm'), 1);
       form.setAttribute('class', clases.join(' '));
@@ -185,31 +185,14 @@ export class LoginComponent implements OnInit {
             if(match) {
               userEmail.user_password = newpassword;
               this.userService.resetPassword(userEmail)
-              .subscribe({ 
+              .subscribe({
                 next: (data: number) => {
                   if (data === 1) {
                     this.dataForm = {
                       name: userEmail.user_name + ' ' + userEmail.user_lastName,
                       email: userEmail.user_email,
-                      message: `
-                      <style>
-                        .footer {
-                          margin-top: 35px;
-                        }
-        
-                        .pass {
-                          font-size: 20px;
-                        }
-                      </style>
-                      <h3>Respuesta a su petición de recuperación de contraseña</h3>
-                      <p>Se le envia una contraseña temporal 
-                      <pre>
-                      <strong class="pass">${ newpassword }</strong> </p>
-                      </pre>
-                      <p><strong>Cambiela cuando entre en la aplicación</strong></p>              
-                      <p class='footer'>Muchas gracias por usar nuestra App</p>
-                      <p>Madrid a ${ new Date().getDate() } de ${Utils.getMonths(new Date().getMonth())} de ${new Date().getFullYear()}</p>`,
-                      from: 'Admin Empresas'
+                      message: Utils.getTemplateEmail(userEmail.user_name, userEmail.user_lastName, newpassword),
+                      from: 'Empresas Admin'
                     }
                     this.sendEmail();
                   }
@@ -221,7 +204,7 @@ export class LoginComponent implements OnInit {
             } else {
               alert("Hubo un problema regenerando el código de la contraseña");
               this.load = false;
-             
+
             }
           } else {
             this.load = false;
@@ -242,7 +225,7 @@ export class LoginComponent implements OnInit {
         });
       }, complete: () => console.log('Check email complete')
     });
-    
+
   }
 
   private sendEmail(): void {

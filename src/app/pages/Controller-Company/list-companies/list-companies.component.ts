@@ -54,7 +54,7 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder) {
 
     this.selectSector = this.fb.group({
-      nombreSector: ['']
+      nombreSector: [0]
     });
 
 
@@ -108,10 +108,10 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue;
   }
 
-  public select(value: number): void {
-    console.log(value);
+  public select(): void {
+    let sectorId = this.selectSector.get('nombreSector')?.value;
     this.filterSended = false;
-    let sector = this.sectores.filter((sec: Fields) => sec.sector_id == value);
+    let sector = this.sectores.filter((sec: Fields) => sec.sector_id == sectorId);
     this.dataSource.filter = sector.length > 0 ? sector[0].empresas_sector_name.trim().toLowerCase() : '';
   }
 

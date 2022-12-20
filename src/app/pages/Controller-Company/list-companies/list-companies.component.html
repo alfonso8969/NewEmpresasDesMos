@@ -42,17 +42,22 @@
                     </div>
                     <div class="example-header select">
                       <form [formGroup]="selectSector" novalidate autocomplete="off" class="d-inline">
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="fill" class="pc">
                           <mat-label>Seleccione sector</mat-label>
-                          <mat-select formControlName="nombreSector" id="nombreSector" name="nombreSector" (selectionChange)="select($event.value)" required>
-                            <mat-option [value]="0">Todos</mat-option>
-                            <mat-option *ngFor="let sector of sectores" [value]="sector.sector_id"
-                              [matTooltip]="sector.empresas_sector_name">
+                          <mat-select formControlName="nombreSector" id="nombreSector" name="nombreSector" (selectionChange)="select()" required>
+                            <mat-option [value]=0>Todos</mat-option>
+                            <mat-option [value]="sector.sector_id" *ngFor="let sector of sectores">
                               {{sector.empresas_sector_name}}
                             </mat-option>
                           </mat-select>
-
                         </mat-form-field>
+                        <select title="Sector" class="movile form-control" formControlName="nombreSector" id="nombreSectorMovil" name="nombreSector" (change)="select()" required>
+                          <option [ngValue]=0 selected>Todos</option>
+                          <option *ngFor="let sector of sectores" [ngValue]="sector.sector_id"
+                            [matTooltip]="sector.empresas_sector_name">
+                            {{sector.empresas_sector_name}}
+                          </option>
+                        </select>
                       </form>
                     </div>
                     <div class="table-responsive">

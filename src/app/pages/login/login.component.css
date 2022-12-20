@@ -27,3 +27,10 @@ a:hover {
 .showRecoverForm {
   display: block !important;
 }
+
+.message {
+  font-weight: 600 !important;
+  font-family: Monserrat, Arial, Helvetica, sans-serif !important;
+  font-size: 1.2em !important;
+  color: blue;
+}

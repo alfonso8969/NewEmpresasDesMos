@@ -59,6 +59,14 @@ mat-paginator {
   font-size: 16px !important;
 }
 
+.movile {
+  display: none !important
+}
+
+.pc {
+  display: inline-block !important
+}
+
 @media (max-width: 1440px) {
   .fx1 {
     position: relative !important;
@@ -104,6 +112,16 @@ mat-paginator {
 
   mat-option {
     overflow-y: visible;
+  }
+
+  .pc {
+    display: none !important
+  }
+
+  .movile {
+    display: inline-block !important;
+    width: 80%;
+    margin-bottom: 2em;
   }
 }
 
