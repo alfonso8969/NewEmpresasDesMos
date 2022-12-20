@@ -1,43 +1,64 @@
 <div class="login-register login">
+  <app-mat-spinner-overlay *ngIf="load">
+  </app-mat-spinner-overlay>
   <div class="login-box card">
     <div class="card-body">
       <form class="form-horizontal form-material" id="loginform" [formGroup]="loginForm" (ngSubmit)="login()">
         <h3 class="box-title m-b-20">Sistema Empresas</h3>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input class="form-control" type="email" formControlName="email" name="email" placeholder="email" autocomplete="email" autocomplete="off">
+            <input class="form-control" type="email" formControlName="email" name="email" placeholder="email"
+              autocomplete="email" autocomplete="off">
           </div>
-          <span class="err text-danger"
-            *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          <span class="err text-danger" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched && !loginForm.get('email')!.errors!['pattern']">
             El <strong>email </strong>es requerido
+          </span>
+          <span class="err text-danger"
+            *ngIf="loginForm.get('email')!.errors != null && loginForm.get('email')!.errors!['pattern'] && loginForm.get('email')?.touched">
+            El <strong>email</strong> no es válido
           </span>
         </div>
         <div class="form-group">
           <div class="col-xs-12">
-            <input class="form-control" autocomplete="new-password" formControlName="password" name="password" id="password"
-              type="password" placeholder="password" maxlength="10" minlength="6" autocomplete="new-password" autocomplete="off">
-              <i class="far fa-eye" style="margin-left: -30px;cursor: pointer; color: #045FB4" id="togglePassword"></i>
+            <input class="form-control" autocomplete="new-password" formControlName="password" name="password"
+              id="password" type="password" placeholder="password" maxlength="10" minlength="6"
+              autocomplete="new-password" autocomplete="off">
+            <i class="far fa-eye" style="margin-left: -30px;cursor: pointer; color: #045FB4" id="togglePassword"></i>
           </div>
           <span class="err text-danger"
-            *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched && !loginForm.get('password')!.errors!['pattern']">
             La <strong>contraseña </strong>es requerida
           </span>
+          <span class="err text-danger" newPassword
+          *ngIf="loginForm.get('password')!.errors != null && loginForm.get('password')!.errors!['pattern'] && loginForm.get('password')?.touched">
+          La <strong>contraseña</strong> no es válida, debe contener
+          <pre>
+          - 10 caracteres max
+          - 6 caracteres min
+          - 1 mayúscula
+          - 1 minúscula
+          - 1 número
+          - 1 caracter especial
+        </pre>
+        </span>
         </div>
         <div class="form-group row">
           <div class="col-md-12">
             <div class="checkbox checkbox-info pull-left p-t-0">
-              <input formControlName="checkboxsignup" name="checkboxsignup" id="checkboxsignup" type="checkbox" class="filled-in chk-col-light-blue">
+              <input formControlName="checkboxsignup" name="checkboxsignup" id="checkboxsignup" type="checkbox"
+                class="filled-in chk-col-light-blue">
               <label for="checkboxsignup"> Recuerdame </label>
-            </div> <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i
-                class="fa fa-lock m-r-5"></i> Olvidó la contraseña?</a>
+            </div>
+            <a (click)="recoverPasswordShow()" class="text-dark pull-right">
+              <i class="fa fa-lock m-r-5"></i>
+              <span id="to-recover">Olvidó la contraseña?</span>              
+            </a>
           </div>
         </div>
         <div class="form-group text-center">
           <div class="col-xs-12 p-b-20">
-            <button type="submit" [disabled]="loginForm.invalid"
-              class="btn-primary button d-inline mt-3">
-              <span
-                [matTooltip]="loginForm.invalid ? 'Faltan campos obligatorios' : 'Login'"
+            <button type="submit" [disabled]="loginForm.invalid" class="btn-primary button d-inline mt-3">
+              <span [matTooltip]="loginForm.invalid ? 'Faltan campos obligatorios' : 'Login'"
                 [matTooltipPosition]="'below'" aria-label="Botón loguea al usuario">
                 Login
               </span>
@@ -46,7 +67,8 @@
           </div>
         </div>
       </form>
-      <form class="form-horizontal" id="recoverform" action="index.html">
+      <form class="form-horizontal" id="recoverform" [formGroup]="forgotPasswordForm"
+        (ngSubmit)="recoverPassword(forgotPasswordForm.get('emailRecover')?.value)" novalidate>
         <div class="form-group ">
           <div class="col-xs-12">
             <h3>Recuperar contraseña</h3>
@@ -55,12 +77,25 @@
         </div>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input class="form-control" type="text" required="" placeholder="Email"> </div>
+            <input class="form-control" type="email" placeholder="Email" name="emailRecover" id="emailRecover"
+              formControlName="emailRecover" autocomplete="email" autocomplete="off">
+          </div>
+          <span class="err text-danger"
+            *ngIf="forgotPasswordForm.get('emailRecover')?.invalid && forgotPasswordForm.get('emailRecover')?.touched && !forgotPasswordForm.get('emailRecover')!.errors!['pattern']">
+            El <strong>email </strong>es requerido
+          </span>
+          <span class="err text-danger"
+            *ngIf="forgotPasswordForm.get('emailRecover')!.errors != null && forgotPasswordForm.get('emailRecover')!.errors!['pattern'] && forgotPasswordForm.get('emailRecover')?.touched">
+            El <strong>email</strong> no es válido
+          </span>
         </div>
         <div class="form-group text-center m-t-20">
-          <div class="col-xs-12">
+          <div class="col-xs-12 mb-5">
             <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light"
-              type="submit">Reiniciar</button>
+              [disabled]="forgotPasswordForm.invalid"
+              [matTooltip]="forgotPasswordForm.invalid ? 'Faltan campos obligatorios' : 'Recuperar'"
+              [matTooltipPosition]="'below'" aria-label="Botón recuperar contraseña usuario"
+              type="submit">Recuperar</button>
           </div>
         </div>
       </form>

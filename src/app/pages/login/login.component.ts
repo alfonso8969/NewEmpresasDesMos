@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/class/users';
+import { EmailService } from 'src/app/services/email.service';
 import { LoginService } from 'src/app/services/login.service';
-import Swal from 'sweetalert2'
+import { UsersService } from 'src/app/services/users.service';
+import { Utils } from 'src/app/utils/utils';
+import Swal, { SweetAlertIcon } from 'sweetalert2'
 
 @Component({
   selector: 'app-login',
@@ -13,20 +16,52 @@ import Swal from 'sweetalert2'
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
+  forgotPasswordForm: FormGroup;
   user: User;
-
 
   passwordHtml: HTMLElement;
   passwordIcon: HTMLElement;
 
+  public dataForm = {
+    name: '',
+    email: '',
+    message: '',
+    from: 'Admin Empresas'
+  };
+
+  private sendEmailResult = {
+    title: '',
+    message: ''
+  };
+
+  sendEmailMessages = {
+    titleerror: "Error",
+    titlesuccess: "Correcto",
+    nodata: "Los datos enviados no pueden estar vacios",
+    messageerror: "Hubo algún error enviando el correo",
+    messagesuccess: "El correo fue enviado correctamente",
+  }
+
+  load: boolean;
+
   constructor(private router: Router,
               private fb: FormBuilder,
-              private loginService: LoginService) {
+              private loginService: LoginService,
+              private emailService: EmailService,
+              private userService: UsersService) {
+
+    this.load = false;
+
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
+      password: ['', [Validators.required, Validators.pattern(Utils.passwordReg)]],
       checkboxsignup: ['']
     });
+
+    this.forgotPasswordForm = this.fb.group({
+      emailRecover: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
+    });
+
     let userLogged = localStorage.getItem('userlogged');
     let remember = localStorage.getItem('remember');
     if (userLogged && userLogged != "undefined" && remember == "true") {
@@ -108,6 +143,150 @@ export class LoginComponent implements OnInit {
       },
       complete: () => console.log("Complete User: ", this.user)
     });
+  }
+
+  public recoverPasswordShow(): void {
+    let a = document.getElementById('to-recover')!;
+    a.innerText = a.innerText == "Olvidó la contraseña?" ? "Cerrar olvidó" : "Olvidó la contraseña?"
+    let form = document.getElementById('recoverform')!;
+    let clase = form.getAttribute('class')!;
+    if (clase?.includes('showRecoverForm')) { 
+      let clases: string[] = clase.split(' ');
+      clases.splice(clases.indexOf('showRecoverForm'), 1);
+      form.setAttribute('class', clases.join(' '));
+    } else {
+      form.setAttribute('class', clase + ' showRecoverForm');
+    }
+
+  }
+
+  public recoverPassword(email: string): void {
+    console.log(email);
+    this.checkEmail(email);
+  }
+
+  private checkEmail(email: string): void {
+    this.load = true;
+    let userEmail: User = new User();
+    userEmail.user_email = email;
+    this.emailService.checkEmail(userEmail)
+      .subscribe({
+        next: (data: User) => {
+          if(data.user_name != undefined) {
+            userEmail.user_name = data.user_name;
+            userEmail.user_lastName = data.user_lastName;
+            let match = false;
+            let newpassword = '';
+            do {
+              newpassword = Utils.makestring(9);
+              match = Utils.passwordReg.test(newpassword);
+            } while (!match);
+
+            if(match) {
+              userEmail.user_password = newpassword;
+              this.userService.resetPassword(userEmail)
+              .subscribe({ 
+                next: (data: number) => {
+                  if (data === 1) {
+                    this.dataForm = {
+                      name: userEmail.user_name + ' ' + userEmail.user_lastName,
+                      email: userEmail.user_email,
+                      message: `
+                      <style>
+                        .footer {
+                          margin-top: 35px;
+                        }
+        
+                        .pass {
+                          font-size: 20px;
+                        }
+                      </style>
+                      <h3>Respuesta a su petición de recuperación de contraseña</h3>
+                      <p>Se le envia una contraseña temporal 
+                      <pre>
+                      <strong class="pass">${ newpassword }</strong> </p>
+                      </pre>
+                      <p><strong>Cambiela cuando entre en la aplicación</strong></p>              
+                      <p class='footer'>Muchas gracias por usar nuestra App</p>
+                      <p>Madrid a ${ new Date().getDate() } de ${Utils.getMonths(new Date().getMonth())} de ${new Date().getFullYear()}</p>`,
+                      from: 'Admin Empresas'
+                    }
+                    this.sendEmail();
+                  }
+                }, error: (error: any) => {
+                  console.log(error)
+                  alert("Hubo un error al resetear la contraseña")
+                }
+              });
+            } else {
+              alert("Hubo un problema regenerando el código de la contraseña");
+              this.load = false;
+             
+            }
+          } else {
+            this.load = false;
+            Swal.fire({
+              title: 'Recuperar contraseña',
+              text: `El email ${ email },  no está registrado`,
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+          }
+      }, error: (error:any) => {
+        this.load = false;
+        Swal.fire({
+          title: 'Recuperar contraseña',
+          text: `Hubo un error al comprobar el emai: ${ email }`,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      }, complete: () => console.log('Check email complete')
+    });
+    
+  }
+
+  private sendEmail(): void {
+
+    this.emailService.sendEmail(this.dataForm).subscribe({
+     next: (result: any) => {
+      this.load = false;
+      console.log('ContactComponent response', result);
+      if (result.title.includes('error')) {
+        this.showSwal('error');
+        return;
+      }
+      this.sendEmailResult.title = this.sendEmailMessages.titlesuccess;
+      this.sendEmailResult.message = this.sendEmailMessages.messagesuccess;
+      this.showSwal('success');
+     }, error: (error: any) => {
+      this.load = false;
+      this.sendEmailResult.title = this.sendEmailMessages.titleerror;
+      this.sendEmailResult.message = error.message;
+      this.showSwal('error');
+      console.log('Login send email Error', error);
+     }, complete: () => console.log("Complete send email")
+    });
+  }
+
+  private clearDataForm(): void {
+    this.dataForm = {
+      name: '',
+      email: '',
+      message: '',
+      from: ''
+    };
+  }
+
+  private showSwal(option: SweetAlertIcon): void {
+    this.clearDataForm();
+    Swal.fire({
+      icon: option,
+      title: this.sendEmailResult.title,
+      text: this.sendEmailResult.message,
+    });
+    this.forgotPasswordForm.get('emailRecover')?.setValue('');
+    this.forgotPasswordForm.markAsUntouched();
+    this.recoverPasswordShow();
   }
 
 }

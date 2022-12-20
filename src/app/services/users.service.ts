@@ -51,4 +51,8 @@ export class UsersService {
   public toAbleDisableUser(user: User): Observable<number> {
     return this.http.post<number>(`${this.url}/ableDisableUser.php`, { user: user });
   }
+  
+  public resetPassword(user: User): Observable<number> {
+    return this.http.post<number>(`${this.url}/resetPassword.php`, { user: user });
+  }
 }

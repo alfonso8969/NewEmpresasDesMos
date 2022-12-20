@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: "http://localhost/api-angular-php",
-  apiLocal: 'http://localhost:4200'
+  apiLocal: 'http://localhost:4200',
+  urlPHPEmail: "http://localhost/php/email.php"
 };
 
 /*

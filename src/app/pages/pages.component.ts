@@ -39,8 +39,8 @@ export class PagesComponent implements OnInit {
   // google maps
   @ViewChild('myMap') map: GoogleMap;
   apiLoaded: Observable<boolean>;
-  center: google.maps.LatLngLiteral = { lat: 40.3095534, lng: -3.9005684 };
-  zoom: number = 13;
+  center: google.maps.LatLngLiteral = { lat: 40.323319593781754, lng: -3.867631361170662 };
+  zoom: number = 14.5;
 
   viewDashBoard: boolean = false;
 
