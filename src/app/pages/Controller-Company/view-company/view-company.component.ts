@@ -49,14 +49,16 @@ export class ViewCompanyComponent implements OnInit {
       console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
       this.user = JSON.parse(userLogged);
     }
-    this.admin = Number(this.user.user_rol) === 1 ? true : false;
+    let user_rol = Number(this.user.user_rol);
+    this.admin = user_rol === 1 || user_rol === 3 ? true : false;
+
     this.fillEditForm();
 
     this.route.paramMap.subscribe((params: any) => {
         this.Empresa_det_id = params.get('id');
         this.url = params.get('url');
         console.log(this.url);
-        
+
         this.companiesService.getCompany(this.Empresa_det_id).subscribe({
           next: (result: any) => {
             if (result != null) {

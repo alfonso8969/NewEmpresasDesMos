@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit {
     name: '',
     email: '',
     message: '',
-    from: 'Admin Empresas'
+    from: 'Admin Empresas',
+    password: false
   };
 
   private sendEmailResult = {
@@ -192,7 +193,8 @@ export class LoginComponent implements OnInit {
                       name: userEmail.user_name + ' ' + userEmail.user_lastName,
                       email: userEmail.user_email,
                       message: Utils.getTemplateEmail(userEmail.user_name, userEmail.user_lastName, newpassword),
-                      from: 'Empresas Admin'
+                      from: 'Empresas Admin',
+                      password: true
                     }
                     this.sendEmail();
                   }
@@ -257,7 +259,8 @@ export class LoginComponent implements OnInit {
       name: '',
       email: '',
       message: '',
-      from: ''
+      from: '',
+      password: false
     };
   }
 

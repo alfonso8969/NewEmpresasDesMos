@@ -35,7 +35,8 @@ export class HistoryCompaniesComponent implements OnInit {
       console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
       this.user = JSON.parse(userLogged);
     }
-    this.admin = Number(this.user.user_rol) === 1 ? true : false;
+    let user_rol = Number(this.user?.user_rol);
+    this.admin = user_rol === 1 || user_rol === 3 ? true : false;
     this.fillTables();
    }
 
@@ -98,14 +99,14 @@ export class HistoryCompaniesComponent implements OnInit {
 
   public applyFilter(filterValue: any, hab: number): void {
     console.log(filterValue.target.value)
-    if (filterValue.target.value === '') { 
-      this.empresasInHab = this.empresasTmp;      
+    if (filterValue.target.value === '') {
+      this.empresasInHab = this.empresasTmp;
       this.empresasHab = this.empresasHabTmp;
     }
 
     if (this.filterValueAct.length > filterValue.target.value.length) {
       this.filterValueAct = filterValue.target.value.trim().toLowerCase();
-      this.empresasInHab = this.empresasTmp;      
+      this.empresasInHab = this.empresasTmp;
       this.empresasHab = this.empresasHabTmp;
       if (hab === 0) {
         this.empresasInHab = this.empresasInHab.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
@@ -119,7 +120,7 @@ export class HistoryCompaniesComponent implements OnInit {
       } else {
         this.empresasHab = this.empresasHab.filter((emp: Empresa) => emp.Nombre.toLowerCase().trim().includes(this.filterValueAct));
       }
-    }  
+    }
   }
 
   public toAbledisabledCompany(empresa: Empresa): void {

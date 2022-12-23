@@ -15,7 +15,7 @@ export class EmailService {
 
   constructor(private http: HttpClient) {
     this.url = environment.urlPHPEmail;
-    this.baseUrl = environment.apiUrl;;
+    this.baseUrl = environment.apiUrl;
   }
 
   sendEmail(data: any): Observable<any> {

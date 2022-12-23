@@ -49,8 +49,10 @@ export class AddCompanyComponent implements OnInit {
               private fieldsService: FieldsService,
               private fb: FormBuilder,
               private router: Router) {
-    this.user = new User();
-    this.user.setId_user(1);
+    let userLogged = localStorage.getItem('userlogged');
+    if (userLogged && userLogged != "undefined") {
+      this.user = JSON.parse(userLogged);
+    }
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
       console.log('localstorage empresa: ', JSON.parse(localStorage.getItem('empresa')!))
@@ -163,7 +165,7 @@ export class AddCompanyComponent implements OnInit {
       this.addCompanyForm.get("poligono")?.value
     );
 
-    this.empresa.setUser_id_alta(this.user.getId_user());
+    this.empresa.setUser_id_alta(this.user.id_user);
     this.empresa.setPersonaContacto(this.addCompanyForm.get('contactperson')?.value);
     this.empresa.setEmail(this.addCompanyForm.get("email")?.value);
     this.empresa.setTelefono(this.addCompanyForm.get("telefono")?.value);

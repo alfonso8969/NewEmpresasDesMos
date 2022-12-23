@@ -19,7 +19,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
       console.log('window:unload', event);
       alert('¿Está seguro de querer cerrar la sesión?');
    }
-   
+
   @HostListener('window:beforeunload', [ '$event' ])
    beforeUnloadHandler(event: any) {
     console.log('window:beforeunload', event)
@@ -33,7 +33,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   url: string = environment.apiUrl;
 
   admin: boolean;
-  
+
   fileUp: File;
   fileName: string;
 
@@ -61,7 +61,8 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
       console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
       this.userLogged = JSON.parse(userLogged);
     }
-    this.admin = Number(this.userLogged.user_rol) === 1 ? true : false;
+    let user_rol = Number(this.userLogged.user_rol);
+    this.admin = user_rol === 1 || user_rol === 3 ? true : false;
 
     this.usersService.getUsers().subscribe({
       next: (users: any) => {
@@ -117,19 +118,19 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   public getUser(user: User): void {
     this.user = user;
     this.fillUserForm(user);
-    
+
     console.log(user)
   }
 
   public applyFilter(filterValue: any): void {
     console.log(filterValue.target.value)
-    if (filterValue.target.value === '') { 
-      this.users = this.usersTemp;      
+    if (filterValue.target.value === '') {
+      this.users = this.usersTemp;
     }
 
     if (this.filterValueAct.length > filterValue.target.value.length) {
       this.filterValueAct = filterValue.target.value.trim().toLowerCase();
-      this.users = this.usersTemp;      
+      this.users = this.usersTemp;
       this.users = this.users.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
     } else {
       this.filterValueAct = filterValue.target.value.trim().toLowerCase();

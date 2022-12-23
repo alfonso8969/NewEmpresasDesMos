@@ -10,6 +10,7 @@ import { User } from '../class/users';
 export class LoginService {
 
   private baseUrl = environment.apiUrl;
+  roleAs: number;
 
   @Output() userEmitter: EventEmitter<User> = new EventEmitter();
 
@@ -19,7 +20,9 @@ export class LoginService {
     return this.http.post<User>(`${this.baseUrl}/login.php`, { user: user })
     .pipe(map( (Users: User) => {
       console.log('Users: ', Users);
+      this.roleAs = Users.user_rol;
       localStorage.setItem('userlogged', JSON.stringify(Users));
+      localStorage.setItem('ROLE', this.roleAs.toString());
       this.userEmitter.emit(Users);
       this.setToken(Users.user_name);
       return Users;
@@ -43,9 +46,15 @@ export class LoginService {
     return userToken != null;
   }
 
+  getRole() {
+    this.roleAs = Number(localStorage.getItem('ROLE')!);
+    return this.roleAs;
+  }
+
   public logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userlogged');
+    localStorage.removeItem('ROLE');
     localStorage.removeItem('remember');
   }
 }

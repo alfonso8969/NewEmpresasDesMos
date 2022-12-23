@@ -34,6 +34,7 @@ export class PagesComponent implements OnInit {
   private cookieExists: boolean;
 
   user: User;
+  user_rol_technical: boolean;
   url: string = environment.apiUrl;
 
   // google maps
@@ -55,6 +56,9 @@ export class PagesComponent implements OnInit {
     if (userLogged && userLogged != "undefined") {
       console.log('localstorage userlogged: ', JSON.parse(localStorage.getItem('userlogged')!))
       this.user = JSON.parse(userLogged);
+      let user_rol = Number(this.user.user_rol);
+      this.user_rol_technical = user_rol === 4 ? true : false;
+
     }
 
     this.companiesService.getApi()
@@ -142,7 +146,7 @@ export class PagesComponent implements OnInit {
         : '¿Está seguro de querer salir de la aplicación?';
 
     let confirmButtonText = remember ? 'Si, cerrar sessión' : 'Si, salir';
-    
+
     Swal.fire({
       title: title,
       html: message,

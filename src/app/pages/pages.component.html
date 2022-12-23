@@ -166,7 +166,7 @@
           <li class="nav-small-cap text-light">Indicadores</li>
 
           <li class="mb-3" *ngFor="let item of menuService.menu">
-            <a  class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -177,7 +177,7 @@
             </ul>
           </li>
           <li class="mb-3" *ngFor="let item of menuService.menuAdminUsers">
-            <a class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -198,9 +198,33 @@
               </li>
             </ul>
           </li>
-          <li role="separator" class="nav-devider"></li>
+          <li role="separator" class="nav-devider" *ngIf="!user_rol_technical"></li>
           <li class="mb-3" *ngFor="let item of menuService.menuGraphs">
-            <a class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+              <i [class]="item.icon"></i>
+              <span class="hide-menu">{{ item.title }}</span>
+            </a>
+            <ul aria-expanded="false">
+              <li class="mt-3" *ngFor="let subitem of item.submenu">
+                <a (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
+              </li>
+            </ul>
+          </li>
+          <li role="separator" class="nav-devider" *ngIf="!user_rol_technical"></li>
+          <li class="mb-3" *ngFor="let item of menuService.menuSupport">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+              <i [class]="item.icon"></i>
+              <span class="hide-menu">{{ item.title }}</span>
+            </a>
+            <ul aria-expanded="false">
+              <li class="mt-3" *ngFor="let subitem of item.submenu">
+                <a *ngIf="subitem.rol" (click)="navigateTo(subitem.url, $event)">{{ subitem.title }}</a>
+              </li>
+            </ul>
+          </li>
+          <li role="separator" class="nav-devider" *ngIf="user_rol_technical"></li>
+          <li class="mb-3" *ngFor="let item of menuService.menuTechnical">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>

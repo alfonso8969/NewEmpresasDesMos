@@ -31,6 +31,12 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LogoutComponent } from './login/logout.component';
 import { NotFoundComponent } from './login/notfound.component';
+import { TicketSupportComponent } from './support/ticket-support/ticket-support.component';
+import { HelpSupportComponent } from './support/help-support/help-support.component';
+import { TechnicalLogsComponent } from './technical/technical-logs/technical-logs.component';
+import { AddTechnicalComponent } from './technical/add-technical/add-technical.component';
+import { TechnicalSessionsComponent } from './technical/technical-sessions/technical-sessions.component';
+import { TicketManagementComponent } from './technical/ticket-management/ticket-management.component';
 
 
 @NgModule({
@@ -54,7 +60,13 @@ import { NotFoundComponent } from './login/notfound.component';
     PoligonosEchartsComponent,
     SectoresEchartsComponent,
     LogoutComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    TicketSupportComponent,
+    HelpSupportComponent,
+    TechnicalLogsComponent,
+    AddTechnicalComponent,
+    TechnicalSessionsComponent,
+    TicketManagementComponent
   ],
   imports: [
     CommonModule,

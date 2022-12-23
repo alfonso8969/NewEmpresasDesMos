@@ -1,0 +1,79 @@
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeIn">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Registrar ticket</h3>
+      </div>
+      <div class="">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="pl-3">
+            <h3 class="card-title p-1">Solicitud de datos para nuevo ticket de soporte</h3>
+            <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
+            <button type="button" matTooltip="Limpiar el formulario" class="btn btn-default d-inline float-right mx-3"
+              (click)="cleanForm()">Limpiar formulario
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <div class="row p-t-20">
+                <form [formGroup]="addTicketSupport" (ngSubmit)="addTicket()" novalidate autocomplete="off">
+                  <div class="col-md-8">
+                    <div class="form-group">
+                      <label for="field" class="control-label">* Seleccione de la lista el tema del ticket</label>
+                      <select formControlName="field" name="field" id="field" class="form-control" title="field" (change)="changeSector($event)">
+                        <option [ngValue]=0 selected>Seleccione tema</option>
+                        <option [ngValue]="tema.id" *ngFor="let tema of temas">
+                          {{ tema.name }}
+                        </option>
+                      </select>
+                      <span class="err text-danger"
+                        *ngIf="addTicketSupport.get('field')?.invalid && addTicketSupport.get('sector')?.touched">
+                        El <strong>tema es</strong> requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addTicketSupport.get('field')?.touched && addTicketSupport.get('field')?.value == 0">
+                        El <strong>sector es</strong> requerido
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row p-t-20 pl-3">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="message" class="control-label">* Describa el caso</label><p></p>
+                        <textarea formControlName="message" name="message" id="message" cols="60" rows="10" class="form-control"></textarea>
+                        <span class="err text-danger"
+                        *ngIf="addTicketSupport.get('message')?.invalid && addTicketSupport.get('message')?.touched">
+                        El <strong>mensaje es</strong> requerido
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" [disabled]="addTicketSupport.invalid || isDisabled()" class="btn-primary button d-inline">
+                      <span
+                        [matTooltip]="addTicketSupport.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija enviar ticket'">Enviar
+                      </span>
+                      <i class="fa fa-save p-1"></i>
+                    </button>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
