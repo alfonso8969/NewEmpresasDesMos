@@ -164,6 +164,14 @@ export class TicketSupportComponent implements OnInit {
     this.campoStr = event.target.selectedOptions[0].text;
   }
 
+  onCheckboxChange(event: any) {
+    if (event.target.checked) {
+      this.ticketTratadosByUser.solucionado = 1;
+    }
+    console.log(this.ticketTratadosByUser);
+
+  }
+
   changeTicketCode(event: any) {
     this.ticketCodeSelected = event.target.selectedOptions[0].text;
     this.ticketByUser = this.ticketsByUser.find((ticket: TicketByUser) => ticket.ticket_code == this.ticketCodeSelected)!;
@@ -175,6 +183,7 @@ export class TicketSupportComponent implements OnInit {
           next: (result: TicketByUser[]) => {
             if (result != null) {
               this.ticketsTratadosByUser = result;
+              this.ticketTratadosByUser = this.ticketsTratadosByUser[0];
             } else {
               alert("Hubo un error")
             }

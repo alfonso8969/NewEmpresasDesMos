@@ -103,6 +103,7 @@
                               width="100" [alt]="user.user_name">
                             <div class="media-body">
                               <h5 class="mt-0 mb-1">Tema: {{ ticketByUser.campo }}</h5>
+                              <h6 class="mt-0 mb-1">Fecha: {{ ticketByUser.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</h6>
                               {{ ticketByUser.message }} <br>
                               <span class="text-danger" *ngIf="ticketByUser.respondido == 0">Su ticket no ha sido respondido, no tardaremos mucho</span>
                               <span class="text-success" *ngIf="ticketByUser.respondido != 0">Su ticket ha sido respondido</span>
@@ -119,14 +120,19 @@
                                     [alt]="ticketTratado.user_name">
                                 </a>
                                 <div class="media-body">
-                                  <h5 class="mt-0">Fecha Respuesta: {{ ticketTratado.fecha | date: 'short' }}</h5>
-                                  {{ ticketTratado.respuesta }} <br>
-                                  <input [checked]="ticketTratado.solucionado != 0" type="checkbox" id="closeTicket">
-                                  <label for="closeTicket">Marcar como solucionado</label>
+                                  <h5 class="mt-0">Fecha Respuesta: {{ ticketTratado.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</h5>
+                                  {{ ticketTratado.respuesta }}
+                                  <div *ngIf="ticketTratadosByUser.solucionado == 0">
+                                    <input [checked]="ticketTratadosByUser.solucionado != 0" type="checkbox" id="closeTicket" (change)="onCheckboxChange($event)">
+                                    <label for="closeTicket">Marcar como solucionado</label>
+                                  </div>
+                                  <div *ngIf="ticketTratadosByUser.solucionado != 0">
+                                    <span class="text-success">El ticket ha sido cerrado</span>
+                                  </div>
                                 </div>
                               </div>
-                              <span *ngIf="ticketTratado.solucionado == 0" class="badge badge-danger">Abierto</span>
-                              <span *ngIf="ticketTratado.solucionado != 0" class="badge badge-success">Cerrado</span> 
+                              <span *ngIf="ticketTratadosByUser.solucionado == 0" class="badge badge-danger">Abierto</span>
+                              <span *ngIf="ticketTratadosByUser.solucionado != 0" class="badge badge-success">Cerrado</span> 
                             </li>
                           
                           </ul>
