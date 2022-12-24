@@ -85,7 +85,7 @@ export class PagesComponent implements OnInit {
     this.linkMoreIfoCookies = `https://policies.google.com/technologies/cookies?hl=es-419`;
     this.cookieExists ?
       this.showDetail = false :
-      this.showDetailsetTime();
+      this.showDetailSetTime();
   }
 
   ngOnInit(): void {
@@ -99,7 +99,7 @@ export class PagesComponent implements OnInit {
     this._router.navigateByUrl(url);
   }
 
-  functViewDashboard() {
+  funcViewDashboard() {
     this._router.navigate(["/dashboard"])
       .then(() => {
         window.location.reload();
@@ -115,7 +115,7 @@ export class PagesComponent implements OnInit {
     this.close.emit($event);
   }
 
-  public showDetailsetTime(): void {
+  public showDetailSetTime(): void {
     setTimeout(() => {
       this.showDetail = true;
     }, 600);

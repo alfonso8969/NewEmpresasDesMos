@@ -1,0 +1,13 @@
+
+
+
+@media (max-width: 767px) {
+  .responsive {
+    width: 100%;
+    height: auto;
+  }
+
+  .lineal {
+    margin-left: 0px !important;
+  }
+}

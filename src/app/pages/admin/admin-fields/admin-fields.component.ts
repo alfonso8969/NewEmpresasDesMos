@@ -60,10 +60,10 @@ export class AdminFieldsComponent implements OnInit {
       nombrePoligono: ['', [Validators.required, Validators.pattern(this.regex3)]]
     });
 
-    this.fillCombobox();
+    this.fillComboboxes();
   }
 
-  public fillCombobox() {
+  public fillComboboxes() {
     this.sectores = [];
     this.distritos = [];
     this.poligonos = [];
@@ -169,7 +169,7 @@ export class AdminFieldsComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
-          this.fillCombobox();
+          this.fillComboboxes();
         } else {
           Swal.fire({
             title: 'Actualizar campo: ' + field.field_name,

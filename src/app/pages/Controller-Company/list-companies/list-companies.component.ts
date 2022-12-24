@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
+import { User } from 'src/app/class/users';
 import { Fields } from 'src/app/interfaces/fields';
 import { CompaniesService } from 'src/app/services/companies.service';
 import { FieldsService } from 'src/app/services/fields.service';
@@ -18,7 +19,9 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
 
   listEmpresas: Empresa[]
   sectores: Fields[];
+  user: User;
 
+  admin: boolean;
   div: Element;
   slc: Element;
   filter: string;
@@ -52,6 +55,14 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
     private fieldsService: FieldsService,
     private route: ActivatedRoute,
     private fb: FormBuilder) {
+
+      let userLogged = localStorage.getItem('userlogged');
+      if (userLogged && userLogged != "undefined") {
+        console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
+        this.user = JSON.parse(userLogged);
+      }
+      let user_rol = Number(this.user?.user_rol);
+      this.admin = user_rol === 1 || user_rol === 3 ? true : false;
 
     this.selectSector = this.fb.group({
       nombreSector: [0]

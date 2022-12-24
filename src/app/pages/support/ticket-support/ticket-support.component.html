@@ -19,27 +19,28 @@
         <div class="card">
           <div class="pl-3">
             <h3 class="card-title p-1">Solicitud de datos para nuevo ticket de soporte</h3>
-            <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
-            <button type="button" matTooltip="Limpiar el formulario" class="btn btn-default d-inline float-right mx-3"
-              (click)="cleanForm()">Limpiar formulario
+            <cite class="card-title float-left mx-3 p-1">los campos marcados con * son obligatorios</cite>
+            <button type="button" matTooltip="Limpiar el formulario"
+              class="d-block btn btn-default d-inline float-left mx-3" (click)="cleanForm()">Limpiar formulario
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
           </div>
           <div class="card-body">
             <div class="form-body">
               <div class="row p-t-20">
-                <form [formGroup]="addTicketSupport" (ngSubmit)="addTicket()" novalidate autocomplete="off">
-                  <div class="col-md-8">
+                <div class="col-md-6">
+                  <form [formGroup]="addTicketSupport" (ngSubmit)="addTicket()" novalidate autocomplete="off">
                     <div class="form-group">
                       <label for="field" class="control-label">* Seleccione de la lista el tema del ticket</label>
-                      <select formControlName="field" name="field" id="field" class="form-control" title="field" (change)="changeSector($event)">
+                      <select formControlName="field" name="field" id="field" class="form-control" title="field"
+                        (change)="changeTema($event)">
                         <option [ngValue]=0 selected>Seleccione tema</option>
                         <option [ngValue]="tema.id" *ngFor="let tema of temas">
                           {{ tema.name }}
                         </option>
                       </select>
                       <span class="err text-danger"
-                        *ngIf="addTicketSupport.get('field')?.invalid && addTicketSupport.get('sector')?.touched">
+                        *ngIf="addTicketSupport.get('field')?.invalid && addTicketSupport.get('field')?.touched">
                         El <strong>tema es</strong> requerido
                       </span>
                       <span class="err text-danger"
@@ -47,28 +48,97 @@
                         El <strong>sector es</strong> requerido
                       </span>
                     </div>
-                  </div>
-                  <div class="row p-t-20 pl-3">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="message" class="control-label">* Describa el caso</label><p></p>
-                        <textarea formControlName="message" name="message" id="message" cols="60" rows="10" class="form-control"></textarea>
-                        <span class="err text-danger"
-                        *ngIf="addTicketSupport.get('message')?.invalid && addTicketSupport.get('message')?.touched">
+
+                    <div class="form-group">
+                      <label for="message" class="control-label">* Describa el caso</label>
+                      <p></p>
+                      <textarea formControlName="message" name="message" id="message" cols="100" rows="10"
+                        class="form-control"></textarea>
+                      <span
+                        *ngIf="addTicketSupport.get('message')?.value.length <= 500 && (addTicketSupport.get('message')?.value.length > 1 || addTicketSupport.get('message')?.value.length ==0)">
+                        {{ addTicketSupport.get('message')?.value.length }} caracteres de 500 permitidos</span>
+                      <span
+                        *ngIf="addTicketSupport.get('message')?.value.length <= 500 && addTicketSupport.get('message')?.value.length == 1">
+                        {{ addTicketSupport.get('message')?.value.length }} carácter de 500 permitidos</span>
+                      <span class="err text-danger"
+                        *ngIf="addTicketSupport.get('message')?.invalid && addTicketSupport.get('message')?.touched && !addTicketSupport.get('message')!.errors!['maxlength']">
                         El <strong>mensaje es</strong> requerido
                       </span>
+                      <span class="err text-danger"
+                        *ngIf="addTicketSupport.get('message')?.errors != null && addTicketSupport.get('message')!.errors!['maxlength']">
+                        El <strong>limite es de 500 caracteres</strong>
+                      </span>
+                    </div>
+
+                    <div class="form-actions">
+                      <button type="submit" [disabled]="addTicketSupport.invalid || isDisabled()"
+                        class="btn-primary button d-inline">
+                        <span
+                          [matTooltip]="addTicketSupport.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija enviar ticket'">Enviar
+                          ticket soporte
+                        </span>
+                        <i class="fa fa-save p-1"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-6">
+                  <div *ngIf="ticketsByUser.length > 0" class="form-group">
+                    <label for="tickets" class="control-label">* Seleccione de la lista el ticket que desea
+                      comprobar</label>
+                    <select name="tickets" id="tickets" class="form-control" title="tickets"
+                      (change)="changeTicketCode($event)">
+                      <option [ngValue]=0 selected>Seleccione ticket</option>
+                      <option [ngValue]="ticket.ticket_code" *ngFor="let ticket of ticketsByUser">
+                        {{ ticket.ticket_code }}
+                      </option>
+                    </select>
+                    <div *ngIf="ticketByUser" class="row">
+                      <div class="tickets col-md-8 p-20">
+                        <h4 class="card-title">Su Ticket: {{ ticketByUser.ticket_code }}</h4>
+                        <ul class="list-unstyled">
+                          <li class="media">
+                            <img [matTooltip]="user.user_name" class="d-flex mr-3"
+                              [src]="user && user.user_img ? url + '/uploads/' + user.user_img : './assets/images/icon/staff.png'"
+                              width="100" [alt]="user.user_name">
+                            <div class="media-body">
+                              <h5 class="mt-0 mb-1">Tema: {{ ticketByUser.campo }}</h5>
+                              {{ ticketByUser.message }} <br>
+                              <span class="text-danger" *ngIf="ticketByUser.respondido == 0">Su ticket no ha sido respondido, no tardaremos mucho</span>
+                              <span class="text-success" *ngIf="ticketByUser.respondido != 0">Su ticket ha sido respondido</span>
+                            </div>
+                          </li>
+                        </ul>
+                        <hr>
+                        <div *ngIf="ticketByUser && ticketByUser.respondido != 0" class="row">
+                          <ul class="list-unstyled">
+                            <li class="media" *ngFor="let ticketTratado of ticketsTratadosByUser">
+                              <div class="media mt-2 ml-5">
+                                <a class="d-flex pr-3" href="#">
+                                  <img [src]="user && user.user_img ? url + '/uploads/' + ticketTratado.user_img : './assets/images/icon/staff.png'" width="100" height="100" [matTooltip]="'Técnico:' + ticketTratado.user_name"
+                                    [alt]="ticketTratado.user_name">
+                                </a>
+                                <div class="media-body">
+                                  <h5 class="mt-0">Fecha Respuesta: {{ ticketTratado.fecha | date: 'short' }}</h5>
+                                  {{ ticketTratado.respuesta }} <br>
+                                  <input [checked]="ticketTratado.solucionado != 0" type="checkbox" id="closeTicket">
+                                  <label for="closeTicket">Marcar como solucionado</label>
+                                </div>
+                              </div>
+                              <span *ngIf="ticketTratado.solucionado == 0" class="badge badge-danger">Abierto</span>
+                              <span *ngIf="ticketTratado.solucionado != 0" class="badge badge-success">Cerrado</span> 
+                            </li>
+                          
+                          </ul>
+                        </div>
                       </div>
                     </div>
+                  
                   </div>
-                  <div class="form-actions">
-                    <button type="submit" [disabled]="addTicketSupport.invalid || isDisabled()" class="btn-primary button d-inline">
-                      <span
-                        [matTooltip]="addTicketSupport.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija enviar ticket'">Enviar
-                      </span>
-                      <i class="fa fa-save p-1"></i>
-                    </button>
-                    </div>
-                </form>
+                  <div *ngIf="ticketsByUser.length == 0" class="form-group">
+                    <label for="field" class="control-label">* No dispone de tickets que comprobar</label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -76,4 +146,3 @@
       </div>
     </div>
   </div>
-</div>

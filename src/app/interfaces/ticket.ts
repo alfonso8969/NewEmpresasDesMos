@@ -4,5 +4,6 @@ export interface Ticket {
   campo: number;
   message: string;
   fecha: Date;
+  code: string;
   respondido: boolean;
 }

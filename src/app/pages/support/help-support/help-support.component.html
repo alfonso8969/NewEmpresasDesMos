@@ -1,1 +1,187 @@
-<p>help-support works!</p>
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeIn">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Ayuda</h3>
+      </div>
+      <div class="">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="pl-3">
+            <h3 class="card-title p-1">Seleccione el tipo de ayuda que necesita</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <div class="row p-t-20">
+                <div class="col-md-12">
+                  <div id="accordion1" role="tablist" aria-multiselectable="true">
+                    <div class="card">
+                      <div class="card-header" role="tab" id="headingOne1">
+                        <h5 class="mb-0">
+                          <a class="collapsed link" data-toggle="collapse" data-parent="#accordion1"
+                            href="#collapseOne1" aria-expanded="false" aria-controls="collapseOne">
+                            Empresas. Como veo la información de la empresa?
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1">
+                        <div class="card-body">
+                          <p>Para ver la información de la empresa, debe ingresar al menú de empresas y seleccionar la
+                            empresa que desea ver (haciendo click con el ratón en la fila correspondiente a dicha
+                            empresa). En la parte superior de la pantalla se mostrará la información de la empresa
+                            seleccionada.</p>
+                          <a [routerLink]="'/dashboard/list-companies'">Ir al listado de empresas</a>
+                          <p></p>
+                          <img class="responsive" width="900" height="400" src="./assets/images/ejEmpresas.png"
+                            alt="listado de empresas">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" role="tab" id="headingTwo2">
+                        <h5 class="mb-0">
+                          <a class="collapsed link" data-toggle="collapse" data-parent="#accordion1"
+                            href="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
+                            Empresas. Para que sirven los iconos al lado de cada campo en la información de la empresa?
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2">
+                        <div class="card-body">
+                          <p>Los iconos de los campos sirven para poder acceder más fácilmente a la información que
+                            proporcionan, por ejemplo si el campo es un email, el icono le permitirá abrir la aplicación
+                            de correo para enviar un email, si es un teléfono, la aplicación telefónica de la que
+                            disponga, en el caso de la dirección se abrirá Google-maps (es posible que la localización
+                            no sea exacta, depende mucho de la in formación que Google posea de susodicha empresa), en
+                            el caso de las redes, se le enviará a la red social que indica el icono (funcionará
+                            dependiendo de la información que haya aportado la empresa).</p>
+                          <img class="responsive" width="900" height="400" src="./assets/images/ejIconsLinks.png"
+                            alt="listado de empresas">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" role="tab" id="headingThree3">
+                        <h5 class="mb-0">
+                          <a class="collapsed link" data-toggle="collapse" data-parent="#accordion1"
+                            href="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">
+                            Usuarios. Por que veo información sobre los usuarios?
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3">
+                        <div class="card-body">
+                          La información sobre los usuarios sirve para poder contactar con ellos, sobre todo si tiene
+                          algún problema con la aplicación o con la información que se muestra en la misma. Si tiene
+                          algún problema con la aplicación, puede contactar con el administrador de la misma, que son
+                          los usuarios que aparecen como administrador o superAdmin, en el caso de que desee más
+                          información sobre un usuario, puede contactar con el, dependiendo de la información que haya
+                          aportado dicha usuario.
+                          <div class="d-inline">
+                            <img class="responsive" width="700" height="400" src="./assets/images/ejUsers.png"
+                              alt="listado de usuarios">
+                            <img class="responsive" width="450" height="300" src="./assets/images/ejUser.png"
+                              alt="Información usuario">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" role="tab" id="headingThree4">
+                        <h5 class="mb-0">
+                          <a class="collapsed link" data-toggle="collapse" data-parent="#accordion1"
+                            href="#collapseThree4" aria-expanded="false" aria-controls="collapseThree4">
+                            Gráficas. Como ver los datos de la gráfica?
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseThree4" class="collapse" role="tabpanel" aria-labelledby="headingThree4">
+                        <div class="card-body">
+                          <p>Para ver los datos de la gráfica, debe hacer click en la gráfica, en la parte de las barras
+                            (si la gráfica es de barras) de la misma se mostrará la información de la gráfica.</p>
+                          <p>Ejemplo de gráfica de barras:</p>
+                          <div class="d-inline">
+                            <img class="responsive" width="900" height="600" src="./assets/images/ejGraficaBars.png"
+                              alt="Gráfica barras">
+                            <img class="responsive" width="450" height="300" src="./assets/images/ejInfoGrafica.png"
+                              alt="Gráfica barras información">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" role="tab" id="headingThree5">
+                        <h5 class="mb-0">
+                          <a class="collapsed link" data-toggle="collapse" data-parent="#accordion1"
+                            href="#collapseThree5" aria-expanded="false" aria-controls="collapseThree5">
+                            Gráficas. Para que sirven los iconos de las gráficas?
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseThree5" class="collapse" role="tabpanel" aria-labelledby="headingThree5">
+                        <div class="card-body">
+                          <p>Los iconos de las gráfica te permiten cambiar el tipo de gráfica, por ejemplo si la gráfica
+                            es de barras, puedes cambiarla a gráfica de linea, también para ver los datos desglosados
+                            donde este disponible (no todas las gráficas dispones de estos mecanismos).</p>
+                          <p>Ejemplo en una gráfica de barras:</p>
+                          <div class="d-inline">
+                            <img class="responsive" width="700" height="600" src="./assets/images/ejIconosGraficas.png"
+                              alt="Gráfica barras iconos">
+                            <img class="responsive ml-3 mt-5 lineal" width="800" height="650"
+                              src="./assets/images/ejGraficaLineal.png" alt="Gráfica barras información">
+                          </div>
+                          <div class="d-inline">
+                            <img class="responsive" width="750" height="550"
+                              src="./assets/images/ejGraficaIconoDatos.png" alt="Gráfica barras icono datos">
+                            <img class="responsive ml-3 mt-5 lineal" width="700" height="600"
+                              src="./assets/images/ejGraficaDatos.png" alt="Gráfica barras información datos">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" role="tab" id="headingThree6">
+                        <h5 class="mb-0">
+                          <a class="collapsed link" data-toggle="collapse" data-parent="#accordion1"
+                            href="#collapseThree6" aria-expanded="false" aria-controls="collapseThree6">
+                            Ticket soporte. Para que sirve el ticket soporte?
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseThree6" class="collapse" role="tabpanel" aria-labelledby="headingThree6">
+                        <div class="card-body">
+                          <p>El ticket de soporte sirve para que nos envíe feedback sobre la aplicación, ya puede ser sobre algún mal funcionamiento de la aplicación,  como de cualquier sugerencia que nos pueda aportar.</p>
+                          <p>Estaremos muy agradecidos con cualquiera que sea su colaboración y estamos dispuestos a escuchar cualquier sugerencia para el mejor funcionamiento de la aplicación</p>
+                          <p>Para enviar el ticket de soporte, debe hacer click en el botón de "Enviar ticket de soporte" que se encuentra en la parte inferior de la página <a [routerLink]="'/dashboard/ticket-support'"> Ticket soporte</a>.</p>
+                          <p></p>
+                          <p>Cuando haya realizado alguna entrega de un ticket vera en la parte derecha su envío o envíos y podrá ver las respuestas de nuestro equipo</p>
+                          <p>Siga las instrucciones de la pantalla para seguir el hilo del ticket</p>
+                          <div class="d-inline">
+                            <img class="responsive" width="700" height="600" src="./assets/images/ejHiloTicket.png"
+                              alt="Seguimiento del ticket">
+
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

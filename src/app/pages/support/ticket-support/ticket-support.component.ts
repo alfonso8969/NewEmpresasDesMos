@@ -3,8 +3,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/class/users';
 import { Tema } from 'src/app/interfaces/tema';
 import { Ticket } from 'src/app/interfaces/ticket';
+import { TicketByUser } from 'src/app/interfaces/ticketByUser';
 import { EmailService } from 'src/app/services/email.service';
 import { SupportService } from 'src/app/services/support.service';
+import { Utils } from 'src/app/utils/utils';
+import { environment } from 'src/environments/environment';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 @Component({
@@ -13,15 +16,24 @@ import Swal, { SweetAlertIcon } from 'sweetalert2';
   styleUrls: ['./ticket-support.component.css']
 })
 export class TicketSupportComponent implements OnInit {
+  
+  url: string = environment.apiUrl;
 
   addTicketSupport: FormGroup;
   temas: Tema[];
   user: User;
-  load: boolean = false;
   ticket: Ticket;
+  ticketsByUser: TicketByUser[];
+  ticketsTratadosByUser: TicketByUser[];
+  ticketByUser: TicketByUser;
+  ticketTratadosByUser: TicketByUser;
+
+  load: boolean = false;
   campoStr: string;
   campoInt: number;
   message: string;
+  code: string;
+  ticketCodeSelected: string;
 
   public dataForm = {
     name: '',
@@ -29,6 +41,7 @@ export class TicketSupportComponent implements OnInit {
     message: '',
     from: 'Admin Empresas ticket soporte',
     ticket: true,
+    code: '',
     password: false
   };
 
@@ -38,15 +51,15 @@ export class TicketSupportComponent implements OnInit {
   };
 
   sendEmailMessages = {
-    titleerror: "Error",
-    titlesuccess: "Correcto",
-    nodata: "Los datos enviados no pueden estar vacios",
+    titleError: "Error",
+    titleSuccess: "Correcto",
+    noData: "Los datos enviados no pueden estar vacíos",
     messageerror: "Hubo algún error enviando el ticket",
-    messagesuccess: "El ticket fue enviado correctamente",
+    messageSuccess: "El ticket fue enviado correctamente",
   }
 
-  constructor(private fb: FormBuilder, 
-              private supporService: SupportService,
+  constructor(private fb: FormBuilder,
+              private supportService: SupportService,
               private emailService: EmailService) {
     this.ticket = {
       id_ticket: 0,
@@ -54,20 +67,38 @@ export class TicketSupportComponent implements OnInit {
       campo: 0,
       message: '',
       fecha: new Date(),
+      code: '',
       respondido: false
     }
 
     let userLogged = localStorage.getItem('userlogged');
     if (userLogged && userLogged != "undefined") {
-      console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
+      console.log('localStorage userLogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
       this.user = JSON.parse(userLogged);
     }
-    this.addTicketSupport = this.fb.group({ 
-      field: [0, Validators.required],
-      message: ['', Validators.required]
+    this.ticketsTratadosByUser = [];
+    this.ticketsByUser = [];
+    this.supportService.getTicketByUser(this.user).subscribe({
+      next: (result: TicketByUser[]) => {
+        if (result != null) {
+          this.ticketsByUser = result;
+        } else {
+          alert("Hubo un error")
+        }
+      },
+      error: (error: any) => {
+        console.log(error);
+        alert(error.message)
+      },
+      complete: () => console.log("Complete ticketsByUser", this.ticketsByUser)
     });
 
-    this.supporService.getTemas().subscribe({
+    this.addTicketSupport = this.fb.group({
+      field: [0, Validators.required],
+      message: ['', [Validators.required, Validators.maxLength(500)]]
+    });
+
+    this.supportService.getTemas().subscribe({
       next: (result: Tema[]) => {
         if (result != null) {
           this.temas = result;
@@ -79,13 +110,13 @@ export class TicketSupportComponent implements OnInit {
         console.log(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete", this.temas)
+      complete: () => console.log("Complete getTemas", this.temas)
     });
    }
 
   ngOnInit(): void {
   }
-  
+
 
   isDisabled(): boolean {
     return this.addTicketSupport.get('field')?.value == 0;
@@ -94,6 +125,7 @@ export class TicketSupportComponent implements OnInit {
   public addTicket(): void {
     this.message = this.addTicketSupport.get('message')?.value;
     this.campoInt = this.addTicketSupport.get('field')?.value;
+    this.code = Utils.makeString(10);
     this.dataForm = {
       name: `${ this.user.user_name } ${  this.user.user_lastName }`,
       email: this.user.user_email ,
@@ -102,6 +134,7 @@ export class TicketSupportComponent implements OnInit {
                 <h4>Mensaje: ${ this.message }</h4>`,
       from: 'Admin Empresas ticket soporte',
       ticket: true,
+      code: this.code,
       password: false
     };
 
@@ -113,25 +146,52 @@ export class TicketSupportComponent implements OnInit {
         this.showSwal('error');
         return;
       }
-      this.sendEmailResult.title = this.sendEmailMessages.titlesuccess;
-      this.sendEmailResult.message = this.sendEmailMessages.messagesuccess;
+      this.sendEmailResult.title = this.sendEmailMessages.titleSuccess;
+      this.sendEmailResult.message = this.sendEmailMessages.messageSuccess;
       this.showSwal('success');
       this.saveTicket();
      }, error: (error: any) => {
       this.load = false;
-      this.sendEmailResult.title = this.sendEmailMessages.titleerror;
+      this.sendEmailResult.title = this.sendEmailMessages.titleError;
       this.sendEmailResult.message = error.message;
       this.showSwal('error');
-      console.log('Login send email Error', error);
+      console.log('Ticket send email Error', error);
      }, complete: () => console.log("Complete send email")
     });
   }
 
-  changeSector(event: any) {
+  changeTema(event: any) {
     this.campoStr = event.target.selectedOptions[0].text;
   }
 
-  
+  changeTicketCode(event: any) {
+    this.ticketCodeSelected = event.target.selectedOptions[0].text;
+    this.ticketByUser = this.ticketsByUser.find((ticket: TicketByUser) => ticket.ticket_code == this.ticketCodeSelected)!;
+    console.log("this.ticketByUser.respondido", this.ticketByUser.respondido);
+    if(this.ticketByUser.respondido != 0) {
+      if(this.ticketsTratadosByUser.length === 0) {
+        
+        this.supportService.getTicketTratadosByUser(this.ticketCodeSelected).subscribe({
+          next: (result: TicketByUser[]) => {
+            if (result != null) {
+              this.ticketsTratadosByUser = result;
+            } else {
+              alert("Hubo un error")
+            }
+          },
+          error: (error: any) => {
+            console.log(error);
+            alert(error.message)
+          },
+          complete: () => console.log("Complete ticketsTratadosByUser", this.ticketsTratadosByUser)
+        });
+      }
+    }
+    console.log("ticketCodeSelected", this.ticketCodeSelected)
+    console.log("ticketByUser", this.ticketByUser)
+  }
+
+
   private showSwal(option: SweetAlertIcon): void {
 
     Swal.fire({
@@ -139,16 +199,15 @@ export class TicketSupportComponent implements OnInit {
       title: this.sendEmailResult.title,
       text: this.sendEmailResult.message,
     });
-    this.addTicketSupport.get('field')?.setValue(0);
-    this.addTicketSupport.get('message')?.setValue('');
-    this.addTicketSupport.markAsUntouched();
+    this.cleanForm();
   }
 
   public cleanForm(): void {
-    this.addTicketSupport = this.fb.group({ 
+    this.addTicketSupport = this.fb.group({
       field: [0, Validators.required],
       message: ['', Validators.required]
     });
+    this.addTicketSupport.markAsUntouched();
   }
 
   private clearDataForm(): void {
@@ -158,26 +217,29 @@ export class TicketSupportComponent implements OnInit {
       message: '',
       from: '',
       ticket: true,
+      code: '',
       password: false
     };
+
   }
 
   private saveTicket(): void {
     this.ticket.user_id = this.user.id_user;
     this.ticket.campo = this.campoInt;
-    this.ticket.message = this.message ;
+    this.ticket.message = this.message;
+    this.ticket.code = this.code;
 
-    this.supporService.saveTicket(this.ticket).subscribe({
+    this.supportService.saveTicket(this.ticket).subscribe({
       next: (result: number) => {
         if (result == 0) {
-          alert("Hubo un error")
-        } else {
-          this.clearDataForm();
-        }       
+          alert("Hubo un error guardando ticket")
+        }
+        this.clearDataForm();
       },
       error: (error: any) => {
         console.log(error);
-        alert(error.message)
+        this.clearDataForm();
+        alert("Hubo un error guardando ticket: " + error.message)
       },
       complete: () => console.log("Complete save ticket", this.ticket)
     });

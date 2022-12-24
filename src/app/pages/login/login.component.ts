@@ -177,14 +177,14 @@ export class LoginComponent implements OnInit {
             userEmail.user_name = data.user_name;
             userEmail.user_lastName = data.user_lastName;
             let match = false;
-            let newpassword = '';
+            let newPassword = '';
             do {
-              newpassword = Utils.makestring(9);
-              match = Utils.passwordReg.test(newpassword);
+              newPassword = Utils.makeString(9);
+              match = Utils.passwordReg.test(newPassword);
             } while (!match);
 
             if(match) {
-              userEmail.user_password = newpassword;
+              userEmail.user_password = newPassword;
               this.userService.resetPassword(userEmail)
               .subscribe({
                 next: (data: number) => {
@@ -192,7 +192,7 @@ export class LoginComponent implements OnInit {
                     this.dataForm = {
                       name: userEmail.user_name + ' ' + userEmail.user_lastName,
                       email: userEmail.user_email,
-                      message: Utils.getTemplateEmail(userEmail.user_name, userEmail.user_lastName, newpassword),
+                      message: Utils.getTemplateEmail(userEmail.user_name, userEmail.user_lastName, newPassword),
                       from: 'Empresas Admin',
                       password: true
                     }
@@ -222,7 +222,7 @@ export class LoginComponent implements OnInit {
         this.load = false;
         Swal.fire({
           title: 'Recuperar contraseña',
-          text: `Hubo un error al comprobar el emai: ${ email }`,
+          text: `Hubo un error al comprobar el email: ${ email }`,
           icon: 'error',
           confirmButtonText: 'Aceptar'
         });

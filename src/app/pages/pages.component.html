@@ -8,7 +8,7 @@
       <!-- Logo -->
       <!-- ============================================================== -->
       <div class="navbar-header align-self-center align-items-center justify-content-center d-flex">
-        <a class="navbar-brand" (click)="functViewDashboard()">
+        <a class="navbar-brand" (click)="funcViewDashboard()">
           <!-- Logo icon -->
           <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
           <!-- Dark Logo icon -->
@@ -166,7 +166,7 @@
           <li class="nav-small-cap text-light">Indicadores</li>
 
           <li class="mb-3" *ngFor="let item of menuService.menu">
-            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -177,7 +177,7 @@
             </ul>
           </li>
           <li class="mb-3" *ngFor="let item of menuService.menuAdminUsers">
-            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -188,7 +188,7 @@
             </ul>
           </li>
           <li class="mb-3" *ngFor="let item of menuService.menuAdminFields">
-            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -200,7 +200,7 @@
           </li>
           <li role="separator" class="nav-devider" *ngIf="!user_rol_technical"></li>
           <li class="mb-3" *ngFor="let item of menuService.menuGraphs">
-            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -212,7 +212,7 @@
           </li>
           <li role="separator" class="nav-devider" *ngIf="!user_rol_technical"></li>
           <li class="mb-3" *ngFor="let item of menuService.menuSupport">
-            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -224,7 +224,7 @@
           </li>
           <li role="separator" class="nav-devider" *ngIf="user_rol_technical"></li>
           <li class="mb-3" *ngFor="let item of menuService.menuTechnical">
-            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title">
+            <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
             </a>
@@ -237,7 +237,7 @@
           <li role="separator" class="nav-devider" *ngIf="!viewDashBoard"></li>
           <li class="for-group mx-1" *ngIf="!viewDashBoard">
             <a class="waves-dark" aria-expanded="false" matTooltip="Ver página principal"
-              (click)="functViewDashboard()">
+              (click)="funcViewDashboard()" matTooltipPosition="above">
               <i class="fa fa-desktop" aria-hidden="true"></i>
               <label id="welcome" class="hide-menu ml-1" for="viewDashBoard">Página bienvenida</label>
             </a>
