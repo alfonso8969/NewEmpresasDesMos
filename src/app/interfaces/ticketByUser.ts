@@ -8,4 +8,6 @@ export interface TicketByUser {
   solucionado?: number;
   respuesta?: string;
   user_img?: string;
+  ticket_refer?: string;
+  fecha_solucion?: Date | string;
 }

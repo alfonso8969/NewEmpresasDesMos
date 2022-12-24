@@ -10,6 +10,14 @@
   flex: auto;
 }
 
-[type="checkbox"] + label { 
-  
+.fa.fa-question-circle {
+  background-color: #007bff;
+}
+
+.tooltip-item {
+  background-color: azure;
+}
+
+.mytooltip {
+  color: azure;
 }

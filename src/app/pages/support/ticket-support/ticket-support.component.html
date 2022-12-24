@@ -31,7 +31,7 @@
                 <div class="col-md-6">
                   <form [formGroup]="addTicketSupport" (ngSubmit)="addTicket()" novalidate autocomplete="off">
                     <div class="form-group">
-                      <label for="field" class="control-label">* Seleccione de la lista el tema del ticket</label>
+                      <label for="field">* Seleccione de la lista el tema del ticket</label>
                       <select formControlName="field" name="field" id="field" class="form-control" title="field"
                         (change)="changeTema($event)">
                         <option [ngValue]=0 selected>Seleccione tema</option>
@@ -48,9 +48,35 @@
                         El <strong>sector es</strong> requerido
                       </span>
                     </div>
+                    <div class="form-group">
+                      <label for="codeRef">Referencia a un ticket: <span class="mytooltip tooltip-effect-3">
+                        
+                        <span class="tooltip-item"><i class="fa fa-question-circle" aria-hidden="true"></i></span>
+                         <span class="tooltip-content clearfix">
+                          <span class="tooltip-text ml-5">Haga referencia a otro ticket para continuarlo, si cree que la primera explicación no le fue totalmente satisfactoria, tenga en cuenta que si el ticket esta cerrado no podrá continuarlo</span> </span>
+                        </span></label>
+                      <input formControlName="codeRef" id="codeRef" name="codeRef" class="form-control" type="text"
+                        (keyup)="codeRefChange($event)">
+                      <span *ngIf="checkTicketExitCode && 
+                                   checkTicketExitCode.campo != undefined &&
+                                   checkTicketExitCode.respondido == 0 &&
+                                   checkTicketExitCode.campo != '' &&
+                                   addTicketSupport.get('codeRef')?.value != ''" class="text-success">Este ticket fue
+                        enviado el {{ checkTicketExitCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</span>
+                      <span class="err text-danger"
+                        *ngIf="addTicketSupport.get('codeRef')?.errors != null && addTicketSupport.get('codeRef')!.errors!['maxlength']">
+                        El <strong>limite es de 10 caracteres</strong>
+                      </span>
+                      <span *ngIf="checkTicketExitCode && 
+                                   checkTicketExitCode.campo != undefined && 
+                                   checkTicketExitCode.campo != '' &&
+                                   checkTicketExitCode.respondido == 1 &&
+                                   addTicketSupport.get('codeRef')?.value != ''" class="text-danger">Este ticket fue
+                        enviado el {{ checkTicketExitCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }} y esta cerrado</span>                      
+                    </div>
 
                     <div class="form-group">
-                      <label for="message" class="control-label">* Describa el caso</label>
+                      <label for="message">* Describa el caso</label>
                       <p></p>
                       <textarea formControlName="message" name="message" id="message" cols="100" rows="10"
                         class="form-control"></textarea>
@@ -71,10 +97,10 @@
                     </div>
 
                     <div class="form-actions">
-                      <button type="submit" [disabled]="addTicketSupport.invalid || isDisabled()"
+                      <button type="submit" [disabled]="addTicketSupport.invalid || isDisabled() || checkTicketExitCode.respondido == 1"
                         class="btn-primary button d-inline">
                         <span
-                          [matTooltip]="addTicketSupport.invalid || isDisabled() ? 'Faltan campos obligatorios' : 'Elija enviar ticket'">Enviar
+                          [matTooltip]="addTicketSupport.invalid || isDisabled() ? 'Faltan campos obligatorios' : checkTicketExitCode.respondido == 1 ? 'Ticket referencia cerrado, por favor cámbielo o bórrelo' : 'Elija enviar ticket'">Enviar
                           ticket soporte
                         </span>
                         <i class="fa fa-save p-1"></i>
@@ -98,15 +124,27 @@
                         <h4 class="card-title">Su Ticket: {{ ticketByUser.ticket_code }}</h4>
                         <ul class="list-unstyled">
                           <li class="media">
-                            <img [matTooltip]="user.user_name" class="d-flex mr-3"
+                            <img [matTooltip]="(user.user_rol == 2 ?  'Usuario: ' : user.user_rol == 1 ? 'Administrador: ' : user.user_rol == 3 ? 'Super Administrador: ' : '' ) + user.user_name" class="d-flex mr-3"
                               [src]="user && user.user_img ? url + '/uploads/' + user.user_img : './assets/images/icon/staff.png'"
-                              width="100" [alt]="user.user_name">
+                              width="100" [alt]="(user.user_rol == 2 ?  'Usuario' : '' ) + user.user_name">
                             <div class="media-body">
                               <h5 class="mt-0 mb-1">Tema: {{ ticketByUser.campo }}</h5>
                               <h6 class="mt-0 mb-1">Fecha: {{ ticketByUser.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</h6>
                               {{ ticketByUser.message }} <br>
-                              <span class="text-danger" *ngIf="ticketByUser.respondido == 0">Su ticket no ha sido respondido, no tardaremos mucho</span>
-                              <span class="text-success" *ngIf="ticketByUser.respondido != 0">Su ticket ha sido respondido</span>
+                              <span class="text-danger" *ngIf="ticketByUser && ticketByUser.respondido == 0">Su ticket
+                                no ha sido respondido, no tardaremos mucho</span> <br>
+                              <span class="text-success" *ngIf="ticketByUser && ticketByUser.respondido != 0">Su ticket
+                                ha sido respondido</span><br>
+                              <div *ngIf="ticketByUser && ticketByUser.ticket_refer != ''">
+                                <ul class="list-unstyled">
+                                  <li *ngFor="let checkTicketCode of checkTicketsCode" class="text-success">
+                                    Este ticket hace referencia al ticket <strong class="text-primary">{{
+                                      checkTicketCode.ticket_refer }}</strong> <br>
+                                    Con fecha: {{ checkTicketCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }} <br>
+                                  </li>
+
+                                </ul>
+                              </div>
                             </div>
                           </li>
                         </ul>
@@ -116,30 +154,36 @@
                             <li class="media" *ngFor="let ticketTratado of ticketsTratadosByUser">
                               <div class="media mt-2 ml-5">
                                 <a class="d-flex pr-3" href="#">
-                                  <img [src]="user && user.user_img ? url + '/uploads/' + ticketTratado.user_img : './assets/images/icon/staff.png'" width="100" height="100" [matTooltip]="'Técnico:' + ticketTratado.user_name"
+                                  <img
+                                    [src]="user && user.user_img ? url + '/uploads/' + ticketTratado.user_img : './assets/images/icon/staff.png'"
+                                    width="100" height="100" [matTooltip]="'Técnico:' + ticketTratado.user_name"
                                     [alt]="ticketTratado.user_name">
                                 </a>
                                 <div class="media-body">
-                                  <h5 class="mt-0">Fecha Respuesta: {{ ticketTratado.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</h5>
+                                  <h5 class="mt-0">Fecha Respuesta: {{ ticketTratado.fecha | date: 'dd-MM-yyyy HH:mm:ss'
+                                    }}</h5>
                                   {{ ticketTratado.respuesta }}
-                                  <div *ngIf="ticketTratadosByUser.solucionado == 0">
-                                    <input [checked]="ticketTratadosByUser.solucionado != 0" type="checkbox" id="closeTicket" (change)="onCheckboxChange($event)">
+                                  <div *ngIf="ticketTratadosByUser && ticketTratadosByUser.solucionado == 0">
+                                    <input [checked]="ticketTratadosByUser.solucionado != 0" type="checkbox"
+                                      id="closeTicket" (change)="onCheckboxChange($event)">
                                     <label for="closeTicket">Marcar como solucionado</label>
                                   </div>
-                                  <div *ngIf="ticketTratadosByUser.solucionado != 0">
-                                    <span class="text-success">El ticket ha sido cerrado</span>
+                                  <div *ngIf="ticketTratadosByUser && ticketTratadosByUser.solucionado != 0">
+                                    <span class="text-success">El ticket ha sido cerrado a la fecha: {{ ticketTratadosByUser.fecha_solucion | date: 'dd-MM-yyyy HH:mm:ss' }}</span>
                                   </div>
                                 </div>
                               </div>
-                              <span *ngIf="ticketTratadosByUser.solucionado == 0" class="badge badge-danger">Abierto</span>
-                              <span *ngIf="ticketTratadosByUser.solucionado != 0" class="badge badge-success">Cerrado</span> 
+                              <span *ngIf="ticketTratadosByUser && ticketTratadosByUser.solucionado == 0"
+                                class="badge badge-success">Abierto</span>
+                              <span *ngIf="ticketTratadosByUser && ticketTratadosByUser.solucionado != 0"
+                                class="badge badge-danger">Cerrado</span>
                             </li>
-                          
+
                           </ul>
                         </div>
                       </div>
                     </div>
-                  
+
                   </div>
                   <div *ngIf="ticketsByUser.length == 0" class="form-group">
                     <label for="field" class="control-label">* No dispone de tickets que comprobar</label>

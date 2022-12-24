@@ -3,7 +3,7 @@
 
 @media (max-width: 767px) {
   .responsive {
-    width: 100%;
+    width: auto;
     height: auto;
   }
 
