@@ -8,6 +8,7 @@ import { User } from 'src/app/class/users';
 import { Result } from 'src/app/interfaces/result';
 import { FieldsService } from 'src/app/services/fields.service';
 import { Fields } from 'src/app/interfaces/fields';
+import { Utils } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-add-company',
@@ -37,9 +38,6 @@ export class AddCompanyComponent implements OnInit {
   sectores: Fields[];
   distritos: Fields[];
   poligonos: Fields[];
-  codPostalReg: RegExp = new RegExp(/289+\d{2}/gm);
-  phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9](\-){0,1})+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
 
   addCompanyForm: FormGroup;
   newEmp: any ;
@@ -126,14 +124,14 @@ export class AddCompanyComponent implements OnInit {
       sector: [0 , Validators.required],
       distrito: [0 , Validators.required],
       poligono: [0 , Validators.required],
-      email: ['' , [Validators.required, Validators.pattern(this.emailReg)]],
-      telefono: ['' , [Validators.required, Validators.pattern(this.phoneReg)]],
-      otherTelefono: ['' , [Validators.pattern(this.phoneReg)]],
+      email: ['' , [Validators.required, Validators.pattern(Utils.emailReg)]],
+      telefono: ['' , [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherTelefono: ['' , [Validators.pattern(Utils.phoneReg)]],
       contactperson: [''],
       direccion: ['', Validators.required],
       localidad: [''],
       provincia: [''],
-      cod_postal: ['', [Validators.required, Validators.pattern(this.codPostalReg)]]
+      cod_postal: ['', [Validators.required, Validators.pattern(Utils.codPostalReg)]]
     });
   }
 
@@ -143,14 +141,14 @@ export class AddCompanyComponent implements OnInit {
       sector: [newEmp['Sector'] , Validators.required],
       distrito: [newEmp['Distrito'] , Validators.required],
       poligono: [newEmp['Poligono'] , Validators.required],
-      email: [newEmp['Email'] , [Validators.required, Validators.pattern(this.emailReg)]],
-      telefono: [newEmp['Telefono'] , [Validators.required, Validators.pattern(this.phoneReg)]],
-      otherTelefono: [newEmp['OtherTelefono'] , [Validators.pattern(this.phoneReg)]],
+      email: [newEmp['Email'] , [Validators.required, Validators.pattern(Utils.emailReg)]],
+      telefono: [newEmp['Telefono'] , [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherTelefono: [newEmp['OtherTelefono'] , [Validators.pattern(Utils.phoneReg)]],
       contactperson: [newEmp['Persona_contacto'] ],
       direccion: [newEmp['Direccion'] , Validators.required],
       localidad: [''],
       provincia: [''],
-      cod_postal: [newEmp['Cod_postal'] , [Validators.required, Validators.pattern(this.codPostalReg)]]
+      cod_postal: [newEmp['Cod_postal'] , [Validators.required, Validators.pattern(Utils.codPostalReg)]]
     });
   }
 

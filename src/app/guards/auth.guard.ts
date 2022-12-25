@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { Roles } from '../interfaces/roles';
 import { LoginService } from '../services/login.service';
 import { User } from 'src/app/class/users';
+import { UsersService } from '../services/users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class AuthGuard implements CanActivate {
   
   user: User;
   
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService,
+              private userService: UsersService,
+              private router: Router) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -25,11 +28,7 @@ export class AuthGuard implements CanActivate {
 
   isLogin(route: ActivatedRouteSnapshot, url: any): any {
     if (this.loginService.isLoggedIn()) {
-      let userLogged = localStorage.getItem('userlogged');
-      if (userLogged && userLogged != "undefined") {
-        console.log('localstorage userlogged: ', JSON.parse(localStorage.getItem('userlogged')!))
-        this.user = JSON.parse(userLogged);
-      }
+      this.user = this.userService.getUserLogged();
       const userRol = this.loginService.getRole();
       console.log('estoy logueado');
       let roles: Roles[] = route.children[0] != undefined && route.children[0].data['rol'];
@@ -42,7 +41,7 @@ export class AuthGuard implements CanActivate {
           Swal.fire({
             title: 'Login',
             html: `<p>EL usuario ${ this.user.user_name } no tiene permisos</p>
-            <p>Pongase en contacto con el administrador, Muchas gracias</p>`,
+            <p>Póngase en contacto con el administrador, Muchas gracias</p>`,
             icon: 'warning',
             confirmButtonText: 'Aceptar'
           });

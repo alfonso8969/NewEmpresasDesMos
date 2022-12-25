@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { User } from 'src/app/class/users';
 import { CompaniesService } from 'src/app/services/companies.service';
+import { UsersService } from 'src/app/services/users.service';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -29,12 +30,11 @@ export class HistoryCompaniesComponent implements OnInit {
   public siguiente: string = "Siguiente";
   public anterior: string = "Anterior";
 
-  constructor(private companiesService: CompaniesService, private router: Router) {
-    let userLogged = localStorage.getItem('userlogged');
-    if (userLogged && userLogged != "undefined") {
-      console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
-      this.user = JSON.parse(userLogged);
-    }
+  constructor(private companiesService: CompaniesService,
+              private userService: UsersService,
+              private router: Router) {
+
+    this.user = this.userService.getUserLogged();
     let user_rol = Number(this.user?.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;
     this.fillTables();

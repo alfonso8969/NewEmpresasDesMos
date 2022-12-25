@@ -81,7 +81,7 @@
                 <h4 class="modal-title" *ngIf="!admin && user && !user.fecha_baja">Ver datos del usuario</h4>
                 <h4 class="modal-title text-danger" *ngIf="!admin && user && user.fecha_baja">Ver datos del usuario (Usuario de baja desde: {{ user && user.fecha_baja }}) </h4>
                 <h4 class="modal-title" *ngIf="admin && user && !user.fecha_baja">Modificar datos del usuario</h4>
-                <h4 class="modal-title text-danger" *ngIf="admin && user && user.fecha_baja">No se pueden modificar datos de un usuario de baja: ({{ user && user.fecha_baja }})</h4>
+                <h4 class="modal-title text-danger" *ngIf="admin && user && user.fecha_baja">No se pueden modificar datos de un usuario de baja: ({{ user && user.fecha_baja | date: 'dd-MM-yyyy HH:mm:ss' }})</h4>
                 <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'"
                   data-dismiss="modal" aria-hidden="true">&Cross;</button>
               </div>
@@ -95,7 +95,7 @@
                             <img id="img-user" [src]="user != undefined  ? url + '/uploads/' + user.user_img : './assets/images/icon/staff.png'" height="200px" width="200px"
                               alt="This is a small profile image"><br>
                             <input *ngIf="admin && !(user && user.fecha_baja)"  accept="image/png,image/jpeg,image/jpg" formControlName="userimg" type="file"
-                              name="userimg" id="userimg" class="inputfile" (change)='uploadFile($event)'>                
+                              name="userimg" id="userimg" class="inputfile" (change)='uploadFile($event)'>
                             <label class="label-control d-block text-light" for="userimg">
                               <span class="file-button">
                                 <i class="fa fa-upload" aria-hidden="true"></i>
@@ -130,15 +130,15 @@
                       <div class="row mt-3">
                         <div class="col-md-6">
                           <div class="form-group">
-                            <label for="telefono" class="control-label">Teléfono</label>
-                            <input [readonly]="!admin || (user && user.fecha_baja != undefined)" formControlName="telefono" type="number" id="telefono" name="telefono"
+                            <label for="phone" class="control-label">Teléfono</label>
+                            <input [readonly]="!admin || (user && user.fecha_baja != undefined)" formControlName="phone" type="number" id="phone" name="phone"
                               class="form-control" placeholder="999999999">
                             <span class="err text-danger"
-                              *ngIf="editUserForm.get('telefono')?.invalid && editUserForm.get('telefono')?.touched && !editUserForm.get('telefono')!.errors!['pattern']">
+                              *ngIf="editUserForm.get('phone')?.invalid && editUserForm.get('phone')?.touched && !editUserForm.get('phone')!.errors!['pattern']">
                               El <strong>teléfono </strong>es requerido
                             </span>
                             <span class="err text-danger"
-                              *ngIf="editUserForm.get('telefono')!.errors != null && editUserForm.get('telefono')!.errors!['pattern'] && editUserForm.get('telefono')?.touched">
+                              *ngIf="editUserForm.get('phone')!.errors != null && editUserForm.get('phone')!.errors!['pattern'] && editUserForm.get('phone')?.touched">
                               El <strong>Teléfono</strong> no es válido, debe ser 99999999
                             </span>
                           </div>

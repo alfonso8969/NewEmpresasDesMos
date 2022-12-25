@@ -9,6 +9,7 @@ import { User } from 'src/app/class/users';
 import { Fields } from 'src/app/interfaces/fields';
 import { CompaniesService } from 'src/app/services/companies.service';
 import { FieldsService } from 'src/app/services/fields.service';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-list-companies',
@@ -54,13 +55,10 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
     private router: Router,
     private fieldsService: FieldsService,
     private route: ActivatedRoute,
+    private userService: UsersService,
     private fb: FormBuilder) {
 
-      let userLogged = localStorage.getItem('userlogged');
-      if (userLogged && userLogged != "undefined") {
-        console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
-        this.user = JSON.parse(userLogged);
-      }
+      this.user = this.userService.getUserLogged();
       let user_rol = Number(this.user?.user_rol);
       this.admin = user_rol === 1 || user_rol === 3 ? true : false;
 

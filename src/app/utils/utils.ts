@@ -2,6 +2,12 @@ export class Utils {
 
   static passwordReg: RegExp = new RegExp(/(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/);
   static emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
+  static phoneReg: RegExp = new RegExp(/[0-9]{9}/);
+  static passReg: RegExp = new RegExp(/(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/g);
+  static codPostalReg: RegExp = new RegExp(/289+\d{2}/gm);
+  static regex: RegExp = new RegExp(/^[A-Z\sÑÁÉÍÓÚÜ,]+$/);
+  static regex2: RegExp = new RegExp(/^[A-Za-z0-9ÑÁÉÍÓÚÜñáéíóú-]+$/);
+  static regex3: RegExp = new RegExp(/^[A-Za-z0-9\sÑÁÉÍÓÚÜñáéíóúº]+$/);
 
   public static makeString(length: number): string {
     let result           = '';
@@ -21,6 +27,19 @@ export class Utils {
     }
     return months;
 
+  }
+
+  public static changeEye(element: HTMLElement, elementClose: HTMLElement):  void {
+    const type = elementClose.getAttribute('type') === 'password' ? 'text' : 'password';
+    elementClose.setAttribute('type', type);
+    const clase = element.getAttribute('class')=== 'far fa-eye' ? 'far fa-eye-slash' : 'far fa-eye';
+    element.setAttribute('class', clase)!;
+  }
+
+  public static changeEyeTime(element: HTMLElement, elementClose: HTMLElement ): void {
+    setTimeout(() => {
+      this.changeEye(element, elementClose);
+    }, 2000);
   }
 
   public static getTemplateEmail(name: string, lastname: string, password: string): string {

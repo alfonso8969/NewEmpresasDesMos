@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/class/users';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { UsersService } from 'src/app/services/users.service';
+import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -17,10 +18,9 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   @HostListener('window:unload', [ '$event' ])
   unloadHandler(event: any) {
    console.log('window:unload', event);
-
     alert('¿Está seguro de querer cerrar la sesión?');
-
   }
+  
   @HostListener('window:beforeunload', [ '$event' ])
    beforeUnloadHandler(event: any) {
     console.log('window:beforeunload', event)
@@ -39,13 +39,9 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   newPasswordIcon: HTMLElement;
   compPasswordIcon: HTMLElement;
 
-  phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
-  passReg: RegExp = new RegExp(/(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/g);
-
   constructor(private fb: FormBuilder, private http: HttpClient,
     private uploadService: FileUploadService,
-    private userSevice: UsersService,
+    private userService: UsersService,
     private router: Router) {
     this.fillForm();
   }
@@ -55,20 +51,17 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   }
 
   public fillForm(): void {
-
     this.addUserForm = this.fb.group({
       userimg: [''],
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
-      telefono: ['', [Validators.required, Validators.pattern(this.phoneReg)]],
-      email: ['', [Validators.required, Validators.pattern(this.emailReg)]],
+      telefono: ['', [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
       rol: [0, Validators.required],
-      newPassword: ['', [Validators.required, Validators.pattern(this.passReg)]],
-      comparePasswords: ['', [Validators.required, Validators.pattern(this.passReg)]],
-
+      newPassword: ['', [Validators.required, Validators.pattern(Utils.passReg)]],
+      comparePasswords: ['', [Validators.required, Validators.pattern(Utils.passReg)]],
     });
   }
-
 
   ngOnInit(): void {
 
@@ -79,27 +72,14 @@ export class AddUserComponent implements OnInit, AfterViewInit {
     this.compPasswordHtml = document.getElementById('comparePasswords')!;
 
     this.newPasswordIcon.addEventListener('click', (e) => {
-      this.changeEye(this.newPasswordIcon, this.newPasswordHtml);
-      this.changeEyeTime(this.newPasswordIcon, this.newPasswordHtml);
+      Utils.changeEye(this.newPasswordIcon, this.newPasswordHtml);
+      Utils.changeEyeTime(this.newPasswordIcon, this.newPasswordHtml);
     });
 
     this.compPasswordIcon.addEventListener('click', (e) => {
-      this.changeEye(this.compPasswordIcon, this.compPasswordHtml);
-      this.changeEyeTime(this.compPasswordIcon, this.compPasswordHtml);
+      Utils.changeEye(this.compPasswordIcon, this.compPasswordHtml);
+      Utils.changeEyeTime(this.compPasswordIcon, this.compPasswordHtml);
     });
-  }
-
-  public changeEye(element: HTMLElement, elementClose: HTMLElement): void {
-    const type = elementClose.getAttribute('type') === 'password' ? 'text' : 'password';
-    elementClose.setAttribute('type', type);
-    const clase = element.getAttribute('class') === 'far fa-eye' ? 'far fa-eye-slash' : 'far fa-eye';
-    element.setAttribute('class', clase)!;
-  }
-
-  public changeEyeTime(element: HTMLElement, elementClose: HTMLElement): void {
-    setTimeout(() => {
-      this.changeEye(element, elementClose);
-    }, 2000);
   }
 
   public addUser(): void {
@@ -114,11 +94,8 @@ export class AddUserComponent implements OnInit, AfterViewInit {
     this.user.setHabilitado(1);
 
     if (this.fileUp) {
-
       let name = this.fileUp.name;
-
       this.fileName = (this.user.user_name.split(' ')[0] + Math.ceil((Math.random() * 10000 + 1)) + '.' + name.split('.')[1]).toLowerCase();
-
       this.uploadService.uploadFile(this.fileUp, this.fileName)
         .subscribe({
           next: (data: any) => {
@@ -145,7 +122,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   }
 
   public saveUser(user: User): void {
-    this.userSevice.addUser(user).subscribe({
+    this.userService.addUser(user).subscribe({
       next: (data: number) => {
         if (data === 1) {
           Swal.fire({
@@ -191,9 +168,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
     reader.onload = (e) => {
       this.img?.setAttribute('src', e.target!.result!.toString());
     }
-
     reader.readAsDataURL(elem.target.files[0]);
-
     console.log(elem)
   }
 
@@ -202,10 +177,8 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   }
 
   public getFormValidationErrors(form: FormGroup): string {
-
     const result: { Campo: string; error: string; value: any }[] = [];
     Object.keys(form.controls).forEach(key => {
-
       const controlErrors: any = form!.get(key)!.errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
@@ -217,7 +190,6 @@ export class AddUserComponent implements OnInit, AfterViewInit {
         });
       }
     });
-
     return JSON.stringify(result);
   }
 }

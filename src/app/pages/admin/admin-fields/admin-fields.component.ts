@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Fields } from 'src/app/interfaces/fields';
 import { FieldsService } from 'src/app/services/fields.service';
+import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -28,10 +29,6 @@ export class AdminFieldsComponent implements OnInit {
   distrito: string;
   poligono: string;
 
-  regex: RegExp = new RegExp(/^[A-Z\sÑÁÉÍÓÚÜ,]+$/);
-  regex2: RegExp = new RegExp(/^[A-Za-z0-9ÑÁÉÍÓÚÜñáéíóú-]+$/);
-  regex3: RegExp = new RegExp(/^[A-Za-z0-9\sÑÁÉÍÓÚÜñáéíóúº]+$/);
-
   constructor(private fb: FormBuilder, private fieldsService: FieldsService) {
 
     this.field = {
@@ -47,17 +44,17 @@ export class AdminFieldsComponent implements OnInit {
 
     this.updateFieldSectorForm = this.fb.group({
       sector: [0],
-      nombreSector: ['', [Validators.required, Validators.pattern(this.regex)]]
+      nombreSector: ['', [Validators.required, Validators.pattern(Utils.regex)]]
     });
 
     this.updateFieldDistritoForm = this.fb.group({
       distrito: [0],
-      nombreDistrito: ['', [Validators.required, Validators.pattern(this.regex2)]]
+      nombreDistrito: ['', [Validators.required, Validators.pattern(Utils.regex2)]]
     });
 
     this.updateFieldPoligonoForm = this.fb.group({
       poligono: [0],
-      nombrePoligono: ['', [Validators.required, Validators.pattern(this.regex3)]]
+      nombrePoligono: ['', [Validators.required, Validators.pattern(Utils.regex3)]]
     });
 
     this.fillComboboxes();

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Fields } from 'src/app/interfaces/fields';
 import { FieldsService } from 'src/app/services/fields.service';
+import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -17,10 +18,6 @@ export class AddFieldsComponent implements OnInit {
 
   field: Fields;
   lastDistrito: number;
-
-  regex: RegExp = new RegExp(/^[A-Z\sÑÁÉÍÓÚÜ,]+$/);
-  regex2: RegExp = new RegExp(/^[A-Za-z0-9ÑÁÉÍÓÚÜñáéíóú-]+$/);
-  regex3: RegExp = new RegExp(/^[A-Za-z0-9\sÑÁÉÍÓÚÜñáéíóúº]+$/);
 
   constructor(private fb: FormBuilder,
               private fieldsService: FieldsService) {
@@ -48,15 +45,15 @@ export class AddFieldsComponent implements OnInit {
     });
 
     this.addFieldSectorForm = this.fb.group({
-      nombreSector: ['', [Validators.required, Validators.pattern(this.regex)]]
+      nombreSector: ['', [Validators.required, Validators.pattern(Utils.regex)]]
     });
 
     this.addFieldDistritoForm = this.fb.group({
-      nombreDistrito: ['', [Validators.required, Validators.pattern(this.regex2)]]
+      nombreDistrito: ['', [Validators.required, Validators.pattern(Utils.regex2)]]
     });
 
     this.addFieldPoligonoForm = this.fb.group({
-      nombrePoligono: ['', [Validators.required, Validators.pattern(this.regex3)]]
+      nombrePoligono: ['', [Validators.required, Validators.pattern(Utils.regex3)]]
     });
    }
 

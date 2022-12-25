@@ -7,6 +7,8 @@ import { Fields } from 'src/app/interfaces/fields';
 import { Result } from 'src/app/interfaces/result';
 import { CompaniesService } from 'src/app/services/companies.service';
 import { FieldsService } from 'src/app/services/fields.service';
+import { UsersService } from 'src/app/services/users.service';
+import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -29,9 +31,6 @@ export class ViewCompanyComponent implements OnInit {
   sectores: Fields[];
   distritos: Fields[];
   poligonos: Fields[];
-  codPostalReg: RegExp = new RegExp(/289+\d{2}/);
-  phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9](\-){0,1})+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
 
   editCompanyForm: FormGroup;
   newEmp: any;
@@ -43,12 +42,10 @@ export class ViewCompanyComponent implements OnInit {
     private fieldsService: FieldsService,
     private fb: FormBuilder,
     private router: Router,
+    private userService: UsersService,
     private route: ActivatedRoute) {
-    let userLogged = localStorage.getItem('userlogged');
-    if (userLogged && userLogged != "undefined") {
-      console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
-      this.user = JSON.parse(userLogged);
-    }
+
+    this.user = this.userService.getUserLogged();
     let user_rol = Number(this.user.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;
 
@@ -131,14 +128,14 @@ export class ViewCompanyComponent implements OnInit {
       sector: [0, Validators.required],
       distrito: [0, Validators.required],
       poligono: [0, Validators.required],
-      email: ['', [Validators.required, Validators.pattern(this.emailReg)]],
-      telefono: ['', [Validators.required, Validators.pattern(this.phoneReg)]],
-      otherTelefono: ['', [Validators.pattern(this.phoneReg)]],
+      email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
+      telefono: ['', [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherTelefono: ['', [Validators.pattern(Utils.phoneReg)]],
       contactperson: [''],
       direccion: ['', Validators.required],
       localidad: [''],
       provincia: [''],
-      cod_postal: ['', [Validators.required, Validators.pattern(this.codPostalReg)]],
+      cod_postal: ['', [Validators.required, Validators.pattern(Utils.codPostalReg)]],
       web: ['', Validators.pattern(/((http|https)\:\/\/||www)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/g)],
       facebook: ['', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/)],
       instagram: ['', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/)],
@@ -162,14 +159,14 @@ export class ViewCompanyComponent implements OnInit {
       sector: [emp['Sector'], Validators.required],
       distrito: [emp['Distrito'], Validators.required],
       poligono: [emp['Poligono'], Validators.required],
-      email: [emp['Email'], [Validators.required, Validators.pattern(this.emailReg)]],
-      telefono: [emp['Telefono'], [Validators.required, Validators.pattern(this.phoneReg)]],
-      otherTelefono: [otherTlefono != 'sin datos' ? otherTlefono : '', [Validators.pattern(this.phoneReg)]],
+      email: [emp['Email'], [Validators.required, Validators.pattern(Utils.emailReg)]],
+      telefono: [emp['Telefono'], [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherTelefono: [otherTlefono != 'sin datos' ? otherTlefono : '', [Validators.pattern(Utils.phoneReg)]],
       contactperson: [emp['Persona_contacto']],
       direccion: [emp['Direccion'], Validators.required],
       localidad: [emp['Localidad']],
       provincia: [emp['Provincia']],
-      cod_postal: [emp['Cod_postal'], [Validators.required, Validators.pattern(this.codPostalReg)]],
+      cod_postal: [emp['Cod_postal'], [Validators.required, Validators.pattern(Utils.codPostalReg)]],
       web: [web?.toLowerCase() != 'sin datos' ? web : '', Validators.pattern(/^((http:\/\/)|(https:\/\/))?([a-zA-Z0-9]+[.])+[a-zA-Z]{2,4}(:\d+)?(\/[~_.\-a-zA-Z0-9=&%@:]+)*\??[~_.\-a-zA-Z0-9=&%@:]*$/)],
       facebook: [face.toLowerCase() != 'sin datos' ? face : '', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/)],
       instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/)],
@@ -290,7 +287,7 @@ export class ViewCompanyComponent implements OnInit {
     if (this.empresa['Habilitada'] == 0) {
       Swal.fire({
         title: 'Empresa deshabilitada',
-        text: 'No se pueden editar los datos de una empresa deshabilitada, vaya a \"Historial empresas->Historial\" y habilitela',
+        text: 'No se pueden editar los datos de una empresa deshabilitada, vaya a \"Historial empresas->Historial\" y habilite la empresa',
         icon: 'info',
         confirmButtonText: 'Aceptar'
       });

@@ -10,6 +10,7 @@ import { User } from '../class/users';
 export class UsersService {
 
   url: String = environment.apiUrl;
+  user: User;
 
   constructor(private http: HttpClient) {
     if (isDevMode()) {
@@ -19,6 +20,15 @@ export class UsersService {
     }
   }
 
+  public getUserLogged(): User {
+    let userLogged = localStorage.getItem('userlogged');
+    if (userLogged && userLogged != "undefined") {
+      console.log('localStorage userLogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
+      this.user = JSON.parse(userLogged);
+    }
+
+    return this.user;
+  }
 
   public getUser(id: number): Observable<User> {
     return this.http.post<User>(`${this.url}/getUser.php`, { id: id });
@@ -51,7 +61,7 @@ export class UsersService {
   public toAbleDisableUser(user: User): Observable<number> {
     return this.http.post<number>(`${this.url}/ableDisableUser.php`, { user: user });
   }
-  
+
   public resetPassword(user: User): Observable<number> {
     return this.http.post<number>(`${this.url}/resetPassword.php`, { user: user });
   }

@@ -10,6 +10,7 @@ import { Utils } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-ticket-support',
@@ -63,13 +64,14 @@ export class TicketSupportComponent implements OnInit {
     titleError: "Error",
     titleSuccess: "Correcto",
     noData: "Los datos enviados no pueden estar vacíos",
-    messageerror: "Hubo algún error enviando el ticket",
+    messageError: "Hubo algún error enviando el ticket",
     messageSuccess: "El ticket fue enviado correctamente",
   }
 
   constructor(private fb: FormBuilder,
     private supportService: SupportService,
     private emailService: EmailService,
+    private userService: UsersService,
     private datePipe: DatePipe) {
       this.checkTicketExitCode = {
         ticket_code: '',
@@ -93,11 +95,8 @@ export class TicketSupportComponent implements OnInit {
       respondido: false
     }
 
-    let userLogged = localStorage.getItem('userlogged');
-    if (userLogged && userLogged != "undefined") {
-      console.log('localStorage userLogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
-      this.user = JSON.parse(userLogged);
-    }
+    this.user = this.userService.getUserLogged();
+
     this.ticketsTratadosByUser = [];
     this.ticketsByUser = [];
     this.supportService.getTicketByUser(this.user).subscribe({
@@ -185,7 +184,7 @@ export class TicketSupportComponent implements OnInit {
   }
 
   public changeTema(event: any) {
-    if (this.checkTicketExitCode.campo != '') {    
+    if (this.checkTicketExitCode.campo != '') {
       this.addTicketSupport.get('field')!.setValue(this.checkTicketExitCode.campo);
       return;
     }
@@ -223,7 +222,7 @@ export class TicketSupportComponent implements OnInit {
       this.supportService.checkTicketExitByCode(this.codeRef).subscribe({
         next: (result: TicketByUser) => {
           if (result && result.campo != undefined) {
-            
+
             this.checkTicketExitCode = result;
             this.addTicketSupport.get('field')?.setValue(this.checkTicketExitCode.campo);
           } else {

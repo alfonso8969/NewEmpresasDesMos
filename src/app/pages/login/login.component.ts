@@ -36,11 +36,11 @@ export class LoginComponent implements OnInit {
   };
 
   sendEmailMessages = {
-    titleerror: "Error",
-    titlesuccess: "Correcto",
-    nodata: "Los datos enviados no pueden estar vacios",
-    messageerror: "Hubo algún error enviando el correo",
-    messagesuccess: "El correo fue enviado correctamente",
+    titleError: "Error",
+    titleSuccess: "Correcto",
+    noData: "Los datos enviados no pueden estar vacíos",
+    messageError: "Hubo algún error enviando el correo",
+    messageSuccess: "El correo fue enviado correctamente",
   }
 
   load: boolean;
@@ -66,8 +66,8 @@ export class LoginComponent implements OnInit {
     let userLogged = localStorage.getItem('userlogged');
     let remember = localStorage.getItem('remember');
     if (userLogged && userLogged != "undefined" && remember == "true") {
-      console.log('localstorage userlogged: in login ', JSON.parse(localStorage.getItem('userlogged')!))
-      this.user = JSON.parse(userLogged);
+      console.log('localStorage userLogged: in login ', JSON.parse(localStorage.getItem('userlogged')!))
+      this.user = this.userService.getUserLogged();
       this.router.navigateByUrl("/dashboard")
       .then(() => {
         window.location.reload();
@@ -80,23 +80,12 @@ export class LoginComponent implements OnInit {
     this.passwordIcon = document.getElementById('togglePassword')!;
 
     this.passwordIcon.addEventListener('click', (e) => {
-      this.changeEye(this.passwordIcon, this.passwordHtml);
-      this.changeEyeTime(this.passwordIcon, this.passwordHtml);
+      Utils.changeEye(this.passwordIcon, this.passwordHtml);
+      Utils.changeEyeTime(this.passwordIcon, this.passwordHtml);
     });
   }
 
-  public changeEye(element: HTMLElement, elementClose: HTMLElement):  void {
-    const type = elementClose.getAttribute('type') === 'password' ? 'text' : 'password';
-    elementClose.setAttribute('type', type);
-    const clase = element.getAttribute('class')=== 'far fa-eye' ? 'far fa-eye-slash' : 'far fa-eye';
-    element.setAttribute('class', clase)!;
-  }
-
-  public changeEyeTime(element: HTMLElement, elementClose: HTMLElement ): void {
-    setTimeout(() => {
-      this.changeEye(element, elementClose);
-    }, 2000);
-  }
+ 
 
   login() {
     this.user = new User();
@@ -114,7 +103,7 @@ export class LoginComponent implements OnInit {
             Swal.fire({
               title: 'Login',
               html: `<p>El usuario ${ user.user_name } está deshabilitado</p>
-              <p>Pongase en contacto con el administrador, Muchas gracias</p>`,
+              <p>Póngase en contacto con el administrador, Muchas gracias</p>`,
               icon: 'warning',
               confirmButtonText: 'Aceptar'
             });
@@ -241,12 +230,12 @@ export class LoginComponent implements OnInit {
         this.showSwal('error');
         return;
       }
-      this.sendEmailResult.title = this.sendEmailMessages.titlesuccess;
-      this.sendEmailResult.message = this.sendEmailMessages.messagesuccess;
+      this.sendEmailResult.title = this.sendEmailMessages.titleSuccess;
+      this.sendEmailResult.message = this.sendEmailMessages.messageSuccess;
       this.showSwal('success');
      }, error: (error: any) => {
       this.load = false;
-      this.sendEmailResult.title = this.sendEmailMessages.titleerror;
+      this.sendEmailResult.title = this.sendEmailMessages.titleError;
       this.sendEmailResult.message = error.message;
       this.showSwal('error');
       console.log('Login send email Error', error);

@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import { User } from 'src/app/class/users';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { UsersService } from 'src/app/services/users.service';
+import { Utils } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2'
 
@@ -27,8 +28,6 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
    }
 
   editUserForm: FormGroup;
-  phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
 
   url: string = environment.apiUrl;
 
@@ -54,13 +53,11 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   viewSpinner: boolean = true;
   constructor(private fb: FormBuilder,
               private usersService: UsersService,
+              private userService: UsersService,
               private uploadService: FileUploadService) {
 
-    let userLogged = localStorage.getItem('userlogged');
-    if (userLogged && userLogged != "undefined") {
-      console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
-      this.userLogged = JSON.parse(userLogged);
-    }
+    this.userLogged = this.userService.getUserLogged();
+
     let user_rol = Number(this.userLogged.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;
 
@@ -87,8 +84,8 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
       userimg: [''],
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
-      telefono: ['', [Validators.required, Validators.pattern(this.phoneReg)]],
-      email: ['', [Validators.required, Validators.pattern(this.emailReg)]]
+      phone: ['', [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]]
     });
   }
 
@@ -106,8 +103,8 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
       userimg: [''],
       nombre: [user.user_name, Validators.required],
       apellidos: [user.user_lastName, Validators.required],
-      telefono: [user.user_phone, [Validators.required, Validators.pattern(this.phoneReg)]],
-      email: [user.user_email, [Validators.required, Validators.pattern(this.emailReg)]]
+      phone: [user.user_phone, [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      email: [user.user_email, [Validators.required, Validators.pattern(Utils.emailReg)]]
     });
   }
 
@@ -134,7 +131,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
       this.users = this.users.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(filterValue.target.value.trim().toLowerCase()));
     } else {
       this.filterValueAct = filterValue.target.value.trim().toLowerCase();
-        this.users = this.users.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(this.filterValueAct));
+      this.users = this.users.filter((emp: User) => emp.user_name.toLowerCase().trim().includes(this.filterValueAct));
     }
   }
 
@@ -216,18 +213,19 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
     console.log(elem)
   }
 
+  // Función de prueba de campos erróneos, esta en casi todos los componentes que usan formularios
   public getFormValidationErrors(form: FormGroup): string {
 
     const result: { Campo: string; error: string; value: any }[] = [];
     Object.keys(form.controls).forEach(key => {
 
-      const controlErrors: any = form!.get(key)!.errors;
+      const controlErrors: any = form.get(key)!.errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
           result.push({
             Campo: key,
             'error': keyError,
-            value: form!.get(key)!.value
+            value: form.get(key)!.value
           });
         });
       }

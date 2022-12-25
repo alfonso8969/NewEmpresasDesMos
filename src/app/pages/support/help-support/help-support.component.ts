@@ -9,7 +9,7 @@ export class HelpSupportComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
   }
 
 }

@@ -19,9 +19,10 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   usersInHabTmp: User[];
 
   viewSpinner: boolean = true;
-  rolvalue: number;
-  rolstr: string;
+  rolValue: number;
+  rolStr: string;
   filterValueAct: string = '';
+
   public page: number = 1;
   public page2: number = 1;
 
@@ -89,24 +90,24 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   }
 
   public changeRol(event: any): void {
-    this.rolvalue = Number(event.target.selectedOptions[0].value.split(':')[1].trim());
-    this.rolstr = event.target.selectedOptions[0].text;
-    this.user.user_rol = this.rolvalue;
-    console.log(this.rolvalue)
-    console.log(this.rolstr)
+    this.rolValue = Number(event.target.selectedOptions[0].value.split(':')[1].trim());
+    this.rolStr = event.target.selectedOptions[0].text;
+    this.user.user_rol = this.rolValue;
+    console.log(this.rolValue)
+    console.log(this.rolStr)
   }
 
   public deleteUser(index: number): void {
     let user = this.usersHab[index];
     user.habilitado = 0;
     console.log(user);
-    this.toAbledisabledUser(user);
+    this.toAbleDisabledUser(user);
   }
 
   public toAbleUser(user: User): void {
     user.habilitado = 1;
     console.log(user);
-    this.toAbledisabledUser(user);
+    this.toAbleDisabledUser(user);
   }
 
   ngAfterViewInit(): void {
@@ -119,11 +120,10 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   ngOnInit(): void {
   }
 
-  public toAbledisabledUser(user: User): void {
+  public toAbleDisabledUser(user: User): void {
     let title = user.habilitado == 1 ? 'Habilitar' : 'Deshabilitar';
     let message = user.habilitado == 1 ? '¿Está seguro que desea habilitar al usuario ' : '¿Está seguro que desea deshabilitar al usuario ';
     Swal.fire({
@@ -153,8 +153,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });
-            }
-    
+            }   
           },
           error: (error: any) => {
             console.log(error);
@@ -227,8 +226,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });
-            }
-    
+            } 
           },
           error: (error: any) => {
             console.log(error);

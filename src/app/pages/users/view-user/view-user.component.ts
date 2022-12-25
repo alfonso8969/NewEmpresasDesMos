@@ -4,6 +4,7 @@ import { User } from 'src/app/class/users';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { LoginService } from 'src/app/services/login.service';
 import { UsersService } from 'src/app/services/users.service';
+import { Utils } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2'
 
@@ -30,20 +31,13 @@ export class ViewUserComponent implements OnInit {
   isEdited: boolean = false;
 
   addUserForm: FormGroup;
-  phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
-  passReg: RegExp = new RegExp(/(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/g);
 
   constructor(private fb: FormBuilder,
               private uploadService: FileUploadService,
               private loginService: LoginService,
-              private userSevice: UsersService) {
+              private userService: UsersService) {
 
-   let userLogged = localStorage.getItem('userlogged');
-    if (userLogged && userLogged != "undefined") {
-      console.log('localstorage userlogged: ', JSON.parse(localStorage.getItem('userlogged')!))
-      this.user = JSON.parse(userLogged);
-    }
+    this.user = this.userService.getUserLogged();
 
     this.fillFormUser(this.user);
     this.setFormControlsReadOnly(this.addUserForm);
@@ -54,12 +48,12 @@ export class ViewUserComponent implements OnInit {
       userimg: [''],
       nombre: [user.user_name, Validators.required],
       apellidos: [user.user_lastName, Validators.required],
-      telefono: [user.user_phone, [Validators.required, Validators.pattern(this.phoneReg)]],
-      email: [user.user_email, [Validators.required, Validators.pattern(this.emailReg)]],
+      telefono: [user.user_phone, [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      email: [user.user_email, [Validators.required, Validators.pattern(Utils.emailReg)]],
       rol: [Number(user.user_rol) ,Validators.required],
-      actPassword: ['' ,Validators.pattern(this.passReg)],
-      newPassword: ['' ,Validators.pattern(this.passReg)],
-      comparePasswords: ['' ,Validators.pattern(this.passReg)],
+      actPassword: ['' ,Validators.pattern(Utils.passReg)],
+      newPassword: ['' ,Validators.pattern(Utils.passReg)],
+      comparePasswords: ['' ,Validators.pattern(Utils.passReg)],
     });
   }
 
@@ -73,32 +67,19 @@ export class ViewUserComponent implements OnInit {
     this.compPasswordHtml = document.getElementById('comparePasswords')!;
 
     this.actPasswordIcon.addEventListener('click', (e) => {
-      this.changeEye(this.actPasswordIcon, this.actPasswordHtml);
-      this.changeEyeTime(this.actPasswordIcon, this.actPasswordHtml);
+      Utils.changeEye(this.actPasswordIcon, this.actPasswordHtml);
+      Utils.changeEyeTime(this.actPasswordIcon, this.actPasswordHtml);
     });
 
     this.newPasswordIcon.addEventListener('click', (e) => {
-      this.changeEye(this.newPasswordIcon, this.newPasswordHtml);
-      this.changeEyeTime(this.newPasswordIcon, this.newPasswordHtml);
+      Utils.changeEye(this.newPasswordIcon, this.newPasswordHtml);
+      Utils.changeEyeTime(this.newPasswordIcon, this.newPasswordHtml);
     });
 
     this.compPasswordIcon.addEventListener('click', (e) => {
-      this.changeEye(this.compPasswordIcon, this.compPasswordHtml);
-      this.changeEyeTime(this.compPasswordIcon, this.compPasswordHtml);
+      Utils.changeEye(this.compPasswordIcon, this.compPasswordHtml);
+      Utils.changeEyeTime(this.compPasswordIcon, this.compPasswordHtml);
     });
-  }
-
-  public changeEye(element: HTMLElement, elementClose: HTMLElement):  void {
-    const type = elementClose.getAttribute('type') === 'password' ? 'text' : 'password';
-    elementClose.setAttribute('type', type);
-    const clase = element.getAttribute('class')=== 'far fa-eye' ? 'far fa-eye-slash' : 'far fa-eye';
-    element.setAttribute('class', clase)!;
-  }
-
-  public changeEyeTime(element: HTMLElement, elementClose: HTMLElement ): void {
-    setTimeout(() => {
-      this.changeEye(element, elementClose);
-    }, 2000);
   }
 
   public edit() {
@@ -175,7 +156,7 @@ export class ViewUserComponent implements OnInit {
   }
 
   public saveUser(user: User): void {
-    this.userSevice.updateUser(user).subscribe({
+    this.userService.updateUser(user).subscribe({
       next: (data: number) => {
         if (data === 1) {
           Swal.fire({
@@ -242,7 +223,6 @@ export class ViewUserComponent implements OnInit {
     }
 
     reader.readAsDataURL(elem.target.files[0]);
-
     console.log(elem)
   }
 

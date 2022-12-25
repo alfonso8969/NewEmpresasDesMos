@@ -50,14 +50,14 @@
                     </div>
                     <div class="form-group">
                       <label for="codeRef">Referencia a un ticket: <span class="mytooltip tooltip-effect-3">
-                        
+
                         <span class="tooltip-item"><i class="fa fa-question-circle" aria-hidden="true"></i></span>
                          <span class="tooltip-content clearfix">
                           <span class="tooltip-text ml-5">Haga referencia a otro ticket para continuarlo, si cree que la primera explicación no le fue totalmente satisfactoria, tenga en cuenta que si el ticket esta cerrado no podrá continuarlo</span> </span>
                         </span></label>
                       <input formControlName="codeRef" id="codeRef" name="codeRef" class="form-control" type="text"
                         (keyup)="codeRefChange($event)">
-                      <span *ngIf="checkTicketExitCode && 
+                      <span *ngIf="checkTicketExitCode &&
                                    checkTicketExitCode.campo != undefined &&
                                    checkTicketExitCode.respondido == 0 &&
                                    checkTicketExitCode.campo != '' &&
@@ -67,12 +67,12 @@
                         *ngIf="addTicketSupport.get('codeRef')?.errors != null && addTicketSupport.get('codeRef')!.errors!['maxlength']">
                         El <strong>limite es de 10 caracteres</strong>
                       </span>
-                      <span *ngIf="checkTicketExitCode && 
-                                   checkTicketExitCode.campo != undefined && 
+                      <span *ngIf="checkTicketExitCode &&
+                                   checkTicketExitCode.campo != undefined &&
                                    checkTicketExitCode.campo != '' &&
                                    checkTicketExitCode.respondido == 1 &&
                                    addTicketSupport.get('codeRef')?.value != ''" class="text-danger">Este ticket fue
-                        enviado el {{ checkTicketExitCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }} y esta cerrado.</span>                      
+                        enviado el {{ checkTicketExitCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }} y esta cerrado.</span>
                     </div>
 
                     <div class="form-group">
@@ -126,7 +126,7 @@
                           <li class="media">
                             <img [matTooltip]="(user.user_rol == 2 ?  'Usuario: ' : user.user_rol == 1 ? 'Administrador: ' : user.user_rol == 3 ? 'Super Administrador: ' : '' ) + user.user_name" class="d-flex mr-3"
                               [src]="user && user.user_img ? url + '/uploads/' + user.user_img : './assets/images/icon/staff.png'"
-                              width="100" [alt]="(user.user_rol == 2 ?  'Usuario' : '' ) + user.user_name">
+                              width="100" [alt]="(user.user_rol == 2 ?  'Usuario: ' : user.user_rol == 1 ? 'Administrador: ' : user.user_rol == 3 ? 'Super Administrador: ' : '' ) + user.user_name">
                             <div class="media-body">
                               <h5 class="mt-0 mb-1">Tema: {{ ticketByUser.campo }}</h5>
                               <h6 class="mt-0 mb-1">Fecha: {{ ticketByUser.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</h6>

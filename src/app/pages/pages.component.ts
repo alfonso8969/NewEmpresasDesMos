@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DetailComponent } from 'src/shared/components/detail/detail.component';
-import { User } from '../class/users';
-import { CompaniesService } from '../services/companies.service';
 import { CookieService } from 'ngx-cookie-service';
+import { CompaniesService } from '../services/companies.service';
 import { MenuService } from '../services/menu.service';
 import { LoginService } from '../services/login.service';
+import { UsersService } from '../services/users.service';
+import { User } from '../class/users';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -19,7 +20,7 @@ import Swal from 'sweetalert2'
 })
 export class PagesComponent implements OnInit {
 
-  longText = `Establecer ojetivos es el primer paso para convertir lo invisible en visible.`;
+  longText = `Establecer objetivos es el primer paso para convertir lo invisible en visible.`;
   longText2 = `Nuestras vidas están definidas por oportunidades, incluso las que perdemos.`;
   longText3 = `No son los individuos los que hacen las empresas exitosas, sino los equipos.`;
 
@@ -29,13 +30,14 @@ export class PagesComponent implements OnInit {
   // tslint:disable-next-line: no-output-native
   @Output() close: EventEmitter<boolean>;
 
-  linkMoreIfoCookies: string;
+  public linkMoreIfoCookies: string;
   public showDetail: boolean;
   private cookieExists: boolean;
 
-  user: User;
-  user_rol_technical: boolean;
-  url: string = environment.apiUrl;
+  public user: User;
+  public user_rol_technical: boolean;
+  public url: string = environment.apiUrl;
+  private expiredDate: Date;
 
   // google maps
   @ViewChild('myMap') map: GoogleMap;
@@ -50,16 +52,13 @@ export class PagesComponent implements OnInit {
     private _router: Router,
     private httpClient: HttpClient,
     private cookieService: CookieService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private userService: UsersService,
   ) {
-    let userLogged = localStorage.getItem('userlogged');
-    if (userLogged && userLogged != "undefined") {
-      console.log('localstorage userlogged: ', JSON.parse(localStorage.getItem('userlogged')!))
-      this.user = JSON.parse(userLogged);
-      let user_rol = Number(this.user.user_rol);
-      this.user_rol_technical = user_rol === 4 ? true : false;
 
-    }
+    this.user = this.userService.getUserLogged();
+    let user_rol = Number(this.user.user_rol);
+    this.user_rol_technical = user_rol === 4 ? true : false;
 
     this.companiesService.getApi()
       .subscribe((data: any) => {
@@ -76,7 +75,6 @@ export class PagesComponent implements OnInit {
     if (this._router.url === '/dashboard' || this._router.url === '/dashboard#no-back-button') {
       this.viewDashBoard = true;
     }
-
 
     this.cookieExists = cookieService.check('Cookie');
     // Event when closing the detail
@@ -122,7 +120,10 @@ export class PagesComponent implements OnInit {
   }
 
   saveGDPR() {
-    this.cookieService.set('Cookie', 'GDPR');
+    this.expiredDate = new Date();
+    this.expiredDate.setDate( this.expiredDate.getDate() + 15);
+    const secure = true;
+    this.cookieService.set('Cookie', 'GDPR', this.expiredDate, '', '', secure);
     this.animationClose();
     this.parentDetail.closeDetail();
   }
@@ -143,9 +144,9 @@ export class PagesComponent implements OnInit {
     let remember = localStorage.getItem('remember');
     let title = remember ? '¿Está seguro de querer cerrar la sesión?' : 'Salir';
     let message = remember ? 'Si cierra la sesión, deberá volver a iniciar sesión para poder acceder a la aplicación'
-        : '¿Está seguro de querer salir de la aplicación?';
+      : '¿Está seguro de querer salir de la aplicación?';
 
-    let confirmButtonText = remember ? 'Si, cerrar sessión' : 'Si, salir';
+    let confirmButtonText = remember ? 'Si, cerrar sesión' : 'Si, salir';
 
     Swal.fire({
       title: title,

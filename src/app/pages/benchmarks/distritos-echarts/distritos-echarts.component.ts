@@ -148,7 +148,7 @@ export class DistritosEchartsComponent implements OnInit {
   coolTheme = this.CoolTheme;
 
   data_result: BenchMarks[];
-  data_values: data_value[] = [];
+  data_values: DataValue[] = [];
 
   totalEmpresas: number = 0;
   distritos_name: Array<string> = [];
@@ -252,8 +252,8 @@ export class DistritosEchartsComponent implements OnInit {
     console.log(value);
 
     Swal.fire({
-      title: 'Empresas por ditritos',
-      html: `<p>El ditrito: ${ distrito }</p><p>Tiene ${ value } empresas</p><p>que representa el ${ percent }% de empresas</p>`,
+      title: 'Empresas por distritos',
+      html: `<p>El distrito: ${ distrito }</p><p>Tiene ${ value } empresas</p><p>que representa el ${ percent }% de empresas</p>`,
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -269,7 +269,7 @@ export class DistritosEchartsComponent implements OnInit {
 
 }
 
-class data_value {
+class DataValue {
   value: number;
   name: string;
 }
