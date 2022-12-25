@@ -1,0 +1,37 @@
+#div-img-user {
+  background-image: url('../../../../assets/images/background/profile-bg.jpg');
+  background-size: cover;
+  height:250px;
+}
+
+#img-user {
+  border-radius: 50%;
+  border: 10px solid #FEDE00;
+}
+
+.inputfile {
+  display: none;
+}
+
+.container {
+  display: inline-block;
+  width: 100%;
+}
+
+.file-button {
+  background: transparent;
+  font-weight: 600;
+  padding: 5px;
+  position: relative;
+  border: 1px solid;
+  top: 10px;
+  right: 0px;
+  cursor: pointer;
+}
+
+
+::ng-deep .mat-tooltip  {
+  white-space: pre-line !important;
+  background-color: rgb(43, 43, 212) !important;
+  font-size: 16px !important;
+}

@@ -22,6 +22,8 @@ import { HelpSupportComponent } from './support/help-support/help-support.compon
 import { TicketSupportComponent } from './support/ticket-support/ticket-support.component';
 import { TechnicalLogsComponent } from './technical/technical-logs/technical-logs.component';
 import { TicketManagementComponent } from './technical/ticket-management/ticket-management.component';
+import { AddTechnicalComponent } from './technical/add-technical/add-technical.component';
+import { TechnicalSessionsComponent } from './technical/technical-sessions/technical-sessions.component';
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -61,8 +63,8 @@ const routes: Routes = [
       { path: 'help-support', title: "Ayuda", component: HelpSupportComponent, data: { rol: ['ROL_USER','ROL_ADMIN', 'ROL_SUPERADMIN'] } },
       { path: 'ticket-support', title: "Ticket soporte", component: TicketSupportComponent, data: { rol: ['ROL_USER', 'ROL_ADMIN', 'ROL_SUPERADMIN'] } },
       { path: 'technical-logs', title: "Técnico logs", component: TechnicalLogsComponent, data: { rol: ['ROL_TECHNICAL'] } },
-      { path: 'technical-sessions', title: "Técnico sesiones", component: TicketSupportComponent, data: { rol: ['ROL_TECHNICAL'] } },
-      { path: 'technical-create', title: "Agregar técnico", component: TicketSupportComponent, data: { rol: ['ROL_TECHNICAL'] } },
+      { path: 'technical-sessions', title: "Técnico sesiones", component: TechnicalSessionsComponent, data: { rol: ['ROL_TECHNICAL'] } },
+      { path: 'technical-create', title: "Agregar técnico", component: AddTechnicalComponent, data: { rol: ['ROL_TECHNICAL'] } },
       { path: 'technical-ticket', title: "Gestión tickets", component: TicketManagementComponent, data: { rol: ['ROL_TECHNICAL'] } },
     ]
   },

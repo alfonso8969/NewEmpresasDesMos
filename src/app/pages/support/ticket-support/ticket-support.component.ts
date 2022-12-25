@@ -185,6 +185,10 @@ export class TicketSupportComponent implements OnInit {
   }
 
   public changeTema(event: any) {
+    if (this.checkTicketExitCode.campo != '') {    
+      this.addTicketSupport.get('field')!.setValue(this.checkTicketExitCode.campo);
+      return;
+    }
     this.campoStr = event.target.selectedOptions[0].text;
   }
 
@@ -226,7 +230,8 @@ export class TicketSupportComponent implements OnInit {
             this.sendEmailResult.title = "Error";
             this.sendEmailResult.message = "El código no coincide con ninguno de sus tickets";
             this.showSwal('error');
-            this.checkTicketExitCode.campo = "";
+            this.checkTicketExitCode.campo = '';
+            this.addTicketSupport.get('field')!.setValue(0);
           }
         },
         error: (error: any) => {
@@ -236,7 +241,9 @@ export class TicketSupportComponent implements OnInit {
         complete: () => console.log("Complete checkTicketCode", this.checkTicketsCode)
       });
     } else {
-      this.checkTicketExitCode.respondido == 0
+      this.checkTicketExitCode.respondido = 0;
+      this.checkTicketExitCode.campo = '';
+      this.addTicketSupport.get('field')!.setValue(0);
     }
 
   }

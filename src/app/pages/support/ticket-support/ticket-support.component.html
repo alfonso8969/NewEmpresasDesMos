@@ -40,12 +40,12 @@
                         </option>
                       </select>
                       <span class="err text-danger"
-                        *ngIf="addTicketSupport.get('field')?.invalid && addTicketSupport.get('field')?.touched">
+                        *ngIf="addTicketSupport.get('field')?.invalid && addTicketSupport.get('field')?.touched && addTicketSupport.get('field')?.value != 0">
                         El <strong>tema es</strong> requerido
                       </span>
                       <span class="err text-danger"
                         *ngIf="addTicketSupport.get('field')?.touched && addTicketSupport.get('field')?.value == 0">
-                        El <strong>sector es</strong> requerido
+                        El <strong>tema es</strong> requerido
                       </span>
                     </div>
                     <div class="form-group">
@@ -72,7 +72,7 @@
                                    checkTicketExitCode.campo != '' &&
                                    checkTicketExitCode.respondido == 1 &&
                                    addTicketSupport.get('codeRef')?.value != ''" class="text-danger">Este ticket fue
-                        enviado el {{ checkTicketExitCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }} y esta cerrado</span>                      
+                        enviado el {{ checkTicketExitCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }} y esta cerrado.</span>                      
                     </div>
 
                     <div class="form-group">
