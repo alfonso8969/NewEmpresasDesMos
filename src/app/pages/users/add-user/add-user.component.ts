@@ -52,10 +52,10 @@ export class AddUserComponent implements OnInit, AfterViewInit {
 
   public fillForm(): void {
     this.addUserForm = this.fb.group({
-      userimg: [''],
+      user_img: [''],
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
-      telefono: ['', [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      phone: ['', [Validators.required, Validators.pattern(Utils.phoneReg)]],
       email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
       rol: [0, Validators.required],
       newPassword: ['', [Validators.required, Validators.pattern(Utils.passReg)]],
@@ -86,7 +86,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
     this.user = new User();
     this.user.setUser_name(this.addUserForm.get('nombre')!.value);
     this.user.setUser_lastName(this.addUserForm.get('apellidos')!.value);
-    this.user.setUser_phone(this.addUserForm.get('telefono')!.value);
+    this.user.setUser_phone(this.addUserForm.get('phone')!.value);
     this.user.setUser_email(this.addUserForm.get('email')!.value);
     this.user.setUser_rol(this.addUserForm.get('rol')!.value);
     this.user.setFecha_alta(new Date());
@@ -127,7 +127,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
         if (data === 1) {
           Swal.fire({
             title: 'Añadir usuario',
-            text: `El usuario ${user.user_name} se añadio exitosamente`,
+            text: `El usuario ${user.user_name} se añadió exitosamente`,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
@@ -140,7 +140,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
             title: 'Añadir usuario: ' + user.user_name,
-            text: `El email ${ user.user_email } ya exite`,
+            text: `El email ${ user.user_email } ya existe`,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });

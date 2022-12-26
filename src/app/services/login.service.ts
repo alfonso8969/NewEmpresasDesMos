@@ -21,10 +21,12 @@ export class LoginService {
     .pipe(map( (Users: User) => {
       console.log('Users: ', Users);
       this.roleAs = Users.user_rol;
-      localStorage.setItem('userlogged', JSON.stringify(Users));
-      localStorage.setItem('ROLE', this.roleAs.toString());
-      this.userEmitter.emit(Users);
-      this.setToken(Users.user_name);
+      if (this.roleAs) {
+        localStorage.setItem('userLogged', JSON.stringify(Users));
+        localStorage.setItem('ROLE', this.roleAs.toString());
+        this.userEmitter.emit(Users);
+        this.setToken(Users.user_name);
+      }
       return Users;
     }));
   }
@@ -53,7 +55,7 @@ export class LoginService {
 
   public logout(): void {
     localStorage.removeItem('token');
-    localStorage.removeItem('userlogged');
+    localStorage.removeItem('userLogged');
     localStorage.removeItem('ROLE');
     localStorage.removeItem('remember');
   }

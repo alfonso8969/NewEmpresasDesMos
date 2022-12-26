@@ -23,7 +23,6 @@ export class AuthGuard implements CanActivate {
 
     let url: string = state.root.children[0].url[0].path;
     return this.isLogin(route, url);
-
   }
 
   isLogin(route: ActivatedRouteSnapshot, url: any): any {
@@ -31,9 +30,9 @@ export class AuthGuard implements CanActivate {
       this.user = this.userService.getUserLogged();
       const userRol = this.loginService.getRole();
       console.log('estoy logueado');
-      let roles: Roles[] = route.children[0] != undefined && route.children[0].data['rol'];
+      let roles: Roles[] = route.children[0] != undefined ? route.children[0].data['rol'] : route.data['rol'];
       let found: Roles | undefined;
-      if (roles) {
+      if (roles && Number(Roles[roles[0].valueOf()]) != Roles.ALL) {
         found = roles.find(r => Number(Roles[r.valueOf()]) === userRol);
         if (found) {
           return true;
@@ -51,7 +50,6 @@ export class AuthGuard implements CanActivate {
       }
       return true;
     }
-
     console.log('no estoy logueado');
     this.router.navigate(['login']);
     return false;

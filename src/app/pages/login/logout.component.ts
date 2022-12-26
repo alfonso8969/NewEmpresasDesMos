@@ -18,9 +18,9 @@ export class LogoutComponent implements OnInit {
   ngOnInit(): void {
     this.showMessage();
   }
-  
+
   private showMessage(): void {
-    setTimeout(() => { 
+    setTimeout(() => {
       Swal.fire({
         title: 'Salir de Admin Empresas',
         html: '<p>Gracias por usa la aplicación</p><p>Vuelva cuando quiera, le estaremos esoerando</p>',
@@ -34,6 +34,9 @@ export class LogoutComponent implements OnInit {
           this.router.navigate(['/externalRedirect', { externalUrl: 'https:/alfonsogonz.es/' }]);
         } else {
           this.isActive = false;
+          window.location.hash = "no-back-button";
+          window.location.hash = "Again-No-back-button" //chrome
+          window.onhashchange = function () { window.location.hash = "no-back-button"; }
         }
       })
     }, 600);

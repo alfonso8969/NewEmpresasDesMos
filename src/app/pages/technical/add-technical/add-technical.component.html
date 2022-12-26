@@ -29,6 +29,208 @@
           <div class="card-body">
             <div class="form-body">
               <hr>
+              <form [formGroup]="addTechnicalUserForm" (ngSubmit)="addTechnicalUser()" novalidate autocomplete="off">
+                <div class="row p-t-20">
+                  <div class="col-md-6">
+                    <div id="div-img-user" class="text-center">
+                      <img id="img-user" src="./assets/images/icon/staff.png" height="200px" width="200px"
+                        alt="This is a small profile image"><br>
+                      <input accept="image/png,image/jpeg,image/jpg" formControlName="user_img" type="file"
+                        name="user_img" id="userimg" class="inputfile" (change)='uploadFile($event)'>
+                      <label class="label-control d-block text-light" for="userimg">
+                        <span class="file-button">
+                          <i class="fa fa-upload" aria-hidden="true"></i>
+                          Seleccione imagen
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mt-5">
+                      <label for="nombre" class="control-label">* Nombre</label>
+                      <input formControlName="nombre" id="nombre" name="nombre" type="text" class="form-control"
+                        placeholder="Nombre completo">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('nombre')?.invalid && addTechnicalUserForm.get('nombre')?.touched">
+                        El <strong>nombre es</strong> requerido
+                      </span>
+                    </div>
+                    <div class="form-group">
+                      <label for="apellidos" class="control-label">* Apellidos</label>
+                      <input formControlName="apellidos" id="apellidos" name="apellidos" type="text"
+                        class="form-control" placeholder="Apellidos">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('apellidos')?.invalid && addTechnicalUserForm.get('apellidos')?.touched">
+                        Los <strong>apellidos son</strong> requeridos
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-5">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="telefono" class="control-label">* Teléfono</label>
+                      <input formControlName="phone" type="number" name="phone" id="phone" class="form-control"
+                        placeholder="9999999" maxlength="9">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('phone')?.invalid && addTechnicalUserForm.get('phone')?.touched && !addTechnicalUserForm.get('phone')!.errors!['pattern']">
+                        El <strong>teléfono </strong>es requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('phone')!.errors != null && addTechnicalUserForm.get('phone')!.errors!['pattern'] && addTechnicalUserForm.get('phone')?.touched">
+                        El <strong>Teléfono</strong> no es válido, debe ser 99999999
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="telefono" class="control-label">Otro Teléfono</label>
+                      <input formControlName="other_phone" type="number" name="other_phone" id="other_phone" class="form-control"
+                        placeholder="9999999" maxlength="9">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('other_phone')!.errors != null && addTechnicalUserForm.get('other_phone')!.errors!['pattern'] && addTechnicalUserForm.get('other_phone')?.touched">
+                        El <strong>Teléfono</strong> no es válido, debe ser 99999999
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="email" class="control-label">* Email</label>
+                      <input formControlName="email" type="email" class="form-control" placeholder="Email" id="email"
+                        name="email">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('email')?.invalid && addTechnicalUserForm.get('email')?.touched && !addTechnicalUserForm.get('email')!.errors!['pattern']">
+                        El <strong>email es </strong>requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('email')!.errors != null && addTechnicalUserForm.get('email')!.errors!['pattern'] && addTechnicalUserForm.get('email')?.touched">
+                        El <strong>email</strong> no es válido
+                      </span>
+                    </div>
+                  </div>
+                  <div style="display: none;">
+                      <input formControlName="rol" name="rol" id="rol" class="form-control w-100" value="4">
+                  </div>
+                </div>
+                <div class="row mt-5">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="telefono" class="control-label">* Dirección</label>
+                      <input formControlName="address" type="text" name="address" id="address" class="form-control"
+                        placeholder="Dirección">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('address')?.invalid && addTechnicalUserForm.get('address')?.touched">
+                        La <strong>dirección </strong>es requerida
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="email" class="control-label">* Localidad</label>
+                      <input formControlName="region" type="text" class="form-control" placeholder="Localidad" id="region"
+                        name="region">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('region')?.invalid && addTechnicalUserForm.get('region')?.touched">
+                        La <strong>localidad es </strong>requerida
+                      </span>
+                    </div>
+                    </div>
+                    <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="email" class="control-label">* Ciudad</label>
+                      <input formControlName="city" type="text" class="form-control" placeholder="Localidad" id="city"
+                        name="city">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('city')?.invalid && addTechnicalUserForm.get('city')?.touched">
+                        La <strong>ciudad es </strong>requerida
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="email" class="control-label">* Código postal</label>
+                      <input formControlName="cod_postal" type="number" class="form-control" placeholder="Código postal" id="cod_postal"
+                        name="region">
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('cod_postal')?.invalid && addTechnicalUserForm.get('cod_postal')?.touched">
+                        El <strong>código postal es </strong>requerido
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-5">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="newPassword" class="control-label">* Nueva contraseña</label>
+                      <input formControlName="newPassword" type="password" name="newPassword" id="newPassword"
+                        class="form-control" placeholder="contraseña nueva" maxlength="10" minlength="6"
+                        autocomplete="new-password">
+                      <i class="far fa-eye" style="margin-left: -30px;cursor: pointer; color: #045FB4"
+                        id="toggleNewPassword"></i>
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('newPassword')?.invalid && addTechnicalUserForm.get('newPassword')?.touched && !addTechnicalUserForm.get('newPassword')!.errors!['pattern']">
+                        La <strong>contraseña</strong> es requerida
+                      </span>
+                      <span class="err text-danger" newPassword
+                        *ngIf="addTechnicalUserForm.get('newPassword')!.errors != null && addTechnicalUserForm.get('newPassword')!.errors!['pattern'] && addTechnicalUserForm.get('newPassword')?.touched">
+                        La <strong>contraseña</strong> no es válida, debe contener
+                        <pre>
+                        - 10 caracteres max
+                        - 6 caracteres min
+                        - 1 mayúscula
+                        - 1 minúscula
+                        - 1 número
+                        - 1 carácter especial
+                      </pre>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="rol" class="control-label">*
+                        Escriba de nuevo la contraseña</label>
+                      <input formControlName="confirmPassword" type="password" class="form-control"
+                        placeholder="contraseña nueva" id="confirmPassword" name="confirmPassword" maxlength="10"
+                        minlength="6" autocomplete="new-password">
+                      <i class="far fa-eye" style=" margin-left: -30px;  cursor: pointer; color: #045FB4"
+                        id="toggleCompPassword"></i>
+                        <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('confirmPassword')?.invalid && addTechnicalUserForm.get('confirmPassword')?.touched && !addTechnicalUserForm.get('confirmPassword')!.errors!['pattern'] && !addTechnicalUserForm.hasError('invalidComparison')">
+                        La <strong>contraseña</strong> es requerida
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.get('confirmPassword')!.errors != null && addTechnicalUserForm.get('confirmPassword')!.errors!['pattern'] && addTechnicalUserForm.get('confirmPassword')?.touched">
+                        La <strong>contraseña</strong> no es válida, debe contener
+                        <pre>
+                          - 10 caracteres max
+                          - 6 caracteres min
+                          - 1 mayúscula
+                          - 1 minúscula
+                          - 1 número
+                          - 1 carácter especial
+                        </pre>
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addTechnicalUserForm.hasError('invalidComparison')  && addTechnicalUserForm.get('confirmPassword')?.touched">
+                        Las <strong>contraseñas </strong>no coinciden
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-actions mb-5">
+                  <button type="submit" [disabled]="addTechnicalUserForm.invalid"
+                    class="btn-primary button d-inline">
+                    <span
+                      [matTooltip]="addTechnicalUserForm.hasError('invalidComparison') ? 'Las contraseñas no coinciden' : addTechnicalUserForm.invalid  ? 'Faltan campos obligatorios' : 'Guardar datos usuario'"
+                      [matTooltipPosition]="'right'" aria-label="Botón que guarda la información sobre el usuario"
+                      MAT_STRATEGY>Guardar
+                    </span>
+                    <i class="fa fa-save p-1"></i>
+                  </button>
+
+                </div>
+                <p class="text-danger">{{ getFormValidationErrors(addTechnicalUserForm) | json }}</p>
+              </form>
             </div>
           </div>
         </div>

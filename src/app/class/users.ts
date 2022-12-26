@@ -3,11 +3,12 @@ import { Rol } from "./rol";
 export class User extends Rol {
     public id_user: number;
     public user_img: string;
-    public newuser_img?: string;
+    public newUser_img?: string;
     public user_password: string;
     public user_name: string;
     public user_lastName: string;
     public user_phone: string;
+    public user_other_phone?: string;
     public user_email: string;
     public user_rol: number;
     public habilitado: number;
@@ -34,12 +35,12 @@ export class User extends Rol {
         this.user_img = user_img;
     }
 
-    public getNewuser_img(): string | undefined {
-        return this.newuser_img;
+    public getNewUser_img(): string | undefined {
+        return this.newUser_img;
     }
 
-    public setNewuser_img?(newuser_img: string): void {
-        this.newuser_img = newuser_img;
+    public setNewUser_img?(newUser_img: string): void {
+        this.newUser_img = newUser_img;
     }
 
     public getUser_password(): string {
@@ -72,6 +73,14 @@ export class User extends Rol {
 
     public setUser_phone(user_phone: string): void {
         this.user_phone = user_phone;
+    }
+
+    public getUser_other_phone(): string | undefined {
+        return this.user_other_phone;
+    }
+
+    public setUser_other_phone(user_other_phone: string): void {
+        this.user_other_phone = user_other_phone;
     }
 
     public getUser_email(): string {

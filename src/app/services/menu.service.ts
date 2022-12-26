@@ -24,11 +24,7 @@ export class MenuService {
 
 
   constructor() {
-    let userLogged = localStorage.getItem('userlogged');
-    if (userLogged && userLogged != "undefined") {
-      console.log('localstorage userlogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
-      this.user = JSON.parse(userLogged);
-    }
+    this.user = JSON.parse(localStorage.getItem('userLogged')!);
     this.superAdmin = Number(this.user.user_rol) === 3 ? true : false;
     this.admin = Number(this.user.user_rol) === 1 ? true : false;
     this.user_rol = Number(this.user.user_rol) === 2 ? true : false;

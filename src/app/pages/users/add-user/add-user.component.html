@@ -35,9 +35,9 @@
                     <div id="div-img-user" class="text-center">
                       <img id="img-user" src="./assets/images/icon/staff.png" height="200px" width="200px"
                         alt="This is a small profile image"><br>
-                      <input accept="image/png,image/jpeg,image/jpg" formControlName="userimg" type="file"
-                        name="userimg" id="userimg" class="inputfile" (change)='uploadFile($event)'>
-                      <label class="label-control d-block text-light" for="userimg">
+                      <input accept="image/png,image/jpeg,image/jpg" formControlName="user_img" type="file"
+                        name="user_img" id="user_img" class="inputFile" (change)='uploadFile($event)'>
+                      <label class="label-control d-block text-light" for="user_img">
                         <span class="file-button">
                           <i class="fa fa-upload" aria-hidden="true"></i>
                           Seleccione imagen
@@ -69,15 +69,15 @@
                 <div class="row mt-5">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="telefono" class="control-label">* Teléfono</label>
-                      <input formControlName="telefono" type="number" name="telefono" id="telefono" class="form-control"
+                      <label for="phone" class="control-label">* Teléfono</label>
+                      <input formControlName="phone" type="number" name="phone" id="phone" class="form-control"
                         placeholder="9999999" maxlength="9">
                       <span class="err text-danger"
-                        *ngIf="addUserForm.get('telefono')?.invalid && addUserForm.get('telefono')?.touched && !addUserForm.get('telefono')!.errors!['pattern']">
+                        *ngIf="addUserForm.get('phone')?.invalid && addUserForm.get('phone')?.touched && !addUserForm.get('phone')!.errors!['pattern']">
                         El <strong>teléfono </strong>es requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="addUserForm.get('telefono')!.errors != null && addUserForm.get('telefono')!.errors!['pattern'] && addUserForm.get('telefono')?.touched">
+                        *ngIf="addUserForm.get('phone')!.errors != null && addUserForm.get('phone')!.errors!['pattern'] && addUserForm.get('phone')?.touched">
                         El <strong>Teléfono</strong> no es válido, debe ser 99999999
                       </span>
                     </div>

@@ -24,6 +24,7 @@ import { TechnicalLogsComponent } from './technical/technical-logs/technical-log
 import { TicketManagementComponent } from './technical/ticket-management/ticket-management.component';
 import { AddTechnicalComponent } from './technical/add-technical/add-technical.component';
 import { TechnicalSessionsComponent } from './technical/technical-sessions/technical-sessions.component';
+import { ListTechnicalComponent } from './technical/list-technical/list-technical.component';
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -43,7 +44,7 @@ export class TemplatePageTitleStrategy extends TitleStrategy {
 const routes: Routes = [
   {
     path: 'dashboard', title: "Página principal", component: PagesComponent,
-    canActivate: [ AuthGuard ],
+    data: { rol: ['ALL'] }, canActivate: [ AuthGuard ],
     children: [
       { path: 'add-company', title: "Crear empresa", component: AddCompanyComponent , data: { rol: ['ROL_ADMIN', 'ROL_SUPERADMIN'] }},
       { path: 'add-redes', title: "Añadir redes", component: AddCompanyRedesComponent, data: { rol: ['ROL_ADMIN', 'ROL_SUPERADMIN'] } },
@@ -51,8 +52,8 @@ const routes: Routes = [
       { path: 'history-companies', title: "Historial empresa", component: HistoryCompaniesComponent, data: { rol: ['ROL_USER','ROL_ADMIN', 'ROL_SUPERADMIN'] } },
       { path: 'companies-out', title: "Empresas deshabilitadas", component: CompaniesOutComponent, data: { rol: ['ROL_USER','ROL_ADMIN', 'ROL_SUPERADMIN'] } },
       { path: 'view-company', title: "Ver empresa", component: ViewCompanyComponent, data: { rol: ['ROL_USER','ROL_ADMIN', 'ROL_SUPERADMIN'] }},
-      { path: 'list-users', title: "Listado usuarios", component: ListUsersComponent, data: { rol: ['ROL_USER','ROL_ADMIN', 'ROL_SUPERADMIN'] } },
-      { path: 'view-user/:id', title: "Perfil usuario", component: ViewUserComponent, data: { rol: ['ROL_USER','ROL_ADMIN', 'ROL_SUPERADMIN'] } },
+      { path: 'list-users', title: "Listado de usuarios", component: ListUsersComponent, data: { rol: ['ROL_USER','ROL_ADMIN', 'ROL_SUPERADMIN'] } },
+      { path: 'view-user/:id', title: "Perfil usuario", component: ViewUserComponent, data: { rol: ['ROL_USER','ROL_ADMIN', 'ROL_SUPERADMIN', 'ROL_TECHNICAL'] } },
       { path: 'add-user', title: "Añadir usuario", component: AddUserComponent, data: { rol: ['ROL_ADMIN', 'ROL_SUPERADMIN'] } },
       { path: 'admin-users', title: "Administrar usuarios", component: AdminUsersComponent, data: { rol: ['ROL_USER', 'ROL_ADMIN', 'ROL_SUPERADMIN'] } },
       { path: 'edit-fields', title: "Administrar campos", component: AdminFieldsComponent , data: { rol: ['ROL_ADMIN', 'ROL_SUPERADMIN'] }},
@@ -66,6 +67,7 @@ const routes: Routes = [
       { path: 'technical-sessions', title: "Técnico sesiones", component: TechnicalSessionsComponent, data: { rol: ['ROL_TECHNICAL'] } },
       { path: 'technical-create', title: "Agregar técnico", component: AddTechnicalComponent, data: { rol: ['ROL_TECHNICAL'] } },
       { path: 'technical-ticket', title: "Gestión tickets", component: TicketManagementComponent, data: { rol: ['ROL_TECHNICAL'] } },
+      { path: 'list-technical', title: "Listado de técnicos", component: ListTechnicalComponent, data: { rol: ['ROL_TECHNICAL'] } }
     ]
   },
 ];

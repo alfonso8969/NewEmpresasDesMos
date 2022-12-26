@@ -63,10 +63,10 @@ export class LoginComponent implements OnInit {
       emailRecover: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
     });
 
-    let userLogged = localStorage.getItem('userlogged');
+    let userLogged = localStorage.getItem('userLogged');
     let remember = localStorage.getItem('remember');
     if (userLogged && userLogged != "undefined" && remember == "true") {
-      console.log('localStorage userLogged: in login ', JSON.parse(localStorage.getItem('userlogged')!))
+      console.log('localStorage userLogged: in login ', JSON.parse(localStorage.getItem('userLogged')!))
       this.user = this.userService.getUserLogged();
       this.router.navigateByUrl("/dashboard")
       .then(() => {

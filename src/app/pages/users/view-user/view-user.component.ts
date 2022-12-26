@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { User } from 'src/app/class/users';
+import { Address } from 'src/app/interfaces/address';
+import { TechnicalInsert } from 'src/app/interfaces/technicalInsert';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { LoginService } from 'src/app/services/login.service';
 import { UsersService } from 'src/app/services/users.service';
@@ -17,9 +19,12 @@ export class ViewUserComponent implements OnInit {
 
   url: string = environment.apiUrl;
 
+  addUserForm: FormGroup;
   user: User;
   newUser: User;
+  address: Address;
   fileUp: File;
+
   fileName: string;
   img: HTMLElement | null;
   actPasswordHtml: HTMLElement;
@@ -28,9 +33,10 @@ export class ViewUserComponent implements OnInit {
   actPasswordIcon: HTMLElement;
   newPasswordIcon: HTMLElement;
   compPasswordIcon: HTMLElement;
-  isEdited: boolean = false;
 
-  addUserForm: FormGroup;
+  isEdited: boolean = false;
+  user_rol_technical: boolean = false;
+  formData: TechnicalInsert;
 
   constructor(private fb: FormBuilder,
               private uploadService: FileUploadService,
@@ -38,23 +44,56 @@ export class ViewUserComponent implements OnInit {
               private userService: UsersService) {
 
     this.user = this.userService.getUserLogged();
-
+    this.user_rol_technical = this.user.user_rol == 4;
+    this.userService.getUserAddress(this.user.id_user).subscribe({
+      next: (address: Address) => {
+        if (address != null) {
+          this.address = address;
+          this.fillFormUser(this.user);
+          this.setFormControlsReadOnly(this.addUserForm);
+        }
+      }, error: (error: any) => {
+        console.log("Error consiguiendo address: ", error);
+      },
+      complete: () => console.log('Se completo conseguir address del usuario', this.address)
+    });
+    
     this.fillFormUser(this.user);
-    this.setFormControlsReadOnly(this.addUserForm);
   }
 
   private fillFormUser(user: User): void {
-    this.addUserForm = this.fb.group({
-      userimg: [''],
-      nombre: [user.user_name, Validators.required],
-      apellidos: [user.user_lastName, Validators.required],
-      telefono: [user.user_phone, [Validators.required, Validators.pattern(Utils.phoneReg)]],
-      email: [user.user_email, [Validators.required, Validators.pattern(Utils.emailReg)]],
-      rol: [Number(user.user_rol) ,Validators.required],
-      actPassword: ['' ,Validators.pattern(Utils.passReg)],
-      newPassword: ['' ,Validators.pattern(Utils.passReg)],
-      comparePasswords: ['' ,Validators.pattern(Utils.passReg)],
-    });
+    if (this.user_rol_technical) { 
+      this.addUserForm = this.fb.group({
+        user_img: [''],
+        nombre: [user.user_name, Validators.required],
+        apellidos: [user.user_lastName, Validators.required],
+        phone: [user.user_phone, [Validators.required, Validators.pattern(Utils.phoneReg)]],
+        other_phone: [user.user_other_phone, [Validators.pattern(Utils.phoneReg)]],
+        email: [user.user_email, [Validators.required, Validators.pattern(Utils.emailReg)]],
+        rol: [Number(user.user_rol) ,Validators.required],
+        address: [this.address && this.address.address_user, Validators.required],
+        region: [this.address && this.address.region, Validators.required],
+        city: [this.address && this.address.city, Validators.required],
+        cod_postal: [this.address && this.address.cod_postal, Validators.required],
+        actPassword: ['' ,Validators.pattern(Utils.passReg)],
+        newPassword: ['' ,Validators.pattern(Utils.passReg)],
+        comparePasswords: ['' ,Validators.pattern(Utils.passReg)],
+      });
+
+    } else {
+      this.addUserForm = this.fb.group({
+        user_img: [''],
+        nombre: [user.user_name, Validators.required],
+        apellidos: [user.user_lastName, Validators.required],
+        phone: [user.user_phone, [Validators.required, Validators.pattern(Utils.phoneReg)]],
+        other_phone: [user.user_other_phone, [Validators.pattern(Utils.phoneReg)]],
+        email: [user.user_email, [Validators.required, Validators.pattern(Utils.emailReg)]],
+        rol: [Number(user.user_rol) ,Validators.required],
+        actPassword: ['' ,Validators.pattern(Utils.passReg)],
+        newPassword: ['' ,Validators.pattern(Utils.passReg)],
+        comparePasswords: ['' ,Validators.pattern(Utils.passReg)],
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -92,10 +131,22 @@ export class ViewUserComponent implements OnInit {
     newUser.id_user = this.user.id_user;
     newUser.setUser_name(this.addUserForm.get('nombre')!.value);
     newUser.setUser_lastName(this.addUserForm.get('apellidos')!.value);
-    newUser.setUser_phone(this.addUserForm.get('telefono')!.value);
+    newUser.setUser_phone(this.addUserForm.get('phone')!.value);
+    newUser.setUser_other_phone(this.addUserForm.get('other_phone')!.value);
     newUser.setUser_email(this.addUserForm.get('email')!.value);
     newUser.setUser_rol(this.addUserForm.get('rol')!.value);
     newUser.setUser_img(this.user.user_img);
+
+    if (this.user_rol_technical) {
+      this.address.address_user = this.addUserForm.get('address')!.value;
+      this.address.region = this.addUserForm.get('region')!.value;
+      this.address.city = this.addUserForm.get('city')!.value;
+      this.address.cod_postal = this.addUserForm.get('cod_postal')!.value;
+      this.formData = {
+        user: this.user,
+        address: this.address
+      };
+    }
 
     if (this.fileUp) {
 
@@ -109,7 +160,7 @@ export class ViewUserComponent implements OnInit {
           console.log("Data: ", data)
           if (data.type === 4) {
             console.log(data.body.data);
-            newUser.newuser_img = this.fileName;
+            newUser.newUser_img = this.fileName;
           }
         },
         error: (err: any) => {
@@ -129,7 +180,11 @@ export class ViewUserComponent implements OnInit {
         next: (result: boolean) => {
           if (result) {
             newUser.user_password = this.addUserForm.get('newPassword')!.value;
-            this.saveUser(newUser);
+            if (!this.user_rol_technical) { 
+              this.saveUser(newUser); 
+            } else {
+              this.saveTechnical(this.formData); 
+            }
           } else {
             Swal.fire({
               title: 'Actualizar usuario',
@@ -144,6 +199,7 @@ export class ViewUserComponent implements OnInit {
               title: 'Actualizar usuario',
               text: `Se produjo un error al actualizar al usuario ${ newUser.user_name } `,
               icon: 'error',
+
               confirmButtonText: 'Aceptar'
             });
             this.cleanForm();
@@ -151,7 +207,11 @@ export class ViewUserComponent implements OnInit {
         complete: () => console.log('Se completo el cotejar la contraseña del usuario')
       });
     } else {
-      this.saveUser(newUser);
+      if (!this.user_rol_technical) { 
+        this.saveUser(newUser); 
+      } else {
+        this.saveTechnical(this.formData); 
+      }
     }
   }
 
@@ -180,6 +240,41 @@ export class ViewUserComponent implements OnInit {
           this.cleanForm();
       },
       complete: () => console.log('Se completo la actualización del usuario')
+    });
+  }
+
+  public saveTechnical(formData: TechnicalInsert): void {
+    this.userService.updateTechnical(formData).subscribe({
+      next: (data: number) => {
+        if (data === 1) {
+          Swal.fire({
+            title: 'Actualizar técnico',
+            text: `El técnico ${formData.user.user_name} se actualizo exitosamente`,
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+        } else {
+          throw new Error(`Se produjo un error al actualizar al técnico ${formData.user.getUser_name()} `);
+        }
+      }, error: (error: any) => {
+        console.log(`Se produjo un error al actualizar al técnico: ${ error } `);
+        if (error.error.text.includes("Duplicate")) {
+          Swal.fire({
+            title: 'Actualizar técnico: ' + formData.user.user_name,
+            text: `El email ${ formData.user.user_email } ya existe`,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        } else {
+          Swal.fire({
+            title: 'Actualizar técnico',
+            text: `Se produjo un error al actualizar al técnico ${ formData.user.user_name } `,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      },
+      complete: () => console.log('Se completo la actualización del técnico')
     });
   }
 

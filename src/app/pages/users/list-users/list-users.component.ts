@@ -153,7 +153,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
              console.log("Data: ", data)
               if(data.type === 4) {
                 console.log(data.body.data);
-                this.user.newuser_img = this.fileName;
+                this.user.newUser_img = this.fileName;
                 this.saveUser(this.user);
               }
             },

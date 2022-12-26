@@ -93,6 +93,10 @@ mat-card.panel {
   font-size: 1.2em !important;
 }
 
+.hide-menu {
+  font-size: 1.1em !important;
+}
+
 ::ng-deep .mat-tooltip {
   white-space: pre-line !important;
   background-color: rgb(43, 43, 212) !important;

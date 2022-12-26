@@ -155,10 +155,10 @@
           <li class="user-profile">
             <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
               <img [src]="url + '/uploads/' + user.user_img" alt="user" />
-              <span class="hide-menu" style="font-size: 1.1em !important;"> {{ user.user_name }}</span>
+              <span class="hide-menu"> {{ user.user_name }}</span>
             </a>
             <ul aria-expanded="false" class="collapse">
-              <li><a (click)="navigateTo('/dashboard/view-user/1', $event)">Mi perfil </a></li>
+              <li><a (click)="navigateTo('/dashboard/view-user/' + user.id_user, $event)">Mi perfil </a></li>
               <li><a (click)="logout()" matTooltip="Cerrar sesión">Cerrar sesión</a></li>
             </ul>
           </li>

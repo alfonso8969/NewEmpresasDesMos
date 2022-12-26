@@ -3,11 +3,14 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../class/users';
+import { Address } from '../interfaces/address';
+import { TechnicalInsert } from '../interfaces/technicalInsert';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
+
 
   url: String = environment.apiUrl;
   user: User;
@@ -21,9 +24,9 @@ export class UsersService {
   }
 
   public getUserLogged(): User {
-    let userLogged = localStorage.getItem('userlogged');
+    let userLogged = localStorage.getItem('userLogged');
     if (userLogged && userLogged != "undefined") {
-      console.log('localStorage userLogged MenuService: ', JSON.parse(localStorage.getItem('userlogged')!))
+      console.log('localStorage userLogged LoginService: ', JSON.parse(localStorage.getItem('userLogged')!))
       this.user = JSON.parse(userLogged);
     }
 
@@ -64,5 +67,17 @@ export class UsersService {
 
   public resetPassword(user: User): Observable<number> {
     return this.http.post<number>(`${this.url}/resetPassword.php`, { user: user });
+  }
+
+  public addTechnical(formData: TechnicalInsert): Observable<number>  {
+    return this.http.post<number>(`${this.url}/addTechnical.php`, { formData: formData });
+  }
+
+  public updateTechnical(formData: TechnicalInsert): Observable<number>  {
+    return this.http.post<number>(`${this.url}/updateTechnical.php`, { formData: formData });
+  }
+
+  public getUserAddress(id: number): Observable<Address> {
+    return this.http.post<Address>(`${this.url}/getUserAddress.php`, { id: id });
   }
 }

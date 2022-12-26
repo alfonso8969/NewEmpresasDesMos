@@ -37,6 +37,8 @@ import { TechnicalLogsComponent } from './technical/technical-logs/technical-log
 import { AddTechnicalComponent } from './technical/add-technical/add-technical.component';
 import { TechnicalSessionsComponent } from './technical/technical-sessions/technical-sessions.component';
 import { TicketManagementComponent } from './technical/ticket-management/ticket-management.component';
+import { ListTechnicalComponent } from './technical/list-technical/list-technical.component';
+
 
 
 @NgModule({
@@ -66,7 +68,8 @@ import { TicketManagementComponent } from './technical/ticket-management/ticket-
     TechnicalLogsComponent,
     AddTechnicalComponent,
     TechnicalSessionsComponent,
-    TicketManagementComponent
+    TicketManagementComponent,
+    ListTechnicalComponent
   ],
   imports: [
     CommonModule,
