@@ -23,7 +23,7 @@ export class LogoutComponent implements OnInit {
     setTimeout(() => {
       Swal.fire({
         title: 'Salir de Admin Empresas',
-        html: '<p>Gracias por usa la aplicación</p><p>Vuelva cuando quiera, le estaremos esoerando</p>',
+        html: '<p>Gracias por usa la aplicación</p><p>Vuelva cuando quiera, le estaremos esperando</p>',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
