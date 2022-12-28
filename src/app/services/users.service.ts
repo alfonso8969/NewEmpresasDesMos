@@ -12,7 +12,7 @@ import { TechnicalInsert } from '../interfaces/technicalInsert';
 export class UsersService {
 
 
-  url: String = environment.apiUrl;
+  url: string = environment.apiUrl;
   user: User;
 
   constructor(private http: HttpClient) {
@@ -23,6 +23,9 @@ export class UsersService {
     }
   }
 
+  /**
+   * Función que regresa al usuario logueado correctamente
+   */
   public getUserLogged(): User {
     let userLogged = localStorage.getItem('userLogged');
     if (userLogged && userLogged != "undefined") {
@@ -33,6 +36,12 @@ export class UsersService {
     return this.user;
   }
 
+  /**
+   * Función que regresa al usuario por Id desde la Base de Datos
+   * @param { number } id Id de usuario
+   * @returns { Observable<User> } User
+   * @public
+   */
   public getUser(id: number): Observable<User> {
     return this.http.post<User>(`${this.url}/getUser.php`, { id: id });
   }
@@ -41,12 +50,12 @@ export class UsersService {
     return this.http.get<User[]>(`${this.url}/listUsers.php`);
   }
 
-  public getUsersHab(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.url}/listUsersHab.php`);
+  public getUsersEnabled(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.url}/listUsersEnabled.php`);
   }
 
-  public getUsersInha(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.url}/listUsersInha.php`);
+  public getUsersDisabled(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.url}/listUsersDisabled.php`);
   }
 
   public addUser(user: User): Observable<number> {

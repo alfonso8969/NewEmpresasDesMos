@@ -149,6 +149,7 @@ export class TicketSupportComponent implements OnInit {
   }
 
   public addTicket(): void {
+    this.load = true;
     this.message = this.addTicketSupport.get('message')?.value;
     this.campoInt = this.addTicketSupport.get('field')?.value;
     this.code = Utils.makeString(10);
@@ -167,7 +168,6 @@ export class TicketSupportComponent implements OnInit {
 
     this.emailService.sendEmail(this.dataForm).subscribe({
       next: (result: any) => {
-        this.load = false;
         console.log('ContactComponent response', result);
         if (result.title.includes('error')) {
           this.showSwal('error');
@@ -299,7 +299,7 @@ export class TicketSupportComponent implements OnInit {
 
 
   private showSwal(option: SweetAlertIcon): void {
-
+    this.load = false;
     Swal.fire({
       icon: option,
       title: this.sendEmailResult.title,

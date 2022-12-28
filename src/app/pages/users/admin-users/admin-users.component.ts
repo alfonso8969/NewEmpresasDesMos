@@ -42,7 +42,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   }
 
   fillTables() {
-    this.usersService.getUsersHab().subscribe({
+    this.usersService.getUsersEnabled().subscribe({
       next: (users: any) => {
         if (users != null) {
           this.usersHab = users.data;
@@ -60,7 +60,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
       complete: () => console.log("Complete", this.usersHab)
     });
 
-    this.usersService.getUsersInha().subscribe({
+    this.usersService.getUsersDisabled().subscribe({
       next: (users: any) => {
         if (users != null) {
           this.usersInHab = users.data;

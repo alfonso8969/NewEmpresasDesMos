@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../class/users';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { User } from '../class/users';
 export class MenuService {
 
   user: User;
+
   admin: boolean;
   user_rol: boolean;
   superAdmin: boolean;
@@ -14,23 +16,22 @@ export class MenuService {
   support: boolean;
 
   public menu: Array<any> = []
-
   public menuAdminUsers: Array<any> = []
   public menuAdminFields: Array<any> = []
-
   public menuGraphs: Array<any> = [];
   public menuSupport: Array<any> = [];
   public menuTechnical: Array<any> = [];
 
 
-  constructor() {
-    this.user = JSON.parse(localStorage.getItem('userLogged')!);
-    this.superAdmin = Number(this.user.user_rol) === 3 ? true : false;
+  constructor(private userService: UsersService) {
+
+    this.user = this.userService.getUserLogged();
+
     this.admin = Number(this.user.user_rol) === 1 ? true : false;
     this.user_rol = Number(this.user.user_rol) === 2 ? true : false;
+    this.superAdmin = Number(this.user.user_rol) === 3 ? true : false;
     this.technical = Number(this.user.user_rol) === 4 ? true : false;
-    console.log("this.user.id_rol ", this.user.user_rol);
-    console.log("this.admin ", this.admin);
+
     this.menu = [
       {
         title: 'Empresas',
@@ -59,7 +60,6 @@ export class MenuService {
         ]
       }
     ]
-
     this.menuAdminUsers = [
       {
         title: 'Usuarios',
@@ -78,7 +78,6 @@ export class MenuService {
         ]
       }
     ]
-
     this.menuAdminFields = [
       {
         title: 'Administración',
@@ -94,7 +93,6 @@ export class MenuService {
         ]
       }
     ]
-
     this.menuGraphs =
       [
         {
@@ -114,7 +112,6 @@ export class MenuService {
           ]
         }
       ]
-
     this.menuSupport =
       [
         {
