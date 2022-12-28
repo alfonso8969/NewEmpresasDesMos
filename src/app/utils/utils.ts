@@ -1,13 +1,27 @@
+import { AbstractControl, ValidationErrors } from "@angular/forms";
+import { spainIdType, validCIF, validDNI, validNIE } from "spain-id";
+
 export class Utils {
 
   static passwordReg: RegExp = new RegExp(/(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/);
   static emailReg: RegExp = new RegExp(/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/);
   static phoneReg: RegExp = new RegExp(/[0-9]{9}/);
-  static passReg: RegExp = new RegExp(/(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/g);
-  static codPostalReg: RegExp = new RegExp(/289+\d{2}/gm);
+  static codPostalReg: RegExp = new RegExp(/289+\d{2}/);
+
   static regex: RegExp = new RegExp(/^[A-Z\sÑÁÉÍÓÚÜ,]+$/);
   static regex2: RegExp = new RegExp(/^[A-Za-z0-9ÑÁÉÍÓÚÜñáéíóú-]+$/);
   static regex3: RegExp = new RegExp(/^[A-Za-z0-9\sÑÁÉÍÓÚÜñáéíóúº]+$/);
+
+  static webReg: RegExp = new RegExp(/^((http:\/\/)|(https:\/\/))?([a-zA-Z0-9]+[.])+[a-zA-Z]{2,4}(:\d+)?(\/[~_.\-a-zA-Z0-9=&%@:]+)*\??[~_.\-a-zA-Z0-9=&%@:]*$/);
+  static linkedInReg: RegExp = new RegExp(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/);
+  static FacebookReg: RegExp = new RegExp(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/);
+  static InstagramReg: RegExp = new RegExp(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/);
+  static TwitterReg: RegExp = new RegExp(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_@]{5,15}(\?(\w+=\w+&?)*)?/);
+  static TikTokReg: RegExp = new RegExp(/((https?:\/\/)?(www\.)?tiktok\.com\/\@[a-zA-Z0-9_%]*)/);
+  
+  static DNI_REGEX: RegExp = new RegExp(/^(\d{8})([A-Z])$/);
+  static CIF_REGEX: RegExp = new RegExp(/^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/);
+  static NIE_REGEX: RegExp = new RegExp(/^[XYZ]\d{7,8}[A-Z]$/);
 
   public static makeString(length: number): string {
     let result           = '';
@@ -26,7 +40,23 @@ export class Utils {
       return months[month];
     }
     return months;
+  }
 
+  public static getRegexDocument(control: AbstractControl): ValidationErrors | null {
+    let valid: boolean;
+    if (control.get('cif')?.value && control.get('cif')?.value.length === 9) {
+      console.log(spainIdType(control.get('cif')?.value))
+      let documentType = spainIdType(control.get('cif')?.value);
+      if (documentType === 'cif') {
+        valid = validCIF(control.get('cif')?.value);
+      } else if (documentType === 'dni') {
+        valid = validDNI(control.get('cif')?.value);
+      } else {
+        valid = validNIE(control.get('cif')?.value);
+      } 
+      return valid ? null : { invalidPattern: true };
+    }
+    return null;
   }
 
   public static changeEye(element: HTMLElement, elementClose: HTMLElement):  void {

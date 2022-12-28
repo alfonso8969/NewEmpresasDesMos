@@ -38,6 +38,8 @@ import { AddTechnicalComponent } from './technical/add-technical/add-technical.c
 import { TechnicalSessionsComponent } from './technical/technical-sessions/technical-sessions.component';
 import { TicketManagementComponent } from './technical/ticket-management/ticket-management.component';
 import { ListTechnicalComponent } from './technical/list-technical/list-technical.component';
+import { TechnicalThemesComponent } from './technical/technical-themes/technical-themes.component';
+import { TechnicalEmailsComponent } from './technical/technical-emails/technical-emails.component';
 
 
 
@@ -69,7 +71,9 @@ import { ListTechnicalComponent } from './technical/list-technical/list-technica
     AddTechnicalComponent,
     TechnicalSessionsComponent,
     TicketManagementComponent,
-    ListTechnicalComponent
+    ListTechnicalComponent,
+    TechnicalThemesComponent,
+    TechnicalEmailsComponent
   ],
   imports: [
     CommonModule,

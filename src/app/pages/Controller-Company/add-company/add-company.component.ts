@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Empresa } from 'src/app/class/empresa';
 import { CompaniesService } from 'src/app/services/companies.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2'
 import { User } from 'src/app/class/users';
@@ -9,6 +9,7 @@ import { Result } from 'src/app/interfaces/result';
 import { FieldsService } from 'src/app/services/fields.service';
 import { Fields } from 'src/app/interfaces/fields';
 import { Utils } from 'src/app/utils/utils';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-add-company',
@@ -33,7 +34,10 @@ export class AddCompanyComponent implements OnInit {
   user: User;
   city: string = "Móstoles";
   region: string = "Madrid";
+  public type: string;
   lastEmpDetId: number;
+  regex: RegExp;
+  actualYear: number = new Date().getFullYear();
 
   sectores: Fields[];
   distritos: Fields[];
@@ -45,15 +49,14 @@ export class AddCompanyComponent implements OnInit {
 
   constructor(private companiesService: CompaniesService,
               private fieldsService: FieldsService,
+              private userService: UsersService,
               private fb: FormBuilder,
               private router: Router) {
-    let userLogged = localStorage.getItem('userlogged');
-    if (userLogged && userLogged != "undefined") {
-      this.user = JSON.parse(userLogged);
-    }
+   
+    this.user = this.userService.getUserLogged();
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
-      console.log('localstorage empresa: ', JSON.parse(localStorage.getItem('empresa')!))
+      console.log('localStorage empresa: ', JSON.parse(localStorage.getItem('empresa')!))
       this.newEmp = JSON.parse(emp);
       this.fillFormNewEmp(this.newEmp);
     } else {
@@ -102,7 +105,7 @@ export class AddCompanyComponent implements OnInit {
         console.log(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete poligonos", this.poligonos)
+      complete: () => console.log("Complete polígonos", this.poligonos)
     });
 
     this.companiesService.getLastEmpDetId().subscribe({
@@ -119,37 +122,46 @@ export class AddCompanyComponent implements OnInit {
   }
 
   public fillForm(): void {
+    
     this.addCompanyForm = this.fb.group({
       nombre: ['' , Validators.required],
+      cif: ['' , [Validators.required, Validators.pattern(this.regex)]],
       sector: [0 , Validators.required],
       distrito: [0 , Validators.required],
-      poligono: [0 , Validators.required],
+      polygon: [0 , Validators.required],
       email: ['' , [Validators.required, Validators.pattern(Utils.emailReg)]],
-      telefono: ['' , [Validators.required, Validators.pattern(Utils.phoneReg)]],
-      otherTelefono: ['' , [Validators.pattern(Utils.phoneReg)]],
-      contactperson: [''],
-      direccion: ['', Validators.required],
+      phone: ['' , [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherPhone: ['' , [Validators.pattern(Utils.phoneReg)]],
+      contactPerson: [''],
+      installation_year: [''],
+      workers_number: [''],
+      address: ['', Validators.required],
       localidad: [''],
       provincia: [''],
       cod_postal: ['', [Validators.required, Validators.pattern(Utils.codPostalReg)]]
-    });
+    }, {  validator: Utils.getRegexDocument });
   }
+
+  
 
   public fillFormNewEmp(newEmp: any): void {
     this.addCompanyForm = this.fb.group({
       nombre: [newEmp['Nombre'] , Validators.required],
+      cif: [newEmp['CIF'] , [Validators.required]],
       sector: [newEmp['Sector'] , Validators.required],
       distrito: [newEmp['Distrito'] , Validators.required],
-      poligono: [newEmp['Poligono'] , Validators.required],
+      polygon: [newEmp['Poligono'] , Validators.required],
       email: [newEmp['Email'] , [Validators.required, Validators.pattern(Utils.emailReg)]],
-      telefono: [newEmp['Telefono'] , [Validators.required, Validators.pattern(Utils.phoneReg)]],
-      otherTelefono: [newEmp['OtherTelefono'] , [Validators.pattern(Utils.phoneReg)]],
-      contactperson: [newEmp['Persona_contacto'] ],
-      direccion: [newEmp['Direccion'] , Validators.required],
+      phone: [newEmp['Telefono'] , [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherPhone: [newEmp['OtherTelefono'] , [Validators.pattern(Utils.phoneReg)]],
+      contactPerson: [newEmp['Persona_contacto'] ],
+      installation_year: [newEmp['installation_year'], Validators.maxLength(4)],
+      workers_number: [newEmp['workers_number']],
+      address: [newEmp['Direccion'] , Validators.required],
       localidad: [''],
       provincia: [''],
-      cod_postal: [newEmp['Cod_postal'] , [Validators.required, Validators.pattern(Utils.codPostalReg)]]
-    });
+      cod_postal: [newEmp['Cod_postal'] , [Validators.required, Validators.pattern(Utils.codPostalReg), Validators.maxLength(5)]]
+    }, {  validator: [Utils.getRegexDocument] } as AbstractControlOptions );
   }
 
   public addCompany(redes: boolean = false): void {
@@ -160,15 +172,18 @@ export class AddCompanyComponent implements OnInit {
       this.addCompanyForm.get("sector")?.value,
       this.lastEmpDetId,
       this.addCompanyForm.get("distrito")?.value,
-      this.addCompanyForm.get("poligono")?.value
+      this.addCompanyForm.get("polygon")?.value
     );
 
     this.empresa.setUser_id_alta(this.user.id_user);
-    this.empresa.setPersonaContacto(this.addCompanyForm.get('contactperson')?.value);
+    this.empresa.setPersonaContacto(this.addCompanyForm.get('contactPerson')?.value);
+    this.empresa.setCIF(this.addCompanyForm.get('cif')?.value);
     this.empresa.setEmail(this.addCompanyForm.get("email")?.value);
-    this.empresa.setTelefono(this.addCompanyForm.get("telefono")?.value);
-    this.empresa.setOtherTelefono(this.addCompanyForm.get("otherTelefono")?.value);
-    this.empresa.setDireccion(this.addCompanyForm.get("direccion")?.value);
+    this.empresa.setTelefono(this.addCompanyForm.get("phone")?.value);
+    this.empresa.setOtherTelefono(this.addCompanyForm.get("otherPhone")?.value);
+    this.empresa.setDireccion(this.addCompanyForm.get("address")?.value);
+    this.empresa.setInstallation_year(this.addCompanyForm.get("installation_year")?.value);
+    this.empresa.setWorkers_number(this.addCompanyForm.get("workers_number")?.value);
     this.empresa.setLocalidad(local == "" ? this.city : local);
     this.empresa.setProvincia(prov == "" ? this.region : prov);
     this.empresa.setCod_postal(this.addCompanyForm.get("cod_postal")?.value);
@@ -231,6 +246,13 @@ export class AddCompanyComponent implements OnInit {
   public getFormValidationErrors(form: FormGroup): Result[] {
 
     const result: Result[] = [];
+    if(form.hasError('invalidPattern')) {
+      result.push({
+        Campo: "Documento",
+        Error: 'no válido',
+        Valor: form.get('cif')!.value
+      });
+    }
     Object.keys(form.controls).forEach(key => {
       if (form.get(key)!.value === 0) {
         result.push({

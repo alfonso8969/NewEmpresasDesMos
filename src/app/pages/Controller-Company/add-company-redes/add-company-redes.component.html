@@ -93,11 +93,11 @@
                     <div class="form-group">
                       <label for="linkedin" class="control-label">
                         <i class="fa fa-linkedin p-2 bg-primary text-white" aria-hidden="true"></i>
-                        Linkedin</label>
-                      <input formControlName="linkedin" id="linkedin" name="linkedin" type="link" class="form-control"
+                        LinkedIn</label>
+                      <input formControlName="linkedIn" id="linkedin" name="linkedIn" type="link" class="form-control"
                         placeholder="https://www.linkedin.com/in/usuario">
                       <span class="err text-danger"
-                        *ngIf="addRedesForm.get('linkedin')!.errors != null && addRedesForm.get('linkedin')!.errors!['pattern'] && addRedesForm.get('linkedin')?.touched">
+                        *ngIf="addRedesForm.get('linkedIn')!.errors != null && addRedesForm.get('linkedIn')!.errors!['pattern'] && addRedesForm.get('linkedIn')?.touched">
                         La <strong>URL</strong> no es válida
                       </span>
                     </div>

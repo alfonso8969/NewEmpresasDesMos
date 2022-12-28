@@ -75,9 +75,9 @@ export class ViewUserComponent implements OnInit {
         region: [this.address && this.address.region, Validators.required],
         city: [this.address && this.address.city, Validators.required],
         cod_postal: [this.address && this.address.cod_postal, Validators.required],
-        actPassword: ['' ,Validators.pattern(Utils.passReg)],
-        newPassword: ['' ,Validators.pattern(Utils.passReg)],
-        comparePasswords: ['' ,Validators.pattern(Utils.passReg)],
+        actPassword: ['' ,Validators.pattern(Utils.passwordReg)],
+        newPassword: ['' ,Validators.pattern(Utils.passwordReg)],
+        comparePasswords: ['' ,Validators.pattern(Utils.passwordReg)],
       });
 
     } else {
@@ -89,9 +89,9 @@ export class ViewUserComponent implements OnInit {
         other_phone: [user.user_other_phone, [Validators.pattern(Utils.phoneReg)]],
         email: [user.user_email, [Validators.required, Validators.pattern(Utils.emailReg)]],
         rol: [Number(user.user_rol) ,Validators.required],
-        actPassword: ['' ,Validators.pattern(Utils.passReg)],
-        newPassword: ['' ,Validators.pattern(Utils.passReg)],
-        comparePasswords: ['' ,Validators.pattern(Utils.passReg)],
+        actPassword: ['' ,Validators.pattern(Utils.passwordReg)],
+        newPassword: ['' ,Validators.pattern(Utils.passwordReg)],
+        comparePasswords: ['' ,Validators.pattern(Utils.passwordReg)],
       });
     }
   }

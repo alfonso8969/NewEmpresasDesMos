@@ -91,8 +91,8 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
       city: ['', Validators.required],
       cod_postal: ['', Validators.required],
       rol: [4, Validators.required],
-      newPassword: ['', [Validators.required, Validators.pattern(Utils.passReg)]],
-      confirmPassword: ['', [Validators.required, Validators.pattern(Utils.passReg)]]
+      newPassword: ['', [Validators.required, Validators.pattern(Utils.passwordReg)]],
+      confirmPassword: ['', [Validators.required, Validators.pattern(Utils.passwordReg)]]
     },
     { validator: this.checkIfPasswordAreEquals });
   }

@@ -35,10 +35,10 @@ export class MenuService {
       {
         title: 'Empresas',
         icon: 'fa fa-building',
-        rol: true && !this.technical,
+        rol: !this.technical,
         submenu: [
           {
-            title: 'Listado empresas', url: '/dashboard/list-companies', rol: true && !this.technical
+            title: 'Listado empresas', url: '/dashboard/list-companies', rol: !this.technical
           },
           {
             title: 'Crear empresa', url: '/dashboard/add-company', rol: this.admin || this.superAdmin
@@ -48,6 +48,7 @@ export class MenuService {
       {
         title: 'Historial empresas',
         icon: 'fa fa-archive',
+        rol: !this.technical,
         submenu: [
           {
             title: 'Empresas deshabilitadas', url: '/dashboard/companies-out', rol: true && !this.technical
@@ -63,7 +64,7 @@ export class MenuService {
       {
         title: 'Usuarios',
         icon: 'fa fa-id-card',
-        rol: true && !this.technical,
+        rol: !this.technical,
         submenu: [
           {
             title: 'Listado usuarios', url: '/dashboard/list-users', rol: true && !this.technical
@@ -99,7 +100,7 @@ export class MenuService {
         {
           title: 'Gráficas',
           icon: 'fa fa-chart-bar',
-          rol: true && !this.technical,
+          rol: !this.technical,
           submenu: [
             {
               title: 'Gráfica por sectores', url: '/dashboard/graph-sectores'
@@ -119,13 +120,19 @@ export class MenuService {
         {
           title: 'Soporte',
           icon: 'fa fa-wrench',
-          rol: true && !this.technical,
+          rol: !this.technical,
           submenu: [
             {
-              title: 'Ticket soporte', url: '/dashboard/ticket-support', rol: true && !this.technical
+              title: 'Ticket soporte', url: '/dashboard/ticket-support', rol: !this.technical
             },
             {
               title: 'Ayuda', url: '/dashboard/help-support', rol: this.user_rol
+            },
+            {
+              title: 'Ayuda Admin', url: '/dashboard/help-support', rol: this.admin
+            },
+            {
+              title: 'Ayuda Super Admin', url: '/dashboard/help-support', rol: this.superAdmin
             }
           ]
         }
@@ -148,6 +155,15 @@ export class MenuService {
             },
             {
               title: 'Crear técnico', url: '/dashboard/technical-create'
+            },
+            {
+              title: 'Listado de técnicos', url: '/dashboard/list-technical'
+            },
+            {
+              title: 'Temas tickets', url: '/dashboard/technical-themes'
+            },
+            {
+              title: 'Gestión emails', url: '/dashboard/technical-emails'
             }
           ]
         }

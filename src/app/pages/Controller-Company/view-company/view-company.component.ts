@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl, AbstractControlOptions } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { Empresa } from 'src/app/class/empresa';
 import { User } from 'src/app/class/users';
 import { Fields } from 'src/app/interfaces/fields';
@@ -9,6 +10,8 @@ import { CompaniesService } from 'src/app/services/companies.service';
 import { FieldsService } from 'src/app/services/fields.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
+
+import { Operation, compare } from 'fast-json-patch';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -18,12 +21,19 @@ import Swal from 'sweetalert2'
 })
 export class ViewCompanyComponent implements OnInit {
 
+  @HostListener('window:beforeunload', [ '$event' ])
+  beforeUnloadHandler(event: any) {
+   console.log('window:beforeunload', event)
+   return false;
+  }
+
   empresa: Empresa;
   empresaTmp: Empresa;
   Empresa_det_id: number;
   url: string;
   city: string = "Móstoles";
   region: string = "Madrid";
+  actualYear: number = new Date().getFullYear();
 
   user: User;
   admin: boolean;
@@ -61,6 +71,7 @@ export class ViewCompanyComponent implements OnInit {
             if (result != null) {
               this.empresa = result;
               this.empresaTmp = JSON.parse(JSON.stringify(this.empresa));
+              this.empresaTmp.Habilitada = 1;
               console.log("Deep copy", this.empresaTmp)
               this.fillEditFormEmp(this.empresa);
             } else {
@@ -124,24 +135,27 @@ export class ViewCompanyComponent implements OnInit {
 
   public fillEditForm(): void {
     this.editCompanyForm = this.fb.group({
-      nombre: ['', Validators.required],
-      sector: [0, Validators.required],
-      distrito: [0, Validators.required],
-      poligono: [0, Validators.required],
-      email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
-      telefono: ['', [Validators.required, Validators.pattern(Utils.phoneReg)]],
-      otherTelefono: ['', [Validators.pattern(Utils.phoneReg)]],
-      contactperson: [''],
-      direccion: ['', Validators.required],
-      localidad: [''],
-      provincia: [''],
-      cod_postal: ['', [Validators.required, Validators.pattern(Utils.codPostalReg)]],
-      web: ['', Validators.pattern(/((http|https)\:\/\/||www)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/g)],
-      facebook: ['', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/)],
-      instagram: ['', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/)],
-      twitter: ['', Validators.pattern(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]{5,15}(\?(\w+=\w+&?)*)?/)],
-      linkedin: ['', Validators.pattern(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/)],
-      tiktok: ['', Validators.pattern(/((https?:\/\/)?(www\.)?tiktok\.com\/\@[a-zA-Z0-9_%]*)/)]
+      nombre: new FormControl(''),
+      cif: new FormControl(''),
+      sector: new FormControl(0),
+      distrito: new FormControl(0),
+      poligono: new FormControl(0),
+      email: new FormControl(''),
+      telefono: new FormControl(''),
+      otherTelefono: new FormControl(''),
+      contactPerson: new FormControl(''),
+      installation_year: new FormControl(''),
+      workers_number: new FormControl(''),
+      direccion: new FormControl(''),
+      localidad: new FormControl(''),
+      provincia: new FormControl(''),
+      cod_postal: new FormControl(''),
+      web: new FormControl(''),
+      facebook: new FormControl(''),
+      instagram: new FormControl(''),
+      twitter: new FormControl(''),
+      linkedIn: new FormControl(''),
+      tiktok: new FormControl('')
     });
   }
 
@@ -152,34 +166,36 @@ export class ViewCompanyComponent implements OnInit {
     let twi = this.empresa['Twitter'];
     let link = this.empresa['Linkedin'];
     let tik = this.empresa['Google_plus'];
-    let otherTlefono = emp['OtherTelefono'];
+    let otherPhone = emp['OtherTelefono'];
 
     this.editCompanyForm = this.fb.group({
       nombre: [emp['Nombre'], Validators.required],
+      cif: [emp['CIF'], Validators.required],
       sector: [emp['Sector'], Validators.required],
       distrito: [emp['Distrito'], Validators.required],
       poligono: [emp['Poligono'], Validators.required],
       email: [emp['Email'], [Validators.required, Validators.pattern(Utils.emailReg)]],
       telefono: [emp['Telefono'], [Validators.required, Validators.pattern(Utils.phoneReg)]],
-      otherTelefono: [otherTlefono != 'sin datos' ? otherTlefono : '', [Validators.pattern(Utils.phoneReg)]],
-      contactperson: [emp['Persona_contacto']],
+      otherTelefono: [otherPhone != 'sin datos' ? otherPhone : '', [Validators.pattern(Utils.phoneReg)]],
+      contactPerson: [emp['Persona_contacto']],
+      installation_year: [emp['installation_year'], Validators.maxLength(4)],
+      workers_number: [emp['workers_number']],
       direccion: [emp['Direccion'], Validators.required],
       localidad: [emp['Localidad']],
       provincia: [emp['Provincia']],
-      cod_postal: [emp['Cod_postal'], [Validators.required, Validators.pattern(Utils.codPostalReg)]],
-      web: [web?.toLowerCase() != 'sin datos' ? web : '', Validators.pattern(/^((http:\/\/)|(https:\/\/))?([a-zA-Z0-9]+[.])+[a-zA-Z]{2,4}(:\d+)?(\/[~_.\-a-zA-Z0-9=&%@:]+)*\??[~_.\-a-zA-Z0-9=&%@:]*$/)],
-      facebook: [face.toLowerCase() != 'sin datos' ? face : '', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/)],
-      instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/)],
-      twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_@]{5,15}(\?(\w+=\w+&?)*)?/)],
-      linkedin: [link.toLowerCase() != 'sin datos' ? link : '', Validators.pattern(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/)],
-      tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(/((https?:\/\/)?(www\.)?tiktok\.com\/\@[a-zA-Z0-9_%]*)/)]
-    });
+      cod_postal: [emp['Cod_postal'], [Validators.required, Validators.pattern(Utils.codPostalReg), Validators.maxLength(5)]],
+      web: [web?.toLowerCase() != 'sin datos' ? web : '', Validators.pattern(Utils.webReg)],
+      facebook: [face.toLowerCase() != 'sin datos' ? face : '', Validators.pattern(Utils.FacebookReg)],
+      instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(Utils.InstagramReg)],
+      twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(Utils.TwitterReg)],
+      linkedIn: [link.toLowerCase() != 'sin datos' ? link : '', Validators.pattern(Utils.linkedInReg)],
+      tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(Utils.TikTokReg)]
+    }, {  validator: [Utils.getRegexDocument] }  as AbstractControlOptions);
     this.setFormControlsReadOnly(this.editCompanyForm);
   }
 
   ngOnInit(): void {
   }
-
 
   public addCompany(): void {
     let local = this.editCompanyForm.get("localidad")?.value;
@@ -195,7 +211,10 @@ export class ViewCompanyComponent implements OnInit {
     delete this.empresa['fecha_alta'];
     delete this.empresa['Link'];
 
-    this.empresa.setPersonaContacto(this.editCompanyForm.get('contactperson')?.value);
+    this.empresa.setPersonaContacto(this.editCompanyForm.get('contactPerson')?.value);
+    this.empresa.setInstallation_year(this.editCompanyForm.get("installation_year")?.value);
+    this.empresa.setWorkers_number(this.editCompanyForm.get("workers_number")?.value);
+    this.empresa.setCIF(this.editCompanyForm.get('cif')?.value);
     this.empresa.setEmail(this.editCompanyForm.get("email")?.value);
     this.empresa.setTelefono(this.editCompanyForm.get("telefono")?.value);
     let otherTelefono = this.editCompanyForm.get("otherTelefono")?.value;
@@ -208,9 +227,9 @@ export class ViewCompanyComponent implements OnInit {
     this.empresa.setTwitter(this.editCompanyForm.get('twitter')!.value);
     this.empresa.setFacebook(this.editCompanyForm.get('facebook')!.value);
     this.empresa.setInstagram(this.editCompanyForm.get('instagram')!.value);
-    this.empresa.setLinkedin(this.editCompanyForm.get('linkedin')!.value);
+    this.empresa.setLinkedin(this.editCompanyForm.get('linkedIn')!.value);
     this.empresa.setGoogle_plus(this.editCompanyForm.get('tiktok')!.value);
-    console.log("Después de del: ", this.empresa);
+
     this.saveEmpresa(this.empresa);
   }
 
@@ -253,24 +272,9 @@ export class ViewCompanyComponent implements OnInit {
   }
 
   public compareResults(): boolean {
-    return this.empresa['Nombre'] == this.empresaTmp['Nombre'] &&
-    this.empresa['Sector'] == this.empresaTmp['Sector'] &&
-    this.empresa['Distrito'] == this.empresaTmp['Distrito'] &&
-    this.empresa['Poligono'] == this.empresaTmp['Poligono'] &&
-    this.empresa['Telefono'] == this.empresaTmp['Telefono'] &&
-    this.empresa['OtherTelefono'] == this.empresaTmp['OtherTelefono'] &&
-    this.empresa['Email'] == this.empresaTmp['Email'] &&
-    this.empresa['Persona_contacto'] == this.empresaTmp['Persona_contacto'] &&
-    this.empresa['Direccion'] == this.empresaTmp['Direccion'] &&
-    this.empresa['Localidad'] == this.empresaTmp['Localidad'] &&
-    this.empresa['Provincia'] == this.empresaTmp['Provincia'] &&
-    this.empresa['Cod_postal'] == this.empresaTmp['Cod_postal'] &&
-    this.empresa['Web'] == this.empresaTmp['Web'] &&
-    this.empresa['Facebook'] == this.empresaTmp['Facebook'] &&
-    this.empresa['Instagram'] == this.empresaTmp['Instagram'] &&
-    this.empresa['Twitter'] == this.empresaTmp['Twitter'] &&
-    this.empresa['Linkedin'] == this.empresaTmp['Linkedin'] &&
-    this.empresa['Google_plus'] == this.empresaTmp['Google_plus'];
+    const patch: Array<Operation> = compare(this.empresa, this.empresaTmp);
+    console.log(patch);
+    return patch.length === 0;
   }
 
   public isDisabled(): boolean {

@@ -21,6 +21,19 @@
   cursor: pointer;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input.nec::-webkit-outer-spin-button,
+input.nec::-webkit-inner-spin-button {
+  -webkit-appearance: menulist-button;
+}
+
+/* Firefox */
+input[type=number].nec {
+  -moz-appearance:  auto;
+  -webkit-appearance: auto;
+  appearance: auto;
+}
+
 
 ::ng-deep .mat-tooltip {
   white-space: pre-line !important;

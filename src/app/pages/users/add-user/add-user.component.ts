@@ -58,8 +58,8 @@ export class AddUserComponent implements OnInit, AfterViewInit {
       phone: ['', [Validators.required, Validators.pattern(Utils.phoneReg)]],
       email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
       rol: [0, Validators.required],
-      newPassword: ['', [Validators.required, Validators.pattern(Utils.passReg)]],
-      comparePasswords: ['', [Validators.required, Validators.pattern(Utils.passReg)]],
+      newPassword: ['', [Validators.required, Validators.pattern(Utils.passwordReg)]],
+      comparePasswords: ['', [Validators.required, Validators.pattern(Utils.passwordReg)]],
     });
   }
 

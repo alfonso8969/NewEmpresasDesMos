@@ -25,9 +25,9 @@
                 <h3 class="d-inline text-themecolor mx-5">Nº de registros {{ dataSource.filteredData.length }}</h3>
                 <p *ngIf="filterSended" class="filter d-inline text-success">Filtro desde gráfica {{ field }} :
                   {{ filter }}
-                <a type="button" class="btn btn-info btn-sm" [routerLink]="url">
+                <a type="button" class="btn btn-info btn-sm" [routerLink]="url" matTooltip="Volver a la gráfica">
                   <i class="fa fa-chart-bar" aria-hidden="true"></i>
-                  Volver a gráficas
+                  Volver a la gráfica
                 </a>
                 </p>
                 <button *ngIf="admin" type="button" id="btnNewCompany" class="btn btn-primary float-right mx-5"

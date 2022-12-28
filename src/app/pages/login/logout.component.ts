@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -9,14 +9,24 @@ import Swal from 'sweetalert2';
 })
 export class LogoutComponent implements OnInit {
 
+
+  @HostListener('window:beforeunload', [ '$event' ])
+   beforeUnloadHandler(event: any) {
+    console.log('window:beforeunload', event);
+    console.log('route',  this.router);
+    this.router.navigate(['/externalRedirect', { externalUrl: 'https:/alfonsogonz.es/' }]);
+    return false;
+   }
+
   isActive: boolean = true;
   title: string = "Admin Empresas";
 
   constructor(private router: Router) {
+    this.showMessage();
   }
 
   ngOnInit(): void {
-    this.showMessage();
+
   }
 
   private showMessage(): void {

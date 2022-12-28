@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { UsersService } from 'src/app/services/users.service';
+import { Roles } from 'src/app/interfaces/roles';
 
 @Component({
   selector: 'app-ticket-support',
@@ -123,7 +124,10 @@ export class TicketSupportComponent implements OnInit {
     this.supportService.getTemas().subscribe({
       next: (result: Tema[]) => {
         if (result != null) {
-          this.temas = result;
+          this.temas = [];
+          result.filter(t =>  {
+            t.tema_rol!.includes(Roles[this.user.user_rol]) 
+            ? this.temas.push(t) : null;});;
         } else {
           alert("Hubo un error")
         }

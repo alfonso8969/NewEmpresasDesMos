@@ -29,7 +29,22 @@
               <hr>
               <form [formGroup]="addCompanyForm" (ngSubmit)="addCompany()" novalidate autocomplete="off">
                 <div class="row p-t-20">
-                  <div class="col-md-6">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="nombre" class="control-label">* Documento</label>
+                      <input formControlName="cif" id="cif" name="cif" type="text" class="form-control"
+                        placeholder="CIF, DNI, NIE" maxlength="9">
+                      <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('cif')?.invalid && addCompanyForm.get('cif')?.touched && !addCompanyForm.hasError('invalidPattern')">
+                        El <strong>documento es</strong> requerido
+                      </span>
+                      <span class="err text-danger"
+                      *ngIf="addCompanyForm.hasError('invalidPattern')">
+                      El <strong>documento</strong> no es válido
+                    </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="nombre" class="control-label">* Nombre completo</label>
                       <input formControlName="nombre" id="nombre" name="nombre" type="text" class="form-control"
@@ -63,26 +78,26 @@
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="telefono" class="control-label">* Teléfono</label>
-                      <input formControlName="telefono" type="number" name="telefono" id="telefono" class="form-control"
+                      <label for="phone" class="control-label">* Teléfono</label>
+                      <input formControlName="phone" type="number" name="phone" id="phone" class="form-control"
                         placeholder="9999999" maxlength="9">
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('telefono')?.invalid && addCompanyForm.get('telefono')?.touched && !addCompanyForm.get('telefono')!.errors!['pattern']">
+                        *ngIf="addCompanyForm.get('phone')?.invalid && addCompanyForm.get('phone')?.touched && !addCompanyForm.get('phone')!.errors!['pattern']">
                         El <strong>teléfono </strong>es requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('telefono')!.errors != null && addCompanyForm.get('telefono')!.errors!['pattern'] && addCompanyForm.get('telefono')?.touched">
+                        *ngIf="addCompanyForm.get('phone')!.errors != null && addCompanyForm.get('phone')!.errors!['pattern'] && addCompanyForm.get('phone')?.touched">
                         El <strong>teléfono</strong> no es válido, debe ser 99999999
                       </span>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="otherTelefono" class="control-label">Otro Teléfono</label>
-                      <input formControlName="otherTelefono" type="number" name="otherTelefono" id="otherTelefono"
+                      <label for="otherPhone" class="control-label">Otro Teléfono</label>
+                      <input formControlName="otherPhone" type="number" name="otherPhone" id="otherPhone"
                         class="form-control" placeholder="9999999" maxlength="9">
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('otherTelefono')!.errors != null && addCompanyForm.get('otherTelefono')!.errors!['pattern'] && addCompanyForm.get('otherTelefono')?.touched">
+                        *ngIf="addCompanyForm.get('otherPhone')!.errors != null && addCompanyForm.get('otherPhone')!.errors!['pattern'] && addCompanyForm.get('otherPhone')?.touched">
                         El <strong>Teléfono</strong> no es válido, debe ser 99999999
                       </span>
                     </div>
@@ -104,21 +119,35 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
-                      <label for="contactperson" class="control-label">Persona contacto</label>
-                      <input formControlName="contactperson" type="text" class="form-control" name="contactperson"
-                        id="contactperson" placeholder="Persona contacto">
+                      <label for="contactPerson" class="control-label">Persona contacto</label>
+                      <input formControlName="contactPerson" type="text" class="form-control" name="contactPerson"
+                        id="contactPerson" placeholder="Persona contacto">
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="installation_year" class="control-label">Año instalación</label>
+                      <input formControlName="installation_year" type="number" class="form-control nec" name="installation_year"
+                        id="installation_year" placeholder="Año instalación" [min]="1900" [max]="actualYear" [maxlength]="4">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="workers_number" class="control-label">Nº Trabajadores</label>
+                      <input formControlName="workers_number" type="number" class="form-control nec" name="workers_number"
+                        id="workers_number" placeholder="Nº Trabajadores">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="address" class="control-label">* Dirección</label>
-                      <input formControlName="direccion" type="text" class="form-control" name="direccion"
+                      <input formControlName="address" type="text" class="form-control" name="address"
                         id="direccion" placeholder="Dirección">
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('direccion')?.invalid && addCompanyForm.get('direccion')?.touched">
-                        La <strong>direccion</strong> es requerida
+                        *ngIf="addCompanyForm.get('address')?.invalid && addCompanyForm.get('address')?.touched">
+                        La <strong>dirección</strong> es requerida
                       </span>
                     </div>
                   </div>
@@ -127,7 +156,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="district" class="control-label">* Distrito</label>
-                      <select formControlName="distrito" name="districto" id="districto" class="form-control"
+                      <select formControlName="distrito" name="distrito" id="distrito" class="form-control"
                         title="Distrito">
                         <option [ngValue]=0 selected>Seleccione distrito</option>
                         <option [ngValue]="dato.distrito_id" *ngFor="let dato of distritos">
@@ -146,8 +175,8 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="email" class="control-label">* Polígono</label>
-                      <select formControlName="poligono" name="poligono" id="pologono" class="form-control"
+                      <label for="polygon" class="control-label">* Polígono</label>
+                      <select formControlName="polygon" name="polygon" id="pologono" class="form-control"
                         title="Polígono">
                         <option [ngValue]=0 selected>Seleccione polígono</option>
                         <option [ngValue]="dato.poligono_id" *ngFor="let dato of poligonos">
@@ -155,11 +184,11 @@
                         </option>
                       </select>
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('poligono')?.invalid && addCompanyForm.get('poligono')?.touched">
+                        *ngIf="addCompanyForm.get('polygon')?.invalid && addCompanyForm.get('polygon')?.touched">
                         El <strong>polígono es</strong> requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('poligono')?.touched && addCompanyForm.get('poligono')?.value == 0">
+                        *ngIf="addCompanyForm.get('polygon')?.touched && addCompanyForm.get('polygon')?.value == 0">
                         El <strong>polígono es</strong> requerido
                       </span>
                     </div>
@@ -168,7 +197,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="provincia" class="control-label">Provincía</label>
+                      <label for="provincia" class="control-label">Provincia</label>
                       <input [readonly]="true" formControlName="provincia" type="text" class="form-control"
                         name="provincia" id="provincia" placeholder="Madrid" [value]="region">
                     </div>
@@ -184,17 +213,17 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="cod_postal" class="control-label">* Código postal</label>
-                      <input formControlName="cod_postal" type="number" class="form-control" name="cod_postal"
-                        id="cod_postal" placeholder="Código postal 289--" maxlength="5">
+                      <input formControlName="cod_postal" type="number" class="form-control nec" name="cod_postal"
+                        id="cod_postal" placeholder="Código postal 289--" [min]="28900" [max]="28999" [maxlength]="5">
+                      <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('cod_postal')?.invalid && addCompanyForm.get('cod_postal')?.touched && !addCompanyForm.get('cod_postal')!.errors!['pattern']">
+                        El <strong>código postal</strong> es requerido
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('cod_postal')!.errors != null && addCompanyForm.get('cod_postal')!.errors!['pattern'] && addCompanyForm.get('cod_postal')?.touched">
+                        El <strong>código postal</strong> no es válido, debe ser 289 + 2 números
+                      </span>
                     </div>
-                    <span class="err text-danger"
-                      *ngIf="addCompanyForm.get('cod_postal')?.invalid && addCompanyForm.get('cod_postal')?.touched && !addCompanyForm.get('cod_postal')!.errors!['pattern']">
-                      El <strong>código postal</strong> es requerido
-                    </span>
-                    <span class="err text-danger"
-                      *ngIf="addCompanyForm.get('cod_postal')!.errors != null && addCompanyForm.get('cod_postal')!.errors!['pattern'] && addCompanyForm.get('cod_postal')?.touched">
-                      El <strong>código postal</strong> no es válido, debe ser 289 + 2 números
-                    </span>
                   </div>
                 </div>
                 <div class="form-actions">

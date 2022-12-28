@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { Redes } from 'src/app/class/redes';
 import { Result } from 'src/app/interfaces/result';
+import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -62,12 +63,12 @@ export class AddCompanyRedesComponent implements OnInit {
     let tik = this.empresa.getGoogle_plus();
 
     this.addRedesForm = this.fb.group({
-      web: [web.toLowerCase() != 'sin datos' ? web : '', Validators.pattern(/^((http:\/\/)|(https:\/\/))?([a-zA-Z0-9]+[.])+[a-zA-Z]{2,4}(:\d+)?(\/[~_.\-a-zA-Z0-9=&%@:]+)*\??[~_.\-a-zA-Z0-9=&%@:]*$/g)],
-      facebook: [face.toLowerCase() != 'sin datos' ? face : '', Validators.pattern(/((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.]{1,}/g)],
-      instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/g)],
-      twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)],
-      linkedin: [link.toLowerCase() != 'sin datos' ? link : '', Validators.pattern(/[(https:\/\/www\.linkedin.com)]{20}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)+/g)],
-      tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(/(\@[a-zA-Z0-9_%]*)/)]
+      web: [web.toLowerCase() != 'sin datos' ? web : '', Validators.pattern(Utils.webReg)],
+      facebook: [face.toLowerCase() != 'sin datos' ? face : '', Validators.pattern(Utils.FacebookReg)],
+      instagram: [inst.toLowerCase() != 'sin datos' ? inst : '', Validators.pattern(Utils.InstagramReg)],
+      twitter: [twi.toLowerCase() != 'sin datos' ? twi : '', Validators.pattern(Utils.TwitterReg)],
+      linkedIn: [link.toLowerCase() != 'sin datos' ? link : '', Validators.pattern(Utils.linkedInReg)],
+      tiktok: [tik.toLowerCase() != 'sin datos' ? tik : '', Validators.pattern(Utils.TikTokReg)]
     })
   }
 

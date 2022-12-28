@@ -164,9 +164,11 @@
                                     }}</h5>
                                   {{ ticketTratado.respuesta }}
                                   <div *ngIf="ticketTratadosByUser && ticketTratadosByUser.solucionado == 0">
+                                    <span class="text-primary">Por favor indique este ticket como solucionado , sino tiene ninguna otra observación,
+                                      si por el contrario necesita más información sobre el tema, abra otro ticket haciendo referencia a este número de ticket en la caja de texto destinada a tal efecto: <strong class="text-warning">"Referencia a un ticket:"</strong>, sino será cerrado automáticamente dentro de unos días.</span><p></p>
                                     <input [checked]="ticketTratadosByUser.solucionado != 0" type="checkbox"
                                       id="closeTicket" (change)="onCheckboxChange($event)">
-                                    <label for="closeTicket">Marcar como solucionado</label>
+                                    <label class="text-primary" for="closeTicket">Marcar como solucionado</label>
                                   </div>
                                   <div *ngIf="ticketTratadosByUser && ticketTratadosByUser.solucionado != 0">
                                     <span class="text-success">El ticket ha sido cerrado a la fecha: {{ ticketTratadosByUser.fecha_solucion | date: 'dd-MM-yyyy HH:mm:ss' }}</span>
