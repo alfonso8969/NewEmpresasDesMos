@@ -53,10 +53,9 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   viewSpinner: boolean = true;
   constructor(private fb: FormBuilder,
               private usersService: UsersService,
-              private userService: UsersService,
               private uploadService: FileUploadService) {
 
-    this.userLogged = this.userService.getUserLogged();
+    this.userLogged = this.usersService.getUserLogged();
 
     let user_rol = Number(this.userLogged.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;

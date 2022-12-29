@@ -133,6 +133,12 @@ export class ViewCompanyComponent implements OnInit {
 
   }
 
+  public keyPressed(event: any, count: number): boolean {
+    console.log(event);
+    if((event.charCode < 48 || event.charCode > 57) || event.srcElement.value.length == count) return false;
+    return true;
+  }
+
   public fillEditForm(): void {
     this.editCompanyForm = this.fb.group({
       nombre: new FormControl(''),
@@ -141,8 +147,8 @@ export class ViewCompanyComponent implements OnInit {
       distrito: new FormControl(0),
       poligono: new FormControl(0),
       email: new FormControl(''),
-      telefono: new FormControl(''),
-      otherTelefono: new FormControl(''),
+      phone: new FormControl(''),
+      otherPhone: new FormControl(''),
       contactPerson: new FormControl(''),
       installation_year: new FormControl(''),
       workers_number: new FormControl(''),
@@ -175,8 +181,8 @@ export class ViewCompanyComponent implements OnInit {
       distrito: [emp['Distrito'], Validators.required],
       poligono: [emp['Poligono'], Validators.required],
       email: [emp['Email'], [Validators.required, Validators.pattern(Utils.emailReg)]],
-      telefono: [emp['Telefono'], [Validators.required, Validators.pattern(Utils.phoneReg)]],
-      otherTelefono: [otherPhone != 'sin datos' ? otherPhone : '', [Validators.pattern(Utils.phoneReg)]],
+      phone: [emp['Telefono'], [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherPhone: [otherPhone != 'sin datos' ? otherPhone : '', [Validators.pattern(Utils.phoneReg)]],
       contactPerson: [emp['Persona_contacto']],
       installation_year: [emp['installation_year'], Validators.maxLength(4)],
       workers_number: [emp['workers_number']],
@@ -200,6 +206,8 @@ export class ViewCompanyComponent implements OnInit {
   public addCompany(): void {
     let local = this.editCompanyForm.get("localidad")?.value;
     let prov = this.editCompanyForm.get("provincia")?.value;
+    let otherPhone = this.editCompanyForm.get("otherPhone")?.value;
+    
     this.empresa = new Empresa(
       this.editCompanyForm.get("nombre")?.value,
       this.editCompanyForm.get("sector")?.value,
@@ -216,9 +224,8 @@ export class ViewCompanyComponent implements OnInit {
     this.empresa.setWorkers_number(this.editCompanyForm.get("workers_number")?.value);
     this.empresa.setCIF(this.editCompanyForm.get('cif')?.value);
     this.empresa.setEmail(this.editCompanyForm.get("email")?.value);
-    this.empresa.setTelefono(this.editCompanyForm.get("telefono")?.value);
-    let otherTelefono = this.editCompanyForm.get("otherTelefono")?.value;
-    this.empresa.setOtherTelefono(otherTelefono != '' ? otherTelefono : 'sin datos');
+    this.empresa.setTelefono(this.editCompanyForm.get("phone")?.value);
+    this.empresa.setOtherTelefono(otherPhone != '' ? otherPhone : 'sin datos');
     this.empresa.setDireccion(this.editCompanyForm.get("direccion")?.value);
     this.empresa.setLocalidad(local == "" ? this.city : local);
     this.empresa.setProvincia(prov == "" ? this.region : prov);
@@ -319,7 +326,6 @@ export class ViewCompanyComponent implements OnInit {
   }
 
   public getFormValidationErrors(form: FormGroup): Result[] {
-
     const result: Result[] = [];
     Object.keys(form.controls).forEach(key => {
       if (form!.get(key)!.value === 0) {
@@ -344,7 +350,6 @@ export class ViewCompanyComponent implements OnInit {
         });
       }
     });
-
     return result;
   }
 }

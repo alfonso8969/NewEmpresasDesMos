@@ -1,4 +1,6 @@
 <div class="page-wrapper">
+  <app-mat-spinner-overlay *ngIf="viewSpinner">
+  </app-mat-spinner-overlay>
   <!-- ============================================================== -->
   <!-- Container fluid  -->
   <!-- ============================================================== -->
@@ -6,12 +8,13 @@
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
+ 
     <div class="row page-titles">
       <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Perfil usuario</h3>
+        <h3 class="text-themecolor">Perfil usuario {{ user && user.user_name }}</h3>
       </div>
       <div class="">
-
+   
       </div>
     </div>
     <div class="row">
@@ -35,11 +38,18 @@
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </button>
             </div>
+            <p *ngIf="urlSended" class="filter d-inline text-success">Técnico desde listado
+              <a type="button" class="btn btn-info btn-sm" [routerLink]="urlSended" matTooltip="Volver al listado">
+                <i class="fa fa-list" aria-hidden="true"></i>
+                Volver al listado
+              </a>
+              <cite class="text-danger ml-2" style="font-size: 10px">* Ahora no puedes usar el link de tu perfil</cite>
+            </p>
           </div>
           <div class="card-body">
             <div class="form-body">
               <hr>
-              <form [formGroup]="addUserForm" (ngSubmit)="addUser()" novalidate autocomplete="off">
+              <form [formGroup]="addUserForm" (ngSubmit)="sendEditUser()" novalidate autocomplete="off">
                 <div class="row p-t-10">
                   <div class="col-md-6">
                     <div id="div-img-user" class="text-center">
@@ -119,7 +129,7 @@
                       El <strong>email</strong> no es válido
                     </span>
                   </div>
-                  <div class="col-md-3" *ngIf="user.user_rol == 1">
+                  <div class="col-md-3" *ngIf="user && user.user_rol == 1">
                     <div class="form-group">
                       <label for="rol" class="control-label">* Rol</label>
                       <select formControlName="rol" name="rol" id="rol" class="form-control w-100">
@@ -138,12 +148,12 @@
                     </span>
                   </div>
                 </div>
-                <div class="row mt-5" *ngIf="user_rol_technical">
+                <div class="row mt-5" *ngIf="user && user_rol_technical">
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="telefono" class="control-label">* Dirección</label>
                       <input formControlName="address" type="text" name="address" id="address" class="form-control"
-                        placeholder="Dirección" value=" ">
+                        placeholder="Dirección">
                       <span class="err text-danger"
                         *ngIf="addUserForm.get('address')?.invalid && addUserForm.get('address')?.touched">
                         La <strong>dirección </strong>es requerida
@@ -154,7 +164,7 @@
                     <div class="form-group">
                       <label for="email" class="control-label">* Localidad</label>
                       <input formControlName="region" type="text" class="form-control" placeholder="Localidad" id="region"
-                        name="region" value=" ">
+                        name="region">
                       <span class="err text-danger"
                         *ngIf="addUserForm.get('region')?.invalid && addUserForm.get('region')?.touched">
                         La <strong>localidad es </strong>requerida
@@ -176,7 +186,7 @@
                     <div class="form-group">
                       <label for="email" class="control-label">* Código postal</label>
                       <input formControlName="cod_postal" type="number" class="form-control" placeholder="Código postal" id="cod_postal"
-                        name="region" value=" ">
+                        name="region">
                       <span class="err text-danger"
                         *ngIf="addUserForm.get('cod_postal')?.invalid && addUserForm.get('cod_postal')?.touched">
                         El <strong>código postal es </strong>requerido

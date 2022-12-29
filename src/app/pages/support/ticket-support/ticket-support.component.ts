@@ -17,7 +17,7 @@ import { Roles } from 'src/app/interfaces/roles';
   selector: 'app-ticket-support',
   templateUrl: './ticket-support.component.html',
   styleUrls: ['./ticket-support.component.css'],
-  providers: [ DatePipe ]
+  providers: [DatePipe]
 })
 export class TicketSupportComponent implements OnInit {
 
@@ -74,18 +74,20 @@ export class TicketSupportComponent implements OnInit {
     private emailService: EmailService,
     private userService: UsersService,
     private datePipe: DatePipe) {
-      this.checkTicketExitCode = {
-        ticket_code: '',
-        user_name: '',
-        campo: '',
-        message: '',
-        fecha: new Date(),
-        respondido: 0,
-        solucionado: 0,
-        respuesta: '',
-        user_img: '',
-        ticket_refer: '',
-      }
+
+    this.checkTicketExitCode = {
+      ticket_code: '',
+      user_name: '',
+      campo: '',
+      message: '',
+      fecha: new Date(),
+      respondido: 0,
+      solucionado: 0,
+      respuesta: '',
+      user_img: '',
+      ticket_refer: '',
+    }
+
     this.ticket = {
       id_ticket: 0,
       user_id: 0,
@@ -100,6 +102,7 @@ export class TicketSupportComponent implements OnInit {
 
     this.ticketsTratadosByUser = [];
     this.ticketsByUser = [];
+    
     this.supportService.getTicketByUser(this.user).subscribe({
       next: (result: TicketByUser[]) => {
         if (result != null) {
@@ -125,9 +128,7 @@ export class TicketSupportComponent implements OnInit {
       next: (result: Tema[]) => {
         if (result != null) {
           this.temas = [];
-          result.filter(t =>  {
-            t.tema_rol!.includes(Roles[this.user.user_rol]) 
-            ? this.temas.push(t) : null;});;
+          this.temas = result.filter((t: Tema) => t.tema_rol!.includes(Roles[this.user.user_rol]));
         } else {
           alert("Hubo un error")
         }

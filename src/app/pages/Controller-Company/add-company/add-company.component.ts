@@ -32,18 +32,18 @@ export class AddCompanyComponent implements OnInit {
 
   empresa: Empresa;
   user: User;
-  city: string = "Móstoles";
-  region: string = "Madrid";
-  public type: string;
-  lastEmpDetId: number;
-  regex: RegExp;
-  actualYear: number = new Date().getFullYear();
-
   sectores: Fields[];
   distritos: Fields[];
   poligonos: Fields[];
-
+  regex: RegExp;
   addCompanyForm: FormGroup;
+
+  city: string = "Móstoles";
+  region: string = "Madrid";
+  actualYear: number = new Date().getFullYear();
+
+  public type: string;
+  lastEmpDetId: number;
   newEmp: any ;
   newRedes: any ;
 
@@ -139,10 +139,8 @@ export class AddCompanyComponent implements OnInit {
       localidad: [''],
       provincia: [''],
       cod_postal: ['', [Validators.required, Validators.pattern(Utils.codPostalReg)]]
-    }, {  validator: Utils.getRegexDocument });
+    }, {  validator: Utils.getRegexDocument } as AbstractControlOptions );
   }
-
-  
 
   public fillFormNewEmp(newEmp: any): void {
     this.addCompanyForm = this.fb.group({
@@ -204,13 +202,12 @@ export class AddCompanyComponent implements OnInit {
   }
 
   public saveEmpresa(empresa: Empresa): void {
-
     this.companiesService.addCompany(empresa).subscribe({
       next: (data: number) => {
         if (data === 1) {
           Swal.fire({
             title: 'Añadir empresa',
-            text: `La empresa ${ empresa.getNombre() } se añadio exitosamente`,
+            text: `La empresa ${ empresa.getNombre() } se añadió exitosamente`,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
@@ -233,18 +230,40 @@ export class AddCompanyComponent implements OnInit {
     });
   }
 
+  /**
+   * Función que nos dirige al formulario de redes sociales de la empresa.
+   * @description
+   * Para poder ir, el formulario de empresa debe ser válido.
+   * Construimos la empresa 
+   * 
+   * ```ts
+   * this.addCompany(true)
+   * ```
+   * con true (si va a redes) para que no la guarde en la Base de Datos
+   * Guardamos en LocalStorage la empresa 
+   * ```ts
+   * localStorage.setItem("empresa", JSON.stringify(this.empresa))
+   * ```
+   * @returns void
+   */
   public setRedes(): void {
     this.addCompany(true);
     localStorage.setItem("empresa", JSON.stringify(this.empresa));
     this.router.navigateByUrl('dashboard/add-redes');
   }
 
-  isDisabled(): boolean {
+  /** 
+   * Función que comprueba que los comboboxes no estén sin selección, 
+   * ```ts
+   * [ngValue]=0
+   * ```
+   * @returns {boolean} true si es cierto, false de otra manera
+  */
+  public isDisabled(): boolean {
     return this.addCompanyForm.get('sector')?.value == 0 || this.addCompanyForm.get('distrito')?.value == 0 || this.addCompanyForm.get('poligono')?.value == 0
   }
 
   public getFormValidationErrors(form: FormGroup): Result[] {
-
     const result: Result[] = [];
     if(form.hasError('invalidPattern')) {
       result.push({
@@ -264,7 +283,6 @@ export class AddCompanyComponent implements OnInit {
       const controlErrors: any = form!.get(key)!.errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
-
           keyError == 'required' && (keyError = 'requerido');
           keyError == 'pattern' && (keyError = 'no válido');
           let value = form.get(key)!.value;
@@ -276,7 +294,6 @@ export class AddCompanyComponent implements OnInit {
         });
       }
     });
-
     return result;
   }
 
@@ -285,5 +302,4 @@ export class AddCompanyComponent implements OnInit {
     localStorage.removeItem("redes");
     this.fillForm();
   }
-
 }

@@ -95,37 +95,37 @@
                     <div class="form-group">
                       <label for="telefono" class="control-label">* Teléfono</label>
                       <div class="input-container">
-                        <input formControlName="telefono" type="number" name="telefono" id="telefono"
-                          class="form-control" placeholder="9999999" maxlength="9">
-                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('telefono')?.value != ''"
-                          href="tel: +34{{ editCompanyForm.get('telefono')?.value }}" matTooltip="Click para llamar">
+                        <input formControlName="phone" type="number" name="phone" id="phone"
+                          class="form-control" placeholder="9999999" maxlength="9" (keypress)="keyPressed($event, 9)">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('phone')?.value != ''"
+                          href="tel: +34{{ editCompanyForm.get('phone')?.value }}" matTooltip="Click para llamar">
                           <i class="fa fa-phone bg-success p-2 text-white inp" aria-hidden="true"></i>
                         </a>
                       </div>
                       <span class="err text-danger"
-                        *ngIf="isEdited && editCompanyForm.get('telefono')?.invalid && editCompanyForm.get('telefono')?.touched && !editCompanyForm.get('telefono')!.errors!['pattern']">
+                        *ngIf="isEdited && editCompanyForm.get('phone')?.invalid && editCompanyForm.get('phone')?.touched && !editCompanyForm.get('phone')!.errors!['pattern']">
                         El <strong>teléfono </strong>es requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="isEdited && editCompanyForm.get('telefono')!.errors != null && editCompanyForm.get('telefono')!.errors!['pattern'] && editCompanyForm.get('telefono')?.touched">
+                        *ngIf="isEdited && editCompanyForm.get('phone')!.errors != null && editCompanyForm.get('phone')!.errors!['pattern'] && editCompanyForm.get('phone')?.touched">
                         El <strong>teléfono</strong> no es válido, debe ser 99999999
                       </span>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="otherTelefono" class="control-label">Otro Teléfono</label>
+                      <label for="otherPhone" class="control-label">Otro Teléfono</label>
                       <div class="input-container">
-                        <input formControlName="otherTelefono" type="number" name="otherTelefono" id="otherTelefono"
-                          class="form-control" placeholder="9999999" maxlength="9">
-                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('otherTelefono')?.value != ''"
-                          href="tel: +34{{ editCompanyForm.get('otherTelefono')?.value }}"
+                        <input formControlName="otherPhone" type="number" name="otherPhone" id="otherPhone"
+                          class="form-control" placeholder="9999999" maxlength="9" (keypress)="keyPressed($event, 9)">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('otherPhone')?.value != ''"
+                          href="tel: +34{{ editCompanyForm.get('otherPhone')?.value }}"
                           matTooltip="Click para llamar">
                           <i class="fa fa-phone bg-success p-2 text-white inp" aria-hidden="true"></i>
                         </a>
                       </div>
                       <span class="err text-danger"
-                        *ngIf="isEdited && editCompanyForm.get('otherTelefono')!.errors != null && editCompanyForm.get('otherTelefono')!.errors!['pattern'] && editCompanyForm.get('otherTelefono')?.touched">
+                        *ngIf="isEdited && editCompanyForm.get('otherPhone')!.errors != null && editCompanyForm.get('otherPhone')!.errors!['pattern'] && editCompanyForm.get('otherPhone')?.touched">
                         El <strong>Teléfono</strong> no es válido, debe ser 99999999
                       </span>
                     </div>
@@ -164,13 +164,25 @@
                     <div class="form-group">
                       <label for="installation_year" class="control-label">Año instalación</label>
                       <input formControlName="installation_year" type="number" class="form-control nec" name="installation_year"
-                        id="installation_year" placeholder="Año instalación" [min]="1900" [max]="actualYear" maxlength="4">
+                        id="installation_year" placeholder="Año instalación" [min]="1900" [max]="actualYear" maxlength="4" (keypress)="keyPressed($event, 4)">
+                        <span class="err text-danger"
+                        *ngIf="editCompanyForm.get('installation_year')!.errors != null && editCompanyForm.get('installation_year')!.errors!['max'] && editCompanyForm.get('installation_year')?.touched">
+                        El <strong>campo</strong> no es válido, fecha máxima de {{actualYear}}
+                      </span>
+                        <span class="err text-danger"
+                        *ngIf="editCompanyForm.get('installation_year')!.errors != null && editCompanyForm.get('installation_year')!.errors!['min'] && editCompanyForm.get('installation_year')?.touched">
+                        El <strong>campo</strong> no es válido, fecha mínima de 1900
+                      </span>
+                        <span class="err text-danger"
+                        *ngIf="editCompanyForm.get('installation_year')!.errors != null && editCompanyForm.get('installation_year')!.errors!['maxlength'] && editCompanyForm.get('installation_year')?.touched">
+                        El <strong>campo</strong> no es válido, máximo 4 cifras
+                      </span>
                     </div>
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
                       <label for="contactperson" class="control-label">Nº Trabajadores</label>
-                      <input formControlName="workers_number" type="number" class="form-control nec" name="workers_number"
+                      <input formControlName="workers_number" type="number" class="form-control" name="workers_number"
                         id="workers_number" placeholder="Nº Trabajadores">
                     </div>
                   </div>
@@ -256,14 +268,20 @@
                     <div class="form-group">
                       <label for="cod_postal" class="control-label">* Código postal</label>
                       <input formControlName="cod_postal" type="number" class="form-control nec" name="cod_postal"
-                        id="cod_postal" placeholder="Código postal 289--" [min]="28900" [max]="28999" [maxlength]="5">
-                      <span class="err text-danger"
-                        *ngIf="isEdited && editCompanyForm.get('cod_postal')?.invalid && editCompanyForm.get('cod_postal')?.touched && !editCompanyForm.get('cod_postal')!.errors!['pattern']">
+                        id="cod_postal" placeholder="Código postal 289--" [min]="28900" [max]="28999" [maxlength]="5" (keypress)="keyPressed($event, 5)">
+                        <span class="err text-danger"
+                        *ngIf="editCompanyForm.get('cod_postal')?.invalid && editCompanyForm.get('cod_postal')?.touched && !editCompanyForm.get('cod_postal')!.errors">
                         El <strong>código postal</strong> es requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="isEdited && editCompanyForm.get('cod_postal')!.errors != null && editCompanyForm.get('cod_postal')!.errors!['pattern'] && editCompanyForm.get('cod_postal')?.touched">
+                        *ngIf="editCompanyForm.get('cod_postal')!.errors != null && editCompanyForm.get('cod_postal')!.errors!['pattern'] &&
+                        !editCompanyForm.get('cod_postal')!.errors!['max'] &&
+                        editCompanyForm.get('cod_postal')?.touched">
                         El <strong>código postal</strong> no es válido, debe ser 289 + 2 números
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="editCompanyForm.get('cod_postal')!.errors != null && editCompanyForm.get('cod_postal')!.errors!['max'] && editCompanyForm.get('cod_postal')?.touched">
+                        El <strong>campo</strong> no es válido, máximo 5 cifras
                       </span>
                     </div>
                   </div>
@@ -278,7 +296,7 @@
                         <input formControlName="web" id="web" name="web" type="text" class="form-control"
                           placeholder="Url del sitio web">
                         <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('web')?.value != ''"
-                          target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('web')?.value }}"
+                          target="_blank" rel="noopener noreferrer nofollow" href="{{ editCompanyForm.get('web')?.value }}"
                           matTooltip="Click para ir a url">
                           <i class="fa fa-link bg-danger p-2 text-white inp" aria-hidden="true"></i>
                         </a>
@@ -299,7 +317,7 @@
                         <input formControlName="facebook" id="facebook" name="facebook" type="text" class="form-control"
                           placeholder="https://www.facebook.com/usuario">
                         <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('facebook')?.value != ''"
-                          target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('facebook')?.value }}"
+                          target="_blank" rel="noopener noreferrer nofollow" href="{{ editCompanyForm.get('facebook')?.value }}"
                           matTooltip="Click para ir al facebook">
                           <i class="fa fa-link bg-info p-2 text-white inp" aria-hidden="true"></i>
                         </a>
@@ -323,7 +341,7 @@
                         <input formControlName="instagram" id="instagram" name="instagram" type="link"
                           class="form-control" placeholder="https://www.instagram.com/usuario">
                         <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('instagram')?.value != ''"
-                          target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('instagram')?.value }}"
+                          target="_blank" rel="noopener noreferrer nofollow" href="{{ editCompanyForm.get('instagram')?.value }}"
                           matTooltip="Click para ir al instagram">
                           <i class="fa fa-link bg-warning p-2 text-white inp" aria-hidden="true"></i>
                         </a>
@@ -344,7 +362,7 @@
                         <input formControlName="twitter" id="twitter" name="twitter" type="link" class="form-control"
                           placeholder="https://twitter.com/usuario ó https://twitter.com/@usuario">
                         <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('twitter')?.value != ''"
-                          target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('twitter')?.value }}"
+                          target="_blank" rel="noopener noreferrer nofollow" href="{{ editCompanyForm.get('twitter')?.value }}"
                           matTooltip="Click para ir al twitter">
                           <i class="fa fa-link bg-primary p-2 text-white inp" aria-hidden="true"></i>
                         </a>
@@ -390,7 +408,7 @@
                           <input formControlName="tiktok" id="tiktok" name="tiktok" type="link" class="form-control"
                             placeholder="https://www.tiktok.com/@usuario">
                             <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('tiktok')?.value != ''"
-                            target="_blank" rel="noopener noreferrer" href="{{ editCompanyForm.get('tiktok')?.value }}"
+                            target="_blank" rel="noopener noreferrer nofollow" href="{{ editCompanyForm.get('tiktok')?.value }}"
                             matTooltip="Click para ir al tiktok">
                             <i class="fa fa-link bg-dark p-2 text-white inp" aria-hidden="true"></i>
                           </a>

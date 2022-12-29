@@ -38,7 +38,7 @@ export class UsersService {
 
   /**
    * Función que regresa al usuario por Id desde la Base de Datos
-   * @param { number } id Id de usuario
+   * @param { number } id Id del usuario
    * @returns { Observable<User> } User
    * @public
    */

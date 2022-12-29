@@ -94,7 +94,7 @@ export class PagesComponent implements OnInit {
     aes.forEach(a => a.classList.remove('active'));
     event.target.className = "active " + event.target.className;
     this.viewDashBoard = false;
-    this._router.navigateByUrl(url);
+    this._router.navigate([url]);
   }
 
   funcViewDashboard() {

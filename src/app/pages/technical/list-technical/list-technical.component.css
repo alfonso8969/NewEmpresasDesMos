@@ -1,0 +1,38 @@
+.page-wrapper {
+  position: fixed;
+  width: 80%;
+}
+
+ .table3 {
+  display: flex;
+  flex-flow: column;
+
+  height: 600px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+th {
+  position: sticky !important;
+  top: 0 !important;
+}
+
+tbody tr:hover {
+  background-color: #cfd6e2;
+  cursor: pointer;
+}
+
+
+.inp {
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  float: right !important;
+}
+
+@media (max-width: 1440px) {
+  .page-wrapper {
+    position: relative !important;
+    width: 100%;
+  }
+}

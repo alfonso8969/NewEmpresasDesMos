@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/class/users';
 import { Address } from 'src/app/interfaces/address';
 import { TechnicalInsert } from 'src/app/interfaces/technicalInsert';
@@ -15,17 +16,19 @@ import Swal from 'sweetalert2'
   templateUrl: './view-user.component.html',
   styleUrls: ['./view-user.component.css']
 })
-export class ViewUserComponent implements OnInit {
+export class ViewUserComponent implements OnInit, OnDestroy {
 
   url: string = environment.apiUrl;
 
   addUserForm: FormGroup;
   user: User;
-  newUser: User;
+  editUser: User;
   address: Address;
   fileUp: File;
 
   fileName: string;
+  user_id: number;
+  urlSended: string;
   img: HTMLElement | null;
   actPasswordHtml: HTMLElement;
   newPasswordHtml: HTMLElement;
@@ -33,18 +36,54 @@ export class ViewUserComponent implements OnInit {
   actPasswordIcon: HTMLElement;
   newPasswordIcon: HTMLElement;
   compPasswordIcon: HTMLElement;
+  viewProfile1: HTMLElement;
+  viewProfile2: HTMLElement;
 
   isEdited: boolean = false;
+  viewSpinner: boolean;
   user_rol_technical: boolean = false;
   formData: TechnicalInsert;
 
   constructor(private fb: FormBuilder,
               private uploadService: FileUploadService,
               private loginService: LoginService,
-              private userService: UsersService) {
+              private userService: UsersService,
+              private route: ActivatedRoute) {
 
-    this.user = this.userService.getUserLogged();
-    this.user_rol_technical = this.user.user_rol == 4;
+    this.route.paramMap.subscribe((params: any) => {
+      this.user_id = params.get('id');
+      this.urlSended = params.get('url');
+      console.log(this.urlSended);
+    });
+
+    if (this.urlSended && this.urlSended != '') {
+      this.viewProfile1 = document.getElementById('viewProfile1')!;
+      this.viewProfile1.style.display = 'none';
+      this.viewProfile2 = document.getElementById('viewProfile2')!;
+      this.viewProfile2.style.display = 'none';
+      this.user_rol_technical = true;
+      this.fillFormUser(new User());
+      this.userService.getUser(this.user_id).subscribe({ 
+        next: (user: User) => { 
+          this.user = user;
+          this.getAddressUser();
+        }, error: (error: any) => { 
+          console.log("Error consiguiendo user del listado: ", error);
+          this.viewSpinner = false;
+        }, complete: () =>  { console.log("Completado getUser desde listado", this.user) }
+      });
+    } else {    
+      this.user = this.userService.getUserLogged();
+      this.user_rol_technical = this.user.user_rol == 4;
+      this.fillFormUser(this.user);
+      this.setFormControlsReadOnly(this.addUserForm); 
+      setTimeout(() => {
+        this.viewSpinner = false;
+      }, 1000);    
+    }
+  }
+
+  private getAddressUser(): void {
     this.userService.getUserAddress(this.user.id_user).subscribe({
       next: (address: Address) => {
         if (address != null) {
@@ -53,15 +92,15 @@ export class ViewUserComponent implements OnInit {
           this.setFormControlsReadOnly(this.addUserForm);
         }
       }, error: (error: any) => {
+        this.viewSpinner = false;
         console.log("Error consiguiendo address: ", error);
       },
       complete: () => console.log('Se completo conseguir address del usuario', this.address)
     });
-    
-    this.fillFormUser(this.user);
   }
 
   private fillFormUser(user: User): void {
+    this.viewSpinner = false;
     if (this.user_rol_technical) { 
       this.addUserForm = this.fb.group({
         user_img: [''],
@@ -93,10 +132,12 @@ export class ViewUserComponent implements OnInit {
         newPassword: ['' ,Validators.pattern(Utils.passwordReg)],
         comparePasswords: ['' ,Validators.pattern(Utils.passwordReg)],
       });
+     
     }
   }
 
   ngOnInit(): void {
+    this.viewSpinner = true;
     this.actPasswordIcon = document.getElementById('toggleActPassword')!;
     this.newPasswordIcon = document.getElementById('toggleNewPassword')!;
     this.compPasswordIcon = document.getElementById('toggleCompPassword')!;
@@ -126,16 +167,16 @@ export class ViewUserComponent implements OnInit {
     this.setFormControlsReadOnly(this.addUserForm, false);
   }
 
-  public addUser(): void {
-    let newUser = new User();
-    newUser.id_user = this.user.id_user;
-    newUser.setUser_name(this.addUserForm.get('nombre')!.value);
-    newUser.setUser_lastName(this.addUserForm.get('apellidos')!.value);
-    newUser.setUser_phone(this.addUserForm.get('phone')!.value);
-    newUser.setUser_other_phone(this.addUserForm.get('other_phone')!.value);
-    newUser.setUser_email(this.addUserForm.get('email')!.value);
-    newUser.setUser_rol(this.addUserForm.get('rol')!.value);
-    newUser.setUser_img(this.user.user_img);
+  public sendEditUser(): void {
+    let editUser = new User();
+    editUser.id_user = this.user.id_user;
+    editUser.setUser_name(this.addUserForm.get('nombre')!.value);
+    editUser.setUser_lastName(this.addUserForm.get('apellidos')!.value);
+    editUser.setUser_phone(this.addUserForm.get('phone')!.value);
+    editUser.setUser_other_phone(this.addUserForm.get('other_phone')!.value);
+    editUser.setUser_email(this.addUserForm.get('email')!.value);
+    editUser.setUser_rol(this.addUserForm.get('rol')!.value);
+    editUser.setUser_img(this.user.user_img);
 
     if (this.user_rol_technical) {
       this.address.address_user = this.addUserForm.get('address')!.value;
@@ -160,7 +201,7 @@ export class ViewUserComponent implements OnInit {
           console.log("Data: ", data)
           if (data.type === 4) {
             console.log(data.body.data);
-            newUser.newUser_img = this.fileName;
+            editUser.newUser_img = this.fileName;
           }
         },
         error: (err: any) => {
@@ -179,9 +220,9 @@ export class ViewUserComponent implements OnInit {
       this.loginService.checkPassword(this.user).subscribe({
         next: (result: boolean) => {
           if (result) {
-            newUser.user_password = this.addUserForm.get('newPassword')!.value;
+            editUser.user_password = this.addUserForm.get('newPassword')!.value;
             if (!this.user_rol_technical) { 
-              this.saveUser(newUser); 
+              this.saveUser(editUser); 
             } else {
               this.saveTechnical(this.formData); 
             }
@@ -197,7 +238,7 @@ export class ViewUserComponent implements OnInit {
           console.log(`Se produjo un error al cotejar la contraseña del usuario: ${ error } `);
             Swal.fire({
               title: 'Actualizar usuario',
-              text: `Se produjo un error al actualizar al usuario ${ newUser.user_name } `,
+              text: `Se produjo un error al actualizar al usuario ${ editUser.user_name } `,
               icon: 'error',
 
               confirmButtonText: 'Aceptar'
@@ -208,7 +249,7 @@ export class ViewUserComponent implements OnInit {
       });
     } else {
       if (!this.user_rol_technical) { 
-        this.saveUser(newUser); 
+        this.saveUser(editUser); 
       } else {
         this.saveTechnical(this.formData); 
       }
@@ -339,5 +380,10 @@ export class ViewUserComponent implements OnInit {
     });
 
     return JSON.stringify(result);
+  }
+
+  ngOnDestroy(): void {
+    this.viewProfile1.style.display = 'inline-block';
+    this.viewProfile2.style.display = 'block';
   }
 }

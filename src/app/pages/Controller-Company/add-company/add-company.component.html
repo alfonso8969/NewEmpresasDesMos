@@ -131,12 +131,24 @@
                       <label for="installation_year" class="control-label">Año instalación</label>
                       <input formControlName="installation_year" type="number" class="form-control nec" name="installation_year"
                         id="installation_year" placeholder="Año instalación" [min]="1900" [max]="actualYear" [maxlength]="4">
+                        <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('installation_year')!.errors != null && addCompanyForm.get('installation_year')!.errors!['max'] && addCompanyForm.get('installation_year')?.touched">
+                        El <strong>campo</strong> no es válido, fecha máxima de {{actualYear}}
+                      </span>
+                        <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('installation_year')!.errors != null && addCompanyForm.get('installation_year')!.errors!['min'] && addCompanyForm.get('installation_year')?.touched">
+                        El <strong>campo</strong> no es válido, fecha mínima de 1900
+                      </span>
+                        <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('installation_year')!.errors != null && addCompanyForm.get('installation_year')!.errors!['maxlength'] && addCompanyForm.get('installation_year')?.touched">
+                        El <strong>campo</strong> no es válido, máximo 4 cifras
+                      </span>
                     </div>
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
                       <label for="workers_number" class="control-label">Nº Trabajadores</label>
-                      <input formControlName="workers_number" type="number" class="form-control nec" name="workers_number"
+                      <input formControlName="workers_number" type="number" class="form-control" name="workers_number"
                         id="workers_number" placeholder="Nº Trabajadores">
                     </div>
                   </div>
@@ -216,12 +228,18 @@
                       <input formControlName="cod_postal" type="number" class="form-control nec" name="cod_postal"
                         id="cod_postal" placeholder="Código postal 289--" [min]="28900" [max]="28999" [maxlength]="5">
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('cod_postal')?.invalid && addCompanyForm.get('cod_postal')?.touched && !addCompanyForm.get('cod_postal')!.errors!['pattern']">
+                        *ngIf="addCompanyForm.get('cod_postal')?.invalid && addCompanyForm.get('cod_postal')?.touched && !addCompanyForm.get('cod_postal')!.errors">
                         El <strong>código postal</strong> es requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="addCompanyForm.get('cod_postal')!.errors != null && addCompanyForm.get('cod_postal')!.errors!['pattern'] && addCompanyForm.get('cod_postal')?.touched">
+                        *ngIf="addCompanyForm.get('cod_postal')!.errors != null && addCompanyForm.get('cod_postal')!.errors!['pattern'] &&
+                        !addCompanyForm.get('cod_postal')!.errors!['max'] &&
+                        addCompanyForm.get('cod_postal')?.touched">
                         El <strong>código postal</strong> no es válido, debe ser 289 + 2 números
+                      </span>
+                      <span class="err text-danger"
+                        *ngIf="addCompanyForm.get('cod_postal')!.errors != null && addCompanyForm.get('cod_postal')!.errors!['max'] && addCompanyForm.get('cod_postal')?.touched">
+                        El <strong>campo</strong> no es válido, máximo 5 cifras
                       </span>
                     </div>
                   </div>
