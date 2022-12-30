@@ -63,23 +63,23 @@ export class ViewUserComponent implements OnInit, OnDestroy {
       this.viewProfile2.style.display = 'none';
       this.user_rol_technical = true;
       this.fillFormUser(new User());
-      this.userService.getUser(this.user_id).subscribe({ 
-        next: (user: User) => { 
+      this.userService.getUser(this.user_id).subscribe({
+        next: (user: User) => {
           this.user = user;
           this.getAddressUser();
-        }, error: (error: any) => { 
+        }, error: (error: any) => {
           console.log("Error consiguiendo user del listado: ", error);
           this.viewSpinner = false;
         }, complete: () =>  { console.log("Completado getUser desde listado", this.user) }
       });
-    } else {    
+    } else {
       this.user = this.userService.getUserLogged();
       this.user_rol_technical = this.user.user_rol == 4;
       this.fillFormUser(this.user);
-      this.setFormControlsReadOnly(this.addUserForm); 
+      this.setFormControlsReadOnly(this.addUserForm);
       setTimeout(() => {
         this.viewSpinner = false;
-      }, 1000);    
+      }, 1000);
     }
   }
 
@@ -101,7 +101,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
 
   private fillFormUser(user: User): void {
     this.viewSpinner = false;
-    if (this.user_rol_technical) { 
+    if (this.user_rol_technical) {
       this.addUserForm = this.fb.group({
         user_img: [''],
         nombre: [user.user_name, Validators.required],
@@ -132,7 +132,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
         newPassword: ['' ,Validators.pattern(Utils.passwordReg)],
         comparePasswords: ['' ,Validators.pattern(Utils.passwordReg)],
       });
-     
+
     }
   }
 
@@ -165,6 +165,12 @@ export class ViewUserComponent implements OnInit, OnDestroy {
   public edit() {
     this.isEdited = true;
     this.setFormControlsReadOnly(this.addUserForm, false);
+  }
+
+  public keyPressed(event: any, count: number): boolean {
+    console.log(event);
+    if((event.charCode < 48 || event.charCode > 57) || event.srcElement.value.length == count) return false;
+    return true;
   }
 
   public sendEditUser(): void {
@@ -221,10 +227,10 @@ export class ViewUserComponent implements OnInit, OnDestroy {
         next: (result: boolean) => {
           if (result) {
             editUser.user_password = this.addUserForm.get('newPassword')!.value;
-            if (!this.user_rol_technical) { 
-              this.saveUser(editUser); 
+            if (!this.user_rol_technical) {
+              this.saveUser(editUser);
             } else {
-              this.saveTechnical(this.formData); 
+              this.saveTechnical(this.formData);
             }
           } else {
             Swal.fire({
@@ -248,10 +254,10 @@ export class ViewUserComponent implements OnInit, OnDestroy {
         complete: () => console.log('Se completo el cotejar la contraseña del usuario')
       });
     } else {
-      if (!this.user_rol_technical) { 
-        this.saveUser(editUser); 
+      if (!this.user_rol_technical) {
+        this.saveUser(editUser);
       } else {
-        this.saveTechnical(this.formData); 
+        this.saveTechnical(this.formData);
       }
     }
   }
@@ -363,23 +369,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
   }
 
   public getFormValidationErrors(form: FormGroup): string {
-
-    const result: { Campo: string; error: string; value: any }[] = [];
-    Object.keys(form.controls).forEach(key => {
-
-      const controlErrors: any = form.get(key)!.errors;
-      if (controlErrors) {
-        Object.keys(controlErrors).forEach(keyError => {
-          result.push({
-            Campo: key,
-            error: keyError,
-            value: form.get(key)!.value
-          });
-        });
-      }
-    });
-
-    return JSON.stringify(result);
+    return Utils.getFormValidationErrors(form);
   }
 
   ngOnDestroy(): void {

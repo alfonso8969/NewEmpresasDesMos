@@ -329,7 +329,6 @@ export class TicketSupportComponent implements OnInit {
       code_ref: '',
       password: false
     };
-
   }
 
   private saveTicket(): void {
@@ -354,6 +353,4 @@ export class TicketSupportComponent implements OnInit {
       complete: () => console.log("Complete save ticket", this.ticket)
     });
   }
-
-
 }

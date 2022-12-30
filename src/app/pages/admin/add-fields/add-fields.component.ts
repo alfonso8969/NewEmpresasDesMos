@@ -69,7 +69,7 @@ export class AddFieldsComponent implements OnInit {
         if (result === 1) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
-            text: `El campo ${ this.field.empresas_sector_name } se añadio exitosamente`,
+            text: `El campo ${ this.field.empresas_sector_name } se añadió exitosamente`,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
@@ -84,7 +84,7 @@ export class AddFieldsComponent implements OnInit {
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
-            text: `El sector ${ this.field.empresas_sector_name } ya exite`,
+            text: `El sector ${ this.field.empresas_sector_name } ya existe`,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
@@ -123,7 +123,7 @@ export class AddFieldsComponent implements OnInit {
         if (result === 1) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
-            text: `El campo ${ this.field.distrito_name } se añadio exitosamente`,
+            text: `El campo ${ this.field.distrito_name } se añadió exitosamente`,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
@@ -138,7 +138,7 @@ export class AddFieldsComponent implements OnInit {
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
-            text: `El distrito ${ this.field.distrito_name.split("(")[0] } ya exite`,
+            text: `El distrito ${ this.field.distrito_name!.split("(")[0] } ya existe`,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
@@ -166,7 +166,7 @@ export class AddFieldsComponent implements OnInit {
         if (result === 1) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
-            text: `El campo ${ this.field.empresas_poligono_name } se añadio exitosamente`,
+            text: `El campo ${ this.field.empresas_poligono_name } se añadió exitosamente`,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
@@ -181,7 +181,7 @@ export class AddFieldsComponent implements OnInit {
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
-            text: `El polígono ${ this.field.empresas_poligono_name } ya exite`,
+            text: `El polígono ${ this.field.empresas_poligono_name } ya existe`,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });

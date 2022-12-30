@@ -54,7 +54,7 @@
                         <select title="Sector" class="movile form-control" formControlName="nombreSector" id="nombreSectorMovil" name="nombreSector" (change)="select()" required>
                           <option [ngValue]=0 selected>Todos</option>
                           <option *ngFor="let sector of sectores" [ngValue]="sector.sector_id"
-                            [matTooltip]="sector.empresas_sector_name">
+                            [matTooltip]="sector.empresas_sector_name!">
                             {{sector.empresas_sector_name}}
                           </option>
                         </select>

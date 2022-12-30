@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormGroup, ValidationErrors } from "@angular/forms";
 import { spainIdType, validCIF, validDNI, validNIE } from "spain-id";
 
 export class Utils {
@@ -8,6 +8,7 @@ export class Utils {
   static phoneReg: RegExp = new RegExp(/[0-9]{9}/);
   static codPostalReg: RegExp = new RegExp(/289+\d{2}/);
 
+  static regexTheme: RegExp = new RegExp(/^[a-zA-Z\sÑÁÉÍÓÚÜáéíóú,]+$/);
   static regex: RegExp = new RegExp(/^[A-Z\sÑÁÉÍÓÚÜ,]+$/);
   static regex2: RegExp = new RegExp(/^[A-Za-z0-9ÑÁÉÍÓÚÜñáéíóú-]+$/);
   static regex3: RegExp = new RegExp(/^[A-Za-z0-9\sÑÁÉÍÓÚÜñáéíóúº]+$/);
@@ -70,6 +71,29 @@ export class Utils {
     setTimeout(() => {
       this.changeEye(element, elementClose);
     }, 2000);
+  }
+
+  /**
+   * Función que comprueba los errores de un formulario.
+   * @param {FormGroup<any>} form Formulario a inspeccionar
+   * 
+   * @returns {string} Un string en formato JSON con los errores
+   */
+  public static getFormValidationErrors(form: FormGroup<any>): string {
+    const result: { Campo: string; error: string; value: any }[] = [];
+    Object.keys(form.controls).forEach(key => {
+      const controlErrors: any = form!.get(key)!.errors;
+      if (controlErrors) {
+        Object.keys(controlErrors).forEach(keyError => {
+          result.push({
+            Campo: key,
+            'error': keyError,
+            value: form!.get(key)!.value
+          });
+        });
+      }
+    });
+    return JSON.stringify(result);
   }
 
   public static getTemplateEmail(name: string, lastname: string, password: string): string {

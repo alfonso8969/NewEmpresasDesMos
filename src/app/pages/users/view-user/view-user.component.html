@@ -8,13 +8,13 @@
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
- 
+
     <div class="row page-titles">
       <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">Perfil usuario {{ user && user.user_name }}</h3>
       </div>
       <div class="">
-   
+
       </div>
     </div>
     <div class="row">
@@ -43,7 +43,7 @@
                 <i class="fa fa-list" aria-hidden="true"></i>
                 Volver al listado
               </a>
-              <cite class="text-danger ml-2" style="font-size: 10px">* Ahora no puedes usar el link de tu perfil</cite>
+              <cite class="text-danger ml-2 h6">* Ahora no puedes usar el link de tu perfil</cite>
             </p>
           </div>
           <div class="card-body">
@@ -92,7 +92,7 @@
                     <div class="form-group">
                       <label for="telefono" class="control-label">* Teléfono</label>
                       <input formControlName="phone" type="number" name="phone" id="phone" class="form-control"
-                        placeholder="9999999" maxlength="9">
+                        placeholder="9999999" maxlength="9" (keydown)="keyPressed($event, 9)">
                       <span class="err text-danger"
                         *ngIf="addUserForm.get('phone')?.invalid && addUserForm.get('phone')?.touched && !addUserForm.get('phone')!.errors!['pattern']">
                         El <strong>teléfono </strong>es requerido
@@ -107,7 +107,7 @@
                     <div class="form-group">
                       <label for="other_phone" class="control-label">Otro Teléfono</label>
                       <input formControlName="other_phone" type="number" name="other_phone" id="other_phone" class="form-control"
-                        placeholder="9999999" maxlength="9">
+                        placeholder="9999999" maxlength="9" (keydown)="keyPressed($event, 9)">
                       <span class="err text-danger"
                         *ngIf="addUserForm.get('other_phone')!.errors != null && addUserForm.get('other_phone')!.errors!['pattern'] && addUserForm.get('other_phone')?.touched">
                         El <strong>Teléfono</strong> no es válido, debe ser 99999999
@@ -186,7 +186,7 @@
                     <div class="form-group">
                       <label for="email" class="control-label">* Código postal</label>
                       <input formControlName="cod_postal" type="number" class="form-control" placeholder="Código postal" id="cod_postal"
-                        name="region">
+                        name="region" (keydown)="keyPressed($event, 5)">
                       <span class="err text-danger"
                         *ngIf="addUserForm.get('cod_postal')?.invalid && addUserForm.get('cod_postal')?.touched">
                         El <strong>código postal es </strong>requerido
@@ -287,7 +287,7 @@
                     </span>
                     <i class="fa fa-save p-1"></i>
                   </button>
-                  
+
                 </div>
                 <p class="text-danger" *ngIf="user_rol_technical">{{ getFormValidationErrors(addUserForm) }}</p>
                 <!-- <p class="text-danger">{{ getFormValidationErrors(addUserForm) }}</p> -->

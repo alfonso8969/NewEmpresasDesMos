@@ -214,22 +214,6 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
 
   // Función de prueba de campos erróneos, esta en casi todos los componentes que usan formularios
   public getFormValidationErrors(form: FormGroup): string {
-
-    const result: { Campo: string; error: string; value: any }[] = [];
-    Object.keys(form.controls).forEach(key => {
-
-      const controlErrors: any = form.get(key)!.errors;
-      if (controlErrors) {
-        Object.keys(controlErrors).forEach(keyError => {
-          result.push({
-            Campo: key,
-            'error': keyError,
-            value: form.get(key)!.value
-          });
-        });
-      }
-    });
-
-    return JSON.stringify(result);
+    return Utils.getFormValidationErrors(form);
   }
 }

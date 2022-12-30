@@ -71,7 +71,7 @@
                     <div class="form-group">
                       <label for="telefono" class="control-label">* Teléfono</label>
                       <input formControlName="phone" type="number" name="phone" id="phone" class="form-control"
-                        placeholder="9999999" maxlength="9">
+                        placeholder="9999999" maxlength="9" (keydown)="keyPressed($event, 9)">
                       <span class="err text-danger"
                         *ngIf="addTechnicalUserForm.get('phone')?.invalid && addTechnicalUserForm.get('phone')?.touched && !addTechnicalUserForm.get('phone')!.errors!['pattern']">
                         El <strong>teléfono </strong>es requerido
@@ -86,7 +86,7 @@
                     <div class="form-group">
                       <label for="telefono" class="control-label">Otro Teléfono</label>
                       <input formControlName="other_phone" type="number" name="other_phone" id="other_phone" class="form-control"
-                        placeholder="9999999" maxlength="9">
+                        placeholder="9999999" maxlength="9" (keydown)="keyPressed($event, 9)">
                       <span class="err text-danger"
                         *ngIf="addTechnicalUserForm.get('other_phone')!.errors != null && addTechnicalUserForm.get('other_phone')!.errors!['pattern'] && addTechnicalUserForm.get('other_phone')?.touched">
                         El <strong>Teléfono</strong> no es válido, debe ser 99999999
@@ -150,7 +150,7 @@
                     <div class="form-group">
                       <label for="email" class="control-label">* Código postal</label>
                       <input formControlName="cod_postal" type="number" class="form-control" placeholder="Código postal" id="cod_postal"
-                        name="region">
+                        name="region" (keydown)="keyPressed($event, 5)">
                       <span class="err text-danger"
                         *ngIf="addTechnicalUserForm.get('cod_postal')?.invalid && addTechnicalUserForm.get('cod_postal')?.touched">
                         El <strong>código postal es </strong>requerido

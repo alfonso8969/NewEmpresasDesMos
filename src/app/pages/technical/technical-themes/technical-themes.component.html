@@ -1,1 +1,140 @@
-<p>technical-themes works!</p>
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeIn">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Registrar campos soporte</h3>
+      </div>
+      <div class="">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div>
+            <h3 class="card-title p-1">Solicitud de registro de campos soporte</h3>
+            <cite class="card-title p-1">los campos marcados con * son obligatorios</cite>
+            <button type="button" matTooltip="Limpiar el formulario" class="btn btn-default d-inline float-right mx-3" (click)="cleanFormsTema()">Limpiar formularios
+              <i class="fa fa-trash-o pl-2" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <h4>Agregar campos soporte</h4>
+              <form [formGroup]="addFieldThemeForm" (ngSubmit)="addFieldTheme()" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nameTheme2" class="control-label">* Nombre completo tema</label>
+                      <input formControlName="nameTheme2" id="nameTheme2" name="nameTheme" type="text"
+                        class="form-control" placeholder="Nombre completo tema" maxlength="250" matTooltip="Tema">
+                      <span class="err text-danger"addFieldThemeForm
+                        *ngIf="addFieldThemeForm.get('nameTheme2')?.invalid && addFieldThemeForm.get('nameTheme2')?.touched && !addFieldThemeForm.get('nameTheme2')!.errors!['pattern']">
+                        El <strong>nombre del tema </strong>es requerido
+                      </span>
+                      <span class="err text-danger" email
+                        *ngIf="addFieldThemeForm.get('nameTheme2')!.errors != null && addFieldThemeForm.get('nameTheme2')!.errors!['pattern'] && addFieldThemeForm.get('nameTheme')?.touched">
+                        El <strong>sector</strong> no es válido
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="nameTheme2" class="control-label">* Seleccionar al menos un rol</label>
+                      <div>
+                        <input title="Rol Administrador" class="form-control pr-2" type="checkbox" formControlName="AdminRol" name="AdminRol" id="AdminRol" (change)="onCheckboxChange($event)">
+                        <label class="text-primary pr-2" for="AdminRol">Marcar rol de administrador</label>
+
+                        <input title="Rol Super Administrador" class="form-control pr-2" type="checkbox" formControlName="SuperAdminRol" name="SuperAdminRol" id="SuperAdminRol" (change)="onCheckboxChange($event)">
+                        <label class="text-primary mx-5 pr-2" for="SuperAdminRol">Marcar rol de super administrador</label>
+
+                         <input title="Rol Usuario" class="form-control pr-2" type="checkbox" formControlName="UserRol" name="UserRol" id="UserRol" (change)="onCheckboxChange($event)">
+                         <label class="text-primary pr-2" for="UserRol">Marcar rol de usuario</label>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" [disabled]="addFieldThemeForm.invalid || updateFieldThemeForm.get('tema')!.value != 0" class="btn-primary button d-inline">
+                  <span
+                    [matTooltip]="addFieldThemeForm.invalid ? 'Faltan campos obligatorios' : updateFieldThemeForm.get('tema')!.value != 0 ? 'No se pueden realizar dos acciones a la vez, desmarca casilla Seleccione tema de Actualizar campos soporte' : 'Guardar datos nuevo sector'">Guardar
+                  </span>
+                  <i class="fa fa-save p-1"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-body">
+              <hr>
+              <h4>Actualizar campos soporte</h4>
+              <form [formGroup]="updateFieldThemeForm" (ngSubmit)="askUpdateFieldSector()" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="tema" class="control-label">* Seleccione tema</label>
+                      <select formControlName="tema" name="tema" id="tema" class="form-control" matTooltip="Tema" (change)="changeTheme($event)">
+                        <option [ngValue]=0 selected>Seleccione tema</option>
+                        <option [ngValue]="dato.id" *ngFor="let dato of themes">
+                          {{dato.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="nameTheme" class="control-label">* Nombre completo tema</label>
+                      <input formControlName="nameTheme" id="nameTheme" name="nameTheme" type="text"
+                        class="form-control" placeholder="Nombre completo tema" maxlength="50" matTooltip="Tema">
+                        <span class="err text-danger"
+                        *ngIf="updateFieldThemeForm.get('nameTheme')?.invalid && updateFieldThemeForm.get('nameTheme')?.touched && !updateFieldThemeForm?.get('nameTheme')!.errors!['pattern']">
+                        El <strong>nombre del tema </strong>es requerido
+                      </span>
+                      <span class="err text-danger"
+                      *ngIf="updateFieldThemeForm.get('nameTheme')!.errors != null && updateFieldThemeForm.get('nameTheme')!.errors!['pattern'] && updateFieldThemeForm.get('nameTheme')?.touched">
+                      El <strong>tema</strong> no es válido
+                    </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="nameTheme2" class="control-label">* Seleccionar al menos un rol</label>
+                      <div>
+                        <input title="Rol Administrador" class="form-control pr-2" type="checkbox" formControlName="AdminRolSelected" name="AdminRolSelected" id="AdminRolSelected" (change)="onCheckboxChange($event)">
+                        <label class="text-primary pr-2" for="AdminRolSelected">Marcar rol de administrador</label>
+
+                        <input title="Rol Super Administrador" class="form-control pr-2" type="checkbox" formControlName="SuperAdminRolSelected" name="SuperAdminRolSelected" id="SuperAdminRolSelected" (change)="onCheckboxChange($event)">
+                        <label class="text-primary pr-2" for="SuperAdminRolSelected">Marcar rol super de administrador</label>
+
+                         <input title="Rol Usuario" class="form-control pr-2" type="checkbox" formControlName="UserRolSelected" name="UserRolSelected" id="UserRolSelected" (change)="onCheckboxChange($event)">
+                         <label class="text-primary pr-2" for="UserRolSelected">Marcar rol de usuario</label>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit"
+                  [disabled]="updateFieldThemeForm.invalid || updateFieldThemeForm.get('nameTheme')?.value == 0 || addFieldThemeForm.get('nameTheme2')?.value != ''"
+                  class="btn-primary button d-inline">
+                  <span
+                    [matTooltip]="updateFieldThemeForm.invalid || updateFieldThemeForm.get('nameTheme')?.value == 0 ? 'Faltan campos obligatorios' :
+                    addFieldThemeForm.get('nameTheme2')?.value != '' ? 'No se pueden realizar dos acciones a la vez, desmarca casilla Nombre completo tema, de Agregar campos soporte' :
+                    'Guardar datos nuevo tema'">Guardar
+                  </span>
+                  <i class="fa fa-save p-1"></i>
+                </button>
+              </form>
+                 <p>{{ getFormValidationErrors(updateFieldThemeForm) }}</p>
+                 <p>{{ getFormValidationErrors(addFieldThemeForm) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

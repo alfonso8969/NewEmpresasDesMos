@@ -145,14 +145,14 @@ export class ViewCompanyComponent implements OnInit {
       cif: new FormControl(''),
       sector: new FormControl(0),
       distrito: new FormControl(0),
-      poligono: new FormControl(0),
+      polygon: new FormControl(0),
       email: new FormControl(''),
       phone: new FormControl(''),
       otherPhone: new FormControl(''),
       contactPerson: new FormControl(''),
       installation_year: new FormControl(''),
       workers_number: new FormControl(''),
-      direccion: new FormControl(''),
+      address: new FormControl(''),
       localidad: new FormControl(''),
       provincia: new FormControl(''),
       cod_postal: new FormControl(''),
@@ -179,14 +179,14 @@ export class ViewCompanyComponent implements OnInit {
       cif: [emp['CIF'], Validators.required],
       sector: [emp['Sector'], Validators.required],
       distrito: [emp['Distrito'], Validators.required],
-      poligono: [emp['Poligono'], Validators.required],
+      polygon: [emp['Poligono'], Validators.required],
       email: [emp['Email'], [Validators.required, Validators.pattern(Utils.emailReg)]],
       phone: [emp['Telefono'], [Validators.required, Validators.pattern(Utils.phoneReg)]],
       otherPhone: [otherPhone != 'sin datos' ? otherPhone : '', [Validators.pattern(Utils.phoneReg)]],
       contactPerson: [emp['Persona_contacto']],
       installation_year: [emp['installation_year'], Validators.maxLength(4)],
       workers_number: [emp['workers_number']],
-      direccion: [emp['Direccion'], Validators.required],
+      address: [emp['Direccion'], Validators.required],
       localidad: [emp['Localidad']],
       provincia: [emp['Provincia']],
       cod_postal: [emp['Cod_postal'], [Validators.required, Validators.pattern(Utils.codPostalReg), Validators.maxLength(5)]],
@@ -207,13 +207,13 @@ export class ViewCompanyComponent implements OnInit {
     let local = this.editCompanyForm.get("localidad")?.value;
     let prov = this.editCompanyForm.get("provincia")?.value;
     let otherPhone = this.editCompanyForm.get("otherPhone")?.value;
-    
+
     this.empresa = new Empresa(
       this.editCompanyForm.get("nombre")?.value,
       this.editCompanyForm.get("sector")?.value,
       this.Empresa_det_id,
       this.editCompanyForm.get("distrito")?.value,
-      this.editCompanyForm.get("poligono")?.value
+      this.editCompanyForm.get("polygon")?.value
     );
 
     delete this.empresa['fecha_alta'];
@@ -226,7 +226,7 @@ export class ViewCompanyComponent implements OnInit {
     this.empresa.setEmail(this.editCompanyForm.get("email")?.value);
     this.empresa.setTelefono(this.editCompanyForm.get("phone")?.value);
     this.empresa.setOtherTelefono(otherPhone != '' ? otherPhone : 'sin datos');
-    this.empresa.setDireccion(this.editCompanyForm.get("direccion")?.value);
+    this.empresa.setDireccion(this.editCompanyForm.get("address")?.value);
     this.empresa.setLocalidad(local == "" ? this.city : local);
     this.empresa.setProvincia(prov == "" ? this.region : prov);
     this.empresa.setCod_postal(this.editCompanyForm.get("cod_postal")?.value);

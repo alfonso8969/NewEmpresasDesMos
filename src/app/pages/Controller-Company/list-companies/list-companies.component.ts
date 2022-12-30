@@ -121,7 +121,7 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
     let sectorId = this.selectSector.get('nombreSector')?.value;
     this.filterSended = false;
     let sector = this.sectores.filter((sec: Fields) => sec.sector_id == sectorId);
-    this.dataSource.filter = sector.length > 0 ? sector[0].empresas_sector_name.trim().toLowerCase() : '';
+    this.dataSource.filter = sector.length > 0 ? sector[0].empresas_sector_name!.trim().toLowerCase() : '';
   }
 
   public getCompanies(): void {

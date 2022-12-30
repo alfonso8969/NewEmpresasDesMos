@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, OnInit, AfterViewInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/class/users';
 import { Address } from 'src/app/interfaces/address';
@@ -16,13 +16,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./add-technical.component.css']
 })
 export class AddTechnicalComponent implements OnInit, AfterViewInit {
-  
+
   @HostListener('window:unload', [ '$event' ])
   unloadHandler(event: any) {
    console.log('window:unload', event);
     alert('¿Está seguro de querer cerrar la sesión?');
   }
-  
+
   @HostListener('window:beforeunload', [ '$event' ])
    beforeUnloadHandler(event: any) {
     console.log('window:beforeunload', event)
@@ -38,7 +38,7 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
     city: '',
     cod_postal: ''
   };
-  
+
   fileName: string;
   img: HTMLElement | null;
 
@@ -48,13 +48,13 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
   newPasswordIcon: HTMLElement;
   compPasswordIcon: HTMLElement;
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
               private http: HttpClient,
               private uploadService: FileUploadService,
               private userService: UsersService,
               private router: Router) {
                 this.fillForm();
-               }
+              }
 
   ngAfterViewInit(): void {
     this.img = document.getElementById('img-user');
@@ -93,11 +93,10 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
       rol: [4, Validators.required],
       newPassword: ['', [Validators.required, Validators.pattern(Utils.passwordReg)]],
       confirmPassword: ['', [Validators.required, Validators.pattern(Utils.passwordReg)]]
-    },
-    { validator: this.checkIfPasswordAreEquals });
+    }, { validator: this.checkIfPasswordAreEquals } as AbstractControlOptions );
   }
 
-  public checkIfPasswordAreEquals(control: AbstractControl): ValidationErrors | null { 
+  public checkIfPasswordAreEquals(control: AbstractControl): ValidationErrors | null {
     if (control && control.get("newPassword")!.value && control.get("confirmPassword")!.value) {
       let comp = control.get('newPassword')!.value === control.get('confirmPassword')!.value;
       return comp ? null : { invalidComparison: true };
@@ -105,7 +104,12 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
     return null;
   }
 
-  
+  public keyPressed(event: any, count: number): boolean {
+    console.log(event);
+    if((event.charCode < 48 || event.charCode > 57) || event.srcElement.value.length == count) return false;
+    return true;
+  }
+
   addTechnicalUser() {
     this.user = new User();
     this.user.setUser_name(this.addTechnicalUserForm.get('nombre')!.value);

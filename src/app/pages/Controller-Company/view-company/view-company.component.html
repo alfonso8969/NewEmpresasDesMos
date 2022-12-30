@@ -96,7 +96,7 @@
                       <label for="telefono" class="control-label">* Teléfono</label>
                       <div class="input-container">
                         <input formControlName="phone" type="number" name="phone" id="phone"
-                          class="form-control" placeholder="9999999" maxlength="9" (keypress)="keyPressed($event, 9)">
+                          class="form-control" placeholder="9999999" maxlength="9" (keydown)="keyPressed($event, 9)">
                         <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('phone')?.value != ''"
                           href="tel: +34{{ editCompanyForm.get('phone')?.value }}" matTooltip="Click para llamar">
                           <i class="fa fa-phone bg-success p-2 text-white inp" aria-hidden="true"></i>
@@ -117,7 +117,7 @@
                       <label for="otherPhone" class="control-label">Otro Teléfono</label>
                       <div class="input-container">
                         <input formControlName="otherPhone" type="number" name="otherPhone" id="otherPhone"
-                          class="form-control" placeholder="9999999" maxlength="9" (keypress)="keyPressed($event, 9)">
+                          class="form-control" placeholder="9999999" maxlength="9" (keydown)="keyPressed($event, 9)">
                         <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('otherPhone')?.value != ''"
                           href="tel: +34{{ editCompanyForm.get('otherPhone')?.value }}"
                           matTooltip="Click para llamar">
@@ -164,7 +164,7 @@
                     <div class="form-group">
                       <label for="installation_year" class="control-label">Año instalación</label>
                       <input formControlName="installation_year" type="number" class="form-control nec" name="installation_year"
-                        id="installation_year" placeholder="Año instalación" [min]="1900" [max]="actualYear" maxlength="4" (keypress)="keyPressed($event, 4)">
+                        id="installation_year" placeholder="Año instalación" [min]="1900" [max]="actualYear" maxlength="4" (keydown)="keyPressed($event, 4)">
                         <span class="err text-danger"
                         *ngIf="editCompanyForm.get('installation_year')!.errors != null && editCompanyForm.get('installation_year')!.errors!['max'] && editCompanyForm.get('installation_year')?.touched">
                         El <strong>campo</strong> no es válido, fecha máxima de {{actualYear}}
@@ -183,25 +183,25 @@
                     <div class="form-group">
                       <label for="contactperson" class="control-label">Nº Trabajadores</label>
                       <input formControlName="workers_number" type="number" class="form-control" name="workers_number"
-                        id="workers_number" placeholder="Nº Trabajadores">
+                        id="workers_number" placeholder="Nº Trabajadores" (keydown)="keyPressed($event, 8)">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="address" class="control-label">* Dirección</label>
                       <div class="input-container">
-                        <input formControlName="direccion" type="text" class="form-control" name="direccion"
-                          id="direccion" placeholder="Dirección">
-                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('direccion')?.value != ''"
+                        <input formControlName="address" type="text" class="form-control" name="address"
+                          id="address" placeholder="Dirección">
+                        <a *ngIf="(empresa != undefined && empresa['Habilitada'] == 1) && editCompanyForm.get('address')?.value != ''"
                           target="_blank" rel="noopener noreferrer"
-                          href="https://www.google.com/maps/search/?api=1&query={{ editCompanyForm.get('nombre')?.value | trim }}+{{ editCompanyForm.get('direccion')?.value }}+{{ editCompanyForm.get('cod_postal')?.value }}"
+                          href="https://www.google.com/maps/search/?api=1&query={{ editCompanyForm.get('nombre')?.value | trim }}+{{ editCompanyForm.get('address')?.value }}+{{ editCompanyForm.get('cod_postal')?.value }}"
                           matTooltip="Click para ver en mapa">
                           <i class="fa fa-map-marked-alt bg-danger p-2 text-white inp" aria-hidden="true"></i>
                         </a>
                       </div>
                       <span class="err text-danger"
-                        *ngIf="isEdited && editCompanyForm.get('direccion')?.invalid && editCompanyForm.get('direccion')?.touched">
-                        La <strong>direccion</strong> es requerida
+                        *ngIf="isEdited && editCompanyForm.get('address')?.invalid && editCompanyForm.get('address')?.touched">
+                        La <strong>dirección</strong> es requerida
                       </span>
                     </div>
                   </div>
@@ -230,7 +230,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="email" class="control-label">* Polígono</label>
-                      <select formControlName="poligono" name="poligono" id="pologono" class="form-control"
+                      <select formControlName="polygon" name="polygon" id="pologono" class="form-control"
                         title="Polígono">
                         <option [ngValue]=0 selected>Seleccione polígono</option>
                         <option [ngValue]="dato.poligono_id" *ngFor="let dato of poligonos">
@@ -238,11 +238,11 @@
                         </option>
                       </select>
                       <span class="err text-danger"
-                        *ngIf="isEdited && editCompanyForm.get('poligono')?.invalid && editCompanyForm.get('poligono')?.touched">
+                        *ngIf="isEdited && editCompanyForm.get('polygon')?.invalid && editCompanyForm.get('polygon')?.touched">
                         El <strong>polígono es</strong> requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="isEdited && editCompanyForm.get('poligono')?.touched && editCompanyForm.get('poligono')?.value == 0">
+                        *ngIf="isEdited && editCompanyForm.get('polygon')?.touched && editCompanyForm.get('polygon')?.value == 0">
                         El <strong>polígono es</strong> requerido
                       </span>
                     </div>
@@ -268,7 +268,7 @@
                     <div class="form-group">
                       <label for="cod_postal" class="control-label">* Código postal</label>
                       <input formControlName="cod_postal" type="number" class="form-control nec" name="cod_postal"
-                        id="cod_postal" placeholder="Código postal 289--" [min]="28900" [max]="28999" [maxlength]="5" (keypress)="keyPressed($event, 5)">
+                        id="cod_postal" placeholder="Código postal 289--" [min]="28900" [max]="28999" [maxlength]="5" (keydown)="keyPressed($event, 5)">
                         <span class="err text-danger"
                         *ngIf="editCompanyForm.get('cod_postal')?.invalid && editCompanyForm.get('cod_postal')?.touched && !editCompanyForm.get('cod_postal')!.errors">
                         El <strong>código postal</strong> es requerido
@@ -436,6 +436,7 @@
               <div *ngIf="isEdited && editCompanyForm.touched && (editCompanyForm.invalid || isDisabled())" class="row">
                 <div class="col-offset-2 col-md-6">
                   <table class="table table-striped text-danger">
+                    <caption></caption>
                     <thead class="thead-dark">
                       <tr>
                         <th>Campo</th>

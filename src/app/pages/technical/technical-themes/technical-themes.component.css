@@ -1,0 +1,16 @@
+.ml-105 {
+  margin-left: 105px;
+}
+
+
+@media (max-width: 1440px) {
+  .ml-105 {
+    margin-left: 0px;
+  }
+
+  .mx-5 {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+}
+

@@ -52,7 +52,7 @@ export class AddCompanyComponent implements OnInit {
               private userService: UsersService,
               private fb: FormBuilder,
               private router: Router) {
-   
+
     this.user = this.userService.getUserLogged();
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
@@ -122,7 +122,7 @@ export class AddCompanyComponent implements OnInit {
   }
 
   public fillForm(): void {
-    
+
     this.addCompanyForm = this.fb.group({
       nombre: ['' , Validators.required],
       cif: ['' , [Validators.required, Validators.pattern(this.regex)]],
@@ -234,13 +234,13 @@ export class AddCompanyComponent implements OnInit {
    * Función que nos dirige al formulario de redes sociales de la empresa.
    * @description
    * Para poder ir, el formulario de empresa debe ser válido.
-   * Construimos la empresa 
-   * 
+   * Construimos la empresa
+   *
    * ```ts
    * this.addCompany(true)
    * ```
    * con true (si va a redes) para que no la guarde en la Base de Datos
-   * Guardamos en LocalStorage la empresa 
+   * Guardamos en LocalStorage la empresa
    * ```ts
    * localStorage.setItem("empresa", JSON.stringify(this.empresa))
    * ```
@@ -252,8 +252,8 @@ export class AddCompanyComponent implements OnInit {
     this.router.navigateByUrl('dashboard/add-redes');
   }
 
-  /** 
-   * Función que comprueba que los comboboxes no estén sin selección, 
+  /**
+   * Función que comprueba que los comboboxes no estén sin selección,
    * ```ts
    * [ngValue]=0
    * ```
@@ -261,6 +261,23 @@ export class AddCompanyComponent implements OnInit {
   */
   public isDisabled(): boolean {
     return this.addCompanyForm.get('sector')?.value == 0 || this.addCompanyForm.get('distrito')?.value == 0 || this.addCompanyForm.get('poligono')?.value == 0
+  }
+
+  /**
+   * Función que comprueba que ciertos campos númericos (Año instalación, Número de trabajadores, Código postal)
+   *
+   * @param {any} event Evento del input
+   * ```ts
+   * KeyPressedEvent
+   * ```
+   * @param {number} count Número de caracteres permitidos para ese input
+   *
+   *  @returns {boolean} true si es cierto, false de otra manera
+   */
+  public keyPressed(event: any, count: number): boolean {
+    console.log(event);
+    if((event.charCode < 48 || event.charCode > 57) || event.srcElement.value.length == count) return false;
+    return true;
   }
 
   public getFormValidationErrors(form: FormGroup): Result[] {

@@ -156,7 +156,7 @@ export class AdminFieldsComponent implements OnInit {
   }
 
   public updateField(field: Fields): void {
-   
+
     this.fieldsService.updateField(field).subscribe({
       next: (result: any) => {
         if (result == 1) {
@@ -181,7 +181,7 @@ export class AdminFieldsComponent implements OnInit {
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
             title: 'Añadir campo: ' + this.field.field_name,
-            text: `El ${ this.field.field_name } ya exite`,
+            text: `El ${ this.field.field_name } ya existe`,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
@@ -196,12 +196,12 @@ export class AdminFieldsComponent implements OnInit {
         this.clearForms();
       },
       complete: () => {
-       console.log("Complete se ctualizó el campo correctamente");
-       this.clearForms(); 
+       console.log("Complete se actualizó el campo correctamente");
+       this.clearForms();
       }
-        
+
     });
-    
+
   }
 
   private showAlertMessage(field: string) {
@@ -261,7 +261,5 @@ export class AdminFieldsComponent implements OnInit {
     this.updateFieldSectorForm.markAsUntouched();
     this.updateFieldPoligonoForm.markAsUntouched();
     this.updateFieldDistritoForm.markAsUntouched();
-    
   }
-
 }

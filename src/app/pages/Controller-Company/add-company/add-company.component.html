@@ -80,7 +80,7 @@
                     <div class="form-group">
                       <label for="phone" class="control-label">* Teléfono</label>
                       <input formControlName="phone" type="number" name="phone" id="phone" class="form-control"
-                        placeholder="9999999" maxlength="9">
+                        placeholder="9999999" maxlength="9" (keydown)="keyPressed($event, 9)">
                       <span class="err text-danger"
                         *ngIf="addCompanyForm.get('phone')?.invalid && addCompanyForm.get('phone')?.touched && !addCompanyForm.get('phone')!.errors!['pattern']">
                         El <strong>teléfono </strong>es requerido
@@ -95,7 +95,7 @@
                     <div class="form-group">
                       <label for="otherPhone" class="control-label">Otro Teléfono</label>
                       <input formControlName="otherPhone" type="number" name="otherPhone" id="otherPhone"
-                        class="form-control" placeholder="9999999" maxlength="9">
+                        class="form-control" placeholder="9999999" maxlength="9" (keydown)="keyPressed($event, 9)">
                       <span class="err text-danger"
                         *ngIf="addCompanyForm.get('otherPhone')!.errors != null && addCompanyForm.get('otherPhone')!.errors!['pattern'] && addCompanyForm.get('otherPhone')?.touched">
                         El <strong>Teléfono</strong> no es válido, debe ser 99999999
@@ -130,7 +130,7 @@
                     <div class="form-group">
                       <label for="installation_year" class="control-label">Año instalación</label>
                       <input formControlName="installation_year" type="number" class="form-control nec" name="installation_year"
-                        id="installation_year" placeholder="Año instalación" [min]="1900" [max]="actualYear" [maxlength]="4">
+                        id="installation_year" placeholder="Año instalación" [min]="1900" [max]="actualYear" [maxlength]="4" (keydown)="keyPressed($event, 4)">
                         <span class="err text-danger"
                         *ngIf="addCompanyForm.get('installation_year')!.errors != null && addCompanyForm.get('installation_year')!.errors!['max'] && addCompanyForm.get('installation_year')?.touched">
                         El <strong>campo</strong> no es válido, fecha máxima de {{actualYear}}
@@ -149,7 +149,7 @@
                     <div class="form-group">
                       <label for="workers_number" class="control-label">Nº Trabajadores</label>
                       <input formControlName="workers_number" type="number" class="form-control" name="workers_number"
-                        id="workers_number" placeholder="Nº Trabajadores">
+                        id="workers_number" placeholder="Nº Trabajadores" (keydown)="keyPressed($event, 8)">
                     </div>
                   </div>
                   <div class="col-md-4">
@@ -226,7 +226,7 @@
                     <div class="form-group">
                       <label for="cod_postal" class="control-label">* Código postal</label>
                       <input formControlName="cod_postal" type="number" class="form-control nec" name="cod_postal"
-                        id="cod_postal" placeholder="Código postal 289--" [min]="28900" [max]="28999" [maxlength]="5">
+                        id="cod_postal" placeholder="Código postal 289--" [min]="28900" [max]="28999" [maxlength]="5" (keydown)="keyPressed($event, 5)">
                       <span class="err text-danger"
                         *ngIf="addCompanyForm.get('cod_postal')?.invalid && addCompanyForm.get('cod_postal')?.touched && !addCompanyForm.get('cod_postal')!.errors">
                         El <strong>código postal</strong> es requerido
