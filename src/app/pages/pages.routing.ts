@@ -26,7 +26,9 @@ import { AddTechnicalComponent } from './technical/add-technical/add-technical.c
 import { TechnicalSessionsComponent } from './technical/technical-sessions/technical-sessions.component';
 import { ListTechnicalComponent } from './technical/list-technical/list-technical.component';
 import { TechnicalThemesComponent } from './technical/technical-themes/technical-themes.component';
-import { TechnicalEmailsComponent } from './technical/technical-emails/technical-emails.component';
+import { TechnicalEmailsComponent } from './technical/emails/technical-emails/technical-emails.component';
+import { TechnicalEmailsDetailsComponent } from './technical/emails/technical-emails-details/technical-emails-details.component';
+import { TechnicalEmailsSendComponent } from './technical/emails/technical-emails-send/technical-emails-send.component';
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -71,7 +73,9 @@ const routes: Routes = [
       { path: 'technical-ticket', title: "Gestión tickets", component: TicketManagementComponent, data: { rol: ['ROL_TECHNICAL'] } },
       { path: 'list-technical', title: "Listado de técnicos", component: ListTechnicalComponent, data: { rol: ['ROL_TECHNICAL'] } },
       { path: 'technical-themes', title: "Gestión temas tickets", component: TechnicalThemesComponent, data: { rol: ['ROL_TECHNICAL'] } },
-      { path: 'technical-emails', title: "Listado de técnicos", component: TechnicalEmailsComponent, data: { rol: ['ROL_TECHNICAL'] } },
+      { path: 'technical-emails-management', title: "Gestión de correo", component: TechnicalEmailsComponent, data: { rol: ['ROL_TECHNICAL'] } },
+      { path: 'technical-emails-details', title: "Detalle del correo", component: TechnicalEmailsDetailsComponent, data: { rol: ['ROL_TECHNICAL'] } },
+      { path: 'technical-emails-send', title: "Enviar correo", component: TechnicalEmailsSendComponent, data: { rol: ['ROL_TECHNICAL'] } },
     ]
   },
 ];

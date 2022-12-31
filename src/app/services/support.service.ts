@@ -41,6 +41,7 @@ export class SupportService {
   public checkTicketExitByCode(code: string): Observable<TicketByUser> {
     return this.http.post<TicketByUser>(`${this.baseUrl}/checkTicketExitByCode.php`, { code: code });
   }
+
   public checkTicketRefCode(code: string): Observable<TicketByUser[]> {
     return this.http.post<TicketByUser[]>(`${this.baseUrl}/checkTicketRefCode.php`, { code: code });
   }
@@ -59,5 +60,13 @@ export class SupportService {
 
   public insertTicketResponse(ticket: Ticket): Observable<number> {
     return this.http.post<number>(`${this.baseUrl}/insertTicketResponse.php`, { ticket: ticket }); // Pendiente
+  }
+
+  public getTickets(): Observable<Ticket[]> {
+    return this.http.get<Ticket[]>(`${this.baseUrl}/getTickets.php`);
+  }
+
+  public getTicketTratadosByCode(code: string): Observable<TicketByUser> {
+    return this.http.post<TicketByUser>(`${this.baseUrl}/getTicketTratadosByCode.php`, { code: code });
   }
 }

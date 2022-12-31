@@ -39,9 +39,7 @@ import { TechnicalSessionsComponent } from './technical/technical-sessions/techn
 import { TicketManagementComponent } from './technical/ticket-management/ticket-management.component';
 import { ListTechnicalComponent } from './technical/list-technical/list-technical.component';
 import { TechnicalThemesComponent } from './technical/technical-themes/technical-themes.component';
-import { TechnicalEmailsComponent } from './technical/technical-emails/technical-emails.component';
-
-
+import { TechnicalEmailsModule } from './technical/emails/technical-emails.module';
 
 @NgModule({
   declarations: [
@@ -72,8 +70,7 @@ import { TechnicalEmailsComponent } from './technical/technical-emails/technical
     TechnicalSessionsComponent,
     TicketManagementComponent,
     ListTechnicalComponent,
-    TechnicalThemesComponent,
-    TechnicalEmailsComponent
+    TechnicalThemesComponent
   ],
   imports: [
     CommonModule,
@@ -89,7 +86,8 @@ import { TechnicalEmailsComponent } from './technical/technical-emails/technical
       echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
     }),
     NgxPaginationModule,
-    SharedModule
+    SharedModule,
+    TechnicalEmailsModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

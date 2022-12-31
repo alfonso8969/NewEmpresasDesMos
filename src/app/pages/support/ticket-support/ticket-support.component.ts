@@ -95,7 +95,7 @@ export class TicketSupportComponent implements OnInit {
       message: '',
       fecha: new Date(),
       code: '',
-      respondido: false
+      respondido: 0
     }
 
     this.user = this.userService.getUserLogged();

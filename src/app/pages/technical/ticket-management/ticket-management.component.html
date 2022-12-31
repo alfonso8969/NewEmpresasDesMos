@@ -1,1 +1,141 @@
-<p>ticket-management works!</p>
+<div class="page-wrapper">
+
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid">
+    <app-mat-spinner-overlay *ngIf="load">
+    </app-mat-spinner-overlay>
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Tickets</h3>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Lista de tickets de soporte</h4>
+            <h6 class="card-subtitle">Lista de tickets abiertos por los usuarios</h6>
+            <div class="row m-t-40">
+              <!-- Column -->
+              <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                  <div class="box bg-info text-center">
+                    <h1 class="font-light text-white">{{ ticketsTotal }}</h1>
+                    <h6 class="text-white">Total Tickets</h6>
+                  </div>
+                </div>
+              </div>
+              <!-- Column -->
+              <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                  <div class="box bg-primary text-center">
+                    <h1 class="font-light text-white">{{ ticketsTotalResponse }}</h1>
+                    <h6 class="text-white">Respondidos</h6>
+                  </div>
+                </div>
+              </div>
+              <!-- Column -->
+              <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                  <div class="box bg-success text-center">
+                    <h1 class="font-light text-white">{{ ticketsTotalResolve }}</h1>
+                    <h6 class="text-white">Resueltos</h6>
+                  </div>
+                </div>
+              </div>
+              <!-- Column -->
+              <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                  <div class="box bg-dark text-center">
+                    <h1 class="font-light text-white">{{ ticketsTotalPending }}</h1>
+                    <h6 class="text-white">Pendientes</h6>
+                  </div>
+                </div>
+              </div>
+              <!-- Column -->
+            </div>
+            <div class="table-responsive">
+              <table id="demo-foo-addrow" class="contact-list footable footable-loaded m-t-30 no-wrap table table-hover"
+                data-page-size="10">
+                <caption></caption>
+                <thead>
+                  <tr>
+                    <th class="footable-sortable">Ref
+                      <span class="footable-sort-indicator"></span>
+                    </th>
+                    <th class="footable-sortable">Abierto por
+                      <span class="footable-sort-indicator"></span>
+                    </th>
+                    <th class="footable-sortable">User Email
+                      <span class="footable-sort-indicator"></span>
+                    </th>
+                    <th class="footable-sortable">Mensaje
+                      <span class="footable-sort-indicator"></span>
+                    </th>
+                    <th class="footable-sortable">Estado
+                      <span class="footable-sort-indicator"></span>
+                    </th>
+                    <th class="footable-sortable">Asignado a
+                      <span class="footable-sort-indicator"></span>
+                    </th>
+                    <th class="footable-sortable">Fecha
+                      <span class="footable-sort-indicator"></span>
+                    </th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="footable-even"
+                    *ngFor="let ticket of tickets | paginate: { id: 'users', itemsPerPage: 5, currentPage: page }">
+                    <td>{{ ticket.code }}
+                      <span class="footable-toggle"></span>
+                    </td>
+                    <td>
+                      <a href="javascript:void(0)"><img [src]="url + '/uploads/' + ticket.user_img" alt="user"
+                          class="img-circle" />{{ ticket.user_name }}</a>
+                    </td>
+                    <td>{{ ticket.user_email }}</td>
+                    <td class="ms" [matTooltip]="ticket.message"><strong>{{ ticket.campo.toString() | uppercase }}</strong>-{{ ticket.message }}</td>
+                    <td *ngIf="ticket.respondido == 0 && ticket.ticketByUser === undefined" class="label label-warning">
+                      Nuevo</td>
+                    <td *ngIf="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)"
+                      class="label label-danger">Pendiente cerrar</td>
+                    <td *ngIf="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 1)"
+                      class="label label-success">Completado</td>
+
+                    <td *ngIf="ticket.ticketByUser === undefined">Sin asignar</td>
+                    <td *ngIf="ticket.ticketByUser && ticket.ticketByUser.user_name">{{
+                      ticket.ticketByUser.user_name.split(' ')[0] }}</td>
+
+                    <td>{{ ticket.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
+                    <td>
+                      <a class="btn btn-warning" [matTooltip]="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' : 
+                                        'Ver ticket'" (click)="getTicket(ticket, (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' : 
+                                        'Ver ticket'))"><i
+                          class="fa fa-ticket"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="animated fadeInDown mt-2">
+              <pagination-controls id="users" (pageChange)="page = $event" [previousLabel]="anterior"
+                [nextLabel]="siguiente" [responsive]="true" [autoHide]="true"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Container fluid  -->
+  <!-- ============================================================== -->
+</div>

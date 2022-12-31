@@ -1,0 +1,24 @@
+.contact-list td img {
+  width: 30px;
+}
+td.label {
+  padding: 3px 10px !important;
+  line-height: 13px;
+  color: #ffffff;
+  font-weight: 400;
+  border-radius: 4px;
+  font-size: 75% !important;
+  margin-top: 20px;
+}
+
+td {
+  cursor: pointer;
+}
+
+.ms {
+  width: 2500px !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 250px;
+}

@@ -285,15 +285,15 @@ export class TechnicalThemesComponent implements OnInit {
         console.log(error);
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({
-            title: 'Añadir campo: ' + this.field.field_name,
-            text: `El ${this.field.field_name} ya existe`,
+            title: 'Añadir tema: ' + this.field.tema_name,
+            text: `El tema ${this.field.tema_name} ya existe`,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
         } else {
           Swal.fire({
-            title: 'Actualizar campo: ' + field.field_name,
-            text: `Hubo algún error al actualizar el ${field.field_name}`,
+            title: 'Actualizar tema: ' + field.tema_name,
+            text: `Hubo algún error al actualizar el tema ${field.tema_name}`,
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
@@ -301,7 +301,7 @@ export class TechnicalThemesComponent implements OnInit {
         this.cleanFormsTema();
       },
       complete: () => {
-        console.log("Complete se actualizó el campo correctamente");
+        console.log("Complete se actualizó el tema correctamente");
         this.cleanFormsTema();
       }
     });

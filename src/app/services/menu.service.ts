@@ -158,9 +158,23 @@ export class MenuService {
             },
             {
               title: 'Temas tickets', url: '/dashboard/technical-themes'
+            }
+
+          ]
+        },
+        {
+          title: 'Emails',
+          icon: 'fa fa-mail-bulk',
+          rol: this.technical,
+          submenu: [
+            {
+              title: 'Gestión emails', url: '/dashboard/technical-emails-management'
             },
             {
-              title: 'Gestión emails', url: '/dashboard/technical-emails'
+              title: 'Emails detalles', url: '/dashboard/technical-emails-details'
+            },
+            {
+              title: 'Mandar emails', url: '/dashboard/technical-emails-send'
             }
           ]
         }
