@@ -3,7 +3,7 @@
   <!-- ============================================================== -->
   <!-- Container fluid  -->
   <!-- ============================================================== -->
-  <div class="container-fluid">
+  <div class="container-fluid animated fadeInDown">
     <app-mat-spinner-overlay *ngIf="load">
     </app-mat-spinner-overlay>
     <div class="row page-titles">
@@ -22,7 +22,7 @@
             <h6 class="card-subtitle">Lista de tickets abiertos por los usuarios</h6>
             <div class="row m-t-40">
               <!-- Column -->
-              <div class="col-md-6 col-lg-3 col-xlg-3">
+              <div class="col-md-3 col-lg-2 col-xlg-2">
                 <div class="card">
                   <div class="box bg-info text-center">
                     <h1 class="font-light text-white">{{ ticketsTotal }}</h1>
@@ -31,7 +31,7 @@
                 </div>
               </div>
               <!-- Column -->
-              <div class="col-md-6 col-lg-3 col-xlg-3">
+              <div class="col-md-3 col-lg-2 col-xlg-2">
                 <div class="card">
                   <div class="box bg-primary text-center">
                     <h1 class="font-light text-white">{{ ticketsTotalResponse }}</h1>
@@ -40,7 +40,7 @@
                 </div>
               </div>
               <!-- Column -->
-              <div class="col-md-6 col-lg-3 col-xlg-3">
+              <div class="col-md-3 col-lg-2 col-xlg-2">
                 <div class="card">
                   <div class="box bg-success text-center">
                     <h1 class="font-light text-white">{{ ticketsTotalResolve }}</h1>
@@ -49,15 +49,23 @@
                 </div>
               </div>
               <!-- Column -->
-              <div class="col-md-6 col-lg-3 col-xlg-3">
+              <div class="col-md-3 col-lg-2 col-xlg-2">
                 <div class="card">
-                  <div class="box bg-dark text-center">
+                  <div class="box bg-warning text-center">
                     <h1 class="font-light text-white">{{ ticketsTotalPending }}</h1>
                     <h6 class="text-white">Pendientes</h6>
                   </div>
                 </div>
               </div>
               <!-- Column -->
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-danger text-center">
+                    <h1 class="font-light text-white">{{ ticketsTotalPendingClose }}</h1>
+                    <h6 class="text-white">Pendientes cerrar</h6>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="table-responsive">
               <table id="demo-foo-addrow" class="contact-list footable footable-loaded m-t-30 no-wrap table table-hover"
@@ -100,7 +108,8 @@
                           class="img-circle" />{{ ticket.user_name }}</a>
                     </td>
                     <td>{{ ticket.user_email }}</td>
-                    <td class="ms" [matTooltip]="ticket.message"><strong>{{ ticket.campo.toString() | uppercase }}</strong>-{{ ticket.message }}</td>
+                    <td class="ms" [matTooltip]="ticket.message"><strong>{{ ticket.campo.toString() | uppercase
+                        }}</strong>-{{ ticket.message }}</td>
                     <td *ngIf="ticket.respondido == 0 && ticket.ticketByUser === undefined" class="label label-warning">
                       Nuevo</td>
                     <td *ngIf="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)"
@@ -114,9 +123,9 @@
 
                     <td>{{ ticket.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
                     <td>
-                      <a class="btn btn-warning" [matTooltip]="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' : 
-                                        'Ver ticket'" (click)="getTicket(ticket, (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' : 
-                                        'Ver ticket'))"><i
+                      <a class="btn btn-warning" [matTooltip]="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' :
+                                        'Ver ticket'" (click)="getTicket(ticket, (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' :
+                                        'Ver ticket'))" data-toggle="modal" data-target=".md-tickets"><i
                           class="fa fa-ticket"></i></a>
                     </td>
                   </tr>
@@ -138,4 +147,153 @@
   <!-- ============================================================== -->
   <!-- End Container fluid  -->
   <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <!-- sample modal content -->
+        <div id="md" class="modal fade md-tickets" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div class="form-group">
+                  <h4 class="modal-title" *ngIf="viewTicket">Ver datos del ticket:
+                  </h4>
+                  <h4 class="modal-title text-danger" *ngIf="!viewTicket && closeTicket">Cerrar ticket del usuario:
+                  </h4>
+                  <h4 class="modal-title" *ngIf="!viewTicket && !closeTicket && responseTicket">Responder ticket:
+                  </h4>
+                  <h5><strong class="text-primary">{{ ticket && ticket.code }}</strong></h5>
+                  <h5><strong class="text-primary">Fecha: {{ ticket && ticket.fecha }}</strong></h5>
+                  <h5><strong class="text-danger"
+                      *ngIf="ticket && ticket.ticketByUser && ticket.ticketByUser!.fecha_solucion">Fecha respuesta: {{
+                      ticket && ticket.ticketByUser!.fecha_solucion }}</strong></h5>
+                  <h5><strong class="text-warning"
+                      *ngIf="ticket && ticket.ticketByUser && ticket.ticketByUser!.ticket_refer">Ticket Referencia: {{
+                      ticket && ticket.ticketByUser!.ticket_refer }}</strong></h5>
+                </div>
+                <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'"
+                  data-dismiss="modal" aria-hidden="true">&Cross;</button>
+              </div>
+              <div class="card">
+                <form [formGroup]="responseTicketForm" (ngSubmit)="funcResponseTicket()" novalidate autocomplete="off">
+                  <div class="card-body">
+                    <div class="form-body">
+                      <div class="row p-t-20">
+                        <div class="col-md-6">
+                          <div id="div-imgUser" class="text-center">
+                            <div class="form-group">
+                              <label for="userName">Usuario</label>
+                              <input title="{{ ticket && ticket.user_name }}" id="userName" class="form-control"
+                                type="text" [readonly]="true" [value]="ticket && ticket.user_name">
+                            </div>
+                            <img id="img-user"
+                              [src]="ticket && ticket.user_img != undefined  ? url + '/uploads/' + ticket.user_img : './assets/images/icon/staff.png'"
+                              height="200px" width="200px" alt="This is a small profile image"><br>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="ticketMessage">Mensaje del ticket</label>
+                            <textarea id="ticketMessage" cols="35" rows="11" [value]="ticket && ticket.message"
+                              [readonly]="true" class="form-control"></textarea>
+                          </div>
+                        </div>
+
+                      </div>
+                      <!--/row-->
+                      <div class="row mt-3" *ngIf="responseTicket">
+                        <div class="col-md-6">
+                          <div id="div-img-user" class="text-center">
+                            <div class="form-group">
+                              <label for="technicalName">Técnico</label>
+                              <input id="technicalName" class="form-control" type="text" [readonly]="true"
+                                [value]="userFullName">
+                            </div>
+                            <img id="img-user" title="{{ userFullName }}"
+                              [src]="user && user.user_img != undefined  ? url + '/uploads/' + user.user_img : './assets/images/icon/staff.png'"
+                              height="200px" width="200px" alt="This is a small profile image"><br>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="message">* Escriba respuesta</label>
+                            <p></p>
+                            <textarea formControlName="message" name="message" id="message" cols="35" rows="11"
+                              class="form-control bg"></textarea>
+                            <span
+                              *ngIf="responseTicketForm.get('message')?.value.length <= 500 && (responseTicketForm.get('message')?.value.length > 1 || responseTicketForm.get('message')?.value.length ==0)">
+                              {{ responseTicketForm.get('message')?.value.length }} caracteres de 500 permitidos</span>
+                            <span
+                              *ngIf="responseTicketForm.get('message')?.value.length <= 500 && responseTicketForm.get('message')?.value.length == 1">
+                              {{ responseTicketForm.get('message')?.value.length }} carácter de 500 permitidos</span> <br>
+                            <span class="err text-danger"
+                              *ngIf="responseTicketForm.get('message')?.invalid && responseTicketForm.get('message')?.touched && !responseTicketForm.get('message')!.errors!['maxlength']">
+                              El <strong>mensaje es</strong> requerido
+                            </span>
+                            <span class="err text-danger"
+                              *ngIf="responseTicketForm.get('message')?.errors != null && responseTicketForm.get('message')!.errors!['maxlength']">
+                              El <strong>limite es de 500 caracteres</strong>
+                            </span>
+
+                          </div>
+                        </div>
+                      </div>
+                      <!--/row-->
+                      <!--/row-->
+                      <div class="row mt-3" *ngIf="viewTicket || closeTicket">
+                        <div class="col-md-6">
+                          <div id="div-img-user" class="text-center">
+                            <div class="form-group">
+                              <label for="technicalName2">Técnico</label>
+                              <input id="technicalName2" class="form-control" type="text" [readonly]="true"
+                                [value]="ticket && ticket.ticketByUser!.user_name">
+                            </div>
+                            <img id="img-user" title="{{ ticket && ticket.ticketByUser!.user_name }}"
+                              [src]="ticket.ticketByUser && ticket.ticketByUser.user_img != undefined  ? url + '/uploads/' + ticket.ticketByUser.user_img : './assets/images/icon/staff.png'"
+                              height="200px" width="200px" alt="This is a small profile image"><br>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="message2">Respuesta</label>
+                            <p></p>
+                            <textarea id="message2" cols="35" rows="11" class="form-control bg"
+                              [value]="ticket.ticketByUser!.respuesta" [readonly]="true"></textarea>
+                          </div>
+                        </div>
+                        <div *ngIf="closeTicket">
+                          <span class="text-primary">Por favor indique este ticket como solucionado</span><p></p>
+                          <input [checked]="ticket && ticket.ticketByUser && ticket.ticketByUser.solucionado != 0" type="checkbox"
+                            id="closeTicket" (change)="onCheckboxChange($event)">
+                          <label class="text-primary" for="closeTicket">Marcar como solucionado</label>
+                        </div>
+                      </div>
+                      <!--/row-->
+                    </div>
+                    <div class="form-actions" *ngIf="responseTicket">
+                      <button type="submit" [disabled]="responseTicketForm.invalid" class="btn-primary button d-inline">
+                        <span matTooltip="Faltan campos por llenar" [matTooltipPosition]="'before'"
+                          aria-label="Botón que guarda la información de la respuesta a un ticket">Guardar
+                        </span>
+                        <i class="fa fa-save p-1"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- <p>{{ getFormValidationErrors(editUserForm) }}</p> -->
+                </form>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+      </div>
+    </div>
+  </div>
 </div>

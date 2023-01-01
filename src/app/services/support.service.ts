@@ -46,20 +46,12 @@ export class SupportService {
     return this.http.post<TicketByUser[]>(`${this.baseUrl}/checkTicketRefCode.php`, { code: code });
   }
 
-  public markTicketClosed(code: string): Observable<number> {
-    return this.http.post<number>(`${this.baseUrl}/markTicketClosed.php`, { code: code });
-  }
-
   public markTicketFixed(code: string): Observable<number> {
     return this.http.post<number>(`${this.baseUrl}/markTicketFixed.php`, { code: code });
   }
 
-  public markTicketResponse(code: string): Observable<number> {
-    return this.http.post<number>(`${this.baseUrl}/markTicketResponse.php`, { code: code }); ; // Pendiente
-  }
-
-  public insertTicketResponse(ticket: Ticket): Observable<number> {
-    return this.http.post<number>(`${this.baseUrl}/insertTicketResponse.php`, { ticket: ticket }); // Pendiente
+  public insertTicketResponse(ticket: TicketByUser): Observable<number> {
+    return this.http.post<number>(`${this.baseUrl}/insertTicketResponse.php`, { ticket: ticket });
   }
 
   public getTickets(): Observable<Ticket[]> {

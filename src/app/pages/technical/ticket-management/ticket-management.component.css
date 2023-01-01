@@ -22,3 +22,17 @@ td {
   overflow: hidden;
   max-width: 250px;
 }
+
+#ticketMessage, .bg {
+  background-color: rgb(226, 231, 217);
+}
+
+#img-user {
+  border-radius: 50%;
+  border: 10px solid #FEDE00;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 35px;
+}
