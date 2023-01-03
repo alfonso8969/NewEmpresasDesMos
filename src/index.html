@@ -20,8 +20,6 @@
   <link href="./assets/main/css/pages/error-pages.css" rel="stylesheet">
   <link href="./assets/main/css/pages/file-upload.css" rel="stylesheet">
   <link href="./assets/main/css/pages/stylish-tooltip.css" rel="stylesheet">
-  <link href="./assets/plugins/footable/css/footable.core.css" rel="stylesheet">
-  <link href="./assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
 
   <!-- You can change the theme colors from here -->
   <link href="./assets/main/css/colors/blue.css" id="theme" rel="stylesheet">
@@ -40,6 +38,7 @@
       window.location.hash = "no-back-button";
       window.location.hash = "Again-No-back-button" //chrome
       window.onhashchange = function () { window.location.hash = "no-back-button"; }
+      window.history.go(1)
     }
   </script>
 </head>
@@ -66,12 +65,7 @@
   <script src="./assets/plugins/sparkline/jquery.sparkline.min.js"></script>
   <!--Custom JavaScript -->
   <script src="./assets/main/js/custom.min.js"></script>
-  <!-- fooTable -->
-  <script src="./assets/plugins/footable/js/footable.all.min.js"></script>
-  <script src="./assets/plugins/bootstrap-select/bootstrap-select.min.js" type="text/javascript"></script>
-  <!--FooTable init-->
-  <script src="./assets/main/js/footable-init.js"></script>
-  
+
   <script src="./assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
   <script src="./assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript">
   </script>

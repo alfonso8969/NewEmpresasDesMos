@@ -8,10 +8,12 @@ export interface Ticket {
   user_email?: string;
   campo: number;
   message: string;
+  estado?: "Nuevo" | "Pendiente cerrar" |  "Completado" | "Sin datos";
   fecha: Date;
   code: string;
   ticket_refer?: string;
   respondido: number;
   ticketByUser?: TicketByUser;
+  user_technical?: string;
 
 }

@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
       password: ['', [Validators.required, Validators.pattern(Utils.passwordReg)]],
-      checkboxsignup: ['']
+      checkBoxSignup: ['']
     });
 
     this.forgotPasswordForm = this.fb.group({
@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.user = new User();
-    let remember = this.loginForm.get('checkboxsignup')!.value;
+    let remember = this.loginForm.get('checkBoxSignup')!.value;
     localStorage.removeItem('remember');
     if (remember) {
       localStorage.setItem('remember', "true");

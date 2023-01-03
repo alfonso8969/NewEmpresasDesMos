@@ -13,12 +13,12 @@ import { TicketByUser } from '../interfaces/ticketByUser';
 export class SupportService {
 
 
-  private url: string;
+  private urlEmail: string;
   private baseUrl: string;
 
 
   constructor(private http: HttpClient) {
-    this.url = environment.urlPHPEmail;
+    this.urlEmail = environment.urlPHPEmail;
     this.baseUrl = environment.apiUrl;
   }
 

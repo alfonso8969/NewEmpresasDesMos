@@ -373,7 +373,9 @@ export class ViewUserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.viewProfile1.style.display = 'inline-block';
-    this.viewProfile2.style.display = 'block';
+    if (this.urlSended) {
+      this.viewProfile1.style.display = 'inline-block';
+      this.viewProfile2.style.display = 'block';
+    }
   }
 }

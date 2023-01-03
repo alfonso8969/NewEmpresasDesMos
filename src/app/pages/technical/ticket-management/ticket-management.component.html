@@ -44,16 +44,7 @@
                 <div class="card">
                   <div class="box bg-success text-center">
                     <h1 class="font-light text-white">{{ ticketsTotalResolve }}</h1>
-                    <h6 class="text-white">Resueltos</h6>
-                  </div>
-                </div>
-              </div>
-              <!-- Column -->
-              <div class="col-md-3 col-lg-2 col-xlg-2">
-                <div class="card">
-                  <div class="box bg-warning text-center">
-                    <h1 class="font-light text-white">{{ ticketsTotalPending }}</h1>
-                    <h6 class="text-white">Pendientes</h6>
+                    <h6 class="text-white">Completados</h6>
                   </div>
                 </div>
               </div>
@@ -66,46 +57,41 @@
                   </div>
                 </div>
               </div>
+              <!-- Column -->
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-warning text-center">
+                    <h1 class="font-light text-white">{{ ticketsTotalPending }}</h1>
+                    <h6 class="text-white">Pendientes</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="search" class="form-control" [(ngModel)]="filter" placeholder='Filtrar por "Abierto por" o "Ref"'>
             </div>
             <div class="table-responsive">
-              <table id="demo-foo-addrow" class="contact-list footable footable-loaded m-t-30 no-wrap table table-hover"
+              <table id="demo-foo-addrow" class="contact-list m-t-30 no-wrap table table-hover"
                 data-page-size="10">
                 <caption></caption>
                 <thead>
                   <tr>
-                    <th class="footable-sortable">Ref
-                      <span class="footable-sort-indicator"></span>
-                    </th>
-                    <th class="footable-sortable">Abierto por
-                      <span class="footable-sort-indicator"></span>
-                    </th>
-                    <th class="footable-sortable">User Email
-                      <span class="footable-sort-indicator"></span>
-                    </th>
-                    <th class="footable-sortable">Mensaje
-                      <span class="footable-sort-indicator"></span>
-                    </th>
-                    <th class="footable-sortable">Estado
-                      <span class="footable-sort-indicator"></span>
-                    </th>
-                    <th class="footable-sortable">Asignado a
-                      <span class="footable-sort-indicator"></span>
-                    </th>
-                    <th class="footable-sortable">Fecha
-                      <span class="footable-sort-indicator"></span>
-                    </th>
-                    <th>Action</th>
+                    <th scope="col" sortable="code" (sort)="onSort($event)">Ref</th>
+                    <th scope="col" sortable="user_name" (sort)="onSort($event)">Abierto por</th>
+                    <th scope="col" sortable="user_email" (sort)="onSort($event)">User Email</th>
+                    <th scope="col" sortable="message" (sort)="onSort($event)">Mensaje</th>
+                    <th scope="col" sortable="estado" (sort)="onSort($event)">Estado</th>
+                    <th scope="col" sortable="user_technical" (sort)="onSort($event)">Asignado a</th>
+                    <th scope="col" sortable="fecha" (sort)="onSort($event)">Fecha</th>
+                    <th>Acción</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="footable-even"
-                    *ngFor="let ticket of tickets | paginate: { id: 'users', itemsPerPage: 5, currentPage: page }">
-                    <td>{{ ticket.code }}
-                      <span class="footable-toggle"></span>
-                    </td>
+                  <tr *ngFor="let ticket of tickets | ticket: filter | paginate: { id: 'users', itemsPerPage: 10, currentPage: page }">
+                    <td>{{ ticket.code }}</td>
                     <td>
-                      <a href="javascript:void(0)"><img [src]="url + '/uploads/' + ticket.user_img" alt="user"
-                          class="img-circle" />{{ ticket.user_name }}</a>
+                      <img [src]="url + '/uploads/' + ticket.user_img" alt="{{ ticket.user_name }}" title="{{ ticket.user_name }}" class="img-circle mr-2" />
+                      {{ ticket.user_name }}
                     </td>
                     <td>{{ ticket.user_email }}</td>
                     <td class="ms" [matTooltip]="ticket.message"><strong>{{ ticket.campo.toString() | uppercase
@@ -115,17 +101,13 @@
                     <td *ngIf="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)"
                       class="label label-danger">Pendiente cerrar</td>
                     <td *ngIf="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 1)"
-                      class="label label-success">Completado</td>
-
-                    <td *ngIf="ticket.ticketByUser === undefined">Sin asignar</td>
-                    <td *ngIf="ticket.ticketByUser && ticket.ticketByUser.user_name">{{
-                      ticket.ticketByUser.user_name.split(' ')[0] }}</td>
+                      class="label label-success">Completado</td>                
+                    <td >{{ ticket.user_technical != 'Sin asignar' ? ticket.user_technical!.split(' ')[0] : ticket.user_technical }}</td>
 
                     <td>{{ ticket.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
                     <td>
-                      <a class="btn btn-warning" [matTooltip]="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' :
-                                        'Ver ticket'" (click)="getTicket(ticket, (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' :
-                                        'Ver ticket'))" data-toggle="modal" data-target=".md-tickets"><i
+                      <a class="btn btn-warning" [matTooltip]="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' : 'Ver ticket'" (click)="getTicket(ticket, (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0) ? 'Cerrar ticket' : ticket.respondido == 0 ? 'Responder ticket' :
+                        'Ver ticket'))" data-toggle="modal" data-target=".md-tickets"><i
                           class="fa fa-ticket"></i></a>
                     </td>
                   </tr>
@@ -181,8 +163,11 @@
               </div>
               <div class="card">
                 <form [formGroup]="responseTicketForm" (ngSubmit)="funcResponseTicket()" novalidate autocomplete="off">
+                  <!-- card-body -->
                   <div class="card-body">
+                    <!-- form-body -->
                     <div class="form-body">
+                      <!--row-->
                       <div class="row p-t-20">
                         <div class="col-md-6">
                           <div id="div-imgUser" class="text-center">
@@ -206,6 +191,7 @@
 
                       </div>
                       <!--/row-->
+                      <!--row-->
                       <div class="row mt-3" *ngIf="responseTicket">
                         <div class="col-md-6">
                           <div id="div-img-user" class="text-center">
@@ -244,7 +230,7 @@
                         </div>
                       </div>
                       <!--/row-->
-                      <!--/row-->
+                      <!--row-->
                       <div class="row mt-3" *ngIf="viewTicket || closeTicket">
                         <div class="col-md-6">
                           <div id="div-img-user" class="text-center">
@@ -266,7 +252,7 @@
                               [value]="ticket.ticketByUser!.respuesta" [readonly]="true"></textarea>
                           </div>
                         </div>
-                        <div *ngIf="closeTicket">
+                        <div class="pl-3" *ngIf="closeTicket">
                           <span class="text-primary">Por favor indique este ticket como solucionado</span><p></p>
                           <input [checked]="ticket && ticket.ticketByUser && ticket.ticketByUser.solucionado != 0" type="checkbox"
                             id="closeTicket" (change)="onCheckboxChange($event)">
@@ -275,15 +261,17 @@
                       </div>
                       <!--/row-->
                     </div>
+                    <!-- /form-body -->
                     <div class="form-actions" *ngIf="responseTicket">
                       <button type="submit" [disabled]="responseTicketForm.invalid" class="btn-primary button d-inline">
-                        <span matTooltip="Faltan campos por llenar" [matTooltipPosition]="'before'"
+                        <span [matTooltip]="responseTicketForm.invalid ? 'Faltan campos requeridos' : 'Responder ticket'" [matTooltipPosition]="'before'"
                           aria-label="Botón que guarda la información de la respuesta a un ticket">Guardar
                         </span>
                         <i class="fa fa-save p-1"></i>
                       </button>
                     </div>
                   </div>
+                  <!-- /card-body -->
                   <!-- <p>{{ getFormValidationErrors(editUserForm) }}</p> -->
                 </form>
               </div>
@@ -294,6 +282,10 @@
         </div>
         <!-- /.modal -->
       </div>
+      <!--/card body -->
     </div>
+    <!--/card -->
   </div>
+  <!-- col-md-4 -->
 </div>
+<!-- row -->

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/class/users';
 import { Ticket } from 'src/app/interfaces/ticket';
@@ -9,6 +9,11 @@ import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import * as d3 from 'd3';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+import {
+  SortableHeaderDirective,
+  SortEvent,
+  compare
+} from 'src/app/events/sortable-header.directive';
 
 @Component({
   selector: 'app-ticket-management',
@@ -24,8 +29,10 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
   responseTicketForm: FormGroup;
   closeTicketForm: FormGroup;
   tickets: Ticket[];
+  ticketsTmp: Ticket[];
   ticket: Ticket;
 
+  filter: string;
   userFullName: string;
   ticketsTotal: number;
   ticketsTotalResponse: number;
@@ -47,6 +54,9 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
     message: ''
   };
 
+  @ViewChildren(SortableHeaderDirective)
+  headers: QueryList<SortableHeaderDirective>;
+
   constructor(private supportService: SupportService,
     private fb: FormBuilder,
     private userService: UsersService,
@@ -56,7 +66,7 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
     this.userFullName = `${this.user.user_name} ${this.user.user_lastName}`;
 
     this.responseTicketForm = this.fb.group({
-      message: ['', Validators.required]
+      message: ['', [Validators.required, Validators.maxLength(500)]]
     })
 
     this.getTickets();
@@ -66,17 +76,21 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
     this.supportService.getTickets().subscribe({
       next: (result: Ticket[]) => {
         this.tickets = result;
+        this.ticketsTmp = result;
         this.ticketsTotal = this.tickets.length;
         this.tickets.forEach(ticket => {
+          ticket.user_technical = "Sin asignar"; 
           if (ticket.respondido) {
             this.supportService.getTicketTratadosByCode(ticket.code).subscribe({
               next: (result: TicketByUser) => {
                 if (result.ticket_code != undefined) {
                   ticket.ticketByUser = result;
+                  ticket.user_technical = ticket.ticketByUser.user_name;
+                  ticket.estado = (ticket.respondido == 0 && ticket.ticketByUser.solucionado === undefined) ? 'Nuevo' :
+                    (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)) ? 'Pendiente cerrar' :
+                      (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 1)) ? 'Completado' : 'Sin datos';
                   this.ticketsTotalResolve = this.tickets.filter((ticket: Ticket) => ticket.ticketByUser?.solucionado == 1).length;
                   this.ticketsTotalPendingClose = this.tickets.filter((ticket: Ticket) => ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)).length;
-                } else {
-                  ticket.ticketByUser = undefined;
                 }
               }, error: (error: any) => {
                 console.log("Error consiguiendo ticket tratado", error);
@@ -86,10 +100,11 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
                 this.load = false;
               }
             });
-          }
+          } 
         });
         this.ticketsTotalResponse = this.tickets.filter((ticket: Ticket) => Number(ticket.respondido) != 0).length;
         this.ticketsTotalPending = this.tickets.filter((ticket: Ticket) => Number(ticket.respondido) == 0).length;
+
       }, error: (error: any) => {
         console.log("Error consiguiendo tickets para técnico", this.tickets);
         this.load = false;
@@ -112,6 +127,25 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // sorting tickets
+    if (direction === '' || column === '') {
+      this.tickets = this.ticketsTmp;
+    } else {
+      this.tickets = [...this.ticketsTmp].sort((a, b) => {
+        const res = compare(a[column]!, b[column]!);
+        return direction === 'asc' ? res : -res;
+      });
+    }
+  }
 
   public getTicket(ticket: Ticket, expression: string): void {
     this.responseTicket = false;
@@ -138,7 +172,7 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
       ticket_refer: this.ticket.ticket_refer != undefined ? this.ticket.ticket_refer : '',
       solucionado: 0
     }
-    this.supportService.insertTicketResponse(this.ticket.ticketByUser!).subscribe({
+    this.supportService.insertTicketResponse(this.ticket.ticketByUser).subscribe({
       next: (result: number) => {
         if (result === 1) {
           this.sendTicketResponse.title = "Respuesta a ticket";
@@ -146,9 +180,9 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
           this.showSwal('success');
         } else {
           this.sendTicketResponse.title = "Error";
-          this.sendTicketResponse.message = "Hubo un error al generar la respueta del ticket";
+          this.sendTicketResponse.message = "Hubo un error al generar la respuesta del ticket";
           this.showSwal('error');
-        }      
+        }
       }, error: (error: any) => {
         this.sendTicketResponse.title = "Error";
         this.sendTicketResponse.message = "El código no coincide con ninguno de sus tickets";
@@ -170,7 +204,7 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
       this.supportService.markTicketFixed(this.ticket.ticketByUser!.ticket_code).subscribe({
         next: (result: number) => {
           if (result === 1) {
-            this.sendTicketResponse.title = "Solucionado";
+            this.sendTicketResponse.title = "Solución ticket";
             this.sendTicketResponse.message = "El ticket se cerro exitosamente";
             this.showSwal('success');
           } else {
@@ -180,11 +214,11 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
           }
         },
         error: (error: any) => {
-          console.log(error);
+          console.log("Cerrar ticket", `Error al cerrar el ticket ${this.ticket.code}`, this.user.id_user, new Date(), error);
           alert(error.message)
         },
         complete: () => {
-          console.log("Complete closed ticked", this.ticket.ticketByUser!);
+          console.log("Cerrar ticket", `Éxito al cerrar el ticket ${this.ticket.code}`, this.user.id_user, new Date(), this.ticket.ticketByUser!);
           this.getTickets();
         }
       });

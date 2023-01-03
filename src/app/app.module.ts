@@ -19,6 +19,8 @@ import { LoginService } from './services/login.service';
 import { MenuService } from './services/menu.service';
 import { SupportService } from './services/support.service';
 import { UsersService } from './services/users.service';
+import { LogsService } from './services/logs.service';
+import { SessionsService } from './services/sessions.service';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { UsersService } from './services/users.service';
     SupportService,
     UsersService,
     CookieService,
+    LogsService,
+    SessionsService,
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy

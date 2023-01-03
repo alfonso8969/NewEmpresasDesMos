@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,6 +23,7 @@ import { NgMaterialModule } from '../design/material.module';
 import { ComponentsModule } from '../components/components.module';
 import { DirectivesModule } from '../events/directives.module';
 import { TrimPipe } from '../pipes/trim.pipe';
+import { TicketPipe } from '../pipes/ticket.pipe';
 import { SharedModule } from 'src/shared/shared.module';
 import { DistritosEchartsComponent } from './benchmarks/distritos-echarts/distritos-echarts.component';
 import { PoligonosEchartsComponent } from './benchmarks/poligonos-echarts/poligonos-echarts.component';
@@ -58,6 +59,7 @@ import { TechnicalEmailsModule } from './technical/emails/technical-emails.modul
     AddFieldsComponent,
     AdminFieldsComponent,
     TrimPipe,
+    TicketPipe,
     DistritosEchartsComponent,
     PoligonosEchartsComponent,
     SectoresEchartsComponent,
@@ -77,6 +79,7 @@ import { TechnicalEmailsModule } from './technical/emails/technical-emails.modul
     RouterModule,
     NgMaterialModule,
     ReactiveFormsModule,
+    FormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     ComponentsModule,
