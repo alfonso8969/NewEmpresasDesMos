@@ -65,7 +65,7 @@
                     </div>
                   </div>
                 </li>
-                <li *ngFor="let item of menu">
+                <li *ngFor="let item of menuService.menu">
                   <a class="waves-effect waves-dark" aria-expanded="false">
                     <i [class]="item.icon"></i>
                     <span class="nav-sup-menu p-2">{{ item.title }}</span>
@@ -165,7 +165,7 @@
           <li class="nav-devider"></li>
           <li class="nav-small-cap text-light">Indicadores</li>
 
-          <li class="mb-3" *ngFor="let item of menu">
+          <li class="mb-3" *ngFor="let item of menuService.menu">
             <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
@@ -176,7 +176,7 @@
               </li>
             </ul>
           </li>
-          <li class="mb-3" *ngFor="let item of menuAdminUsers">
+          <li class="mb-3" *ngFor="let item of menuService.menuAdminUsers">
             <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
@@ -187,7 +187,7 @@
               </li>
             </ul>
           </li>
-          <li class="mb-3" *ngFor="let item of menuAdminFields">
+          <li class="mb-3" *ngFor="let item of menuService.menuAdminFields">
             <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
@@ -199,7 +199,7 @@
             </ul>
           </li>
           <li role="separator" class="nav-devider" *ngIf="!user_rol_technical"></li>
-          <li class="mb-3" *ngFor="let item of menuGraphs">
+          <li class="mb-3" *ngFor="let item of menuService.menuGraphs">
             <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
@@ -211,7 +211,7 @@
             </ul>
           </li>
           <li role="separator" class="nav-devider" *ngIf="!user_rol_technical"></li>
-          <li class="mb-3" *ngFor="let item of menuSupport">
+          <li class="mb-3" *ngFor="let item of menuService.menuSupport">
             <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
@@ -223,7 +223,7 @@
             </ul>
           </li>
           <li role="separator" class="nav-devider" *ngIf="user_rol_technical"></li>
-          <li class="mb-3" *ngFor="let item of menuTechnical">
+          <li class="mb-3" *ngFor="let item of menuService.menuTechnical">
             <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false" [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
               <i [class]="item.icon"></i>
               <span class="hide-menu">{{ item.title }}</span>
@@ -273,7 +273,7 @@
       <a class="float-right mx-5">@alf8969&copy;</a>
     </div>
   </footer>
-  
+
   <router-outlet></router-outlet>
   <app-detail *ngIf="showDetail" (close)="closeDetail($event)">
     <div detail-title class="row text-center ml-1">

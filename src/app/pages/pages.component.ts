@@ -39,13 +39,6 @@ export class PagesComponent implements OnInit {
   public url: string = environment.apiUrl;
   private expiredDate: Date;
 
-  public menu: Array<any> = [];
-  public menuAdminUsers: Array<any> = [];
-  public menuAdminFields: Array<any> = [];
-  public menuGraphs: Array<any> = [];
-  public menuSupport: Array<any> = [];
-  public menuTechnical: Array<any> = [];
-
   // google maps
   @ViewChild('myMap') map: GoogleMap;
   apiLoaded: Observable<boolean>;
@@ -81,8 +74,6 @@ export class PagesComponent implements OnInit {
           );
       });
 
-    this.loadMenus();
-
     console.log("ruta: ", this._router.url);
 
     if (this._router.url === '/dashboard' || this._router.url === '/dashboard#no-back-button') {
@@ -100,17 +91,6 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-  private loadMenus(): void {
-
-    this.menu = this.menuService.menu;
-    this.menuAdminUsers = this.menuService.menuAdminUsers;
-    this.menuAdminFields = this.menuService.menuAdminFields;
-    this.menuGraphs = this.menuService.menuGraphs;
-    this.menuSupport = this.menuService.menuSupport;
-    this.menuTechnical = this.menuService.menuTechnical;
-
   }
 
   navigateTo(url: string, event: any) {
@@ -185,12 +165,23 @@ export class PagesComponent implements OnInit {
       if (confirm.isConfirmed) {
         this.loginService.logout();
         this._router.navigateByUrl('/login')
+        .then(() => {
+          window.location.reload();
+        });
       }
     });
   }
 
   exit() {
-    this._router.navigateByUrl('exit');
+    if (Boolean(localStorage.getItem('remember'))) {
+      this._router.navigateByUrl('exit');
+    } else {
+      this.loginService.logout();
+      this._router.navigateByUrl('exit')
+      .then(() => {
+        window.location.reload();
+      });
+    }
   }
 }
 

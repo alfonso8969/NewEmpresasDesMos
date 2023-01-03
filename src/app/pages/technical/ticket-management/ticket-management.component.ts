@@ -79,28 +79,32 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
         this.ticketsTmp = result;
         this.ticketsTotal = this.tickets.length;
         this.tickets.forEach(ticket => {
-          ticket.user_technical = "Sin asignar"; 
-          if (ticket.respondido) {
-            this.supportService.getTicketTratadosByCode(ticket.code).subscribe({
-              next: (result: TicketByUser) => {
-                if (result.ticket_code != undefined) {
-                  ticket.ticketByUser = result;
-                  ticket.user_technical = ticket.ticketByUser.user_name;
-                  ticket.estado = (ticket.respondido == 0 && ticket.ticketByUser.solucionado === undefined) ? 'Nuevo' :
-                    (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)) ? 'Pendiente cerrar' :
-                      (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 1)) ? 'Completado' : 'Sin datos';
-                  this.ticketsTotalResolve = this.tickets.filter((ticket: Ticket) => ticket.ticketByUser?.solucionado == 1).length;
-                  this.ticketsTotalPendingClose = this.tickets.filter((ticket: Ticket) => ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)).length;
-                }
-              }, error: (error: any) => {
-                console.log("Error consiguiendo ticket tratado", error);
-                this.load = false;
-              }, complete: () => {
-                console.log("Completado get ticket tratado para ticket", ticket);
-                this.load = false;
+          ticket.user_technical = "Sin asignar";
+          this.supportService.getTicketTratadosByCode(ticket.code).subscribe({
+            next: (result: TicketByUser) => {
+              // Comprobamos que el ticket ha sido respondido
+              if (result.ticket_code != undefined) {
+                ticket.ticketByUser = result;
+                // Asignamos el ticket al técnico que respondió
+                ticket.user_technical = ticket.ticketByUser.user_name;
+                // Asignamos al ticket el estado, solucionado (Completado) o pendiente de solucionar (Pendiente cerrar)
+                ticket.estado = (ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)) ? 'Pendiente cerrar' :
+                  'Completado';
+                this.ticketsTotalResolve = this.tickets.filter((ticket: Ticket) => ticket.ticketByUser?.solucionado == 1).length;
+                this.ticketsTotalPendingClose = this.tickets.filter((ticket: Ticket) => ticket.ticketByUser?.solucionado == 0).length;
+              } else {
+                // Si el ticket no ha sido respondido, asignamos al ticket el estado de Nuevo
+                ticket.estado = 'Nuevo';
               }
-            });
-          } 
+            }, error: (error: any) => {
+              console.log("Error consiguiendo ticket tratado", error);
+              this.load = false;
+            }, complete: () => {
+              console.log("Completado get ticket tratado para ticket", ticket);
+              this.load = false;
+            }
+          });
+
         });
         this.ticketsTotalResponse = this.tickets.filter((ticket: Ticket) => Number(ticket.respondido) != 0).length;
         this.ticketsTotalPending = this.tickets.filter((ticket: Ticket) => Number(ticket.respondido) == 0).length;

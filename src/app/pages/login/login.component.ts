@@ -97,6 +97,17 @@ export class LoginComponent implements OnInit {
     }
     this.user.user_password = this.loginForm.get('password')!.value;
     this.user.user_email = this.loginForm.get('email')!.value;
+    let userLogged = this.userService.getUserLogged();
+    if (userLogged) {
+      Swal.fire({
+        title: 'Login',
+        html: `<p>Ya existe otro usuario logueado en la aplicación</p>
+        <p>Utilice otro navegador o una pestaña de incognito, Muchas gracias</p>`,
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
+    }
     this.loginService.login(this.user).subscribe({
       next: (user: User) => {
         if (user.id_user) {

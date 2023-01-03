@@ -96,12 +96,12 @@
                     <td>{{ ticket.user_email }}</td>
                     <td class="ms" [matTooltip]="ticket.message"><strong>{{ ticket.campo.toString() | uppercase
                         }}</strong>-{{ ticket.message }}</td>
-                    <td *ngIf="ticket.respondido == 0 && ticket.ticketByUser === undefined" class="label label-warning">
+                    <td *ngIf="ticket.estado == 'Nuevo'" class="label label-warning">
                       Nuevo</td>
-                    <td *ngIf="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 0)"
+                    <td *ngIf="ticket.estado == 'Pendiente cerrar'"
                       class="label label-danger">Pendiente cerrar</td>
-                    <td *ngIf="ticket.respondido == 1 && (ticket.ticketByUser && ticket.ticketByUser.solucionado == 1)"
-                      class="label label-success">Completado</td>                
+                    <td *ngIf="ticket.estado == 'Completado'"
+                      class="label label-success">Completado</td>
                     <td >{{ ticket.user_technical != 'Sin asignar' ? ticket.user_technical!.split(' ')[0] : ticket.user_technical }}</td>
 
                     <td>{{ ticket.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</td>

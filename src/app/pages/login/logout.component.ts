@@ -1,8 +1,9 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/src/ScrollTrigger";
+
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
@@ -10,20 +11,9 @@ import { ScrollTrigger } from "gsap/src/ScrollTrigger";
 })
 export class LogoutComponent {
 
-
-  @HostListener('window:beforeunload', ['$event'])
-  beforeUnloadHandler(event: any) {
-    console.log('window:beforeunload', event);
-    console.log('route', this.router);
-    this.router.navigate(['/externalRedirect', { externalUrl: 'https:/alfonsogonz.es/' }]);
-    return false;
-  }
-
-  isActive: boolean = true;
   title: string = "Admin Empresas";
-  
+
   constructor(private router: Router) {
-    localStorage.removeItem('login');
     this.showMessage();
   }
 
@@ -41,7 +31,7 @@ export class LogoutComponent {
         allowEscapeKey: false,
       }).then((confirm) => {
         if (confirm.isConfirmed) {
-          this.router.navigate(['/externalRedirect', { externalUrl: 'https:/alfonsogonz.es/' }]);
+          this.router.navigate(['/externalRedirect', { externalUrl: 'https://unseen.co/labs/webgl-rain/' }]);
         } else {
           window.history.forward();
           window.history.go(1);
@@ -59,6 +49,6 @@ export class LogoutComponent {
           });
         }
       })
-    }, 600);
+    }, 1000);
   }
 }
