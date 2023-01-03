@@ -76,7 +76,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
       this.user = this.userService.getUserLogged();
       this.user_rol_technical = this.user.user_rol == 4;
       this.fillFormUser(this.user);
-      this.setFormControlsReadOnly(this.addUserForm);
+      this.getAddressUser();
       setTimeout(() => {
         this.viewSpinner = false;
       }, 1000);
@@ -88,6 +88,9 @@ export class ViewUserComponent implements OnInit, OnDestroy {
       next: (address: Address) => {
         if (address != null) {
           this.address = address;
+          this.fillFormUser(this.user);
+          this.setFormControlsReadOnly(this.addUserForm);
+        } else {
           this.fillFormUser(this.user);
           this.setFormControlsReadOnly(this.addUserForm);
         }
