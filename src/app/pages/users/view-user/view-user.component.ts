@@ -334,24 +334,11 @@ export class ViewUserComponent implements OnInit, OnDestroy {
     this.setFormControlsReadOnly(this.addUserForm);
     this.addUserForm.get('actPassword')!.setValue('');
     this.addUserForm.get('newPassword')!.setValue('');
-    this.addUserForm.get('compPassword')!.setValue('');
+    this.addUserForm.get('comparePasswords')!.setValue('');
   }
 
   public setFormControlsReadOnly(form: FormGroup, enabled: boolean = true): void {
-    Object.keys(form.controls).forEach(key => {
-      const control: AbstractControl = form!.get(key)!;
-      if (control && enabled) {
-        control.disable({
-          emitEvent: enabled,
-          onlySelf: enabled
-        });
-      } else {
-        control.enable({
-          emitEvent: enabled,
-          onlySelf: enabled
-        });
-      }
-    });
+    Utils.setFormControlsReadOnly(form, enabled);
   }
 
   isDisabled(): boolean {

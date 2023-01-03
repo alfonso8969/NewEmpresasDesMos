@@ -19,7 +19,7 @@ export class Utils {
   static InstagramReg: RegExp = new RegExp(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/);
   static TwitterReg: RegExp = new RegExp(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_@]{5,15}(\?(\w+=\w+&?)*)?/);
   static TikTokReg: RegExp = new RegExp(/((https?:\/\/)?(www\.)?tiktok\.com\/\@[a-zA-Z0-9_%]*)/);
-  
+
   static DNI_REGEX: RegExp = new RegExp(/^(\d{8})([A-Z])$/);
   static CIF_REGEX: RegExp = new RegExp(/^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/);
   static NIE_REGEX: RegExp = new RegExp(/^[XYZ]\d{7,8}[A-Z]$/);
@@ -54,7 +54,7 @@ export class Utils {
         valid = validDNI(control.get('cif')?.value);
       } else {
         valid = validNIE(control.get('cif')?.value);
-      } 
+      }
       return valid ? null : { invalidPattern: true };
     }
     return null;
@@ -76,7 +76,7 @@ export class Utils {
   /**
    * Función que comprueba los errores de un formulario.
    * @param {FormGroup<any>} form Formulario a inspeccionar
-   * 
+   *
    * @returns {string} Un string en formato JSON con los errores
    */
   public static getFormValidationErrors(form: FormGroup<any>): string {
@@ -94,6 +94,23 @@ export class Utils {
       }
     });
     return JSON.stringify(result);
+  }
+
+  public static setFormControlsReadOnly(form: FormGroup, enabled: boolean = true): void {
+    Object.keys(form.controls).forEach(key => {
+      const control: AbstractControl = form.get(key)!;
+      if (control && enabled) {
+        control.disable({
+          emitEvent: enabled,
+          onlySelf: enabled
+        });
+      } else {
+        control.enable({
+          emitEvent: enabled,
+          onlySelf: enabled
+        });
+      }
+    });
   }
 
   public static getTemplateEmail(name: string, lastname: string, password: string): string {

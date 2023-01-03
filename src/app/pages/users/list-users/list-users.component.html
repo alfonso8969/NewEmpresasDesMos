@@ -80,7 +80,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title" *ngIf="!admin && user && user.habilitado == 1">Ver datos del usuario</h4>
-                <h4 class="modal-title text-danger" *ngIf="!admin && user && user.habilitado == 0">Ver datos del usuario (Usuario de baja desde: {{ user && user.fecha_baja }}) </h4>
+                <h4 class="modal-title text-danger" *ngIf="!admin && user && user.habilitado == 0">Ver datos del usuario (Usuario de baja desde: {{ user && user.fecha_baja | date: 'dd-MM-yyyy HH:mm:ss' }}) </h4>
                 <h4 class="modal-title" *ngIf="admin && user && user.habilitado == 1">Modificar datos del usuario</h4>
                 <h4 class="modal-title text-danger" *ngIf="admin && user && user.habilitado == 0">No se pueden modificar datos de un usuario de baja: ({{ user && user.fecha_baja | date: 'dd-MM-yyyy HH:mm:ss' }})</h4>
                 <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'"

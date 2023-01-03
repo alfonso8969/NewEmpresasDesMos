@@ -309,20 +309,7 @@ export class ViewCompanyComponent implements OnInit {
   }
 
   public setFormControlsReadOnly(form: FormGroup, enabled: boolean = true): void {
-    Object.keys(form.controls).forEach(key => {
-      const control: AbstractControl = form!.get(key)!;
-      if (control && enabled) {
-        control.disable({
-          emitEvent: enabled,
-          onlySelf: enabled
-        });
-      } else {
-        control.enable({
-          emitEvent: enabled,
-          onlySelf: enabled
-        });
-      }
-    });
+    Utils.setFormControlsReadOnly(form, enabled);
   }
 
   public getFormValidationErrors(form: FormGroup): Result[] {

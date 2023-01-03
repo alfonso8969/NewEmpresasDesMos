@@ -241,7 +241,7 @@
                           </pre>
                       </span>
                       <span class="err text-danger"
-                        *ngIf="(addUserForm.get('newPassword')?.touched && addUserForm.get('actPassword')?.touched) && (addUserForm.get('actPassword')!.valid && addUserForm.get('newPassword')!.valid) && (addUserForm.get('newPassword')!.value == addUserForm.get('actPassword')!.value)">
+                        *ngIf="(addUserForm.get('newPassword')?.value != '' && addUserForm.get('newPassword')?.touched && addUserForm.get('actPassword')?.touched) && (addUserForm.get('actPassword')!.valid && addUserForm.get('newPassword')!.valid) && (addUserForm.get('newPassword')!.value == addUserForm.get('actPassword')!.value)">
                         Las <strong>contraseñas </strong>actual y nuevas no pueden ser iguales
                       </span>
                     </div>
@@ -270,7 +270,7 @@
                         </pre>
                       </span>
                       <span class="err text-danger"
-                      *ngIf="(addUserForm.get('newPassword')!.valid && addUserForm.get('comparePasswords')!.valid) && (addUserForm.get('newPassword')!.value != addUserForm.get('comparePasswords')!.value)">
+                      *ngIf="(addUserForm.get('comparePasswords')?.value != '' && addUserForm.get('newPassword')!.valid && addUserForm.get('comparePasswords')!.valid) && (addUserForm.get('newPassword')!.value != addUserForm.get('comparePasswords')!.value)">
                       Las <strong>contraseñas </strong>no coinciden
                     </span>
                   </div>
