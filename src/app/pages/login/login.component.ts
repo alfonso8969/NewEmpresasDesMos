@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
     if (userLogged && userLogged != "undefined" && remember == "true") {
       console.log('localStorage userLogged: in login ', JSON.parse(localStorage.getItem('userLogged')!))
       this.user = this.userService.getUserLogged();
+      localStorage.setItem('login', "true");
       this.router.navigateByUrl("/dashboard")
       .then(() => {
         window.location.reload();
@@ -109,6 +110,7 @@ export class LoginComponent implements OnInit {
             });
             return;
           }
+          localStorage.setItem('login', "true");
           this.router.navigateByUrl("/dashboard")
           .then(() => {
             window.location.reload();

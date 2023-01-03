@@ -58,6 +58,7 @@ export class LoginService {
     localStorage.removeItem('userLogged');
     localStorage.removeItem('ROLE');
     localStorage.removeItem('remember');
+    localStorage.removeItem('login');
   }
 }
 

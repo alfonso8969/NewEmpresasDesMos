@@ -13,7 +13,6 @@ export class MenuService {
   user_rol: boolean;
   superAdmin: boolean;
   technical: boolean;
-  support: boolean;
 
   public menu: Array<any> = []
   public menuAdminUsers: Array<any> = []

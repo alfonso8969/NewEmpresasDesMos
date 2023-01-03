@@ -11,19 +11,19 @@ import { ScrollTrigger } from "gsap/src/ScrollTrigger";
 export class LogoutComponent {
 
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // beforeUnloadHandler(event: any) {
-  //   console.log('window:beforeunload', event);
-  //   console.log('route', this.router);
-  //   this.router.navigate(['/externalRedirect', { externalUrl: 'https:/alfonsogonz.es/' }]);
-  //   return false;
-  // }
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event: any) {
+    console.log('window:beforeunload', event);
+    console.log('route', this.router);
+    this.router.navigate(['/externalRedirect', { externalUrl: 'https:/alfonsogonz.es/' }]);
+    return false;
+  }
 
   isActive: boolean = true;
   title: string = "Admin Empresas";
   
-
   constructor(private router: Router) {
+    localStorage.removeItem('login');
     this.showMessage();
   }
 
@@ -54,7 +54,7 @@ export class LogoutComponent {
             value: 0,
             ease: 'none',
             scrollTrigger: {
-              scrub: 0.3 
+              scrub: 0.3
             }
           });
         }

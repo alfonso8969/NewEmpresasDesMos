@@ -39,6 +39,13 @@ export class PagesComponent implements OnInit {
   public url: string = environment.apiUrl;
   private expiredDate: Date;
 
+  public menu: Array<any> = [];
+  public menuAdminUsers: Array<any> = [];
+  public menuAdminFields: Array<any> = [];
+  public menuGraphs: Array<any> = [];
+  public menuSupport: Array<any> = [];
+  public menuTechnical: Array<any> = [];
+
   // google maps
   @ViewChild('myMap') map: GoogleMap;
   apiLoaded: Observable<boolean>;
@@ -59,6 +66,10 @@ export class PagesComponent implements OnInit {
     this.user = this.userService.getUserLogged();
     let user_rol = Number(this.user.user_rol);
     this.user_rol_technical = user_rol === 4 ? true : false;
+    let login = localStorage.getItem('login');
+    if(!Boolean(login)) {
+      this._router.navigateByUrl("login")
+    }
 
     this.companiesService.getApi()
       .subscribe((data: any) => {
@@ -69,6 +80,8 @@ export class PagesComponent implements OnInit {
             catchError(() => of(false))
           );
       });
+
+    this.loadMenus();
 
     console.log("ruta: ", this._router.url);
 
@@ -87,6 +100,17 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  private loadMenus(): void {
+
+    this.menu = this.menuService.menu;
+    this.menuAdminUsers = this.menuService.menuAdminUsers;
+    this.menuAdminFields = this.menuService.menuAdminFields;
+    this.menuGraphs = this.menuService.menuGraphs;
+    this.menuSupport = this.menuService.menuSupport;
+    this.menuTechnical = this.menuService.menuTechnical;
+
   }
 
   navigateTo(url: string, event: any) {
