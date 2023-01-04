@@ -1,5 +1,4 @@
 <div class="page-wrapper">
-
   <!-- ============================================================== -->
   <!-- Container fluid  -->
   <!-- ============================================================== -->
@@ -96,12 +95,13 @@
                     <td>{{ ticket.user_email }}</td>
                     <td class="ms" [matTooltip]="ticket.message"><strong>{{ ticket.campo.toString() | uppercase
                         }}</strong>-{{ ticket.message }}</td>
-                    <td *ngIf="ticket.estado == 'Nuevo'" class="label label-warning">
-                      Nuevo</td>
-                    <td *ngIf="ticket.estado == 'Pendiente cerrar'"
-                      class="label label-danger">Pendiente cerrar</td>
-                    <td *ngIf="ticket.estado == 'Completado'"
-                      class="label label-success">Completado</td>
+
+                    <td [ngSwitch]="ticket.estado">
+                      <span *ngSwitchCase="'Nuevo'" class="label label-warning">Nuevo</span>
+                      <span *ngSwitchCase="'Pendiente cerrar'" class="label label-danger">Pendiente cerrar</span>
+                      <span *ngSwitchCase="'Completado'" class="label label-success">Completado</span>
+                    </td>
+
                     <td >{{ ticket.user_technical != 'Sin asignar' ? ticket.user_technical!.split(' ')[0] : ticket.user_technical }}</td>
 
                     <td>{{ ticket.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</td>

@@ -27,10 +27,15 @@ export class UsersService {
    * Función que regresa al usuario logueado correctamente
    */
   public getUserLogged(): User {
-    let userLogged = localStorage.getItem('userLogged');
+    let userLogged = sessionStorage.getItem('userLogged');
     if (userLogged && userLogged != "undefined") {
-      console.log('localStorage userLogged LoginService: ', JSON.parse(localStorage.getItem('userLogged')!))
+      console.log('sessionStorage userLogged LoginService: ', JSON.parse(sessionStorage.getItem('userLogged')!))
       this.user = JSON.parse(userLogged);
+    } else {
+      let userLogged = localStorage.getItem('userLogged');
+      if (userLogged && userLogged != "undefined") {
+        this.user = JSON.parse(userLogged);
+      }
     }
 
     return this.user;

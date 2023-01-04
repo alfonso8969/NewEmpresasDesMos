@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 import { User } from '../class/users';
 
 @Injectable({
@@ -23,6 +24,7 @@ export class LoginService {
       this.roleAs = Users.user_rol;
       if (this.roleAs) {
         localStorage.setItem('userLogged', JSON.stringify(Users));
+        sessionStorage.setItem('userLogged', JSON.stringify(Users));
         localStorage.setItem('ROLE', this.roleAs.toString());
         this.userEmitter.emit(Users);
         this.setToken(Users.user_name);
@@ -58,7 +60,6 @@ export class LoginService {
     localStorage.removeItem('userLogged');
     localStorage.removeItem('ROLE');
     localStorage.removeItem('remember');
-    localStorage.removeItem('login');
   }
 }
 

@@ -63,12 +63,10 @@ export class LoginComponent implements OnInit {
       emailRecover: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
     });
 
-    let userLogged = localStorage.getItem('userLogged');
+    let userLogged = this.userService.getUserLogged();
     let remember = localStorage.getItem('remember');
-    if (userLogged && userLogged != "undefined" && remember == "true") {
-      console.log('localStorage userLogged: in login ', JSON.parse(localStorage.getItem('userLogged')!))
-      this.user = this.userService.getUserLogged();
-      localStorage.setItem('login', "true");
+    if (userLogged && remember == "true") {
+      this.user = userLogged;
       this.router.navigateByUrl("/dashboard")
       .then(() => {
         window.location.reload();
@@ -86,32 +84,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
-
-
   login() {
     this.user = new User();
     let remember = this.loginForm.get('checkBoxSignup')!.value;
-    localStorage.removeItem('remember');
     if (remember) {
       localStorage.setItem('remember', "true");
+    } else {
+      localStorage.setItem('remember', "false");
     }
     this.user.user_password = this.loginForm.get('password')!.value;
     this.user.user_email = this.loginForm.get('email')!.value;
-    let userLogged = this.userService.getUserLogged();
-    if (userLogged) {
-      Swal.fire({
-        title: 'Login',
-        html: `<p>Ya existe otro usuario logueado en la aplicación</p>
-        <p>Utilice otro navegador o una pestaña de incognito, Muchas gracias</p>`,
-        icon: 'warning',
-        confirmButtonText: 'Aceptar'
-      });
-      return;
-    }
+
     this.loginService.login(this.user).subscribe({
       next: (user: User) => {
         if (user.id_user) {
-          if (Number(user.habilitado) === 0) {
+          if (user.habilitado == 0) {
             Swal.fire({
               title: 'Login',
               html: `<p>El usuario ${ user.user_name } está deshabilitado</p>
@@ -121,7 +108,7 @@ export class LoginComponent implements OnInit {
             });
             return;
           }
-          localStorage.setItem('login', "true");
+
           this.router.navigateByUrl("/dashboard")
           .then(() => {
             window.location.reload();
@@ -144,7 +131,9 @@ export class LoginComponent implements OnInit {
           confirmButtonText: 'Aceptar'
         });
       },
-      complete: () => console.log("Complete User: ", this.user)
+      complete: () => {
+        console.log("Complete User: ", this.user);
+      }
     });
   }
 
@@ -277,5 +266,4 @@ export class LoginComponent implements OnInit {
     this.forgotPasswordForm.markAsUntouched();
     this.recoverPasswordShow();
   }
-
 }

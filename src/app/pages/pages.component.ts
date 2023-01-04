@@ -59,10 +59,6 @@ export class PagesComponent implements OnInit {
     this.user = this.userService.getUserLogged();
     let user_rol = Number(this.user.user_rol);
     this.user_rol_technical = user_rol === 4 ? true : false;
-    let login = localStorage.getItem('login');
-    if(!Boolean(login)) {
-      this._router.navigateByUrl("login")
-    }
 
     this.companiesService.getApi()
       .subscribe((data: any) => {
@@ -75,7 +71,6 @@ export class PagesComponent implements OnInit {
       });
 
     console.log("ruta: ", this._router.url);
-
     if (this._router.url === '/dashboard' || this._router.url === '/dashboard#no-back-button') {
       this.viewDashBoard = true;
     }
@@ -91,6 +86,7 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+   
   }
 
   navigateTo(url: string, event: any) {
@@ -146,11 +142,11 @@ export class PagesComponent implements OnInit {
 
   logout() {
     let remember = localStorage.getItem('remember');
-    let title = remember ? '¿Está seguro de querer cerrar la sesión?' : 'Salir';
-    let message = remember ? 'Si cierra la sesión, deberá volver a iniciar sesión para poder acceder a la aplicación'
+    let title = remember == 'true' ? '¿Está seguro de querer cerrar la sesión?' : 'Salir';
+    let message = remember == 'true' ? 'Si cierra la sesión, deberá volver a iniciar sesión para poder acceder a la aplicación'
       : '¿Está seguro de querer salir de la aplicación?';
 
-    let confirmButtonText = remember ? 'Si, cerrar sesión' : 'Si, salir';
+    let confirmButtonText = remember == 'true' ? 'Si, cerrar sesión' : 'Si, salir';
 
     Swal.fire({
       title: title,
@@ -183,5 +179,6 @@ export class PagesComponent implements OnInit {
       });
     }
   }
+
 }
 

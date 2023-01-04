@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ export class AppComponent  implements OnDestroy {
 
   private mySubscription: Subscription;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private loginService: LoginService) {
 
     this.mySubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -29,6 +31,10 @@ export class AppComponent  implements OnDestroy {
   ngOnDestroy() {
     if (this.mySubscription) {
       this.mySubscription.unsubscribe();
+    }
+
+    if (localStorage.getItem('remember') == "true") {
+      this.loginService.logout();
     }
   }
 }

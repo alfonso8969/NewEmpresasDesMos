@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { gsap } from "gsap";
@@ -11,13 +11,27 @@ import { ScrollTrigger } from "gsap/src/ScrollTrigger";
 })
 export class LogoutComponent {
 
+ @HostListener('window:beforeunload', [ '$event' ])
+ beforeUnloadHandler(event: any) {
+  console.log('window:beforeunload', event)
+  alert('¿Está seguro de querer cerrar la sesión?');
+  this.router.navigate(['/externalRedirect', { externalUrl: 'https://unseen.co/labs/webgl-rain/' }]);
+  return false;
+ }
+
   title: string = "Admin Empresas";
 
   constructor(private router: Router) {
+    window.history.forward();
+    window.history.go(0);
+    window.location.hash = "no-back-button";
+    window.location.hash = "Again-No-back-button" //chrome
+    window.onhashchange = function () { window.location.hash = "no-back-button"; }
     this.showMessage();
   }
 
   private showMessage(): void {
+   
     setTimeout(() => {
       Swal.fire({
         title: 'Salir de Admin Empresas',
@@ -32,23 +46,10 @@ export class LogoutComponent {
       }).then((confirm) => {
         if (confirm.isConfirmed) {
           this.router.navigate(['/externalRedirect', { externalUrl: 'https://unseen.co/labs/webgl-rain/' }]);
-        } else {
-          window.history.forward();
-          window.history.go(1);
-          window.location.hash = "no-back-button";
-          window.location.hash = "Again-No-back-button" //chrome
-          window.onhashchange = function () { window.location.hash = "no-back-button"; }
-          // console.clear();
-          gsap.registerPlugin(ScrollTrigger);
-          gsap.to('progress', {
-            value: 0,
-            ease: 'none',
-            scrollTrigger: {
-              scrub: 0.3
-            }
-          });
+        } else {          
+          console.clear();
         }
       })
-    }, 1000);
+    }, 300);
   }
 }

@@ -29,7 +29,7 @@ body {
 }
 
 section {
-  min-height: 35vh;
+  min-height: 10vh;
   padding: 10vw 5vh;
   text-align: center;
   display: flex;
