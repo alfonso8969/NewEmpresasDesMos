@@ -8,6 +8,9 @@ import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal, { SweetAlertIcon } from 'sweetalert2'
 
+// Crypto
+declare function hex_sha512(pass: string): string;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -92,7 +95,7 @@ export class LoginComponent implements OnInit {
     } else {
       localStorage.setItem('remember', "false");
     }
-    this.user.user_password = this.loginForm.get('password')!.value;
+    this.user.user_password = hex_sha512(this.loginForm.get('password')!.value);
     this.user.user_email = this.loginForm.get('email')!.value;
 
     this.loginService.login(this.user).subscribe({
@@ -175,7 +178,7 @@ export class LoginComponent implements OnInit {
             } while (!match);
 
             if(match) {
-              userEmail.user_password = newPassword;
+              userEmail.user_password = hex_sha512(newPassword);
               this.userService.resetPassword(userEmail)
               .subscribe({
                 next: (data: number) => {

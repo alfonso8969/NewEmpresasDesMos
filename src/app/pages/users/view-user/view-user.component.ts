@@ -11,6 +11,9 @@ import { Utils } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2'
 
+// Crypto
+declare function hex_sha512(pass: string): string;
+
 @Component({
   selector: 'app-view-user',
   templateUrl: './view-user.component.html',
@@ -193,7 +196,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
       this.address.city = this.addUserForm.get('city')!.value;
       this.address.cod_postal = this.addUserForm.get('cod_postal')!.value;
       this.formData = {
-        user: this.user,
+        user: editUser,
         address: this.address
       };
     }
@@ -202,7 +205,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
 
       let name = this.fileUp.name;
 
-      this.fileName = (this.user.user_name.split(' ')[0] + Math.ceil((Math.random() * 10000 + 1)) + '.' + name.split('.')[1]).toLowerCase();
+      this.fileName = (editUser.user_name.split(' ')[0] + Math.ceil((Math.random() * 10000 + 1)) + '.' + name.split('.')[1]).toLowerCase();
 
       this.uploadService.uploadFile(this.fileUp, this.fileName)
       .subscribe({
@@ -225,11 +228,11 @@ export class ViewUserComponent implements OnInit, OnDestroy {
     }
 
     if (this.addUserForm.get('actPassword')!.value != '') {
-      this.user.user_password = this.addUserForm.get('actPassword')!.value;
+      this.user.user_password = hex_sha512(this.addUserForm.get('actPassword')!.value);
       this.loginService.checkPassword(this.user).subscribe({
         next: (result: boolean) => {
           if (result) {
-            editUser.user_password = this.addUserForm.get('newPassword')!.value;
+            editUser.user_password = hex_sha512(this.addUserForm.get('newPassword')!.value);
             if (!this.user_rol_technical) {
               this.saveUser(editUser);
             } else {

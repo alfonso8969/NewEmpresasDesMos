@@ -45,3 +45,4 @@ testem.log
 Thumbs.db
 **/utils-assets/
 .vscode/settings.json
+.jscramblerrc
