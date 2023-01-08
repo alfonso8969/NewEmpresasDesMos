@@ -3,7 +3,7 @@
   </app-mat-spinner-overlay>
   <div class="login-box card">
     <div class="card-body">
-      <form class="form-horizontal form-material" id="loginform" [formGroup]="loginForm" (ngSubmit)="login()">
+      <form class="form-horizontal form-material" id="loginform" [formGroup]="loginForm" (ngSubmit)="$l()">
         <h3 class="box-title m-b-20">Sistema Empresas</h3>
         <div class="form-group ">
           <div class="col-xs-12">
@@ -42,20 +42,21 @@
         </pre>
         </span>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" *ngIf="!viewSingUpForm">
           <div class="col-md-12">
             <div class="checkbox checkbox-info pull-left p-t-0">
               <input formControlName="checkBoxSignup" name="checkBoxSignup" id="checkBoxSignup" type="checkbox"
                 class="filled-in chk-col-light-blue">
               <label for="checkBoxSignup"> Recuerda me </label>
             </div>
-            <a (click)="recoverPasswordShow()" class="text-dark pull-right">
-              <i class="fa fa-lock m-r-5"></i>
-              <span id="to-recover">Olvidó la contraseña?</span>              
+            <a (click)="rPS()" class="text-dark pull-right">
+              <i *ngIf="!viewRecoverForm" class="fa fa-lock mr-2"></i>
+              <i *ngIf="viewRecoverForm" class="fa fa-lock-open mr-2"></i>
+              <span id="to-recover">Olvidó la contraseña?</span>
             </a>
           </div>
         </div>
-        <div class="form-group text-center">
+        <div class="form-group text-center" *ngIf="!viewRecoverForm && !viewSingUpForm">
           <div class="col-xs-12 p-b-20">
             <button type="submit" [disabled]="loginForm.invalid" class="btn-primary button d-inline mt-3">
               <span [matTooltip]="loginForm.invalid ? 'Faltan campos obligatorios' : 'Login'"
@@ -66,9 +67,18 @@
             </button>
           </div>
         </div>
+        <div class="form-group row" *ngIf="!viewRecoverForm">
+          <div class="col-md-8 ml-5">Sin cuenta?
+            <a (click)="sUpS()" class="text-dark pull-right">
+              <i *ngIf="!viewSingUpForm" class="fa fa-lock mr-2"></i>
+              <i *ngIf="viewSingUpForm" class="fa fa-lock-open mr-2"></i>
+              <span id="to-singUp">click aquí</span>
+            </a>
+          </div>
+        </div>
       </form>
-      <form class="form-horizontal" id="recoverform" [formGroup]="forgotPasswordForm"
-        (ngSubmit)="recoverPassword(forgotPasswordForm.get('emailRecover')?.value)" novalidate>
+      <form class="form-horizontal" *ngIf="viewRecoverForm" [formGroup]="forgotPasswordForm"
+        (ngSubmit)="cE(forgotPasswordForm.get('emailRecover')?.value, 'recover')" novalidate>
         <div class="form-group ">
           <div class="col-xs-12">
             <h3>Recuperar contraseña</h3>
@@ -96,6 +106,38 @@
               [matTooltip]="forgotPasswordForm.invalid ? 'Faltan campos obligatorios' : 'Recuperar'"
               [matTooltipPosition]="'below'" aria-label="Botón recuperar contraseña usuario"
               type="submit">Recuperar</button>
+          </div>
+        </div>
+      </form>
+      <form class="form-horizontal" *ngIf="viewSingUpForm" [formGroup]="forgotPasswordForm"
+        (ngSubmit)="cE(forgotPasswordForm.get('emailRecover')?.value, 'create')" novalidate>
+        <div class="form-group ">
+          <div class="col-xs-12">
+            <h3>Crear cuenta</h3>
+            <p class="text-muted">Ingrese su correo electrónico y se le enviarán instrucciones! </p>
+          </div>
+        </div>
+        <div class="form-group ">
+          <div class="col-xs-12">
+            <input class="form-control" type="email" placeholder="Email" name="emailRecover" id="emailRecover"
+              formControlName="emailRecover" autocomplete="email" autocomplete="off">
+          </div>
+          <span class="err text-danger"
+            *ngIf="forgotPasswordForm.get('emailRecover')?.invalid && forgotPasswordForm.get('emailRecover')?.touched && !forgotPasswordForm.get('emailRecover')!.errors!['pattern']">
+            El <strong>email </strong>es requerido
+          </span>
+          <span class="err text-danger"
+            *ngIf="forgotPasswordForm.get('emailRecover')!.errors != null && forgotPasswordForm.get('emailRecover')!.errors!['pattern'] && forgotPasswordForm.get('emailRecover')?.touched">
+            El <strong>email</strong> no es válido
+          </span>
+        </div>
+        <div class="form-group text-center m-t-20">
+          <div class="col-xs-12 mb-5">
+            <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light"
+              [disabled]="forgotPasswordForm.invalid"
+              [matTooltip]="forgotPasswordForm.invalid ? 'Faltan campos obligatorios' : 'Crear'"
+              [matTooltipPosition]="'below'" aria-label="Botón crear cuenta usuario"
+              type="submit">Crear cuenta</button>
           </div>
         </div>
       </form>

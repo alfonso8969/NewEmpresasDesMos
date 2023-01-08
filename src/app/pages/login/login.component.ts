@@ -47,6 +47,8 @@ export class LoginComponent implements OnInit {
   }
 
   load: boolean;
+  viewRecoverForm: boolean;
+  viewSingUpForm: boolean;
 
   constructor(private router: Router,
               private fb: FormBuilder,
@@ -55,6 +57,8 @@ export class LoginComponent implements OnInit {
               private userService: UsersService) {
 
     this.load = false;
+    this.viewRecoverForm = false;
+    this.viewSingUpForm = false;
 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
@@ -87,7 +91,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login() {
+  /**
+   * Función login
+   */
+  $l() {
     this.user = new User();
     let remember = this.loginForm.get('checkBoxSignup')!.value;
     if (remember) {
@@ -126,7 +133,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log("Error: ", error);
+        console.log("Error login", "Se produjo un error al loguearse el usuario: ", error);
         Swal.fire({
           title: 'Login',
           html: `<p>Se produjo un error al loguearse el usuario</p>`,
@@ -140,97 +147,141 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  public recoverPasswordShow(): void {
+  /**
+   * Función que muestra el formulario para Recuperar contraseña
+   */
+  public rPS(): void {
     let a = document.getElementById('to-recover')!;
     a.innerText = a.innerText == "Olvidó la contraseña?" ? "Cerrar olvidó" : "Olvidó la contraseña?"
-    let form = document.getElementById('recoverform')!;
-    let clase = form.getAttribute('class')!;
-    if (clase?.includes('showRecoverForm')) {
-      let clases: string[] = clase.split(' ');
-      clases.splice(clases.indexOf('showRecoverForm'), 1);
-      form.setAttribute('class', clases.join(' '));
-    } else {
-      form.setAttribute('class', clase + ' showRecoverForm');
-    }
-
+    this.viewRecoverForm = !this.viewRecoverForm;
   }
 
-  public recoverPassword(email: string): void {
-    console.log(email);
-    this.checkEmail(email);
+  public sUpS(): void {
+    let a = document.getElementById('to-singUp')!;
+    a.innerText = a.innerText == "click aquí" ? "Cerrar" : "click aquí"
+    this.viewSingUpForm = !this.viewSingUpForm;
   }
 
-  private checkEmail(email: string): void {
+  /**
+   * Función que chequea si el email existe para recuperar la contraseña,
+   * si existe lanza el email al usuario con la nueva contraseña.
+   * 
+   * @param {string} email Email del usuario.
+   * 
+   * @returns void
+   */
+  public cE(email: string, action: string): void {
     this.load = true;
     let userEmail: User = new User();
     userEmail.user_email = email;
-    this.emailService.checkEmail(userEmail)
+    if (action == 'recover') {
+      this.emailService.checkEmail(userEmail)
+        .subscribe({
+          next: (data: User) => {
+            if(data.user_name != undefined) {
+              userEmail.user_name = data.user_name;
+              userEmail.user_lastName = data.user_lastName;
+              let match = false;
+              let newPassword = '';
+              do {
+                newPassword = Utils.makeString(9);
+                match = Utils.passwordReg.test(newPassword);
+              } while (!match);
+  
+              if(match) {
+                userEmail.user_password = hex_sha512(newPassword);
+                this.userService.resetPassword(userEmail)
+                .subscribe({
+                  next: (data: number) => {
+                    if (data === 1) {
+                      this.dataForm = {
+                        name: userEmail.user_name + ' ' + userEmail.user_lastName,
+                        email: userEmail.user_email,
+                        message: Utils.getTemplateEmail(userEmail.user_name, userEmail.user_lastName, newPassword),
+                        from: 'Empresas Admin',
+                        password: true
+                      }
+                      this.sE();
+                    }
+                  }, error: (error: any) => {
+                    console.log(error)
+                    alert("Hubo un error al resetear la contraseña")
+                    this.load = false;
+                  }, complete: () => {
+                    console.log(`Se lanzo el email al usuario: ${ this.dataForm.name }, con la nueva password: ${ newPassword }`)
+                  }
+                });
+              } else {
+                alert("Hubo un problema regenerando el código de la contraseña");
+                this.load = false;
+  
+              }
+            } else {
+              this.load = false;
+              console.log(`El email ${ email },  no está registrado`);
+              Swal.fire({
+                title: 'Recuperar contraseña',
+                text: `El email ${ email },  no está registrado`,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+            }
+        }, error: (error: any) => {
+          console.log(`Hubo un error al comprobar el email: ${ email }` , error);
+          this.load = false;
+          Swal.fire({
+            title: 'Recuperar contraseña',
+            text: `Hubo un error al comprobar el email: ${ email }`,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }, complete: () =>  { 
+          console.log('Check email complete'); 
+        }
+      });
+    } else {
+      this.emailService.checkEmail(userEmail)
       .subscribe({
         next: (data: User) => {
           if(data.user_name != undefined) {
-            userEmail.user_name = data.user_name;
-            userEmail.user_lastName = data.user_lastName;
-            let match = false;
-            let newPassword = '';
-            do {
-              newPassword = Utils.makeString(9);
-              match = Utils.passwordReg.test(newPassword);
-            } while (!match);
-
-            if(match) {
-              userEmail.user_password = hex_sha512(newPassword);
-              this.userService.resetPassword(userEmail)
-              .subscribe({
-                next: (data: number) => {
-                  if (data === 1) {
-                    this.dataForm = {
-                      name: userEmail.user_name + ' ' + userEmail.user_lastName,
-                      email: userEmail.user_email,
-                      message: Utils.getTemplateEmail(userEmail.user_name, userEmail.user_lastName, newPassword),
-                      from: 'Empresas Admin',
-                      password: true
-                    }
-                    this.sendEmail();
-                  }
-                }, error: (error: any) => {
-                  console.log(error)
-                  alert("Hubo un error al resetear la contraseña")
-                  this.load = false;
-                }
-              });
-            } else {
-              alert("Hubo un problema regenerando el código de la contraseña");
-              this.load = false;
-
-            }
-          } else {
             this.load = false;
             Swal.fire({
-              title: 'Recuperar contraseña',
-              text: `El email ${ email },  no está registrado`,
+              title: 'Registro',
+              text: `El email ${ email }, ya está registrado`,
               icon: 'error',
               confirmButtonText: 'Aceptar'
             });
+          } else {
+            this.dataForm = {
+              name: userEmail.user_email,
+              email: userEmail.user_email,
+              message: Utils.getTemplateEmailCreateAccount("Querido amigo", userEmail.user_email, ''),
+              from: 'Crear cuenta Empresas Admin',
+              password: false
+            }
+            this.sE();
           }
-      }, error: (error:any) => {
+      }, error: (error: any) => {
+        console.log("Crear cuenta", `Hubo un error al comprobar el email: ${ email }` , error);
         this.load = false;
         Swal.fire({
-          title: 'Recuperar contraseña',
+          title: 'Crear cuenta',
           text: `Hubo un error al comprobar el email: ${ email }`,
           icon: 'error',
           confirmButtonText: 'Aceptar'
         });
-      }, complete: () => console.log('Check email complete')
+      }, complete: () =>  { 
+        console.log('Check email complete'); 
+      }
     });
-
+    }
   }
 
-  private sendEmail(): void {
+  private sE(): void {
 
     this.emailService.sendEmail(this.dataForm).subscribe({
      next: (result: any) => {
       this.load = false;
-      console.log('ContactComponent response', result);
       if (result.title.includes('error')) {
         this.showSwal('error');
         return;
@@ -244,7 +295,9 @@ export class LoginComponent implements OnInit {
       this.sendEmailResult.message = error.message;
       this.showSwal('error');
       console.log('Login send email Error', error);
-     }, complete: () => console.log("Complete send email")
+     }, complete: () => {
+      console.log("Complete send email");
+     }
     });
   }
 
@@ -267,6 +320,6 @@ export class LoginComponent implements OnInit {
     });
     this.forgotPasswordForm.get('emailRecover')?.setValue('');
     this.forgotPasswordForm.markAsUntouched();
-    this.recoverPasswordShow();
+    this.rPS();
   }
 }

@@ -29,7 +29,7 @@ export class UsersService {
   public getUserLogged(): User {
     let userLogged = sessionStorage.getItem('userLogged');
     if (userLogged && userLogged != "undefined") {
-      console.log('sessionStorage userLogged LoginService: ', JSON.parse(sessionStorage.getItem('userLogged')!))
+      console.log('sessionStorage userLogged LoginService: ', JSON.parse(sessionStorage.getItem('userLogged')!));
       this.user = JSON.parse(userLogged);
     } else {
       let userLogged = localStorage.getItem('userLogged');

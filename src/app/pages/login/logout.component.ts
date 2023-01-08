@@ -22,16 +22,16 @@ export class LogoutComponent {
   title: string = "Admin Empresas";
 
   constructor(private router: Router) {
+    this.showMessage();
     window.history.forward();
     window.history.go(0);
     window.location.hash = "no-back-button";
     window.location.hash = "Again-No-back-button" //chrome
     window.onhashchange = function () { window.location.hash = "no-back-button"; }
-    this.showMessage();
   }
 
   private showMessage(): void {
-   
+
     setTimeout(() => {
       Swal.fire({
         title: 'Salir de Admin Empresas',
@@ -46,7 +46,7 @@ export class LogoutComponent {
       }).then((confirm) => {
         if (confirm.isConfirmed) {
           this.router.navigate(['/externalRedirect', { externalUrl: 'https://unseen.co/labs/webgl-rain/' }]);
-        } else {          
+        } else {
           console.clear();
         }
       })
