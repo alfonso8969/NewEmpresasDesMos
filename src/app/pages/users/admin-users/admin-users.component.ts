@@ -14,11 +14,11 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
 
   user: User;
   usersHab: User[];
-  usersInHab: User[];
   usersHabTmp: User[];
+  usersInHab: User[];
   usersInHabTmp: User[];
 
-  viewSpinner: boolean = true;
+  viewSpinner: boolean;
   rolValue: number;
   rolStr: string;
   filterValueAct: string = '';
@@ -32,7 +32,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   editUserRolForm: FormGroup
 
   constructor(private fb: FormBuilder, private usersService: UsersService) {
-   
+    this.viewSpinner = true;
     this.fillTables();
 
     this.editUserRolForm = this.fb.group({
@@ -164,7 +164,9 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
               confirmButtonText: 'Aceptar'
             });
           },
-          complete: () => console.log("Update habilitado complete")
+          complete: () => { 
+            console.log(`${ title.toLowerCase()} usuario ${ user.user_name + ' ' + user.user_lastName } completado`); 
+          }
         });
       }
     })
@@ -237,7 +239,9 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
               confirmButtonText: 'Aceptar'
             });
           },
-          complete: () => console.log("Update rol complete")
+          complete: () => { 
+            console.log(`Actualizar rol usuario ${ user.user_name + ' ' + user.user_lastName } completado`); 
+          }
         });
       }
     })

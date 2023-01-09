@@ -11,7 +11,7 @@ export class AdminService {
 
   constructor() { }
 
-  public setLocalStrorage(user: User): void {
+  public setLocalStorage(user: User): void {
 
   }
 }

@@ -33,6 +33,11 @@ td, tr {
   border: 10px solid #FEDE00;
 }
 
+#img-user-mini {
+  border-radius: 50%;
+  border: 2px solid #1494e9;
+}
+
 .close {
   cursor: pointer;
   font-size: 35px;

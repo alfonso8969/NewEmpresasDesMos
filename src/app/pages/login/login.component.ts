@@ -152,7 +152,7 @@ export class LoginComponent implements OnInit {
                   window.location.reload();
                 });
               } else {
-                this.showErrorLogin();
+                this.showError();
               }
             }, error: (error: any) => {
               console.log("Error guardar sesión: ", error);
@@ -176,7 +176,7 @@ export class LoginComponent implements OnInit {
       },
       error: (error: any) => {
         console.log("Error login", "Se produjo un error al loguearse el usuario: ", error);
-        this.showErrorLogin();
+        this.showError();
         this.load = false;
       },
       complete: () => {
@@ -185,7 +185,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private showErrorLogin(): void {
+  private showError(): void {
     Swal.fire({
       title: 'Login',
       html: `<p>Se produjo un error al loguearse el usuario</p>`,

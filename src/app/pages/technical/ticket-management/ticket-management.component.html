@@ -89,7 +89,8 @@
                   <tr *ngFor="let ticket of tickets | ticket: filter | paginate: { id: 'users', itemsPerPage: 10, currentPage: page }">
                     <td>{{ ticket.code }}</td>
                     <td>
-                      <img [src]="url + '/uploads/' + ticket.user_img" alt="{{ ticket.user_name }}" title="{{ ticket.user_name }}" class="img-circle mr-2" />
+                      <img id="img-user-mini" [src]="url + '/uploads/' + ticket.user_img" 
+                      alt="{{ ticket.user_name }}" title="{{ ticket.user_name }}" class="img-circle mr-2" />
                       {{ ticket.user_name }}
                     </td>
                     <td>{{ ticket.user_email }}</td>
