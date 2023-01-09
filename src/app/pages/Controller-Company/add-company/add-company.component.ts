@@ -260,7 +260,7 @@ export class AddCompanyComponent implements OnInit {
    * @returns {boolean} true si es cierto, false de otra manera
   */
   public isDisabled(): boolean {
-    return this.addCompanyForm.get('sector')?.value == 0 || this.addCompanyForm.get('distrito')?.value == 0 || this.addCompanyForm.get('poligono')?.value == 0
+    return this.addCompanyForm.get('sector')?.value == 0 || this.addCompanyForm.get('distrito')?.value == 0 || this.addCompanyForm.get('polygon')?.value == 0
   }
 
   /**

@@ -285,7 +285,7 @@ export class ViewCompanyComponent implements OnInit {
   }
 
   public isDisabled(): boolean {
-    return this.editCompanyForm.get('sector')?.value == 0 || this.editCompanyForm.get('distrito')?.value == 0 || this.editCompanyForm.get('poligono')?.value == 0
+    return this.editCompanyForm.get('sector')?.value == 0 || this.editCompanyForm.get('distrito')?.value == 0 || this.editCompanyForm.get('polygon')?.value == 0
   }
 
   public cleanForm(): void {
