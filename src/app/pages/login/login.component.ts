@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { User } from 'src/app/class/users';
+import { Session } from 'src/app/interfaces/session';
 import { EmailService } from 'src/app/services/email.service';
 import { LoginService } from 'src/app/services/login.service';
+import { SessionsService } from 'src/app/services/sessions.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal, { SweetAlertIcon } from 'sweetalert2'
@@ -14,13 +17,16 @@ declare function hex_sha512(pass: string): string;
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [DatePipe]
+
 })
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   forgotPasswordForm: FormGroup;
   user: User;
+  session: Session;
 
   passwordHtml: HTMLElement;
   passwordIcon: HTMLElement;
@@ -51,14 +57,24 @@ export class LoginComponent implements OnInit {
   viewSingUpForm: boolean;
 
   constructor(private router: Router,
-              private fb: FormBuilder,
-              private loginService: LoginService,
-              private emailService: EmailService,
-              private userService: UsersService) {
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private emailService: EmailService,
+    private userService: UsersService,
+    private sessionService: SessionsService,
+    private datePipe: DatePipe) {
 
     this.load = false;
     this.viewRecoverForm = false;
     this.viewSingUpForm = false;
+
+    this.session = {
+      id_user: 0,
+      user_email: '',
+      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')!,
+      message: '',
+      complete: false
+    }
 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
@@ -75,9 +91,9 @@ export class LoginComponent implements OnInit {
     if (userLogged && remember == "true") {
       this.user = userLogged;
       this.router.navigateByUrl("/dashboard")
-      .then(() => {
-        window.location.reload();
-      });
+        .then(() => {
+          window.location.reload();
+        });
     }
   }
 
@@ -108,22 +124,33 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.user).subscribe({
       next: (user: User) => {
         if (user.id_user) {
+          this.session.id_user = user.id_user;
+          this.session.user_email = user.user_email;
           if (user.habilitado == 0) {
+            this.session.message = "El usuario esta deshabilitado";
+            this.session.complete = false;
+            this.setSession(this.session);
             Swal.fire({
               title: 'Login',
-              html: `<p>El usuario ${ user.user_name } está deshabilitado</p>
+              html: `<p>El usuario ${user.user_name} está deshabilitado</p>
               <p>Póngase en contacto con el administrador, Muchas gracias</p>`,
               icon: 'warning',
               confirmButtonText: 'Aceptar'
             });
             return;
           }
-
+          this.session.message = "Sesión empezada correctamente";
+          this.session.complete = true;
+          this.setSession(this.session);
           this.router.navigateByUrl("/dashboard")
           .then(() => {
             window.location.reload();
           });
         } else {
+          this.session.message = "Las claves son incorrectas";
+          this.session.complete = false;
+          this.session.id_user = 0;
+          this.setSession(this.session);
           Swal.fire({
             title: 'Login',
             text: `Las claves no son correctas`,
@@ -143,6 +170,17 @@ export class LoginComponent implements OnInit {
       },
       complete: () => {
         console.log("Complete User: ", this.user);
+        
+      }
+    });
+  }
+
+  private setSession(session: Session): void {
+    this.sessionService.setSession(this.session).subscribe({
+      next: (echo: number) => {
+        console.log("Sesión guardada: ", echo == 1 ? "True" : "False");
+      }, error: (error: any) => {
+        console.log("Error guardar sesión: ", error);
       }
     });
   }
@@ -178,7 +216,7 @@ export class LoginComponent implements OnInit {
       this.emailService.checkEmail(userEmail)
         .subscribe({
           next: (data: User) => {
-            if(data.user_name != undefined) {
+            if (data.user_name != undefined) {
               userEmail.user_name = data.user_name;
               userEmail.user_lastName = data.user_lastName;
               let match = false;
@@ -187,117 +225,117 @@ export class LoginComponent implements OnInit {
                 newPassword = Utils.makeString(9);
                 match = Utils.passwordReg.test(newPassword);
               } while (!match);
-  
-              if(match) {
+
+              if (match) {
                 userEmail.user_password = hex_sha512(newPassword);
                 this.userService.resetPassword(userEmail)
-                .subscribe({
-                  next: (data: number) => {
-                    if (data === 1) {
-                      this.dataForm = {
-                        name: userEmail.user_name + ' ' + userEmail.user_lastName,
-                        email: userEmail.user_email,
-                        message: Utils.getTemplateEmail(userEmail.user_name, userEmail.user_lastName, newPassword),
-                        from: 'Empresas Admin',
-                        password: true
+                  .subscribe({
+                    next: (data: number) => {
+                      if (data === 1) {
+                        this.dataForm = {
+                          name: userEmail.user_name + ' ' + userEmail.user_lastName,
+                          email: userEmail.user_email,
+                          message: Utils.getTemplateEmail(userEmail.user_name, userEmail.user_lastName, newPassword),
+                          from: 'Empresas Admin',
+                          password: true
+                        }
+                        this.sE();
                       }
-                      this.sE();
+                    }, error: (error: any) => {
+                      console.log(error)
+                      alert("Hubo un error al resetear la contraseña")
+                      this.load = false;
+                    }, complete: () => {
+                      console.log(`Se lanzo el email al usuario: ${this.dataForm.name}, con la nueva password: ${newPassword}`)
                     }
-                  }, error: (error: any) => {
-                    console.log(error)
-                    alert("Hubo un error al resetear la contraseña")
-                    this.load = false;
-                  }, complete: () => {
-                    console.log(`Se lanzo el email al usuario: ${ this.dataForm.name }, con la nueva password: ${ newPassword }`)
-                  }
-                });
+                  });
               } else {
                 alert("Hubo un problema regenerando el código de la contraseña");
                 this.load = false;
-  
+
               }
             } else {
               this.load = false;
-              console.log(`El email ${ email },  no está registrado`);
+              console.log(`El email ${email},  no está registrado`);
               Swal.fire({
                 title: 'Recuperar contraseña',
-                text: `El email ${ email },  no está registrado`,
+                text: `El email ${email},  no está registrado`,
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });
             }
-        }, error: (error: any) => {
-          console.log(`Hubo un error al comprobar el email: ${ email }` , error);
-          this.load = false;
-          Swal.fire({
-            title: 'Recuperar contraseña',
-            text: `Hubo un error al comprobar el email: ${ email }`,
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-        }, complete: () =>  { 
-          console.log('Check email complete'); 
-        }
-      });
-    } else {
-      this.emailService.checkEmail(userEmail)
-      .subscribe({
-        next: (data: User) => {
-          if(data.user_name != undefined) {
+          }, error: (error: any) => {
+            console.log(`Hubo un error al comprobar el email: ${email}`, error);
             this.load = false;
             Swal.fire({
-              title: 'Registro',
-              text: `El email ${ email }, ya está registrado`,
+              title: 'Recuperar contraseña',
+              text: `Hubo un error al comprobar el email: ${email}`,
               icon: 'error',
               confirmButtonText: 'Aceptar'
             });
-          } else {
-            this.dataForm = {
-              name: userEmail.user_email,
-              email: userEmail.user_email,
-              message: Utils.getTemplateEmailCreateAccount("Querido amigo", userEmail.user_email, ''),
-              from: 'Crear cuenta Empresas Admin',
-              password: false
-            }
-            this.sE();
+          }, complete: () => {
+            console.log('Check email complete');
           }
-      }, error: (error: any) => {
-        console.log("Crear cuenta", `Hubo un error al comprobar el email: ${ email }` , error);
-        this.load = false;
-        Swal.fire({
-          title: 'Crear cuenta',
-          text: `Hubo un error al comprobar el email: ${ email }`,
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
         });
-      }, complete: () =>  { 
-        console.log('Check email complete'); 
-      }
-    });
+    } else {
+      this.emailService.checkEmail(userEmail)
+        .subscribe({
+          next: (data: User) => {
+            if (data.user_name != undefined) {
+              this.load = false;
+              Swal.fire({
+                title: 'Registro',
+                text: `El email ${email}, ya está registrado`,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+            } else {
+              this.dataForm = {
+                name: userEmail.user_email,
+                email: userEmail.user_email,
+                message: Utils.getTemplateEmailCreateAccount("Querido amigo", userEmail.user_email, ''),
+                from: 'Crear cuenta Empresas Admin',
+                password: false
+              }
+              this.sE();
+            }
+          }, error: (error: any) => {
+            console.log("Crear cuenta", `Hubo un error al comprobar el email: ${email}`, error);
+            this.load = false;
+            Swal.fire({
+              title: 'Crear cuenta',
+              text: `Hubo un error al comprobar el email: ${email}`,
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+          }, complete: () => {
+            console.log('Check email complete');
+          }
+        });
     }
   }
 
   private sE(): void {
 
     this.emailService.sendEmail(this.dataForm).subscribe({
-     next: (result: any) => {
-      this.load = false;
-      if (result.title.includes('error')) {
+      next: (result: any) => {
+        this.load = false;
+        if (result.title.includes('error')) {
+          this.showSwal('error');
+          return;
+        }
+        this.sendEmailResult.title = this.sendEmailMessages.titleSuccess;
+        this.sendEmailResult.message = this.sendEmailMessages.messageSuccess;
+        this.showSwal('success');
+      }, error: (error: any) => {
+        this.load = false;
+        this.sendEmailResult.title = this.sendEmailMessages.titleError;
+        this.sendEmailResult.message = error.message;
         this.showSwal('error');
-        return;
+        console.log('Login send email Error', error);
+      }, complete: () => {
+        console.log("Complete send email");
       }
-      this.sendEmailResult.title = this.sendEmailMessages.titleSuccess;
-      this.sendEmailResult.message = this.sendEmailMessages.messageSuccess;
-      this.showSwal('success');
-     }, error: (error: any) => {
-      this.load = false;
-      this.sendEmailResult.title = this.sendEmailMessages.titleError;
-      this.sendEmailResult.message = error.message;
-      this.showSwal('error');
-      console.log('Login send email Error', error);
-     }, complete: () => {
-      console.log("Complete send email");
-     }
     });
   }
 

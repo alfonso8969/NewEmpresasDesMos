@@ -482,8 +482,8 @@ export class Utils {
                                                                                     <p>Email: ${ userEmail };</p>
                                                                                     <p><br></p>
                                                                                     <p>Buscamos constantemente formas de mejorar la experiencia de nuestros usuarios y asegurarnos de que nuestras políticas expliquen cómo funcionan nuestros servicios. Por eso, le informamos sobre nuestros Términos de servicio y Política de privacidad.&nbsp;</p>
-                                                                                    <p><br>Favor pulse en el enlace abajo para completar este formulario..<br /> <a href="https://form.jotform.com/230067287676061">Rellenar formulario</a></p><br><br>
-                                                                                    Le comunicaremos la confirmación de la inscripción por teléfono o email en unos días, por favor seá paciente.
+                                                                                    <p><br>Por favor pulse en el enlace de abajo para completar este formulario..<br /> <a href="https://form.jotform.com/230067287676061">Rellenar formulario</a></p><br><br>
+                                                                                    Le comunicaremos la confirmación de la inscripción por teléfono o email en unos días, por favor sea paciente.
                                                                                     </p>&nbsp;
                                                                                     <p><br>Muchísimas gracias,</p>
                                                                                     <p>Un saludo desde Empresas Admin</p>

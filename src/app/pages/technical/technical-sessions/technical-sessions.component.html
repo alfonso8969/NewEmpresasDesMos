@@ -1,1 +1,83 @@
-<p>technical-sessions works!</p>
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeInDown">
+    <app-mat-spinner-overlay *ngIf="load">
+    </app-mat-spinner-overlay>
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Sesiones</h3>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Lista de sesiones de usuarios</h4>
+            <h6 class="card-subtitle">Lista de sesiones abiertos por los usuarios</h6>
+            <div class="row m-t-40">
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-info text-center">
+                    <h1 class="font-light text-white">{{ sessionsTotal }}</h1>
+                    <h6 class="text-white">Total sesiones</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="search" class="form-control" [(ngModel)]="filter" placeholder='Filtrar por "Abierta por" o "User email"'>
+            </div>
+            <div class="table-responsive">
+              <table id="demo-foo-addrow" class="contact-list m-t-30 no-wrap table table-hover"
+                data-page-size="10">
+                <caption></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" sortableSession="user_name" (sortSession)="onSort($event)">Abierta por</th>
+                    <th scope="col" sortableSession="user_email" (sortSession)="onSort($event)">User email</th>
+                    <th scope="col" sortableSession="message" (sortSession)="onSort($event)">Mensaje</th>
+                    <th scope="col" sortableSession="complete" (sortSession)="onSort($event)">Estado</th>
+                    <th scope="col" sortableSession="ip" (sortSession)="onSort($event)">Ip</th>
+                    <th scope="col" sortableSession="date" (sortSession)="onSort($event)">Fecha</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let session of sessions | session: filter | paginate: { id: 'users', itemsPerPage: 10, currentPage: page }">
+                    <td>
+                      <img id="img-user" [src]="session.user_img != 'null' ? url + '/uploads/' + session.user_img : './assets/images/icon/staff.png'" alt="{{ session.user_name }}" title="{{ session.user_name }}" class="img-circle mr-2" />
+                      {{ session.user_name }}
+                    </td>
+                    <td>{{ session.user_email }}</td>
+                    <td class="ms" [matTooltip]="session.message">{{ session.message }}</td>
+
+                    <td [ngSwitch]="session.complete">
+                      <span *ngSwitchCase="true" class="label label-success">Completado</span>
+                      <span *ngSwitchCase="false" class="label label-danger">Error</span>
+                    </td>
+
+                    <td>{{ session.ip }}</td>
+                    <td>{{ session.date | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
+                    <td>
+                      <a class="btn btn-warning" matTooltip="Ver session" (click)="getSession(session)" data-toggle="modal" data-target=".md-tickets"><i
+                          class="fa fa-archive"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="animated fadeInDown mt-2">
+              <pagination-controls id="users" (pageChange)="page = $event" [previousLabel]="anterior"
+                [nextLabel]="siguiente" [responsive]="true" [autoHide]="true"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

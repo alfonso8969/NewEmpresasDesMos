@@ -1,0 +1,12 @@
+#img-user {
+  border-radius: 50%;
+  border: 2px solid #1494e9;
+}
+
+.contact-list td img {
+  width: 30px;
+}
+
+td, tr {
+  cursor: pointer;
+}
