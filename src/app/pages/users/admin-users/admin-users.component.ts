@@ -63,7 +63,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
     this.usersService.getUsersDisabled().subscribe({
       next: (users: any) => {
         if (users != null) {
-          this.usersInHab = users.data;
+          this.usersInHab = users.data.filter((user: User) => user.id_user != 0);;
           this.usersInHabTmp = JSON.parse(JSON.stringify(this.usersInHab));
         } else {
           alert("Hubo un error")

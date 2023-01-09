@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
     this.user.user_password = hex_sha512(this.loginForm.get('password')!.value);
     this.user.user_email = this.loginForm.get('email')!.value;
 
-    this.loginService.login(this.user).subscribe({
+    this.loginService.$l(this.user).subscribe({
       next: (user: User) => {
         if (user.id_user) {
           this.session.id_user = user.id_user;
@@ -143,15 +143,25 @@ export class LoginComponent implements OnInit {
           }
           this.session.message = "Sesión empezada correctamente";
           this.session.complete = true;
-          this.setSession(this.session);
-          setTimeout(() => {
-            this.router.navigateByUrl("/dashboard")
-            .then(() => {
-              window.location.reload();
-            });
-          }, 600);
+          this.sessionService.setSession(this.session).subscribe({
+            next: (echo: number) => {
+              this.load = false;
+              if(echo == 1) {
+                this.router.navigateByUrl("/dashboard")
+                .then(() => {
+                  window.location.reload();
+                });
+              } else {
+                this.showErrorLogin();
+              }
+            }, error: (error: any) => {
+              console.log("Error guardar sesión: ", error);
+              this.load = false;
+            }
+          });
         } else {
           this.session.message = "Las claves son incorrectas";
+          this.session.user_email = user.user_email;
           this.session.complete = false;
           this.session.id_user = 0;
           this.setSession(this.session);
@@ -161,21 +171,26 @@ export class LoginComponent implements OnInit {
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
+          this.load = false;
         }
       },
       error: (error: any) => {
         console.log("Error login", "Se produjo un error al loguearse el usuario: ", error);
-        Swal.fire({
-          title: 'Login',
-          html: `<p>Se produjo un error al loguearse el usuario</p>`,
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        });
+        this.showErrorLogin();
         this.load = false;
       },
       complete: () => {
         console.log("Complete User: ", this.user);
       }
+    });
+  }
+
+  private showErrorLogin(): void {
+    Swal.fire({
+      title: 'Login',
+      html: `<p>Se produjo un error al loguearse el usuario</p>`,
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
     });
   }
 

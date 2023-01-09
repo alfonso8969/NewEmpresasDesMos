@@ -22,6 +22,8 @@ export class TechnicalSessionsComponent implements OnInit, AfterViewInit {
 
   load: boolean = false;
   sessionsTotal: number;
+  sessionsSuccessTotal: number;
+  sessionsFailTotal: number;
   filter: string;
 
   sessions: Session[];
@@ -39,6 +41,8 @@ export class TechnicalSessionsComponent implements OnInit, AfterViewInit {
               private datePipe: DatePipe
               ) {
     this.sessionsTotal = 0;
+    this.sessionsSuccessTotal = 0;
+    this.sessionsFailTotal = 0;
 
     this.load = true;
     this.sessionService.getSessions().subscribe({
@@ -46,6 +50,8 @@ export class TechnicalSessionsComponent implements OnInit, AfterViewInit {
         this.sessions = sessions;
         this.sessionsTmp = sessions;
         this.sessionsTotal = sessions.length;
+        this.sessionsSuccessTotal = sessions.filter(s => s.complete == !0).length;
+        this.sessionsFailTotal = this.sessionsTotal - this.sessionsSuccessTotal;
       }, error: (error: any) => {
         console.log("Error consiguiendo sesiones");
          this.load = false;

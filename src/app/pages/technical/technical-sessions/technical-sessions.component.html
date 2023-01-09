@@ -28,6 +28,22 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-success text-center">
+                    <h1 class="font-light text-white">{{ sessionsSuccessTotal }}</h1>
+                    <h6 class="text-white">Sesiones completadas</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-danger text-center">
+                    <h1 class="font-light text-white">{{ sessionsFailTotal }}</h1>
+                    <h6 class="text-white">Sesiones fallidas</h6>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <input type="search" class="form-control" [(ngModel)]="filter" placeholder='Filtrar por "Abierta por" o "User email"'>

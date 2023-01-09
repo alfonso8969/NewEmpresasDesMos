@@ -17,7 +17,7 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
-  public login(user: User): Observable<User> {
+  public $l(user: User): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/login.php`, { user: user })
     .pipe(map( (Users: User) => {
       console.log('Users: ', Users);
@@ -27,35 +27,59 @@ export class LoginService {
         sessionStorage.setItem('userLogged', JSON.stringify(Users));
         localStorage.setItem('ROLE', this.roleAs.toString());
         this.userEmitter.emit(Users);
-        this.setToken(Users.user_name);
+        this.sT(Users.user_name);
       }
       return Users;
     }));
   }
 
-  public checkPassword(user: User): Observable<boolean> {
+  /**
+   * Check Password
+   * @param {User} user Usuario to check password
+   * @returns {Observable<boolean} true if exits, otherwise false 
+   */
+  public cP(user: User): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/checkPassword.php`, { user: user })
   }
 
-  private setToken(token: string) {
+  /**
+   * Set Token
+   * @param {string} token Token to auth
+   */
+  private sT(token: string): void {
     localStorage.setItem('token', token);
   }
 
-  public getToken(): string | null {
+  /**
+   * Get Token
+   * @returns {string | null } Token auth
+   */
+  public gT(): string | null {
     return localStorage.getItem('token');
   }
 
-  public isLoggedIn() {
-    const userToken = this.getToken();
+  /**
+   * User is logged
+   * @returns {boolean} true if the user is logged, otherwise false 
+   */
+  public isLoggedIn(): boolean {
+    const userToken = this.gT();
     return userToken != null;
   }
 
-  getRole() {
+  /**
+   * Get Rol
+   * @returns {number} rol User Rol
+   */
+  gR(): number {
     this.roleAs = Number(localStorage.getItem('ROLE')!);
     return this.roleAs;
   }
 
-  public logout(): void {
+  /**
+   * Logout
+   */
+  public lG(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userLogged');
     localStorage.removeItem('ROLE');

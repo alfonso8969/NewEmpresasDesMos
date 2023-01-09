@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
   isLogin(route: ActivatedRouteSnapshot, url: any): any {
     if (this.loginService.isLoggedIn()) {
       this.user = this.userService.getUserLogged();
-      const userRol = this.loginService.getRole();
+      const userRol = this.loginService.gR();
       console.log('estoy logueado');
       let roles: Roles[] = route.children[0] != undefined ? route.children[0].data['rol'] : route.data['rol'];
       let found: Roles | undefined;

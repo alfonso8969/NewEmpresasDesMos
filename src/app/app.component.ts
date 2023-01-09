@@ -33,8 +33,8 @@ export class AppComponent  implements OnDestroy {
       this.mySubscription.unsubscribe();
     }
 
-    if (localStorage.getItem('remember') == "true") {
-      this.loginService.logout();
+    if (localStorage.getItem('remember') == "false") {
+      this.loginService.lG();
     }
   }
 }

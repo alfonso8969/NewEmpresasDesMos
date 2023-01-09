@@ -159,7 +159,7 @@ export class PagesComponent implements OnInit {
       confirmButtonText: confirmButtonText
     }).then((confirm) => {
       if (confirm.isConfirmed) {
-        this.loginService.logout();
+        this.loginService.lG();
         this._router.navigateByUrl('/login')
         .then(() => {
           window.location.reload();
@@ -172,7 +172,7 @@ export class PagesComponent implements OnInit {
     if (Boolean(localStorage.getItem('remember'))) {
       this._router.navigateByUrl('exit');
     } else {
-      this.loginService.logout();
+      this.loginService.lG();
       this._router.navigateByUrl('exit')
       .then(() => {
         window.location.reload();

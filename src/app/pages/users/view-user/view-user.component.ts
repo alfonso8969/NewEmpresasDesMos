@@ -229,7 +229,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
 
     if (this.addUserForm.get('actPassword')!.value != '') {
       this.user.user_password = hex_sha512(this.addUserForm.get('actPassword')!.value);
-      this.loginService.checkPassword(this.user).subscribe({
+      this.loginService.cP(this.user).subscribe({
         next: (result: boolean) => {
           if (result) {
             editUser.user_password = hex_sha512(this.addUserForm.get('newPassword')!.value);
