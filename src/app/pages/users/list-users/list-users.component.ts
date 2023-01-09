@@ -63,7 +63,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
     this.usersService.getUsers().subscribe({
       next: (users: any) => {
         if (users != null) {
-          this.users = users.data;
+          this.users = users.data.filter((user: User) => user.id_user != 0);
           this.usersTemp = JSON.parse(JSON.stringify(this.users));
         } else {
           alert("Hubo un error")

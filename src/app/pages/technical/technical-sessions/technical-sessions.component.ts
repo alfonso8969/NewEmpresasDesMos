@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
   SortableHeaderSessionsDirective,
@@ -6,6 +6,7 @@ import {
   compare
 } from 'src/app/events/sortable-header-sessions.directive';
 import { DatePipe } from '@angular/common';
+import * as d3 from 'd3';
 import { Session } from 'src/app/interfaces/session';
 import { SessionsService } from 'src/app/services/sessions.service';
 
@@ -15,7 +16,7 @@ import { SessionsService } from 'src/app/services/sessions.service';
   styleUrls: ['./technical-sessions.component.css'],
   providers: [DatePipe]
 })
-export class TechnicalSessionsComponent implements OnInit {
+export class TechnicalSessionsComponent implements OnInit, AfterViewInit {
 
   public url: string = environment.apiUrl;
 
@@ -35,12 +36,13 @@ export class TechnicalSessionsComponent implements OnInit {
   headers: QueryList<SortableHeaderSessionsDirective>;
 
   constructor(private sessionService: SessionsService,
-    private datePipe: DatePipe) {
+              private datePipe: DatePipe
+              ) {
     this.sessionsTotal = 0;
 
     this.load = true;
     this.sessionService.getSessions().subscribe({
-      next: (sessions: Session[]) => { 
+      next: (sessions: Session[]) => {
         this.sessions = sessions;
         this.sessionsTmp = sessions;
         this.sessionsTotal = sessions.length;
@@ -56,6 +58,15 @@ export class TechnicalSessionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    d3.selectAll(".close").on('mouseover', function (event) {
+      d3.select(this).style("color", "red");
+    });
+    d3.selectAll(".close").on('mouseout', function (event) {
+      d3.select(this).style("color", "black");
+    });
   }
 
   onSort({ column, direction }: SortEventSession) {

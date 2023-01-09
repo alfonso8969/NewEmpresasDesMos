@@ -111,6 +111,7 @@ export class LoginComponent implements OnInit {
    * Función login
    */
   $l() {
+    this.load = true;
     this.user = new User();
     let remember = this.loginForm.get('checkBoxSignup')!.value;
     if (remember) {
@@ -137,15 +138,18 @@ export class LoginComponent implements OnInit {
               icon: 'warning',
               confirmButtonText: 'Aceptar'
             });
+            this.load = false;
             return;
           }
           this.session.message = "Sesión empezada correctamente";
           this.session.complete = true;
           this.setSession(this.session);
-          this.router.navigateByUrl("/dashboard")
-          .then(() => {
-            window.location.reload();
-          });
+          setTimeout(() => {
+            this.router.navigateByUrl("/dashboard")
+            .then(() => {
+              window.location.reload();
+            });
+          }, 600);
         } else {
           this.session.message = "Las claves son incorrectas";
           this.session.complete = false;
@@ -167,20 +171,22 @@ export class LoginComponent implements OnInit {
           icon: 'error',
           confirmButtonText: 'Aceptar'
         });
+        this.load = false;
       },
       complete: () => {
         console.log("Complete User: ", this.user);
-        
       }
     });
   }
 
   private setSession(session: Session): void {
-    this.sessionService.setSession(this.session).subscribe({
+    this.sessionService.setSession(session).subscribe({
       next: (echo: number) => {
         console.log("Sesión guardada: ", echo == 1 ? "True" : "False");
+        this.load = false;
       }, error: (error: any) => {
         console.log("Error guardar sesión: ", error);
+        this.load = false;
       }
     });
   }
@@ -203,9 +209,9 @@ export class LoginComponent implements OnInit {
   /**
    * Función que chequea si el email existe para recuperar la contraseña,
    * si existe lanza el email al usuario con la nueva contraseña.
-   * 
+   *
    * @param {string} email Email del usuario.
-   * 
+   *
    * @returns void
    */
   public cE(email: string, action: string): void {

@@ -64,7 +64,7 @@
                     <td>{{ session.ip }}</td>
                     <td>{{ session.date | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
                     <td>
-                      <a class="btn btn-warning" matTooltip="Ver session" (click)="getSession(session)" data-toggle="modal" data-target=".md-tickets"><i
+                      <a class="btn btn-warning" matTooltip="Ver session" (click)="getSession(session)" data-toggle="modal" data-target=".md-sessions"><i
                           class="fa fa-archive"></i></a>
                     </td>
                   </tr>
@@ -81,3 +81,94 @@
     </div>
   </div>
 </div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <!-- sample modal content -->
+        <div id="md" class="modal fade md-sessions" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div class="form-group">
+                  <h4 class="modal-title">Ver datos de la sesión
+                  </h4>
+                  <h5 class="text-primary">Fecha {{ session && session.date | date: 'dd-MM-yyyy HH:mm:ss' }}</h5>
+                  <td [ngSwitch]="session && session.complete">
+                    <span *ngSwitchCase="true" class="label label-success">Completado</span>
+                    <span *ngSwitchCase="false" class="label label-danger">Error</span>
+                  </td>
+                </div>
+                <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'"
+                  data-dismiss="modal" aria-hidden="true">&Cross;</button>
+              </div>
+              <div class="card">
+                  <!-- card-body -->
+                  <div class="card-body">
+                    <!-- form-body -->
+                    <div class="form-body">
+                      <!--row-->
+                      <div class="row p-t-20">
+                        <div class="col-md-6">
+                          <div class="text-center">
+                            <div class="form-group">
+                              <label for="userName">Email Usuario</label>
+                              <input title="{{ session && session.user_email }}" id="userEmail" class="form-control"
+                                type="text" [readonly]="true" [value]="session && session.user_email">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="ticketMessage">IP de la sesión</label>
+                            <input title="{{ session && session.ip }}" id="userIp" class="form-control"
+                            type="text" [readonly]="true" [value]="session && session.ip">
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="row p-t-20">
+                        <div class="col-md-6">
+                          <div id="div-imgUser" class="text-center">
+                            <div class="form-group">
+                              <label for="userName">Usuario</label>
+                              <input title="{{ session && session.user_name }}" id="userName" class="form-control"
+                                type="text" [readonly]="true" [value]="session && session.user_name">
+                            </div>
+                            <img id="img-user"
+                              [src]="session && session.user_img != 'null'  ? url + '/uploads/' + session.user_img : './assets/images/icon/staff.png'"
+                              height="200px" width="200px" alt="This is a small profile image"><br>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="ticketMessage">Mensaje de la sesión</label>
+                            <textarea id="ticketMessage" cols="35" rows="11" [value]="session && session.message"
+                              [readonly]="true" class="form-control"></textarea>
+                          </div>
+                        </div>
+
+                      </div>
+                      <!--/row-->
+                    </div>
+                    <!-- /form-body -->
+                  </div>
+                  <!-- /card-body -->
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+      </div>
+      <!--/card body -->
+    </div>
+    <!--/card -->
+  </div>
+  <!-- col-md-4 -->
+</div>
+<!-- row -->

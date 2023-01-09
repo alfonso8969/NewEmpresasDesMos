@@ -7,6 +7,11 @@
   width: 30px;
 }
 
+.close {
+  cursor: pointer;
+  font-size: 35px;
+}
+
 td, tr {
   cursor: pointer;
 }
