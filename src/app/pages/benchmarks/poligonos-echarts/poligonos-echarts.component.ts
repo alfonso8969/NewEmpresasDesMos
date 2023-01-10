@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EChartsOption } from 'echarts';
 import { BenchMarks } from 'src/app/interfaces/benchmarks';
+import { Log } from 'src/app/interfaces/log';
 import { BenchmarksService } from 'src/app/services/benchmarks.service';
+import { LogsService } from 'src/app/services/logs.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -23,9 +25,12 @@ export class PoligonosEchartsComponent implements OnInit {
   };
 
   options: EChartsOption;
+  log: Log;
 
   constructor(private benchmarksService: BenchmarksService,
-              private router: Router) {
+              private router: Router,
+              private logService: LogsService) {
+    this.log = this.logService.initLog();
     this.benchmarksService.getFieldsForBenchMarks('poligono')
       .subscribe({
         next: (dataResult: BenchMarks[]) => {
@@ -103,8 +108,12 @@ export class PoligonosEchartsComponent implements OnInit {
 
         },
         error: (error: any) => {
-          console.log(error);
-          alert(error);
+          this.log.action = 'BenchMarks(polígonos)';
+          this.log.status = false;
+          this.log.message = `(polígonos-echarts) Error al conseguir BenchMarks('polígonos') ${JSON.stringify(error)}`;
+          this.logService.setLog(this.log);
+          console.log('Error al conseguir BenchMarks(polígonos)', error);
+          alert('Error al conseguir BenchMarks(polígonos)');
         },
         complete: () => console.log("Complete: ", this.data_result)
       });

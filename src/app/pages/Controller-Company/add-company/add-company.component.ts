@@ -10,6 +10,8 @@ import { FieldsService } from 'src/app/services/fields.service';
 import { Fields } from 'src/app/interfaces/fields';
 import { Utils } from 'src/app/utils/utils';
 import { UsersService } from 'src/app/services/users.service';
+import { Log } from 'src/app/interfaces/log';
+import { LogsService } from 'src/app/services/logs.service';
 
 @Component({
   selector: 'app-add-company',
@@ -18,17 +20,17 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class AddCompanyComponent implements OnInit {
 
-  @HostListener('window:unload', [ '$event' ])
-    unloadHandler(event: any) {
+  @HostListener('window:unload', ['$event'])
+  unloadHandler(event: any) {
     console.log('window:unload', event);
     return false;
   }
 
-  @HostListener('window:beforeunload', [ '$event' ])
-   beforeUnloadHandler(event: any) {
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event: any) {
     console.log('window:beforeunload', event)
     return false;
-   }
+  }
 
   empresa: Empresa;
   user: User;
@@ -37,6 +39,7 @@ export class AddCompanyComponent implements OnInit {
   poligonos: Fields[];
   regex: RegExp;
   addCompanyForm: FormGroup;
+  log: Log;
 
   city: string = "Móstoles";
   region: string = "Madrid";
@@ -44,16 +47,19 @@ export class AddCompanyComponent implements OnInit {
 
   public type: string;
   lastEmpDetId: number;
-  newEmp: any ;
-  newRedes: any ;
+  newEmp: any;
+  newRedes: any;
 
   constructor(private companiesService: CompaniesService,
-              private fieldsService: FieldsService,
-              private userService: UsersService,
-              private fb: FormBuilder,
-              private router: Router) {
+    private fieldsService: FieldsService,
+    private userService: UsersService,
+    private fb: FormBuilder,
+    private router: Router,
+    private logService: LogsService) {
 
+    this.log = this.logService.initLog();
     this.user = this.userService.getUserLogged();
+
     let emp = localStorage.getItem('empresa');
     if (emp && emp != "undefined") {
       console.log('localStorage empresa: ', JSON.parse(localStorage.getItem('empresa')!))
@@ -72,10 +78,14 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Get Sectores';
+        this.log.status = false;
+        this.log.message = `(add-company) Error al conseguir sectores ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete sectores", this.sectores)
+      complete: () => console.log("Complete", this.sectores)
     });
 
     this.fieldsService.getFields("distrito").subscribe({
@@ -87,10 +97,14 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Get Distritos';
+        this.log.status = false;
+        this.log.message = `(add-company) Error al conseguir distritos ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete distritos", this.distritos)
+      complete: () => console.log("Complete", this.distritos)
     });
 
     this.fieldsService.getFields("poligono").subscribe({
@@ -102,10 +116,14 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Get Polígonos';
+        this.log.status = false;
+        this.log.message = `(add-company) Error al conseguir polígonos ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
-      complete: () => console.log("Complete polígonos", this.poligonos)
+      complete: () => console.log("Complete", this.poligonos)
     });
 
     this.companiesService.getLastEmpDetId().subscribe({
@@ -124,14 +142,14 @@ export class AddCompanyComponent implements OnInit {
   public fillForm(): void {
 
     this.addCompanyForm = this.fb.group({
-      nombre: ['' , Validators.required],
-      cif: ['' , [Validators.required, Validators.pattern(this.regex)]],
-      sector: [0 , Validators.required],
-      distrito: [0 , Validators.required],
-      polygon: [0 , Validators.required],
-      email: ['' , [Validators.required, Validators.pattern(Utils.emailReg)]],
-      phone: ['' , [Validators.required, Validators.pattern(Utils.phoneReg)]],
-      otherPhone: ['' , [Validators.pattern(Utils.phoneReg)]],
+      nombre: ['', Validators.required],
+      cif: ['', [Validators.required, Validators.pattern(this.regex)]],
+      sector: [0, Validators.required],
+      distrito: [0, Validators.required],
+      polygon: [0, Validators.required],
+      email: ['', [Validators.required, Validators.pattern(Utils.emailReg)]],
+      phone: ['', [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherPhone: ['', [Validators.pattern(Utils.phoneReg)]],
       contactPerson: [''],
       installation_year: [''],
       workers_number: [''],
@@ -139,27 +157,27 @@ export class AddCompanyComponent implements OnInit {
       localidad: [''],
       provincia: [''],
       cod_postal: ['', [Validators.required, Validators.pattern(Utils.codPostalReg)]]
-    }, {  validator: Utils.getRegexDocument } as AbstractControlOptions );
+    }, { validator: Utils.getRegexDocument } as AbstractControlOptions);
   }
 
   public fillFormNewEmp(newEmp: any): void {
     this.addCompanyForm = this.fb.group({
-      nombre: [newEmp['Nombre'] , Validators.required],
-      cif: [newEmp['CIF'] , [Validators.required]],
-      sector: [newEmp['Sector'] , Validators.required],
-      distrito: [newEmp['Distrito'] , Validators.required],
-      polygon: [newEmp['Poligono'] , Validators.required],
-      email: [newEmp['Email'] , [Validators.required, Validators.pattern(Utils.emailReg)]],
-      phone: [newEmp['Telefono'] , [Validators.required, Validators.pattern(Utils.phoneReg)]],
-      otherPhone: [newEmp['OtherTelefono'] , [Validators.pattern(Utils.phoneReg)]],
-      contactPerson: [newEmp['Persona_contacto'] ],
+      nombre: [newEmp['Nombre'], Validators.required],
+      cif: [newEmp['CIF'], [Validators.required]],
+      sector: [newEmp['Sector'], Validators.required],
+      distrito: [newEmp['Distrito'], Validators.required],
+      polygon: [newEmp['Poligono'], Validators.required],
+      email: [newEmp['Email'], [Validators.required, Validators.pattern(Utils.emailReg)]],
+      phone: [newEmp['Telefono'], [Validators.required, Validators.pattern(Utils.phoneReg)]],
+      otherPhone: [newEmp['OtherTelefono'], [Validators.pattern(Utils.phoneReg)]],
+      contactPerson: [newEmp['Persona_contacto']],
       installation_year: [newEmp['installation_year'], Validators.maxLength(4)],
       workers_number: [newEmp['workers_number']],
-      address: [newEmp['Direccion'] , Validators.required],
+      address: [newEmp['Direccion'], Validators.required],
       localidad: [''],
       provincia: [''],
-      cod_postal: [newEmp['Cod_postal'] , [Validators.required, Validators.pattern(Utils.codPostalReg), Validators.maxLength(5)]]
-    }, {  validator: [Utils.getRegexDocument] } as AbstractControlOptions );
+      cod_postal: [newEmp['Cod_postal'], [Validators.required, Validators.pattern(Utils.codPostalReg), Validators.maxLength(5)]]
+    }, { validator: [Utils.getRegexDocument] } as AbstractControlOptions);
   }
 
   public addCompany(redes: boolean = false): void {
@@ -202,26 +220,33 @@ export class AddCompanyComponent implements OnInit {
   }
 
   public saveEmpresa(empresa: Empresa): void {
+    this.log.action = 'Añadir empresa';
     this.companiesService.addCompany(empresa).subscribe({
       next: (data: number) => {
         if (data === 1) {
           Swal.fire({
             title: 'Añadir empresa',
-            text: `La empresa ${ empresa.getNombre() } se añadió exitosamente`,
+            text: `La empresa ${empresa.getNombre()} se añadió exitosamente`,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
           localStorage.removeItem("empresa");
           localStorage.removeItem("redes");
+          this.log.status = true;
+          this.log.message = `(add-company) Se añadió exitosamente la empresa: ${JSON.stringify(empresa)}`;
+          this.logService.setLog(this.log);
           this.router.navigate(['dashboard/list-companies']);
         } else {
-          throw new Error(`Se produjo un error al añadir la empresa ${ empresa.getNombre() } `);
+          throw new Error(`Se produjo un error al añadir la empresa ${empresa.getNombre()} `);
         }
       }, error: (error: any) => {
-        console.log(`Se produjo un error al añadir la empresa: ${ error } `);
+        this.log.status = false;
+        this.log.message = `(add-company) Se produjo un error al añadir la empresa: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
+        console.log(`Se produjo un error al añadir la empresa: ${error} `);
         Swal.fire({
           title: 'Añadir empresa',
-          text: `Se produjo un error al añadir la empresa ${ empresa.getNombre() } `,
+          text: `Se produjo un error al añadir la empresa ${empresa.getNombre()} `,
           icon: 'error',
           confirmButtonText: 'Aceptar'
         });
@@ -264,7 +289,7 @@ export class AddCompanyComponent implements OnInit {
   }
 
   /**
-   * Función que comprueba que ciertos campos númericos (Año instalación, Número de trabajadores, Código postal)
+   * Función que comprueba que ciertos campos numéricos (Año instalación, Número de trabajadores, Código postal)
    *
    * @param {any} event Evento del input
    * ```ts
@@ -272,17 +297,17 @@ export class AddCompanyComponent implements OnInit {
    * ```
    * @param {number} count Número de caracteres permitidos para ese input
    *
-   *  @returns {boolean} true si es cierto, false de otra manera
+   * @returns {boolean} true si es cierto, false de otra manera
    */
   public keyPressed(event: any, count: number): boolean {
     console.log(event);
-    if((event.charCode < 48 || event.charCode > 57) || event.srcElement.value.length == count) return false;
+    if ((event.charCode < 48 || event.charCode > 57) || event.srcElement.value.length == count) return false;
     return true;
   }
 
   public getFormValidationErrors(form: FormGroup): Result[] {
     const result: Result[] = [];
-    if(form.hasError('invalidPattern')) {
+    if (form.hasError('invalidPattern')) {
       result.push({
         Campo: "Documento",
         Error: 'no válido',

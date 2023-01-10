@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
 import { User } from '../class/users';
 
 @Injectable({
@@ -22,7 +21,7 @@ export class LoginService {
     .pipe(map( (Users: User) => {
       console.log('Users: ', Users);
       this.roleAs = Users.user_rol;
-      if (this.roleAs) {
+      if (this.roleAs && Users.habilitado != 0) {
         localStorage.setItem('userLogged', JSON.stringify(Users));
         sessionStorage.setItem('userLogged', JSON.stringify(Users));
         localStorage.setItem('ROLE', this.roleAs.toString());

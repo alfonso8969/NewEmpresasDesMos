@@ -4,7 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
+import { Log } from 'src/app/interfaces/log';
 import { CompaniesService } from 'src/app/services/companies.service';
+import { LogsService } from 'src/app/services/logs.service';
 
 @Component({
   selector: 'app-companies-out',
@@ -15,7 +17,7 @@ export class CompaniesOutComponent implements OnInit {
 
   listEmpresas: Empresa[]
   div: Element;
-
+  log: Log;
 
   displayedColumns: string[] = ['Nombre', 'Distrito', 'Fecha baja', 'Usuario'];
 
@@ -37,7 +39,10 @@ export class CompaniesOutComponent implements OnInit {
   viewSpinner: boolean = true;
   message: string;
 
-  constructor(private companiesService: CompaniesService, private route: Router) {
+  constructor(private companiesService: CompaniesService, 
+              private route: Router,
+              private logService: LogsService) {
+    this.log = this.logService.initLog();
     this.listEmpresas = [];
     this.getCompanies();
   }
@@ -63,10 +68,14 @@ export class CompaniesOutComponent implements OnInit {
         this.viewSpinner = false;
       },
       error: (error: any) => {
-        console.log(error);
+        this.log.action = 'Conseguir empresas inhabilitadas';
+        this.log.status = false;
+        this.log.message = `(companies-out) Se produjo un error al conseguir las empresa inhabilitadas: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         this.viewSpinner = false;
         this.div.className = "page-wrapper";
-        alert(error.message)
+        console.log('Conseguir empresas inhabilitadas', error);
+        alert('Error al conseguir empresas inhabilitadas')
       },
       complete: () => console.log("Complete", this.listEmpresas)
     });

@@ -7,9 +7,11 @@ import { Session } from 'src/app/interfaces/session';
 import { EmailService } from 'src/app/services/email.service';
 import { LoginService } from 'src/app/services/login.service';
 import { SessionsService } from 'src/app/services/sessions.service';
+import { LogsService } from 'src/app/services/logs.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal, { SweetAlertIcon } from 'sweetalert2'
+import { Log } from 'src/app/interfaces/log';
 
 // Crypto
 declare function hex_sha512(pass: string): string;
@@ -27,6 +29,7 @@ export class LoginComponent implements OnInit {
   forgotPasswordForm: FormGroup;
   user: User;
   session: Session;
+  log: Log;
 
   passwordHtml: HTMLElement;
   passwordIcon: HTMLElement;
@@ -62,8 +65,10 @@ export class LoginComponent implements OnInit {
     private emailService: EmailService,
     private userService: UsersService,
     private sessionService: SessionsService,
+    private logService: LogsService,
     private datePipe: DatePipe) {
 
+    this.log = this.logService.initLog();
     this.load = false;
     this.viewRecoverForm = false;
     this.viewSingUpForm = false;
@@ -112,6 +117,7 @@ export class LoginComponent implements OnInit {
    */
   $l() {
     this.load = true;
+    this.log.action = 'Login';
     this.user = new User();
     let remember = this.loginForm.get('checkBoxSignup')!.value;
     if (remember) {
@@ -125,6 +131,7 @@ export class LoginComponent implements OnInit {
     this.loginService.$l(this.user).subscribe({
       next: (user: User) => {
         if (user.id_user) {
+          this.user = user;
           this.session.id_user = user.id_user;
           this.session.user_email = user.user_email;
           if (user.habilitado == 0) {
@@ -139,6 +146,8 @@ export class LoginComponent implements OnInit {
               confirmButtonText: 'Aceptar'
             });
             this.load = false;
+            this.log.id_user = 0;
+            this.log.user_email = user.user_email;
             return;
           }
           this.session.message = "Sesión empezada correctamente";
@@ -147,10 +156,12 @@ export class LoginComponent implements OnInit {
             next: (echo: number) => {
               this.load = false;
               if(echo == 1) {
-                this.router.navigateByUrl("/dashboard")
-                .then(() => {
-                  window.location.reload();
-                });
+               setTimeout(() => {
+                 this.router.navigateByUrl("/dashboard")
+                 .then(() => {
+                   window.location.reload();
+                 });
+               }, 1000);
               } else {
                 this.showError();
               }
@@ -178,9 +189,15 @@ export class LoginComponent implements OnInit {
         console.log("Error login", "Se produjo un error al loguearse el usuario: ", error);
         this.showError();
         this.load = false;
+        this.log.status = false;
+        this.log.message = `Error en login ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
       },
       complete: () => {
         console.log("Complete User: ", this.user);
+        this.log.status = this.log.id_user != 0 ?  true : false;
+        this.log.message = this.log.id_user != 0 ? `Login satisfactorio user: ${JSON.stringify(this.user)}` : `Login fallido usuario deshabilitado`;
+        this.logService.setLog(this.log);
       }
     });
   }

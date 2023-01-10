@@ -48,9 +48,18 @@ export class AddCompanyRedesComponent implements OnInit {
       this.empresa.setTwitter(this.newEmp['Twitter']);
       this.empresa.setLinkedin(this.newEmp['Linkedin']);
       this.empresa.setGoogle_plus(this.newEmp['Google_plus']);
+      this.fillForm();
+    } else {
+      Swal.fire({
+        title: 'Datos empresa',
+        html: `<p>Hubo un error al guardar los datos de la empresa</p>
+              <p>Vuelva a intentarlo</p>`,
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+      this.router.navigateByUrl('dashboard/add-company');
     }
 
-    this.fillForm();
   }
 
   public fillForm(): void {
@@ -112,7 +121,8 @@ export class AddCompanyRedesComponent implements OnInit {
       console.log("addRedes empresa", this.empresa);
       Swal.fire({
         title: 'Cambios guardados',
-        text: 'Se guardaron los cambios realizados',
+        html: `<p>Se guardaron los cambios realizados</p>
+               <p>Ahora guarde la empresa en la página siguiente</p>`,
         icon: 'info',
         confirmButtonText: 'Aceptar'
       });

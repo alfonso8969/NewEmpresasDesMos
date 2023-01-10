@@ -32,7 +32,7 @@
                 <div class="card">
                   <div class="box bg-success text-center">
                     <h1 class="font-light text-white">{{ sessionsSuccessTotal }}</h1>
-                    <h6 class="text-white">Sesiones completadas</h6>
+                    <h6 class="text-white">Sesiones correctas</h6>
                   </div>
                 </div>
               </div>
@@ -60,7 +60,7 @@
                     <th scope="col" sortableSession="complete" (sortSession)="onSort($event)">Estado</th>
                     <th scope="col" sortableSession="ip" (sortSession)="onSort($event)">Ip</th>
                     <th scope="col" sortableSession="date" (sortSession)="onSort($event)">Fecha</th>
-                    <th>Acción</th>
+                    <th>Ver</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@
                     <td class="ms" [matTooltip]="session.message">{{ session.message }}</td>
 
                     <td [ngSwitch]="session.complete">
-                      <span *ngSwitchCase="true" class="label label-success">Completado</span>
+                      <span *ngSwitchCase="true" class="label label-success">Correcta</span>
                       <span *ngSwitchCase="false" class="label label-danger">Error</span>
                     </td>
 

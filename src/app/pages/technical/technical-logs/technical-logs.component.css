@@ -1,0 +1,26 @@
+.ms {
+  width: 2500px !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 250px;
+}
+
+#img-user {
+  border-radius: 50%;
+  border: 2px solid #1494e9;
+}
+
+
+.contact-list td img {
+  width: 30px;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 35px;
+}
+
+td, tr {
+  cursor: pointer;
+}

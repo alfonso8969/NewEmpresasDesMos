@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { DatePipe, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
@@ -52,7 +52,8 @@ import { SessionsService } from './services/sessions.service';
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy
-    }
+    },
+    DatePipe
     ],
   bootstrap: [AppComponent]
 })

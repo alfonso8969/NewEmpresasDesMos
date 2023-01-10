@@ -31,7 +31,7 @@ export class SessionsService {
   public getIPAddress(): void {
     this.http.get("https://api.ipify.org/?format=json").subscribe((res: any)=>{
       this.ipAddress = res.ip;
-      console.log("IP: ", this.ipAddress);
+      console.log("IP session: ", this.ipAddress);
     });
   }
 }

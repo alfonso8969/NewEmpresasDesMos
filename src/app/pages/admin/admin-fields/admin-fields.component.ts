@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Fields } from 'src/app/interfaces/fields';
+import { Log } from 'src/app/interfaces/log';
 import { FieldsService } from 'src/app/services/fields.service';
+import { LogsService } from 'src/app/services/logs.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2';
 
@@ -21,6 +23,7 @@ export class AdminFieldsComponent implements OnInit {
   poligonos: Fields[];
 
   field: Fields;
+  log: Log;
 
   sectorId: number;
   distritoId: number;
@@ -29,7 +32,9 @@ export class AdminFieldsComponent implements OnInit {
   distrito: string;
   poligono: string;
 
-  constructor(private fb: FormBuilder, private fieldsService: FieldsService) {
+  constructor(private fb: FormBuilder, 
+              private fieldsService: FieldsService,
+              private logService: LogsService) {
 
     this.field = {
       field_name: '',
@@ -64,6 +69,7 @@ export class AdminFieldsComponent implements OnInit {
     this.sectores = [];
     this.distritos = [];
     this.poligonos = [];
+
     this.fieldsService.getFields("sector").subscribe({
       next: (result: any) => {
         if (result != null) {
@@ -73,6 +79,10 @@ export class AdminFieldsComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Get Sectores';
+        this.log.status = false;
+        this.log.message = `(admin-fields) Error al conseguir sectores ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -91,6 +101,10 @@ export class AdminFieldsComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Get Distritos';
+        this.log.status = false;
+        this.log.message = `(admin-fields) Error al conseguir distritos ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -109,6 +123,10 @@ export class AdminFieldsComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Get Polígonos';
+        this.log.status = false;
+        this.log.message = `(admin-fields) Error al conseguir polígonos ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -153,55 +171,6 @@ export class AdminFieldsComponent implements OnInit {
 
   public askUpdateFieldPoligono(): void {
     this.showAlertMessage('poligono');
-  }
-
-  public updateField(field: Fields): void {
-
-    this.fieldsService.updateField(field).subscribe({
-      next: (result: any) => {
-        if (result == 1) {
-          Swal.fire({
-            title: 'Actualizar campo: ' + field.field_name,
-            text: `El ${field.field_name} se actualizó correctamente`,
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          });
-          this.fillComboboxes();
-        } else {
-          Swal.fire({
-            title: 'Actualizar campo: ' + field.field_name,
-            text: `Hubo algún error al actualizar el ${field.field_name}`,
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-        }
-      },
-      error: (error: any) => {
-        console.log(error);
-        if (error.error.text.includes("Duplicate")) {
-          Swal.fire({
-            title: 'Añadir campo: ' + this.field.field_name,
-            text: `El ${ this.field.field_name } ya existe`,
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-        } else {
-          Swal.fire({
-            title: 'Actualizar campo: ' + field.field_name,
-            text: `Hubo algún error al actualizar el ${field.field_name}`,
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-        }
-        this.clearForms();
-      },
-      complete: () => {
-       console.log("Complete se actualizó el campo correctamente");
-       this.clearForms();
-      }
-
-    });
-
   }
 
   private showAlertMessage(field: string) {
@@ -251,15 +220,71 @@ export class AdminFieldsComponent implements OnInit {
     })
   }
 
+  public updateField(field: Fields): void {
+    this.log.action = 'Actualizar ' + field.field_name;
+    this.fieldsService.updateField(field).subscribe({
+      next: (result: any) => {
+        if (result == 1) {
+          Swal.fire({
+            title: 'Actualizar campo: ' + field.field_name,
+            text: `El ${field.field_name} se actualizó correctamente`,
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+          this.log.status = true;
+          this.log.message = `(admin-fields) El ${field.field_name} se actualizó correctamente`;
+          this.logService.setLog(this.log);
+          this.fillComboboxes();
+        } else {
+          Swal.fire({
+            title: 'Actualizar campo: ' + field.field_name,
+            text: `Hubo algún error al actualizar el ${field.field_name}`,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      },
+      error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `(admin-fields) Error al actualizar ${field.field_name} ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
+        console.log(error);
+        if (error.error.text.includes("Duplicate")) {
+          Swal.fire({
+            title: 'Añadir campo: ' + this.field.field_name,
+            text: `El ${ this.field.field_name } ya existe`,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        } else {
+          Swal.fire({
+            title: 'Actualizar campo: ' + field.field_name,
+            text: `Hubo algún error al actualizar el ${field.field_name}`,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+        this.clearForms();
+      },
+      complete: () => {
+       console.log("Complete se actualizó el campo correctamente");
+       this.clearForms();
+      }
+
+    });
+  }
+
   public clearForms() {
     this.updateFieldPoligonoForm.get('nombrePoligono')?.setValue('');
+    this.updateFieldPoligonoForm.get('poligono')?.setValue(0);
+    this.updateFieldPoligonoForm.markAsUntouched();
+
     this.updateFieldDistritoForm.get('nombreDistrito')?.setValue('');
+    this.updateFieldDistritoForm.get('distrito')?.setValue(0);
+    this.updateFieldDistritoForm.markAsUntouched();
+
     this.updateFieldSectorForm.get('nombreSector')?.setValue('');
     this.updateFieldSectorForm.get('sector')?.setValue(0);
-    this.updateFieldPoligonoForm.get('poligono')?.setValue(0);
-    this.updateFieldDistritoForm.get('distrito')?.setValue(0);
-    this.updateFieldSectorForm.markAsUntouched();
-    this.updateFieldPoligonoForm.markAsUntouched();
-    this.updateFieldDistritoForm.markAsUntouched();
+    this.updateFieldSectorForm.markAsUntouched();    
   }
 }

@@ -1,1 +1,193 @@
-<p>technical-logs works!</p>
+<div class="page-wrapper">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid animated fadeInDown">
+    <app-mat-spinner-overlay *ngIf="load">
+    </app-mat-spinner-overlay>
+    <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Logs</h3>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Lista de logs de usuarios</h4>
+            <h6 class="card-subtitle">Lista de logs de las operaciones de los usuarios</h6>
+            <div class="row m-t-40">
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-info text-center">
+                    <h1 class="font-light text-white">{{ logsTotal }}</h1>
+                    <h6 class="text-white">Total logs</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-success text-center">
+                    <h1 class="font-light text-white">{{ logsSuccessTotal }}</h1>
+                    <h6 class="text-white">Logs correcto</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-danger text-center">
+                    <h1 class="font-light text-white">{{ logsFailTotal }}</h1>
+                    <h6 class="text-white">Logs fallo</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="search" class="form-control" [(ngModel)]="filter" placeholder='Filtrar por "Abierto por" o "User email"'>
+            </div>
+            <div class="table-responsive">
+              <table id="demo-foo-addrow" class="contact-list m-t-30 no-wrap table table-hover"
+                data-page-size="10">
+                <caption></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" sortableLog="action" (sortLog)="onSort($event)">Acción</th>
+                    <th scope="col" sortableLog="user_name" (sortLog)="onSort($event)">Abierto por</th>
+                    <th scope="col" sortableLog="user_email" (sortLog)="onSort($event)">User email</th>
+                    <th scope="col" sortableLog="message" (sortLog)="onSort($event)">Mensaje</th>
+                    <th scope="col" sortableLog="status" (sortLog)="onSort($event)">Estado</th>
+                    <th scope="col" sortableLog="ip" (sortLog)="onSort($event)">Ip</th>
+                    <th scope="col" sortableLog="date" (sortLog)="onSort($event)">Fecha</th>
+                    <th>Ver</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let log of logs | log: filter | paginate: { id: 'users', itemsPerPage: 10, currentPage: page }">
+                    <td>{{ log.action }}</td>
+                    <td>
+                      <img id="img-user" [src]="log.user_img != 'null' ? url + '/uploads/' + log.user_img : './assets/images/icon/staff.png'" alt="{{ log.user_name }}" title="{{ log.user_name }}" class="img-circle mr-2" />
+                      {{ log.user_name }}
+                    </td>
+                    <td>{{ log.user_email }}</td>
+                    <td class="ms" [matTooltip]="log.message">{{ log.message }}</td>
+
+                    <td [ngSwitch]="log.status">
+                      <span *ngSwitchCase="true" class="label label-success">Coreecto</span>
+                      <span *ngSwitchCase="false" class="label label-danger">Error</span>
+                    </td>
+
+                    <td>{{ log.ip }}</td>
+                    <td>{{ log.date | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
+                    <td>
+                      <a class="btn btn-warning" matTooltip="Ver log" (click)="getLog(log)" data-toggle="modal" data-target=".md-logs"><i
+                          class="fa fa-archive"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="animated fadeInDown mt-2">
+              <pagination-controls id="users" (pageChange)="page = $event" [previousLabel]="anterior"
+                [nextLabel]="siguiente" [responsive]="true" [autoHide]="true"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <!-- sample modal content -->
+        <div id="md" class="modal fade md-logs" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div class="form-group">
+                  <h4 class="modal-title">Ver datos del log
+                  </h4>
+                  <h5 class="text-primary">Fecha {{ log && log.date | date: 'dd-MM-yyyy HH:mm:ss' }}</h5>
+                  <td [ngSwitch]="log && log.status">
+                    <span *ngSwitchCase="true" class="label label-success">Completado</span>
+                    <span *ngSwitchCase="false" class="label label-danger">Error</span>
+                  </td>
+                </div>
+                <button type="button" class="close" matTooltip="close" [matTooltipPosition]="'after'"
+                  data-dismiss="modal" aria-hidden="true">&Cross;</button>
+              </div>
+              <div class="card">
+                  <!-- card-body -->
+                  <div class="card-body">
+                    <!-- form-body -->
+                    <div class="form-body">
+                      <!--row-->
+                      <div class="row p-t-20">
+                        <div class="col-md-6">
+                          <div class="text-center">
+                            <div class="form-group">
+                              <label for="userName">Email Usuario</label>
+                              <input title="{{ log && log.user_email }}" id="userEmail" class="form-control"
+                                type="text" [readonly]="true" [value]="log && log.user_email">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="ticketMessage">IP del log</label>
+                            <input title="{{ log && log.ip }}" id="userIp" class="form-control"
+                            type="text" [readonly]="true" [value]="log && log.ip">
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="row p-t-20">
+                        <div class="col-md-6">
+                          <div id="div-imgUser" class="text-center">
+                            <div class="form-group">
+                              <label for="userName">Usuario</label>
+                              <input title="{{ log && log.user_name }}" id="userName" class="form-control"
+                                type="text" [readonly]="true" [value]="log && log.user_name">
+                            </div>
+                            <img id="img-user"
+                              [src]="log && log.user_img != 'null'  ? url + '/uploads/' + log.user_img : './assets/images/icon/staff.png'"
+                              height="200px" width="200px" alt="This is a small profile image"><br>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="ticketMessage">Mensaje del log</label>
+                            <textarea id="ticketMessage" cols="35" rows="11" [value]="log && log.message"
+                              [readonly]="true" class="form-control"></textarea>
+                          </div>
+                        </div>
+
+                      </div>
+                      <!--/row-->
+                    </div>
+                    <!-- /form-body -->
+                  </div>
+                  <!-- /card-body -->
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+      </div>
+      <!--/card body -->
+    </div>
+    <!--/card -->
+  </div>
+  <!-- col-md-4 -->
+</div>
+<!-- row -->
+

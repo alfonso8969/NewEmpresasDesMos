@@ -25,6 +25,7 @@ import { DirectivesModule } from '../events/directives.module';
 import { TrimPipe } from '../pipes/trim.pipe';
 import { TicketPipe } from '../pipes/ticket.pipe';
 import { SessionPipe } from '../pipes/session.pipe';
+import { LogPipe } from '../pipes/log.pipe';
 import { SharedModule } from 'src/shared/shared.module';
 import { DistritosEchartsComponent } from './benchmarks/distritos-echarts/distritos-echarts.component';
 import { PoligonosEchartsComponent } from './benchmarks/poligonos-echarts/poligonos-echarts.component';
@@ -62,6 +63,7 @@ import { TechnicalEmailsModule } from './technical/emails/technical-emails.modul
     TrimPipe,
     TicketPipe,
     SessionPipe,
+    LogPipe,
     DistritosEchartsComponent,
     PoligonosEchartsComponent,
     SectoresEchartsComponent,

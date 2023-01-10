@@ -4,6 +4,8 @@ import { BenchmarksService } from 'src/app/services/benchmarks.service';
 import LinearGradient from 'zrender/lib/graphic/LinearGradient';
 import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
+import { Log } from 'src/app/interfaces/log';
+import { LogsService } from 'src/app/services/logs.service';
 
 @Component({
   selector: 'app-sectores-echarts',
@@ -17,9 +19,13 @@ export class SectoresEchartsComponent implements OnInit {
   dataAxis: Array<number> = [];
   data_count: Array<number> = [];
   message: string = '';
+  log: Log;
 
   constructor(private benchmarksService: BenchmarksService,
-              private router: Router) {
+              private router: Router,
+              private logService: LogsService) {
+                
+    this.log = this.logService.initLog();
     this.benchmarksService.getFieldsForBenchMarks('sector')
     .subscribe({
       next: (dataResult: BenchMarks[]) => {
@@ -136,8 +142,12 @@ export class SectoresEchartsComponent implements OnInit {
         };
       },
       error: (error: any) =>  {
-        console.log(error);
-        alert(error);
+        this.log.action = 'BenchMarks(sectores)';
+        this.log.status = false;
+        this.log.message = `(sectores-echarts) Error al conseguir BenchMarks('sectores') ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
+        console.log('Error al conseguir BenchMarks(sectores)', error);
+        alert('Error al conseguir BenchMarks(sectores)');
       },
       complete: () => console.log("Complete: ", this.data_result)
     });

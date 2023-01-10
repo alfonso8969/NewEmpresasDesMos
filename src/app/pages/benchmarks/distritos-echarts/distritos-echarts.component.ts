@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { EChartsOption } from 'echarts';
 import { ThemeOption } from 'ngx-echarts';
 import { BenchMarks } from 'src/app/interfaces/benchmarks';
+import { Log } from 'src/app/interfaces/log';
 import { BenchmarksService } from 'src/app/services/benchmarks.service';
+import { LogsService } from 'src/app/services/logs.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -150,6 +152,8 @@ export class DistritosEchartsComponent implements OnInit {
   data_result: BenchMarks[];
   data_values: DataValue[] = [];
 
+  log: Log;
+
   totalEmpresas: number = 0;
   distritos_name: Array<string> = [];
 
@@ -160,7 +164,11 @@ export class DistritosEchartsComponent implements OnInit {
   };
 
   constructor(private benchmarksService: BenchmarksService,
-              private router: Router) {
+              private router: Router,
+              private logService: LogsService) {
+
+    this.log = this.logService.initLog();
+                
     this.benchmarksService.getFieldsForBenchMarks('distrito')
     .subscribe({
       next: (dataResult: BenchMarks[]) => {
@@ -231,7 +239,11 @@ export class DistritosEchartsComponent implements OnInit {
 
       },
       error: (error: any) =>  {
-        console.log(error);
+        this.log.action = 'BenchMarks(distrito)';
+        this.log.status = false;
+        this.log.message = `(distritos-echarts) Error al conseguir BenchMarks('distrito') ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
+        console.log('Error al conseguir BenchMarks(distrito)');
         alert(error);
       },
       complete: () => console.log("Complete: ", this.data_result)
