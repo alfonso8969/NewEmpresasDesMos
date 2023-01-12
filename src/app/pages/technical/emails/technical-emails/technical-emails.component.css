@@ -1,0 +1,42 @@
+.ms {
+  width: 300px !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 300px;
+}
+
+td, tr {
+  cursor: pointer;
+}
+
+a {
+  color: #007bff !important;
+}
+
+a:active {
+  color: rgb(104, 104, 122) !important;
+  background: transparent !important;
+}
+
+a:hover {
+  color: rgb(35, 35, 233) !important;
+  background: transparent !important;
+}
+
+.read {
+  background-color: rgb(216, 228, 228) !important;
+}
+
+.read td {
+  color: #b7ad54;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+.unread td {
+  color: #0e0d0d;
+  font-weight: 400;
+}

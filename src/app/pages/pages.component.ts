@@ -12,6 +12,8 @@ import { LoginService } from '../services/login.service';
 import { UsersService } from '../services/users.service';
 import { User } from '../class/users';
 import Swal from 'sweetalert2'
+import { LogsService } from '../services/logs.service';
+import { Log } from '../interfaces/log';
 
 @Component({
   selector: 'app-pages',
@@ -54,7 +56,20 @@ export class PagesComponent implements OnInit {
     private cookieService: CookieService,
     private loginService: LoginService,
     private userService: UsersService,
+    private logService: LogsService
   ) {
+
+    setTimeout(() => {
+      let logTmp = localStorage.getItem('log_response');
+      let errLogTmp = localStorage.getItem('errorlog_response');
+      if ((logTmp && logTmp != undefined) && (errLogTmp && errLogTmp != undefined)) {
+        let logPass: Log = JSON.parse(logTmp);
+        logPass.action += ' Error en red';
+        this.logService.setLog(logPass);
+        localStorage.removeItem('log_response');
+        localStorage.removeItem('errorlog_response');
+      }
+    }, 2000);
 
     this.user = this.userService.getUserLogged();
     let user_rol = Number(this.user.user_rol);
@@ -86,7 +101,7 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
+
   }
 
   navigateTo(url: string, event: any) {
@@ -121,7 +136,7 @@ export class PagesComponent implements OnInit {
 
   saveGDPR() {
     this.expiredDate = new Date();
-    this.expiredDate.setDate( this.expiredDate.getDate() + 15);
+    this.expiredDate.setDate(this.expiredDate.getDate() + 15);
     const secure = true;
     this.cookieService.set('Cookie', 'GDPR', this.expiredDate, '', '', secure);
     this.animationClose();
@@ -161,9 +176,9 @@ export class PagesComponent implements OnInit {
       if (confirm.isConfirmed) {
         this.loginService.lG();
         this._router.navigateByUrl('/login')
-        .then(() => {
-          window.location.reload();
-        });
+          .then(() => {
+            window.location.reload();
+          });
       }
     });
   }
@@ -174,9 +189,9 @@ export class PagesComponent implements OnInit {
     } else {
       this.loginService.lG();
       this._router.navigateByUrl('exit')
-      .then(() => {
-        window.location.reload();
-      });
+        .then(() => {
+          window.location.reload();
+        });
     }
   }
 

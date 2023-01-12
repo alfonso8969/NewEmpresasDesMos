@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../class/users';
+import { Email } from '../interfaces/email';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class EmailService {
 
   public checkEmail(user: User): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/checkEmail.php`, { user: user })
+  }
+
+  public getEmails(): Observable<Email[]> {
+    return this.http.get<Email[]>(`${this.baseUrl}/getEmails.php`);
   }
 }

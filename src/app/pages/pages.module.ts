@@ -22,10 +22,6 @@ import { PagesComponent } from './pages.component';
 import { NgMaterialModule } from '../design/material.module';
 import { ComponentsModule } from '../components/components.module';
 import { DirectivesModule } from '../events/directives.module';
-import { TrimPipe } from '../pipes/trim.pipe';
-import { TicketPipe } from '../pipes/ticket.pipe';
-import { SessionPipe } from '../pipes/session.pipe';
-import { LogPipe } from '../pipes/log.pipe';
 import { SharedModule } from 'src/shared/shared.module';
 import { DistritosEchartsComponent } from './benchmarks/distritos-echarts/distritos-echarts.component';
 import { PoligonosEchartsComponent } from './benchmarks/poligonos-echarts/poligonos-echarts.component';
@@ -43,6 +39,7 @@ import { TicketManagementComponent } from './technical/ticket-management/ticket-
 import { ListTechnicalComponent } from './technical/list-technical/list-technical.component';
 import { TechnicalThemesComponent } from './technical/technical-themes/technical-themes.component';
 import { TechnicalEmailsModule } from './technical/emails/technical-emails.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -60,10 +57,6 @@ import { TechnicalEmailsModule } from './technical/emails/technical-emails.modul
     AddUserComponent,
     AddFieldsComponent,
     AdminFieldsComponent,
-    TrimPipe,
-    TicketPipe,
-    SessionPipe,
-    LogPipe,
     DistritosEchartsComponent,
     PoligonosEchartsComponent,
     SectoresEchartsComponent,
@@ -94,7 +87,8 @@ import { TechnicalEmailsModule } from './technical/emails/technical-emails.modul
     }),
     NgxPaginationModule,
     SharedModule,
-    TechnicalEmailsModule
+    TechnicalEmailsModule,
+    PipesModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

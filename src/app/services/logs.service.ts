@@ -22,7 +22,7 @@ export class LogsService {
   constructor(private http: HttpClient,
               private datePipe: DatePipe,
               private userService: UsersService) {
-
+   
     this.user = this.userService.getUserLogged();
     this.urlEmail = environment.urlPHPEmail;
     this.baseUrl = environment.apiUrl;
@@ -34,8 +34,11 @@ export class LogsService {
   }
 
   public setLog(log: Log): void {
-    log.ip = this.ipAddress;
+    if (log.ip == '' || log.ip === undefined) {
+      log.ip = this.ipAddress;
+    }
     console.log("log in log Service: ", log);
+    let logSave = log;
     this.http.post<number>(`${this.baseUrl}/setLog.php`, { log: log })
     .subscribe({
       next: (result: number) => {
@@ -44,8 +47,13 @@ export class LogsService {
         } else {
           console.log("Error grabando log");
         }
-      }, error: (error: any) => console.log("error al procesar log")
-       , complete: () => console.log("Se completo el grabado del log satisfactoriamente")
+      }, error: (error: any) =>  {
+        console.log("Error al procesar log", error);
+        if(error.message.toLowerCase().includes('http failure response')) {
+          localStorage.setItem('errorlog_response', error.message);
+          localStorage.setItem('log_response', JSON.stringify(logSave));
+        }
+      }, complete: () => console.log("Se completo el grabado del log satisfactoriamente")
     });
   }
 
