@@ -1,9 +1,11 @@
 export interface Email {
-  idEmail?: string;
+  idEmail?: number;
   from: string;
   to: string;
   date: string;
-  body: string;
+  bodyText: string;
+  bodyHtml: string;
+  bodyEtc?: string;
   subject: string;
   unread?: boolean;
   answered?: boolean;
@@ -11,5 +13,5 @@ export interface Email {
   attachments?: string[];
   deleted?: boolean;
   favorite?: boolean;
-  label?: 'Inscription' | 'Avisos' | 'Comunicación' | 'Empresa';
+  label: 'Inscription' | 'Notices' | 'Communication' | 'Company';
 }

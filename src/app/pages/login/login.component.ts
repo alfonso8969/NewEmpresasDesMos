@@ -190,9 +190,10 @@ export class LoginComponent implements OnInit {
         this.showError();
         this.load = false;
         this.log.status = false;
-        this.log.message = `Error en login ${JSON.stringify(error)}`;
+        this.log.message = `Error en login: ${JSON.stringify(error)}`;
         this.logService.setLog(this.log);
       },
+
       complete: () => {
         console.log("Complete User: ", this.user);
         this.log.status = this.log.id_user != 0 ?  true : false;
@@ -251,6 +252,7 @@ export class LoginComponent implements OnInit {
     let userEmail: User = new User();
     userEmail.user_email = email;
     if (action == 'recover') {
+      this.log.action = 'Chequear email';
       this.emailService.checkEmail(userEmail)
         .subscribe({
           next: (data: User) => {
@@ -266,6 +268,7 @@ export class LoginComponent implements OnInit {
 
               if (match) {
                 userEmail.user_password = hex_sha512(newPassword);
+                this.log.action = 'Recuperar contraseña';
                 this.userService.resetPassword(userEmail)
                   .subscribe({
                     next: (data: number) => {
@@ -277,12 +280,18 @@ export class LoginComponent implements OnInit {
                           from: 'Empresas Admin',
                           password: true
                         }
+                        this.log.status = true;
+                        this.log.message = `Recuperar contraseña satisfactoriamente: ${JSON.stringify(this.dataForm)}`;
+                        this.logService.setLog(this.log);  
                         this.sE();
                       }
                     }, error: (error: any) => {
                       console.log(error)
                       alert("Hubo un error al resetear la contraseña")
                       this.load = false;
+                      this.log.status = false;
+                      this.log.message = `Error en resetear la contraseña: ${JSON.stringify(error)}`;
+                      this.logService.setLog(this.log);  
                     }, complete: () => {
                       console.log(`Se lanzo el email al usuario: ${this.dataForm.name}, con la nueva password: ${newPassword}`)
                     }
@@ -290,7 +299,9 @@ export class LoginComponent implements OnInit {
               } else {
                 alert("Hubo un problema regenerando el código de la contraseña");
                 this.load = false;
-
+                this.log.status = false;
+                this.log.message = `Error en regenerando la contraseña: { 'error': 'Hubo un problema regenerando el código de la contraseña'}`;
+                this.logService.setLog(this.log);                
               }
             } else {
               this.load = false;
@@ -305,6 +316,9 @@ export class LoginComponent implements OnInit {
           }, error: (error: any) => {
             console.log(`Hubo un error al comprobar el email: ${email}`, error);
             this.load = false;
+            this.log.status = false;
+            this.log.message = `Error en comprobar el email: ${JSON.stringify(error)}`;
+            this.logService.setLog(this.log);  
             Swal.fire({
               title: 'Recuperar contraseña',
               text: `Hubo un error al comprobar el email: ${email}`,
@@ -316,6 +330,7 @@ export class LoginComponent implements OnInit {
           }
         });
     } else {
+      this.log.action = 'Crear cuenta';
       this.emailService.checkEmail(userEmail)
         .subscribe({
           next: (data: User) => {
@@ -335,11 +350,17 @@ export class LoginComponent implements OnInit {
                 from: 'Crear cuenta Empresas Admin',
                 password: false
               }
+              this.log.status = true;
+              this.log.message = `Enviar email al crear cuenta satisfactorio: ${JSON.stringify(this.dataForm)}`;
+              this.logService.setLog(this.log);  
               this.sE();
             }
           }, error: (error: any) => {
             console.log("Crear cuenta", `Hubo un error al comprobar el email: ${email}`, error);
             this.load = false;
+            this.log.status = false;
+            this.log.message = `Error al comprobar el email al crear cuenta: ${JSON.stringify(error)}`;
+            this.logService.setLog(this.log);  
             Swal.fire({
               title: 'Crear cuenta',
               text: `Hubo un error al comprobar el email: ${email}`,
@@ -354,22 +375,31 @@ export class LoginComponent implements OnInit {
   }
 
   private sE(): void {
-
+    this.log.action = 'Enviar email';
     this.emailService.sendEmail(this.dataForm).subscribe({
       next: (result: any) => {
         this.load = false;
         if (result.title.includes('error')) {
           this.showSwal('error');
+          this.log.status = false;
+          this.log.message = `Error enviar email: '{error: 'Hubo un error al enviar el email'}'`;
+          this.logService.setLog(this.log);  
           return;
         }
         this.sendEmailResult.title = this.sendEmailMessages.titleSuccess;
         this.sendEmailResult.message = this.sendEmailMessages.messageSuccess;
         this.showSwal('success');
+        this.log.status = true;
+        this.log.message = `Enviar email satisfactorio: ${JSON.stringify(this.dataForm)}`;
+        this.logService.setLog(this.log);  
       }, error: (error: any) => {
         this.load = false;
         this.sendEmailResult.title = this.sendEmailMessages.titleError;
         this.sendEmailResult.message = error.message;
         this.showSwal('error');
+        this.log.status = false;
+        this.log.message = `Error enviar email: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);  
         console.log('Login send email Error', error);
       }, complete: () => {
         console.log("Complete send email");

@@ -24,7 +24,7 @@ export class LoginService {
       if (this.roleAs && Users.habilitado != 0) {
         localStorage.setItem('userLogged', JSON.stringify(Users));
         sessionStorage.setItem('userLogged', JSON.stringify(Users));
-        localStorage.setItem('ROLE', this.roleAs.toString());
+        sessionStorage.setItem('ROLE', this.roleAs.toString());
         this.userEmitter.emit(Users);
         this.sT(Users.user_name);
       }
@@ -35,7 +35,7 @@ export class LoginService {
   /**
    * Check Password
    * @param {User} user Usuario to check password
-   * @returns {Observable<boolean} true if exits, otherwise false 
+   * @returns {Observable<boolean>} true if exits, otherwise false
    */
   public cP(user: User): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/checkPassword.php`, { user: user })
@@ -46,7 +46,7 @@ export class LoginService {
    * @param {string} token Token to auth
    */
   private sT(token: string): void {
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
   }
 
   /**
@@ -54,12 +54,12 @@ export class LoginService {
    * @returns {string | null } Token auth
    */
   public gT(): string | null {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
   }
 
   /**
    * User is logged
-   * @returns {boolean} true if the user is logged, otherwise false 
+   * @returns {boolean} true if the user is logged, otherwise false
    */
   public isLoggedIn(): boolean {
     const userToken = this.gT();
@@ -71,7 +71,7 @@ export class LoginService {
    * @returns {number} rol User Rol
    */
   gR(): number {
-    this.roleAs = Number(localStorage.getItem('ROLE')!);
+    this.roleAs = Number(sessionStorage.getItem('ROLE')!);
     return this.roleAs;
   }
 
@@ -81,7 +81,6 @@ export class LoginService {
   public lG(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userLogged');
-    localStorage.removeItem('ROLE');
     localStorage.removeItem('remember');
   }
 }

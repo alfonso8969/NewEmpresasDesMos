@@ -2,9 +2,9 @@
   <!-- ============================================================== -->
   <!-- Container fluid  -->
   <!-- ============================================================== -->
+  <app-mat-spinner-overlay *ngIf="load">
+  </app-mat-spinner-overlay>
   <div class="container-fluid animated fadeInDown">
-    <app-mat-spinner-overlay *ngIf="load">
-    </app-mat-spinner-overlay>
     <div class="row page-titles">
       <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">Buzón</h3>
@@ -32,7 +32,7 @@
                 <div class="card">
                   <div class="box bg-success text-center">
                     <h1 class="font-light text-white">{{ emailsUnreadTotal }}</h1>
-                    <h6 class="text-white">Total no leídos</h6>
+                    <h6 class="text-white">No leídos</h6>
                   </div>
                 </div>
               </div>
@@ -40,7 +40,7 @@
                 <div class="card">
                   <div class="box bg-secondary text-center">
                     <h1 class="font-light text-white">{{ emailsReadTotal }}</h1>
-                    <h6 class="text-white">Total leídos</h6>
+                    <h6 class="text-white">Leídos</h6>
                   </div>
                 </div>
               </div>
@@ -48,7 +48,7 @@
                 <div class="card">
                   <div class="box bg-warning text-center">
                     <h1 class="font-light text-white">{{ emailsFavoritesTotal }}</h1>
-                    <h6 class="text-white">Total favoritos</h6>
+                    <h6 class="text-white">Favoritos</h6>
                   </div>
                 </div>
               </div>
@@ -56,19 +56,19 @@
                 <div class="card">
                   <div class="box bg-danger text-center">
                     <h1 class="font-light text-white">{{ emailsDeletedTotal }}</h1>
-                    <h6 class="text-white">Total eliminados</h6>
+                    <h6 class="text-white">Eliminados</h6>
                   </div>
                 </div>
               </div>
             </div>
-            </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="row">
                 <div class="col-xlg-2 col-lg-3 col-md-4">
-                  <div class="card-body inbox-panel"><a href="app-compose.html"
+                  <div class="card-body inbox-panel"><a [routerLink]="['/dashboard/technical-emails-send']" routerLinkActive="router-link-active" 
                       class="btn btn-danger m-b-20 p-10 btn-block waves-effect waves-light">Redactar email</a>
                     <ul class="list-group list-group-full">
                       <li class="list-group-item" (click)="filterInBox()"> <a ><i
@@ -94,14 +94,15 @@
                       </li>
                     </ul>
                     <h3 class="card-title m-t-40">Etiquetas</h3>
-                    <div class="list-group b-0 mail-list"> <a href="#" class="list-group-item">
+                    <div class="list-group b-0 mail-list"> 
+                      <a class="list-group-item">
                         <span class="fa fa-circle text-info m-r-10"></span>Inscripción</a>
-                      <a href="#" class="list-group-item"><span class="fa fa-circle text-warning m-r-10"></span>
+                      <a class="list-group-item"><span class="fa fa-circle text-warning m-r-10"></span>
                         Avisos</a>
-                      <a href="#" class="list-group-item">
+                      <a class="list-group-item">
                         <span class="fa fa-circle text-danger m-r-10"></span>
                         Comunicación</a>
-                      <a href="#" class="list-group-item">
+                      <a class="list-group-item">
                         <span class="fa fa-circle text-success m-r-10">
                         </span>Empresa</a>
                     </div>
@@ -148,20 +149,27 @@
                     <div class="card b-all shadow-none">
                       <div class="inbox-center table-responsive">
                         <table class="table table-hover no-wrap">
-                          <caption></caption>
+                          <caption><cite class="font-10">Doble click para detalles</cite></caption>
                           <thead>
-                            <th></th>
+                            <th *ngIf="!isInTrash" scope="col" sortableEmail="unread" (sortEmail)="onSort($event)">M</th>
+                            <th *ngIf="isInTrash" scope="col" sortableEmail="deleted" (sortEmail)="onSort($event)">Del</th>
+                            <th scope="col" sortableEmail="favorite" (sortEmail)="onSort($event)">Fav</th>
+                            <th scope="col" sortableEmail="from" (sortEmail)="onSort($event)">Desde</th>
+                            <th scope="col" sortableEmail="subject" (sortEmail)="onSort($event)">Asunto</th>
+                            <th scope="col" sortableEmail="favorite" (sortEmail)="onSort($event)">Mensaje</th>
+                            <th scope="col" sortableEmail="bodyText" (sortEmail)="onSort($event)">Adjuntos</th>
+                            <th scope="col" sortableEmail="date" (sortEmail)="onSort($event)">Fecha</th>
                           </thead>
                           <tbody>
                             <tr
                               *ngFor="let email of emails | paginate: { id: 'emails', itemsPerPage: 10, currentPage: page }"
-                              [ngClass]="{read: !email.unread, unread: email.unread}" (dblclick)="navigateToDetail(email)">
+                              [ngClass]="{read: email.unread == !0, unread: email.unread != !1}" (dblclick)="navigateToDetail(email)">
                               <td style="width:40px">
                                 <div class="checkbox">
                                   <input type="checkbox" [id]="email.idEmail + 'checkbox'" name="check"
-                                    title="Marcar como leído" (change)="checkRead(email)" [checked]="!email.unread">
+                                    title="Marcar como leído" (change)="checkRead(email)" [checked]="email.unread != !1">
                                   <label [for]="email.idEmail + 'checkbox'"
-                                    [matTooltip]="email.unread ? 'Marcar como leído' : 'Marcar como no leído'"></label>
+                                    [matTooltip]="email.unread != !0 ? 'Marcar como leído' : 'Marcar como no leído'"></label>
                                 </div>
                               </td>
                               <td style="width:40px" class="hidden-xs-down" [ngSwitch]="email.favorite"
@@ -170,29 +178,32 @@
                                 <i *ngSwitchCase="false" class="fa fa-star-o"></i>
                                 <i *ngSwitchCase="true" class="fa fa-star text-warning"></i>
                               </td>
-                              <td class="hidden-xs-down" matTooltip="Doble click para detalle">{{ email.to }}</td>
-                              <td style="width:100px" class="hidden-xs-down" matTooltip="Doble click para detalle">{{ email.subject }}</td>
-                              <td class="max-texts ms" [matTooltip]="email.body">
+                              <td [matTooltip]="email.label.includes('inscription') ? formInscription.companyEmail : email.from">
+                                {{ email.label.toLowerCase().includes('inscription') ? formInscription.companyEmail : email.from }}</td>
+                              <td class="ms" [matTooltip]="email.subject">{{ email.subject }}</td>
+                              <td class="max-texts ms">
                                 <div [ngSwitch]="email.label" class="d-inline">
                                   <span class="label label-info m-r-10 d-inline"
                                     *ngSwitchCase="'Inscription'">Inscripción</span>
                                   <span class="label label-warning m-r-10 d-inline"
-                                    *ngSwitchCase="'Avisos'">Avisos</span>
+                                    *ngSwitchCase="'Notices'">Avisos</span>
                                   <span class="label label-danger m-r-10 d-inline"
-                                    *ngSwitchCase="'Comunicación'">Comunicación</span>
+                                    *ngSwitchCase="'Communication'">Comunicación</span>
                                   <span class="label label-success m-r-10 d-inline"
-                                    *ngSwitchCase="'Empresa'">Empresa</span>
+                                    *ngSwitchCase="'Company'">Empresa</span>
                                 </div>
-                                {{ email.body | trim }}
+                                <span *ngIf="email.bodyText != ''">{{ email.bodyText }}</span>
+                                <span *ngIf="email.bodyText == '' && email.bodyEtc != ''">{{ email.bodyEtc }}</span>
+                               
                               </td>
-                              <td class="hidden-xs-down">
+                              <td>
                                 <i *ngIf="email.attachments && email.attachments!.length > 0" class="fa fa-paperclip">
                                   <span class="badge badge-success ml-1"
                                     [matTooltip]="email.attachments.length === 1 ? '1 archivo adjunto' : email.attachments.length + ' archivos adjuntos' ">
                                     {{ email.attachments.length }}</span>
                                 </i>
                               </td>
-                              <td class="text-right"> {{ email.date | date: 'dd-MM-yyyy HH:mm:ss'}} </td>
+                              <td> {{ email.date | date: 'dd-MM-yyyy HH:mm:ss'}} </td>
                             </tr>
                           </tbody>
                         </table>

@@ -7,6 +7,7 @@
 /tmp
 /out-tsc
 /bazel-out
+*.report.html
 
 # Node
 /node_modules

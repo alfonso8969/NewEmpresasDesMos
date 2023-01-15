@@ -170,9 +170,6 @@ export class MenuService {
               title: 'Gestión emails', url: '/dashboard/technical-emails-management'
             },
             {
-              title: 'Emails detalles', url: '/dashboard/technical-emails-details'
-            },
-            {
               title: 'Mandar emails', url: '/dashboard/technical-emails-send'
             }
           ]

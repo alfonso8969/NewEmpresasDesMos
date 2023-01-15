@@ -22,6 +22,7 @@ a:active {
 a:hover {
   color: rgb(35, 35, 233) !important;
   background: transparent !important;
+  cursor: pointer;
 }
 
 .read {
@@ -30,10 +31,6 @@ a:hover {
 
 .read td {
   color: #b7ad54;
-}
-
-a:hover {
-  cursor: pointer;
 }
 
 .unread td {

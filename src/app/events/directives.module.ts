@@ -4,6 +4,7 @@ import { MaterialElevationDirective } from './MaterialElevation.directive';
 import { SortableHeaderDirective } from './sortable-header.directive';
 import { SortableHeaderSessionsDirective } from './sortable-header-sessions.directive';
 import { SortableHeaderLogsDirective } from './sortable-header-logs.directive';
+import { SortableHeadersEmailsDirective } from './sortable-headers.emails.directive';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { SortableHeaderLogsDirective } from './sortable-header-logs.directive';
     MaterialElevationDirective,
     SortableHeaderDirective,
     SortableHeaderSessionsDirective,
-    SortableHeaderLogsDirective
+    SortableHeaderLogsDirective,
+    SortableHeadersEmailsDirective
   ],
   imports: [
     CommonModule
@@ -20,7 +22,8 @@ import { SortableHeaderLogsDirective } from './sortable-header-logs.directive';
     MaterialElevationDirective,
     SortableHeaderDirective,
     SortableHeaderSessionsDirective,
-    SortableHeaderLogsDirective
+    SortableHeaderLogsDirective,
+    SortableHeadersEmailsDirective
   ]
 })
 export class DirectivesModule { }

@@ -1,15 +1,79 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Email } from 'src/app/interfaces/email';
+import { FormInscription } from 'src/app/interfaces/formInscription';
+import { Log } from 'src/app/interfaces/log';
+import { ViewSDKClient } from 'src/app/services/view-sdk.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-technical-emails-details',
   templateUrl: './technical-emails-details.component.html',
   styleUrls: ['./technical-emails-details.component.css']
 })
-export class TechnicalEmailsDetailsComponent implements OnInit {
+export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
 
-  constructor() { }
+  url: string = environment.apiUrl;
+
+  load: boolean;
+  isViewPdf: boolean = false;
+  email: Email;
+  log: Log;
+  formInscription: FormInscription;
+
+  emailsTotal: number = 0;
+  emailsUnreadTotal: number = 0;
+  emailsReadTotal: number = 0;
+  emailsFavoritesTotal: number = 0;
+  emailsDeletedTotal: number = 0;
+
+  constructor(private viewSDKClient: ViewSDKClient) {
+  }
+
+  ngAfterViewInit() {
+  }
 
   ngOnInit(): void {
+    this.email = JSON.parse(localStorage.getItem('email')!);
+    this.formInscription = JSON.parse(localStorage.getItem('formInscription')!);
+    this.emailsTotal = Number(localStorage.getItem('emailsTotal')!);
+    this.emailsUnreadTotal = Number(localStorage.getItem('emailsUnreadTotal')!);
+    this.emailsReadTotal = Number(localStorage.getItem('emailsReadTotal')!);
+    this.emailsFavoritesTotal = Number(localStorage.getItem('emailsFavoritesTotal')!);
+    this.emailsDeletedTotal = Number(localStorage.getItem('emailsDeletedTotal')!);
+    this.previewFile();
+  }
+
+  public previewFile(): void {
+    if (this.email.attachments && this.email.attachments.length > 0) {
+      this.email.attachments.forEach(attachment => {
+        this.viewSDKClient.ready().then(() => {
+          /* Invoke file preview */
+          this.viewSDKClient.previewFile('pdf-div-min', this.url + '/attachment/' + attachment, attachment, {
+            /* Pass the embed mode option here */
+            embedMode: 'IN_LINE'
+          });
+        });
+      });
+    }
+  }
+
+  public viewFile(file: string) {
+    this.isViewPdf = true;
+    this.viewSDKClient.ready().then(() => {
+      /* Invoke file preview */
+      this.viewSDKClient.previewFile('pdf-div', this.url + '/attachment/' + file, file, {
+        /* Pass the embed mode option here */
+        embedMode: 'LIGHT_BOX'
+      });
+    });
+  }
+
+  public closePdf(): void {
+    this.isViewPdf = false;
+    setTimeout(() => {
+      this.previewFile();      
+    }, 600);
   }
 
 }

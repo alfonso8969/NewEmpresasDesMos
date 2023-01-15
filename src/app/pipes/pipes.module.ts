@@ -4,6 +4,7 @@ import { TrimPipe } from '../pipes/trim.pipe';
 import { TicketPipe } from '../pipes/ticket.pipe';
 import { SessionPipe } from '../pipes/session.pipe';
 import { LogPipe } from '../pipes/log.pipe';
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 
 @NgModule({
@@ -12,12 +13,14 @@ import { LogPipe } from '../pipes/log.pipe';
     TicketPipe,
     SessionPipe,
     LogPipe,
+    SafeHtmlPipe
   ],
   exports: [ 
     TrimPipe,
     TicketPipe,
     SessionPipe,
     LogPipe,
+    SafeHtmlPipe
   ],
   imports: [
     CommonModule
