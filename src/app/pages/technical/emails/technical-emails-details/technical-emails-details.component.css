@@ -22,13 +22,6 @@ a:hover {
   box-shadow: 1px 1px 10px 1px #dadada;
 }
 
-#pdf-view {
-  display: inline-block;
-  margin: 10% 0 10% 0;
-  width: 800px;;
-  box-shadow: 1px 1px 10px 1px #dadada;
-}
-
 .container {
   background-color: #fdfdf9;
   height: 100vh;
@@ -50,4 +43,12 @@ a:hover {
 .lb-view-file-btn:hover {
   background-color: #0969df;
   color: white;
+}
+
+#body {
+  overflow-x: auto;
+}
+
+::ng-deep .email-container {
+  width: 80% !important;
 }

@@ -29,6 +29,7 @@ import { TechnicalThemesComponent } from './technical/technical-themes/technical
 import { TechnicalEmailsComponent } from './technical/emails/technical-emails/technical-emails.component';
 import { TechnicalEmailsDetailsComponent } from './technical/emails/technical-emails-details/technical-emails-details.component';
 import { TechnicalEmailsSendComponent } from './technical/emails/technical-emails-send/technical-emails-send.component';
+import { ViewPdfComponent } from './technical/emails/view-pdf/view-pdf.component';
 
 @Injectable({providedIn: 'root'})
 export class TemplatePageTitleStrategy extends TitleStrategy {
@@ -76,6 +77,7 @@ const routes: Routes = [
       { path: 'technical-emails-management', title: "Gestión de correo", component: TechnicalEmailsComponent, data: { rol: ['ROL_TECHNICAL'] } },
       { path: 'technical-emails-details', title: "Detalle del correo", component: TechnicalEmailsDetailsComponent, data: { rol: ['ROL_TECHNICAL'] } },
       { path: 'technical-emails-send', title: "Enviar correo", component: TechnicalEmailsSendComponent, data: { rol: ['ROL_TECHNICAL'] } },
+      { path: 'technical-emails-view-attachment', title: "Ver adjuntos", component: ViewPdfComponent, data: { rol: ['ROL_TECHNICAL'] } },
     ]
   },
 ];

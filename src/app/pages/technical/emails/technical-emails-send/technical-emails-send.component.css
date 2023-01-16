@@ -1,0 +1,15 @@
+a {
+  color: #007bff !important;
+  cursor: pointer;
+}
+
+a:active {
+  color: rgb(104, 104, 122) !important;
+  background: transparent !important;
+}
+
+a:hover {
+  color: rgb(35, 35, 233) !important;
+  background: transparent !important;
+  cursor: pointer;
+}

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Email } from 'src/app/interfaces/email';
 import { FormInscription } from 'src/app/interfaces/formInscription';
 import { Log } from 'src/app/interfaces/log';
@@ -16,7 +16,6 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   url: string = environment.apiUrl;
 
   load: boolean;
-  isViewPdf: boolean = false;
   email: Email;
   log: Log;
   formInscription: FormInscription;
@@ -27,7 +26,8 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   emailsFavoritesTotal: number = 0;
   emailsDeletedTotal: number = 0;
 
-  constructor(private viewSDKClient: ViewSDKClient) {
+  constructor(private viewSDKClient: ViewSDKClient,
+              private router: Router) {
   }
 
   ngAfterViewInit() {
@@ -59,21 +59,9 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   }
 
   public viewFile(file: string) {
-    this.isViewPdf = true;
-    this.viewSDKClient.ready().then(() => {
-      /* Invoke file preview */
-      this.viewSDKClient.previewFile('pdf-div', this.url + '/attachment/' + file, file, {
-        /* Pass the embed mode option here */
-        embedMode: 'LIGHT_BOX'
-      });
-    });
+    this.router.navigate(['/dashboard/technical-emails-view-attachment'])
   }
 
-  public closePdf(): void {
-    this.isViewPdf = false;
-    setTimeout(() => {
-      this.previewFile();      
-    }, 600);
-  }
+
 
 }

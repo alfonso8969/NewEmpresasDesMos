@@ -21,13 +21,14 @@ export class TechnicalEmailsComponent implements OnInit {
   formInscription: FormInscription;
 
   emailsTotal: number = 0;
-  emailsUnreadTotal: number= 0;
-  emailsReadTotal: number= 0;
-  emailsFavoritesTotal: number= 0;
-  emailsDeletedTotal: number= 0;
+  emailsUnreadTotal: number = 0;
+  emailsReadTotal: number = 0;
+  emailsFavoritesTotal: number = 0;
+  emailsDeletedTotal: number = 0;
   isInTrash: boolean = false;
   load: boolean = true;
   filter: string;
+  private touchTime = 0;
 
   public page: number = 1;
   public siguiente: string = "Siguiente";
@@ -122,7 +123,7 @@ export class TechnicalEmailsComponent implements OnInit {
             email.subject = this.prepareEmailFromAndSubject(email.subject);
             email.from = this.prepareEmailFromAndSubject(email.from);
             email.bodyText = email.bodyText.replace(/\r\n/g, "").trim();
-            if(email.label.toLowerCase().includes('inscription')) {
+            if (email.label.toLowerCase().includes('inscription')) {
               email.bodyText = this.prepareBody(email.idEmail!, email.bodyText);
             }
           });
@@ -131,6 +132,7 @@ export class TechnicalEmailsComponent implements OnInit {
           if (emailsStorage && (emailsStorage.length < result.length)) {
             this.compareArray(emailsStorage, result)
           } else if (!emailsStorage) {
+            localStorage.removeItem('emails');
             this.setTotals(result);
           }
         }
@@ -220,16 +222,23 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public navigateToDetail(email: Email): void {
-    this.router.navigate(['dashboard/technical-emails-details' ]);
-    
-      localStorage.setItem('email', JSON.stringify(email));
-      localStorage.setItem('formInscription', JSON.stringify(this.formInscription));
-      localStorage.setItem('emailsTotal', this.emailsTotal.toString());
-      localStorage.setItem('emailsUnreadTotal', this.emailsUnreadTotal.toString());
-      localStorage.setItem('emailsReadTotal', this.emailsReadTotal.toString());
-      localStorage.setItem('emailsFavoritesTotal', this.emailsFavoritesTotal.toString());
-      localStorage.setItem('emailsDeletedTotal', this.emailsDeletedTotal.toString());
-    console.log(email);
+    if (this.touchTime == 0) {
+      // set first click
+      this.touchTime = new Date().getTime();
+    } else {
+      // compare first click to this click and see if they occurred within double click threshold
+      if (((new Date().getTime()) - this.touchTime) < 800) {
+        // double click occurred
+        this.router.navigate(['dashboard/technical-emails-details']);
+        localStorage.setItem('email', JSON.stringify(email));
+        console.log(email);
+        this.touchTime = 0;
+      } else {
+        // not a double click so set as a new first click
+        this.touchTime = new Date().getTime();
+      }
+    }
+
   }
 
   private setTotals(emails: Email[]): void {
@@ -240,6 +249,12 @@ export class TechnicalEmailsComponent implements OnInit {
     this.emailsReadTotal = emails.filter(email => email.unread).length;
     this.emailsFavoritesTotal = emails.filter(email => email.favorite).length;
     this.emailsDeletedTotal = emails.filter(email => email.deleted).length;
+    localStorage.setItem('formInscription', JSON.stringify(this.formInscription));
+    localStorage.setItem('emailsTotal', this.emailsTotal.toString());
+    localStorage.setItem('emailsUnreadTotal', this.emailsUnreadTotal.toString());
+    localStorage.setItem('emailsReadTotal', this.emailsReadTotal.toString());
+    localStorage.setItem('emailsFavoritesTotal', this.emailsFavoritesTotal.toString());
+    localStorage.setItem('emailsDeletedTotal', this.emailsDeletedTotal.toString());
     localStorage.setItem('emails', JSON.stringify(emails));
   }
 
@@ -336,7 +351,7 @@ export class TechnicalEmailsComponent implements OnInit {
     let intFirma = body.indexOf('Firma');
     let terms = body.substring(intTerms + 'Términos y condiciones'.length, intFirma).trim();
     this.formInscription.terms = terms == 'Aceptado' ? true : false;
-    console.log("FormInscription:" , this.formInscription);
+    console.log("FormInscription:", this.formInscription);
     return JSON.stringify(this.formInscription);
   }
 

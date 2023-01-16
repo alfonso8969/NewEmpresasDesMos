@@ -27,4 +27,11 @@ export class FileUploadService {
     return this.http.request(req);
   }
 
+  public getPdf(fileName: string): Observable<Blob> {
+    let url = this.baseUrl + '/attachment/' + fileName;
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    return this.http.get<Blob>(url, { headers : headers, responseType : 'blob' as 'json'});
+  }
 }

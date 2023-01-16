@@ -3,5 +3,5 @@ export const environment = {
   apiUrl: "https://alfonsogonz.es/api-angular-php",
   apiLocal: 'https://alfonsogonz.es',
   urlPHPEmail: "https://alfonsogonz.es/php/email.php",
-  apiAdobe: 'b4b28ce81ddd43da953e2cf59857e1cc'
+  apiAdobe: '237e8a46bddf468db328ecdd60c6c8ba'
 };

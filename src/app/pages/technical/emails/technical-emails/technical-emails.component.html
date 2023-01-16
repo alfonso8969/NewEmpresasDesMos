@@ -163,7 +163,7 @@
                           <tbody>
                             <tr
                               *ngFor="let email of emails | paginate: { id: 'emails', itemsPerPage: 10, currentPage: page }"
-                              [ngClass]="{read: email.unread == !0, unread: email.unread != !1}" (dblclick)="navigateToDetail(email)">
+                              [ngClass]="{read: email.unread == !0, unread: email.unread != !1}" (click)="navigateToDetail(email)">
                               <td style="width:40px">
                                 <div class="checkbox">
                                   <input type="checkbox" [id]="email.idEmail + 'checkbox'" name="check"
@@ -172,7 +172,7 @@
                                     [matTooltip]="email.unread != !0 ? 'Marcar como leído' : 'Marcar como no leído'"></label>
                                 </div>
                               </td>
-                              <td style="width:40px" class="hidden-xs-down" [ngSwitch]="email.favorite"
+                              <td style="width:40px" [ngSwitch]="email.favorite"
                                 [matTooltip]="!email.favorite ? 'Marcar como favorito' : 'Quitar de favoritos'"
                                 (click)="markFavorite(email)">
                                 <i *ngSwitchCase="false" class="fa fa-star-o"></i>
