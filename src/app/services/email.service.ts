@@ -10,19 +10,27 @@ import { Email } from '../interfaces/email';
 })
 export class EmailService {
 
-  private url: string;
+  private urlEmail: string;
+  private urlPHPCustomEmail: string;
   private baseUrl: string;
 
 
   constructor(private http: HttpClient) {
-    this.url = environment.urlPHPEmail;
+    this.urlEmail = environment.urlPHPEmail;
+    this.urlPHPCustomEmail = environment.urlPHPCustomEmail;
     this.baseUrl = environment.apiUrl;
+  }
+
+  sendCustomEmail(data: any): Observable<any> {
+    const options = new HttpHeaders()
+      .set('Content-Type', 'Content-Type:text/plain; charset=UTF-8');
+    return this.http.post(this.urlPHPCustomEmail, data, { headers: options });
   }
 
   sendEmail(data: any): Observable<any> {
     const options = new HttpHeaders()
       .set('Content-Type', 'Content-Type:text/plain; charset=UTF-8');
-    return this.http.post(this.url, data, { headers: options });
+    return this.http.post(this.urlEmail, data, { headers: options });
   }
 
   public checkEmail(user: User): Observable<User> {

@@ -233,6 +233,9 @@ export class LoginComponent implements OnInit {
     this.viewRecoverForm = !this.viewRecoverForm;
   }
 
+  /**
+   * Función que muestra el formulario para crea cuenta.
+   */
   public sUpS(): void {
     let a = document.getElementById('to-singUp')!;
     a.innerText = a.innerText == "click aquí" ? "Cerrar" : "click aquí"

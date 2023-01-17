@@ -84,9 +84,9 @@ export class TechnicalEmailsComponent implements OnInit {
       date: '',
       terms: false,
     }
+
     this.log = this.logService.initLog();
     this.getEmails();
-
   }
 
   onSort({ column, direction }: SortEventEmail) {
@@ -150,6 +150,13 @@ export class TechnicalEmailsComponent implements OnInit {
     })
   }
 
+  /**
+   * Función que prepara (quita los caractéres no válidos ?=_) el from y el asunto de los emails.
+   *
+   * @param {string} text Texto a preparar
+   *
+   * @returns {string} Un string con los caratéres replazados
+   */
   private prepareEmailFromAndSubject(text: string): string {
     return text.replace(/UTF-8/g, ' ').replace(/_/g, ' ').replace(/\?/g, '').replace(/=/g, '').replace(/Q/g, '');
   }
@@ -222,6 +229,7 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public navigateToDetail(email: Email): void {
+    localStorage.setItem('email', JSON.stringify(email));
     if (this.touchTime == 0) {
       // set first click
       this.touchTime = new Date().getTime();
@@ -230,7 +238,6 @@ export class TechnicalEmailsComponent implements OnInit {
       if (((new Date().getTime()) - this.touchTime) < 800) {
         // double click occurred
         this.router.navigate(['dashboard/technical-emails-details']);
-        localStorage.setItem('email', JSON.stringify(email));
         console.log(email);
         this.touchTime = 0;
       } else {
@@ -238,7 +245,6 @@ export class TechnicalEmailsComponent implements OnInit {
         this.touchTime = new Date().getTime();
       }
     }
-
   }
 
   private setTotals(emails: Email[]): void {
@@ -249,7 +255,7 @@ export class TechnicalEmailsComponent implements OnInit {
     this.emailsReadTotal = emails.filter(email => email.unread).length;
     this.emailsFavoritesTotal = emails.filter(email => email.favorite).length;
     this.emailsDeletedTotal = emails.filter(email => email.deleted).length;
-    localStorage.setItem('formInscription', JSON.stringify(this.formInscription));
+
     localStorage.setItem('emailsTotal', this.emailsTotal.toString());
     localStorage.setItem('emailsUnreadTotal', this.emailsUnreadTotal.toString());
     localStorage.setItem('emailsReadTotal', this.emailsReadTotal.toString());
@@ -352,6 +358,7 @@ export class TechnicalEmailsComponent implements OnInit {
     let terms = body.substring(intTerms + 'Términos y condiciones'.length, intFirma).trim();
     this.formInscription.terms = terms == 'Aceptado' ? true : false;
     console.log("FormInscription:", this.formInscription);
+    localStorage.setItem('formInscription', JSON.stringify(this.formInscription));
     return JSON.stringify(this.formInscription);
   }
 

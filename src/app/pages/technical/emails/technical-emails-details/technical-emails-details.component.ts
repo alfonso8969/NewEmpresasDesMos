@@ -15,7 +15,7 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
 
   url: string = environment.apiUrl;
 
-  load: boolean;
+  load: boolean = true;
   email: Email;
   log: Log;
   formInscription: FormInscription;
@@ -34,6 +34,7 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.load = true;
     this.email = JSON.parse(localStorage.getItem('email')!);
     this.formInscription = JSON.parse(localStorage.getItem('formInscription')!);
     this.emailsTotal = Number(localStorage.getItem('emailsTotal')!);
@@ -48,6 +49,7 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
     if (this.email.attachments && this.email.attachments.length > 0) {
       this.email.attachments.forEach(attachment => {
         this.viewSDKClient.ready().then(() => {
+          this.load = false;
           /* Invoke file preview */
           this.viewSDKClient.previewFile('pdf-div-min', this.url + '/attachment/' + attachment, attachment, {
             /* Pass the embed mode option here */
@@ -56,10 +58,11 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
         });
       });
     }
+    this.load = false;
   }
 
   public viewFile(file: string) {
-    this.router.navigate(['/dashboard/technical-emails-view-attachment'])
+    this.router.navigate(['/dashboard/technical-emails-view-attachment', { file: file }])
   }
 
 

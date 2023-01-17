@@ -68,7 +68,7 @@
             <div class="card">
               <div class="row">
                 <div class="col-xlg-2 col-lg-3 col-md-4">
-                  <div class="card-body inbox-panel"><a [routerLink]="['/dashboard/technical-emails-send']" routerLinkActive="router-link-active" 
+                  <div class="card-body inbox-panel"><a [routerLink]="['/dashboard/technical-emails-send']" routerLinkActive="router-link-active"
                       class="btn btn-danger m-b-20 p-10 btn-block waves-effect waves-light">Redactar email</a>
                     <ul class="list-group list-group-full">
                       <li class="list-group-item" (click)="filterInBox()"> <a ><i
@@ -85,7 +85,7 @@
                         <span class="badge badge-primary ml-auto">0</span>
                       </li>
                       <li class="list-group-item ">
-                        <a > <i class="mdi mdi-file-document-box"></i> Correo enviado </a>
+                        <a > <i class="mdi mdi-file-document-box"></i> Enviado </a>
                         <span class="badge badge-secondary ml-auto">0</span>
                       </li>
                       <li class="list-group-item" (click)="filterDeleted()">
@@ -94,7 +94,7 @@
                       </li>
                     </ul>
                     <h3 class="card-title m-t-40">Etiquetas</h3>
-                    <div class="list-group b-0 mail-list"> 
+                    <div class="list-group b-0 mail-list">
                       <a class="list-group-item">
                         <span class="fa fa-circle text-info m-r-10"></span>Inscripción</a>
                       <a class="list-group-item"><span class="fa fa-circle text-warning m-r-10"></span>
@@ -164,7 +164,7 @@
                             <tr
                               *ngFor="let email of emails | paginate: { id: 'emails', itemsPerPage: 10, currentPage: page }"
                               [ngClass]="{read: email.unread == !0, unread: email.unread != !1}" (click)="navigateToDetail(email)">
-                              <td style="width:40px">
+                              <td class="w-40">
                                 <div class="checkbox">
                                   <input type="checkbox" [id]="email.idEmail + 'checkbox'" name="check"
                                     title="Marcar como leído" (change)="checkRead(email)" [checked]="email.unread != !1">
@@ -172,7 +172,7 @@
                                     [matTooltip]="email.unread != !0 ? 'Marcar como leído' : 'Marcar como no leído'"></label>
                                 </div>
                               </td>
-                              <td style="width:40px" [ngSwitch]="email.favorite"
+                              <td class="w-40" [ngSwitch]="email.favorite"
                                 [matTooltip]="!email.favorite ? 'Marcar como favorito' : 'Quitar de favoritos'"
                                 (click)="markFavorite(email)">
                                 <i *ngSwitchCase="false" class="fa fa-star-o"></i>
@@ -194,7 +194,6 @@
                                 </div>
                                 <span *ngIf="email.bodyText != ''">{{ email.bodyText }}</span>
                                 <span *ngIf="email.bodyText == '' && email.bodyEtc != ''">{{ email.bodyEtc }}</span>
-                               
                               </td>
                               <td>
                                 <i *ngIf="email.attachments && email.attachments!.length > 0" class="fa fa-paperclip">

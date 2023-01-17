@@ -32,7 +32,7 @@
                     <span class="badge badge-primary ml-auto">0</span>
                   </li>
                   <li class="list-group-item ">
-                    <a> <i class="mdi mdi-file-document-box"></i> Correo enviado </a>
+                    <a> <i class="mdi mdi-file-document-box"></i> Enviado </a>
                     <span class="badge badge-secondary ml-auto">0</span>
                   </li>
                   <li class="list-group-item">
@@ -103,12 +103,20 @@
                       </div>
                     </div>
 
-                    <div class="b-all m-t-20 p-20">
-                      <p class="p-b-20">Click aquí para <a [routerLink]="['/dashboard/technical-emails-send', 
+                    <div *ngIf="email && email.label == 'Inscription'" class="b-all m-t-20 p-20">
+                      <p class="p-b-20">Click aquí para
+                        <a [routerLink]="['/dashboard/technical-emails-send',
                         { emailTo: formInscription.userEmail , subject: email.subject}]"
-                          routerLinkActive="router-link-active">Respuesta</a> o <a
-                          [routerLink]="['/dashboard/technical-emails-management']"
-                          routerLinkActive="router-link-active">Atrás</a></p>
+                        routerLinkActive="router-link-active">Respuesta</a> o
+                        <a [routerLink]="['/dashboard/technical-emails-management']"
+                        routerLinkActive="router-link-active">Atrás</a>
+                      </p>
+                    </div>
+                    <div *ngIf="email && email.label !== 'Inscription'" class="b-all m-t-20 p-20">
+                      <p class="p-b-20">Click aquí para
+                        <a [routerLink]="['/dashboard/technical-emails-management']"
+                        routerLinkActive="router-link-active">Atrás</a>
+                      </p>
                     </div>
                   </div>
                 </div>
