@@ -68,13 +68,9 @@
                   </div>
 
                   <div class="form-group">
-                    <input formControlName="message" name="message" class="fl">
                     <div id="editor" rows="15" ></div>
                   </div>
                   <h4><i class="ti-link"></i> Adjuntos</h4>
-                  <div class="form-group fl">
-                    <input title="attachments" formControlName="attachment" name="attachment" id="attachment" class="form-control" type="file" multiple />
-                  </div>
                   <div class="container" appDnd (fileDropped)="onFileDropped($event)">
                     <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target!)" />
                     <svg xmlns="http://www.w3.org/2000/svg" width="63" height="64" viewBox="0 0 63 64">
@@ -135,8 +131,12 @@
                       </div>
                     </div>
                   </div>
-                  <button type="submit" class="btn btn-success mt-5"><i class="fa fa-envelope-o"></i> Enviar</button>
-                  <a type="button" class="btn btn-inverse mt-5 ml-2" href='/dashboard/technical-emails-management'><i class="fa fa-times" ></i> Cancelar</a>
+                  <button [disabled]="sendEmailForm.invalid || simulatorLoadFinish || editor!.getHTMLCode() === ''" type="submit"
+                  [matTooltip]="getMessageSendButton()" [matTooltipPosition]="'below'" 
+                  class="btn btn-success mt-5">
+                    <i class="fa fa-envelope-o"></i> {{ getMessageSendButton() }}
+                  </button>
+                  <button type="button" [disabled]="simulatorLoadFinish" class="btn btn-inverse mt-5 ml-2" (click)="goToManagementEmails()"><i class="fa fa-times" ></i> Cancelar</button>
                 </form>
               </div>
             </div>

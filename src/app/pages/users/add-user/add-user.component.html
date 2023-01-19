@@ -181,8 +181,7 @@
                     class="btn-primary button d-inline">
                     <span
                       [matTooltip]="addUserForm.invalid || isDisabled() || (addUserForm.get('newPassword')!.value != addUserForm.get('comparePasswords')!.value) ? 'Faltan campos obligatorios' : 'Guardar datos usuario'"
-                      [matTooltipPosition]="'below'" aria-label="Botón que guarda la información sobre el usuario"
-                      MAT_STRATEGY>Guardar
+                      [matTooltipPosition]="'below'" aria-label="Botón que guarda la información sobre el usuario">Guardar
                     </span>
                     <i class="fa fa-save p-1"></i>
                   </button>

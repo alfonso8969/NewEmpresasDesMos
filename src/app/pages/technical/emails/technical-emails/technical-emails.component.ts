@@ -131,8 +131,8 @@ export class TechnicalEmailsComponent implements OnInit {
 
           if (emailsStorage && (emailsStorage.length < result.length)) {
             this.compareArray(emailsStorage, result)
-          } else if (!emailsStorage) {
-            localStorage.removeItem('emails');
+
+          } else if (emailsStorage === undefined || emailsStorage.length === 0) {
             this.setTotals(result);
           }
         }
@@ -172,14 +172,12 @@ export class TechnicalEmailsComponent implements OnInit {
    * @returns void
    */
   private compareArray(emailsStorage: Email[], result: Email[]) {
-    localStorage.removeItem('emails');
-    emailsStorage.forEach(emailStorage => {
-      result.forEach(emailResult => {
-        if (emailResult.idEmail !== emailStorage.idEmail) {
-          emailsStorage.push(emailResult);
-        }
-      })
+    result.forEach((emailResult: Email) => {
+      if(emailsStorage.findIndex((emailStorage: Email) => emailStorage.idEmail === emailResult.idEmail) < 0) {
+        emailsStorage.push(emailResult);
+      }
     });
+
     this.setTotals(emailsStorage);
   }
 
@@ -229,6 +227,7 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public navigateToDetail(email: Email): void {
+    email.unread != !0 && this.checkRead(email);
     localStorage.setItem('email', JSON.stringify(email));
     if (this.touchTime == 0) {
       // set first click

@@ -163,7 +163,7 @@
                           <tbody>
                             <tr
                               *ngFor="let email of emails | paginate: { id: 'emails', itemsPerPage: 10, currentPage: page }"
-                              [ngClass]="{read: email.unread == !0, unread: email.unread != !1}" (click)="navigateToDetail(email)">
+                              [ngClass]="{read: email.unread == !0, unread: email.unread != !1}">
                               <td class="w-40">
                                 <div class="checkbox">
                                   <input type="checkbox" [id]="email.idEmail + 'checkbox'" name="check"
@@ -178,10 +178,10 @@
                                 <i *ngSwitchCase="false" class="fa fa-star-o"></i>
                                 <i *ngSwitchCase="true" class="fa fa-star text-warning"></i>
                               </td>
-                              <td [matTooltip]="email.label.includes('inscription') ? formInscription.companyEmail : email.from">
+                              <td [matTooltip]="email.label.includes('inscription') ? formInscription.companyEmail : email.from" (click)="navigateToDetail(email)">
                                 {{ email.label.toLowerCase().includes('inscription') ? formInscription.companyEmail : email.from }}</td>
                               <td class="ms" [matTooltip]="email.subject">{{ email.subject }}</td>
-                              <td class="max-texts ms">
+                              <td class="max-texts ms" (click)="navigateToDetail(email)">
                                 <div [ngSwitch]="email.label" class="d-inline">
                                   <span class="label label-info m-r-10 d-inline"
                                     *ngSwitchCase="'Inscription'">Inscripción</span>
