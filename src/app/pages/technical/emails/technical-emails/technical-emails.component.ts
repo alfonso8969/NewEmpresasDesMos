@@ -17,6 +17,9 @@ export class TechnicalEmailsComponent implements OnInit {
 
   emails: Email[];
   emailsTmp: Email[];
+  emailsResponse: Email[];
+  emailsStorage: Email[]
+
   log: Log;
   formInscription: FormInscription;
 
@@ -25,10 +28,11 @@ export class TechnicalEmailsComponent implements OnInit {
   emailsReadTotal: number = 0;
   emailsFavoritesTotal: number = 0;
   emailsDeletedTotal: number = 0;
+  emailsSendedTotal: number = 0;
+
   isInTrash: boolean = false;
   load: boolean = true;
   filter: string;
-  private touchTime = 0;
 
   public page: number = 1;
   public siguiente: string = "Siguiente";
@@ -110,9 +114,9 @@ export class TechnicalEmailsComponent implements OnInit {
 
   public getEmails(): void {
     this.load = true;
-    let emailsStorage: Email[] = JSON.parse(localStorage.getItem('emails')!);
-    if (emailsStorage && emailsStorage != undefined) {
-      this.setTotals(emailsStorage);
+    this.emailsStorage = JSON.parse(localStorage.getItem('emails')!);
+    if (this.emailsStorage != null && this.emailsStorage != undefined) {
+      this.setTotals(this.emailsStorage);
     }
 
     this.emailService.getEmails().subscribe({
@@ -124,17 +128,19 @@ export class TechnicalEmailsComponent implements OnInit {
             email.from = this.prepareEmailFromAndSubject(email.from);
             email.bodyText = email.bodyText.replace(/\r\n/g, "").trim();
             if (email.label.toLowerCase().includes('inscription')) {
-              email.bodyText = this.prepareBody(email.idEmail!, email.bodyText);
+              email.bodyText = this.prepareBody(email, email.idEmail!, email.bodyText);
             }
           });
           console.log("Emails en result después: ", result);
 
-          if (emailsStorage && (emailsStorage.length < result.length)) {
-            this.compareArray(emailsStorage, result)
-
-          } else if (emailsStorage === undefined || emailsStorage.length === 0) {
+          if (this.emailsStorage != null && (this.emailsStorage.length < result.length)) {
+            this.compareArray(this.emailsStorage, result)
+          } else if (this.emailsStorage === null || this.emailsStorage === undefined || this.emailsStorage.length === 0) {
             this.setTotals(result);
           }
+         setTimeout(() => {
+           this.getEmailsResponse();
+         }, 600);
         }
       }, error: (error: HttpErrorResponse) => {
         this.log.action = 'Conseguir emails';
@@ -148,6 +154,38 @@ export class TechnicalEmailsComponent implements OnInit {
         this.load = false;
       }
     })
+  }
+
+  private getEmailsResponse(): void {
+    this.emailService.getEmailsResponse().subscribe({
+      next: (result: Email[]) => {
+        result.forEach(email => {
+          email.deleted = Boolean(Number(email.deleted));
+          email.unread = Boolean(Number(email.unread));
+          email.favorite = Boolean(Number(email.favorite));
+          email.answered = Boolean(Number(email.answered));
+          email.bodyHtml = '';
+          email.bodyEtc = '';
+          email.formInscription = undefined;
+        });
+        this.emailsResponse = result;
+        if (result != null && result.length > 0) {
+          setTimeout(() => {
+            this.emailsStorage = JSON.parse(localStorage.getItem('emails')!);
+            this.compareArray(this.emailsStorage, this.emailsResponse)
+          }, 600);
+        }
+      } , error: (error: any) => {
+        this.log.action = 'Conseguir emails enviados';
+        this.log.status = false;
+        this.log.message = `Error al conseguir emails enviados: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
+        console.log('Error en conseguir emails:', error);
+
+      }, complete: () => {
+        console.log('Se consiguieron los emails enviados:', this.emailsResponse);
+      }
+    });
   }
 
   /**
@@ -182,6 +220,7 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public deleteEmails(): void {
+    this.emails = this.emailsTmp;
     this.emails.forEach(email => {
       !email.unread && (email.deleted = true);
     });
@@ -189,6 +228,7 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public checkRead(email: Email): void {
+    this.emails = this.emailsTmp;
     this.emails.forEach(em => {
       if (em.idEmail == email.idEmail) {
         em.unread = !em.unread;
@@ -198,6 +238,7 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public markFavorite(email: Email): void {
+    this.emails = this.emailsTmp;
     this.emails.forEach(em => {
       if (em.idEmail == email.idEmail) {
         em.favorite = !em.favorite;
@@ -208,8 +249,9 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public checkAll(read: boolean): void {
+    this.emails = this.emailsTmp;
     this.emails.forEach(email => {
-      email.unread = read;
+      email.unread = !read;
     });
     this.setTotals(this.emails);
   }
@@ -219,51 +261,44 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public filterInBox(): void {
-    this.emails = this.emailsTmp.filter(email => !email.deleted);
+    this.emails = this.emailsTmp.filter(email => !email.deleted && !email.answered);
   }
 
   public filterDeleted(): void {
     this.emails = this.emailsTmp.filter(email => email.deleted);
   }
 
+  public filterSended(): void {
+    this.emails = this.emailsTmp.filter(email => email.answered);
+  }
+
   public navigateToDetail(email: Email): void {
     email.unread != !0 && this.checkRead(email);
     localStorage.setItem('email', JSON.stringify(email));
-    if (this.touchTime == 0) {
-      // set first click
-      this.touchTime = new Date().getTime();
-    } else {
-      // compare first click to this click and see if they occurred within double click threshold
-      if (((new Date().getTime()) - this.touchTime) < 800) {
-        // double click occurred
-        this.router.navigate(['dashboard/technical-emails-details']);
-        console.log(email);
-        this.touchTime = 0;
-      } else {
-        // not a double click so set as a new first click
-        this.touchTime = new Date().getTime();
-      }
-    }
+    this.router.navigate(['dashboard/technical-emails-details']);
+    console.log(email);
   }
 
   private setTotals(emails: Email[]): void {
-    this.emails = emails.filter(email => !email.deleted);
+    this.emails = emails.filter(email => Boolean(!email.deleted) && Boolean(!email.answered));
     this.emailsTmp = JSON.parse(JSON.stringify(emails));
     this.emailsTotal = emails.length;
-    this.emailsUnreadTotal = emails.filter(email => !email.unread).length;
-    this.emailsReadTotal = emails.filter(email => email.unread).length;
-    this.emailsFavoritesTotal = emails.filter(email => email.favorite).length;
-    this.emailsDeletedTotal = emails.filter(email => email.deleted).length;
+    this.emailsUnreadTotal = emails.filter(email => Boolean(!email.unread)).length;
+    this.emailsReadTotal = emails.filter(email => Boolean(email.unread)).length;
+    this.emailsFavoritesTotal = emails.filter(email => Boolean(email.favorite != !1)).length;
+    this.emailsDeletedTotal = emails.filter(email => Boolean(email.deleted)).length;
+    this.emailsSendedTotal = emails.filter(email => Boolean(email.answered)).length;;
 
     localStorage.setItem('emailsTotal', this.emailsTotal.toString());
     localStorage.setItem('emailsUnreadTotal', this.emailsUnreadTotal.toString());
     localStorage.setItem('emailsReadTotal', this.emailsReadTotal.toString());
     localStorage.setItem('emailsFavoritesTotal', this.emailsFavoritesTotal.toString());
     localStorage.setItem('emailsDeletedTotal', this.emailsDeletedTotal.toString());
+    localStorage.setItem('emailsSendedTotal', this.emailsSendedTotal.toString());
     localStorage.setItem('emails', JSON.stringify(emails));
   }
 
-  private prepareBody(idEmail: number, text: string): string {
+  private prepareBody(email: Email, idEmail: number, text: string): string {
     this.formInscription.idEmail = idEmail;
     let body = text;
     let intForm = body.indexOf('Formulario:');
@@ -357,7 +392,7 @@ export class TechnicalEmailsComponent implements OnInit {
     let terms = body.substring(intTerms + 'Términos y condiciones'.length, intFirma).trim();
     this.formInscription.terms = terms == 'Aceptado' ? true : false;
     console.log("FormInscription:", this.formInscription);
-    localStorage.setItem('formInscription', JSON.stringify(this.formInscription));
+    email.formInscription = this.formInscription;
     return JSON.stringify(this.formInscription);
   }
 

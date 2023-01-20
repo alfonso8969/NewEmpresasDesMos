@@ -25,6 +25,8 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   emailsReadTotal: number = 0;
   emailsFavoritesTotal: number = 0;
   emailsDeletedTotal: number = 0;
+  emailsSendedTotal: number = 0;
+  isArray: boolean = false;
 
   constructor(private viewSDKClient: ViewSDKClient,
               private router: Router) {
@@ -36,17 +38,19 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.load = true;
     this.email = JSON.parse(localStorage.getItem('email')!);
-    this.formInscription = JSON.parse(localStorage.getItem('formInscription')!);
+    this.formInscription = this.email.formInscription!;
     this.emailsTotal = Number(localStorage.getItem('emailsTotal')!);
     this.emailsUnreadTotal = Number(localStorage.getItem('emailsUnreadTotal')!);
     this.emailsReadTotal = Number(localStorage.getItem('emailsReadTotal')!);
     this.emailsFavoritesTotal = Number(localStorage.getItem('emailsFavoritesTotal')!);
     this.emailsDeletedTotal = Number(localStorage.getItem('emailsDeletedTotal')!);
+    this.emailsSendedTotal = Number(localStorage.getItem('emailsSendedTotal')!);
     this.previewFile();
   }
 
   public previewFile(): void {
-    if (this.email.attachments && this.email.attachments.length > 0) {
+    this.isArray = this.email.attachments instanceof Array;
+    if (this.isArray && this.email.attachments && this.email.attachments.length > 0) {
       this.email.attachments.forEach(attachment => {
         this.viewSDKClient.ready().then(() => {
           this.load = false;

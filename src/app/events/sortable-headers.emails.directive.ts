@@ -1,5 +1,6 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
 import { Email } from '../interfaces/email';
+import { FormInscription } from '../interfaces/formInscription';
 
 export type SortColumnEmail = keyof Email | '';
 export type SortDirection = 'asc' | 'desc' | '';
@@ -11,8 +12,8 @@ const rotate: { [key: string]: SortDirection } = {
 };
 
 export const compare = (
-  v1: string | number | boolean | string[] | Date,
-  v2: string | number | boolean | string[] | Date
+  v1: string | number | boolean | string[] | Date | FormInscription,
+  v2: string | number | boolean | string[] | Date | FormInscription
 ) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
 export interface SortEventEmail {

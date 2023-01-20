@@ -37,7 +37,21 @@ export class EmailService {
     return this.http.post<User>(`${this.baseUrl}/checkEmail.php`, { user: user })
   }
 
+  /**
+   * Función que recoge los emails recibidos, lo hace a través de imap
+   * 
+   * @return {Observable<Email[]>} Un observer de Array de Emails
+   */
   public getEmails(): Observable<Email[]> {
     return this.http.get<Email[]>(`${this.baseUrl}/getEmails.php`);
+  }
+
+  /**
+   * Función que recoge los emails enviados, lo hace a través de la BBDD
+   * 
+   * @return {Observable<Email[]>} Un observer de Array de Emails
+   */
+  public getEmailsResponse(): Observable<Email[]> {
+    return this.http.get<Email[]>(`${this.baseUrl}/getEmailsResponse.php`);
   }
 }

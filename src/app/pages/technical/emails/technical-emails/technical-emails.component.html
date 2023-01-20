@@ -22,7 +22,7 @@
             <div class="row m-t-40">
               <div class="col-md-3 col-lg-2 col-xlg-2">
                 <div class="card">
-                  <div class="box bg-info text-center">
+                  <div class="box bg-success text-center">
                     <h1 class="font-light text-white">{{ emailsTotal }}</h1>
                     <h6 class="text-white">Total emails</h6>
                   </div>
@@ -30,7 +30,7 @@
               </div>
               <div class="col-md-3 col-lg-2 col-xlg-2">
                 <div class="card">
-                  <div class="box bg-success text-center">
+                  <div class="box bg-primary text-center">
                     <h1 class="font-light text-white">{{ emailsUnreadTotal }}</h1>
                     <h6 class="text-white">No leídos</h6>
                   </div>
@@ -38,7 +38,7 @@
               </div>
               <div class="col-md-3 col-lg-2 col-xlg-2">
                 <div class="card">
-                  <div class="box bg-secondary text-center">
+                  <div class="box bg-info text-center">
                     <h1 class="font-light text-white">{{ emailsReadTotal }}</h1>
                     <h6 class="text-white">Leídos</h6>
                   </div>
@@ -57,6 +57,14 @@
                   <div class="box bg-danger text-center">
                     <h1 class="font-light text-white">{{ emailsDeletedTotal }}</h1>
                     <h6 class="text-white">Eliminados</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-2 col-xlg-2">
+                <div class="card">
+                  <div class="box bg-secondary text-center">
+                    <h1 class="font-light text-white">{{ emailsSendedTotal }}</h1>
+                    <h6 class="text-white">Enviados</h6>
                   </div>
                 </div>
               </div>
@@ -82,11 +90,11 @@
                       </li>
                       <li class="list-group-item">
                         <a> <i class="mdi mdi-send"></i> Borrador </a>
-                        <span class="badge badge-primary ml-auto">0</span>
+                        <span class="badge badge-dark ml-auto text-light">0</span>
                       </li>
-                      <li class="list-group-item ">
+                      <li class="list-group-item" (click)="filterSended()">
                         <a > <i class="mdi mdi-file-document-box"></i> Enviado </a>
-                        <span class="badge badge-secondary ml-auto">0</span>
+                        <span class="badge badge-secondary ml-auto">{{ emailsSendedTotal }}</span>
                       </li>
                       <li class="list-group-item" (click)="filterDeleted()">
                         <a> <i class="mdi mdi-delete"></i> Papelera </a>
@@ -118,7 +126,7 @@
                       <button type="button" class="btn btn-secondary font-18" matTooltip="Borrar marcados" (click)="deleteEmails()"><i
                           class="mdi mdi-delete"></i></button>
                     </div>
-                    <div class="btn-group m-b-10 m-r-10" role="group" aria-label="Button group with nested dropdown">
+                    <!-- <div class="btn-group m-b-10 m-r-10" role="group" aria-label="Button group with nested dropdown">
                       <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i
@@ -133,7 +141,7 @@
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item"
                             href="#">Dropdown link</a> <a class="dropdown-item" href="#">Dropdown link</a> </div>
                       </div>
-                    </div>
+                    </div> -->
                     <button type="button " class="btn btn-secondary m-r-10 m-b-10" matTooltip="Recargar"
                       (click)="getEmails()"><i class="mdi mdi-reload font-18"></i></button>
                     <div class="btn-group m-b-10" role="group">
@@ -149,7 +157,7 @@
                     <div class="card b-all shadow-none">
                       <div class="inbox-center table-responsive">
                         <table class="table table-hover no-wrap">
-                          <caption><cite class="font-10">Doble click para detalles</cite></caption>
+                          <caption><cite class="font-10">Click para detalles</cite></caption>
                           <thead>
                             <th *ngIf="!isInTrash" scope="col" sortableEmail="unread" (sortEmail)="onSort($event)">M</th>
                             <th *ngIf="isInTrash" scope="col" sortableEmail="deleted" (sortEmail)="onSort($event)">Del</th>
@@ -173,13 +181,15 @@
                                 </div>
                               </td>
                               <td class="w-40" [ngSwitch]="email.favorite"
-                                [matTooltip]="!email.favorite ? 'Marcar como favorito' : 'Quitar de favoritos'"
+                                [matTooltip]="email.favorite != !0 ? 'Marcar como favorito' : 'Quitar de favoritos'"
                                 (click)="markFavorite(email)">
                                 <i *ngSwitchCase="false" class="fa fa-star-o"></i>
                                 <i *ngSwitchCase="true" class="fa fa-star text-warning"></i>
                               </td>
-                              <td [matTooltip]="email.label.includes('inscription') ? formInscription.companyEmail : email.from" (click)="navigateToDetail(email)">
-                                {{ email.label.toLowerCase().includes('inscription') ? formInscription.companyEmail : email.from }}</td>
+                              <td [matTooltip]="(email.label.includes('inscription') && (email.formInscription != null || email.formInscription != undefined )) ? email.formInscription.companyEmail : (email && email.from != undefined) ? email.from : 'Sin Datos'" 
+                                (click)="navigateToDetail(email)">
+                                {{ (email.label.includes('inscription') && (email.formInscription != null || email.formInscription != undefined )) ? email.formInscription.companyEmail :
+                                (email && email.from != undefined) ? email.from : 'Sin Datos' }}</td>
                               <td class="ms" [matTooltip]="email.subject">{{ email.subject }}</td>
                               <td class="max-texts ms" (click)="navigateToDetail(email)">
                                 <div [ngSwitch]="email.label" class="d-inline">

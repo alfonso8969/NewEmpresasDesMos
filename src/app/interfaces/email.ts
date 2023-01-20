@@ -1,3 +1,5 @@
+import { FormInscription } from "./formInscription";
+
 export interface Email {
   idEmail?: number;
   from: string;
@@ -14,4 +16,5 @@ export interface Email {
   deleted?: boolean;
   favorite?: boolean;
   label: 'Inscription' | 'Notices' | 'Communication' | 'Company';
+  formInscription?: FormInscription;
 }

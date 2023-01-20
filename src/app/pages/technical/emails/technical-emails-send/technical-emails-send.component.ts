@@ -24,6 +24,7 @@ export class TechnicalEmailsSendComponent implements OnInit {
   log: Log;
   formInscription: FormInscription;
   sendEmailForm: FormGroup;
+  fileUp: File;
 
   files: any[] = [];
   editor: any;
@@ -36,7 +37,13 @@ export class TechnicalEmailsSendComponent implements OnInit {
     message: '',
     subject: '',
     from: 'Admin Empresas',
-    attachments: ['']
+    attachments: [''],
+    unread: 0,
+    answered: 0,
+    deleted: 0,
+    label: '',
+    favorite: 0,
+    date: '',
   };
 
   sendEmailMessages = {
@@ -59,6 +66,7 @@ export class TechnicalEmailsSendComponent implements OnInit {
   emailsReadTotal: number = 0;
   emailsFavoritesTotal: number = 0;
   emailsDeletedTotal: number = 0;
+  emailsSendedTotal: number = 0;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -82,12 +90,13 @@ export class TechnicalEmailsSendComponent implements OnInit {
   ngOnInit(): void {
     this.editor = RichTextEditor('#editor');
     this.email = JSON.parse(localStorage.getItem('email')!);
-    this.formInscription = JSON.parse(localStorage.getItem('formInscription')!);
+    this.formInscription = this.email.formInscription!;
     this.emailsTotal = Number(localStorage.getItem('emailsTotal')!);
     this.emailsUnreadTotal = Number(localStorage.getItem('emailsUnreadTotal')!);
     this.emailsReadTotal = Number(localStorage.getItem('emailsReadTotal')!);
     this.emailsFavoritesTotal = Number(localStorage.getItem('emailsFavoritesTotal')!);
     this.emailsDeletedTotal = Number(localStorage.getItem('emailsDeletedTotal')!);
+    this.emailsSendedTotal = Number(localStorage.getItem('emailsSendedTotal')!);
   }
 
   /**
@@ -177,7 +186,13 @@ export class TechnicalEmailsSendComponent implements OnInit {
       subject: this.email.subject,
       message: this.email.bodyHtml,
       from: 'Admin Empresas',
-      attachments: this.email.attachments
+      attachments: this.email.attachments,
+      date: this.email.date,
+      unread: 0,
+      answered: 1,
+      deleted: 0,
+      label: this.email.label,
+      favorite: 0
     };
 
     this.log.action = 'Enviar email respuesta';
@@ -214,9 +229,9 @@ export class TechnicalEmailsSendComponent implements OnInit {
   }
 
   public getMessageSendButton(): string {
-    return (this.sendEmailForm.invalid || this.editor!.getHTMLCode() === '') ? 'Faltan campos obligatorios' 
-    : this.simulatorLoadFinish ? 
-    'Cargando archivos....' : 
+    return (this.sendEmailForm.invalid || this.editor!.getHTMLCode() === '') ? 'Faltan campos obligatorios'
+    : this.simulatorLoadFinish ?
+    'Cargando archivos....' :
     'Enviar email'
   }
 
@@ -236,7 +251,13 @@ export class TechnicalEmailsSendComponent implements OnInit {
       message: '',
       from: '',
       subject: '',
-      attachments: ['']
+      attachments: [''],
+      unread: 0,
+      answered: 0,
+      deleted: 0,
+      label: '',
+      favorite: 0,
+      date: '',
     };
     this.sendEmailForm.get('to')!.setValue('');
     this.sendEmailForm.get('subject')!.setValue('');
