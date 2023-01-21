@@ -24,7 +24,8 @@
     </div>
     <div class="row">
       <div class="container">
-        <div id="pdf-div" class="pdf-view"></div>
+        <div *ngIf="!extensionsImg" id="pdf-div" class="pdf-view"></div>
+        <img id="img-file" *ngIf="extensionsImg" [src]="url + '/attachment/' + file" [alt]="file" [title]="file" class="img-fluid">
       </div>
     </div>
   </div>

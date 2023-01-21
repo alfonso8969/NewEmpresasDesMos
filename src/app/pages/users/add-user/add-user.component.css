@@ -29,7 +29,6 @@
   cursor: pointer;
 }
 
-
 ::ng-deep .mat-tooltip  {
   white-space: pre-line !important;
   background-color: rgb(43, 43, 212) !important;

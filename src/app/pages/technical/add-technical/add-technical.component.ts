@@ -4,8 +4,10 @@ import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, Valida
 import { Router } from '@angular/router';
 import { User } from 'src/app/class/users';
 import { Address } from 'src/app/interfaces/address';
+import { Log } from 'src/app/interfaces/log';
 import { TechnicalInsert } from 'src/app/interfaces/technicalInsert';
 import { FileUploadService } from 'src/app/services/file-upload.service';
+import { LogsService } from 'src/app/services/logs.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2';
@@ -29,6 +31,7 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
     return false;
    }
 
+  log: Log;
   addTechnicalUserForm: FormGroup;
   fileUp: File;
   user: User;
@@ -52,7 +55,9 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
               private http: HttpClient,
               private uploadService: FileUploadService,
               private userService: UsersService,
-              private router: Router) {
+              private router: Router,
+              private logService: LogsService) {
+                this.log = this.logService.initLog();
                 this.fillForm();
               }
 
@@ -145,7 +150,10 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
           },
           error: (err: any) => {
             console.log("Error: ", err);
-
+            this.log.action = 'Subir imagen usuario';
+            this.log.status = false;
+            this.log.message = `Error al subir imagen técnico: ${JSON.stringify(err)}`;
+            this.logService.setLog(this.log);
             if (err.error && err.error.message) {
               console.log("Error: ", err.error.message);
             } else {

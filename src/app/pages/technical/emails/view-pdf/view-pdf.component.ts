@@ -20,6 +20,7 @@ export class ViewPdfComponent implements OnInit, OnDestroy, AfterViewInit {
 
   footer: HTMLElement;
   load: boolean;
+  extensionsImg : boolean;
   file: string;
 
   constructor(private router: Router,
@@ -31,13 +32,18 @@ export class ViewPdfComponent implements OnInit, OnDestroy, AfterViewInit {
     this.log = this.logService.initLog();
     this.route.paramMap.subscribe((params: any) => {
       this.file = params.get('file');
-      this.viewSDKClient.ready().then(() => {
-        /* Invoke file preview */
-        this.viewSDKClient.previewFile('pdf-div', this.url + '/attachment/' + this.file, this.file, {
-          /* Pass the embed mode option here */
-          embedMode: 'IN_LINE'
+      if(this.file.split('.')[1].toLowerCase() == 'pdf') {  
+        this.extensionsImg = false;
+        this.viewSDKClient.ready().then(() => {
+          /* Invoke file preview */
+          this.viewSDKClient.previewFile('pdf-div', this.url + '/attachment/' + this.file, this.file, {
+            /* Pass the embed mode option here */
+            embedMode: 'IN_LINE'
+          });
         });
-      });
+      } else {
+        this.extensionsImg = true;
+      }
     });
   }
 

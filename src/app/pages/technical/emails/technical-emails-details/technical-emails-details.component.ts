@@ -14,11 +14,13 @@ import { environment } from 'src/environments/environment';
 export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
 
   url: string = environment.apiUrl;
+  extensionsImg = ['jpg', 'png', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'webp', 'svg'];
 
   load: boolean = true;
   email: Email;
   log: Log;
   formInscription: FormInscription;
+  fileExtension: string;
 
   emailsTotal: number = 0;
   emailsUnreadTotal: number = 0;
@@ -26,10 +28,9 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   emailsFavoritesTotal: number = 0;
   emailsDeletedTotal: number = 0;
   emailsSendedTotal: number = 0;
-  isArray: boolean = false;
 
   constructor(private viewSDKClient: ViewSDKClient,
-              private router: Router) {
+    private router: Router) {
   }
 
   ngAfterViewInit() {
@@ -49,17 +50,19 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   }
 
   public previewFile(): void {
-    this.isArray = this.email.attachments instanceof Array;
-    if (this.isArray && this.email.attachments && this.email.attachments.length > 0) {
+    if (this.email.attachments && this.email.attachments.length > 0) {
+      this.email.attachments = this.email.attachments!.toString().replace('[', '').replace(']', '').replace('"', '').replace(/\+|%28/g, '').replace(/\"/g, '').split(',');
       this.email.attachments.forEach(attachment => {
-        this.viewSDKClient.ready().then(() => {
-          this.load = false;
-          /* Invoke file preview */
-          this.viewSDKClient.previewFile('pdf-div-min', this.url + '/attachment/' + attachment, attachment, {
-            /* Pass the embed mode option here */
-            embedMode: 'IN_LINE'
+        if (attachment.split('.')[1] == 'pdf' || attachment.split('.')[1] == 'PDF') {
+          this.viewSDKClient.ready().then(() => {
+            this.load = false;
+            /* Invoke file preview */
+            this.viewSDKClient.previewFile('pdf-div-min', this.url + '/attachment/' + attachment, attachment, {
+              /* Pass the embed mode option here */
+              embedMode: 'IN_LINE'
+            });
           });
-        });
+        }
       });
     }
     this.load = false;

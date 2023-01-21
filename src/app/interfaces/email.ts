@@ -2,6 +2,8 @@ import { FormInscription } from "./formInscription";
 
 export interface Email {
   idEmail?: number;
+  id_user?: number;
+  user_name?: string;
   from: string;
   to: string;
   date: string;

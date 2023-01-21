@@ -103,16 +103,22 @@
                     </ul>
                     <h3 class="card-title m-t-40">Etiquetas</h3>
                     <div class="list-group b-0 mail-list">
-                      <a class="list-group-item">
-                        <span class="fa fa-circle text-info m-r-10"></span>Inscripción</a>
-                      <a class="list-group-item"><span class="fa fa-circle text-warning m-r-10"></span>
-                        Avisos</a>
-                      <a class="list-group-item">
+                      <a class="list-group-item" (click)="filterByLabel('Inscription')">
+                        <span class="fa fa-circle text-info m-r-10"></span>
+                        Inscripción
+                      </a>
+                      <a class="list-group-item" (click)="filterByLabel('Notices')">
+                        <span class="fa fa-circle text-warning m-r-10"></span>
+                        Avisos
+                      </a>
+                      <a class="list-group-item" (click)="filterByLabel('Communication')">
                         <span class="fa fa-circle text-danger m-r-10"></span>
-                        Comunicación</a>
-                      <a class="list-group-item">
+                        Comunicación
+                      </a>
+                      <a class="list-group-item" (click)="filterByLabel('Company')">
                         <span class="fa fa-circle text-success m-r-10">
-                        </span>Empresa</a>
+                        </span>Empresa
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -186,7 +192,7 @@
                                 <i *ngSwitchCase="false" class="fa fa-star-o"></i>
                                 <i *ngSwitchCase="true" class="fa fa-star text-warning"></i>
                               </td>
-                              <td [matTooltip]="(email.label.includes('inscription') && (email.formInscription != null || email.formInscription != undefined )) ? email.formInscription.companyEmail : (email && email.from != undefined) ? email.from : 'Sin Datos'" 
+                              <td [matTooltip]="(email.label.includes('inscription') && (email.formInscription != null || email.formInscription != undefined )) ? email.formInscription.companyEmail : (email && email.from != undefined) ? email.from : 'Sin Datos'"
                                 (click)="navigateToDetail(email)">
                                 {{ (email.label.includes('inscription') && (email.formInscription != null || email.formInscription != undefined )) ? email.formInscription.companyEmail :
                                 (email && email.from != undefined) ? email.from : 'Sin Datos' }}</td>

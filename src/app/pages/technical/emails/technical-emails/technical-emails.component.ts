@@ -167,6 +167,11 @@ export class TechnicalEmailsComponent implements OnInit {
           email.bodyHtml = '';
           email.bodyEtc = '';
           email.formInscription = undefined;
+          let attTemp = email.attachments!.toString().replace('[', '').replace(']', '').replace('"', '').split(',');
+          email.attachments = [];
+          if(attTemp[0] !== '') {
+            attTemp.forEach(att => email.attachments!.push(att.replace('"', '').replace(/\+|%28/g, '').replace(/\"/g, '')));
+          }
         });
         this.emailsResponse = result;
         if (result != null && result.length > 0) {
@@ -270,6 +275,10 @@ export class TechnicalEmailsComponent implements OnInit {
 
   public filterSended(): void {
     this.emails = this.emailsTmp.filter(email => email.answered);
+  }
+
+  public filterByLabel(label: string): void {
+    this.emails = this.emailsTmp.filter(email => email.label == label);
   }
 
   public navigateToDetail(email: Email): void {

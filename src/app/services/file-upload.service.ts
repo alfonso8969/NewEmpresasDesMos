@@ -12,7 +12,7 @@ export class FileUploadService {
 
   constructor(private http: HttpClient) { }
 
-  uploadFile(file: File, fileName: string): Observable<HttpEvent<any>> {
+  public uploadFile(file: File, fileName: string): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
     formData.append('image', file, fileName);
@@ -25,6 +25,29 @@ export class FileUploadService {
     });
 
     return this.http.request(req);
+  }
+
+  public uploadFileAttachments(file: File, fileName: string): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+
+    formData.append('upload', file, fileName);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+
+    const req = new HttpRequest('POST', `${this.baseUrl}/saveAttachments.php`, formData, {
+      headers: headers
+    });
+
+    return this.http.request(req);
+  }
+
+  public unSaveAttachments(fileName: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.baseUrl}/unSaveAttachments.php`, { data: fileName })
+  }
+
+  public getLastIdEmail(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/getLastIdEmail.php`);
   }
 
   public getPdf(fileName: string): Observable<Blob> {

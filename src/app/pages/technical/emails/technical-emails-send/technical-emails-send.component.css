@@ -153,6 +153,10 @@ a:hover {
   }
 }
 
+label[for=fileDropRef], input[type=file] { 
+  cursor: pointer;;
+}
+
 ::ng-deep .mat-tooltip  {
   white-space: pre-line !important;
   background-color: rgb(43, 43, 212) !important;

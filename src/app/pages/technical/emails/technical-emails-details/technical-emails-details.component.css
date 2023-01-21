@@ -49,6 +49,18 @@ a:hover {
   overflow-x: auto;
 }
 
+#img-file {
+  display: inline-block;
+  margin: 10% 0 10% 0;
+  width: 200px;
+  height: 300px !important;
+  box-shadow: 1px 1px 10px 1px #dadada;
+}
+
+.mb-14 {
+  margin-bottom: 1.4rem!important;
+}
+
 ::ng-deep .email-container {
   width: 80% !important;
 }

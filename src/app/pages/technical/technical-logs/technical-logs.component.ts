@@ -1,17 +1,18 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { compare, SortableHeaderLogsDirective, SortEventLog } from 'src/app/events/sortable-header-logs.directive';
 import { Log } from 'src/app/interfaces/log';
 import { environment } from 'src/environments/environment';
 import { LogsService } from 'src/app/services/logs.service';
 import { formatDate, registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'app-technical-logs',
   templateUrl: './technical-logs.component.html',
   styleUrls: ['./technical-logs.component.css']
 })
-export class TechnicalLogsComponent implements OnInit {
+export class TechnicalLogsComponent implements OnInit, AfterViewInit {
 
 
   public url: string = environment.apiUrl;
@@ -38,7 +39,7 @@ export class TechnicalLogsComponent implements OnInit {
       this.logsTotal = 0;
       this.logsSuccessTotal = 0;
       this.logsFailTotal = 0;
-  
+
       this.load = true;
       this.logService.getLogs().subscribe({
         next: (logs: Log[]) => {
@@ -53,12 +54,21 @@ export class TechnicalLogsComponent implements OnInit {
         }, complete: () => {
           console.log(`Se consiguieron los logs ${ JSON.stringify(this.logs) }`, formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss', 'es_ES'));
            this.load = false;
-  
+
         }
       });
      }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    d3.selectAll(".close").on('mouseover', function (event) {
+      d3.select(this).style("color", "red");
+    });
+    d3.selectAll(".close").on('mouseout', function (event) {
+      d3.select(this).style("color", "black");
+    });
   }
 
   onSort({ column, direction }: SortEventLog) {
