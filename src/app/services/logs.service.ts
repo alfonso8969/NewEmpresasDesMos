@@ -22,7 +22,7 @@ export class LogsService {
   constructor(private http: HttpClient,
               private datePipe: DatePipe,
               private userService: UsersService) {
-   
+
     this.user = this.userService.getUserLogged();
     this.urlEmail = environment.urlPHPEmail;
     this.baseUrl = environment.apiUrl;
@@ -34,6 +34,7 @@ export class LogsService {
   }
 
   public setLog(log: Log): void {
+    log.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')!;
     if (log.ip == '' || log.ip === undefined) {
       log.ip = this.ipAddress;
     }
@@ -61,7 +62,6 @@ export class LogsService {
     this.http.get("https://api.ipify.org/?format=json").subscribe((res: any)=>{
       this.ipAddress = res.ip;
       console.log("IP log: ", this.ipAddress);
-      this.initLog();
     });
   }
 
@@ -71,7 +71,7 @@ export class LogsService {
       user_email: (this.user && this.user.user_email) || '',
       ip: this.ipAddress,
       action: '',
-      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')!,
+      date: '',
       message: '',
       status: false
     }

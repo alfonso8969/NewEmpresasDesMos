@@ -21,6 +21,7 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   log: Log;
   formInscription: FormInscription;
   fileExtension: string;
+  attachmentDiv: string;
 
   emailsTotal: number = 0;
   emailsUnreadTotal: number = 0;
@@ -57,7 +58,8 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
           this.viewSDKClient.ready().then(() => {
             this.load = false;
             /* Invoke file preview */
-            this.viewSDKClient.previewFile('pdf-div-min', this.url + '/attachment/' + attachment, attachment, {
+            this.attachmentDiv = 'pdf-div-min' + attachment;
+            this.viewSDKClient.previewFile(this.attachmentDiv, this.url + '/attachment/' + attachment, attachment, {
               /* Pass the embed mode option here */
               embedMode: 'IN_LINE'
             });

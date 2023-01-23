@@ -83,6 +83,7 @@ export class TechnicalEmailsSendComponent implements OnInit, OnDestroy {
   emailsDeletedTotal: number = 0;
   emailsSendedTotal: number = 0;
 
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
@@ -134,16 +135,7 @@ export class TechnicalEmailsSendComponent implements OnInit, OnDestroy {
       terms: false,
     }
 
-    this.uploadFileService.getLastIdEmail().subscribe({
-      next: (lastIdEmail: number) => { this.lastIdEmail = lastIdEmail }
-      , error: (err: any) => {
-        this.log.action = 'Conseguir lastIdEmail';
-        this.log.status = false;
-        this.log.message = `Error consiguiendo el último id de emails: ${JSON.stringify(err)}`;
-        this.logService.setLog(this.log);
-        console.log("Error consiguiendo el último id de emails", err);
-      }, complete: () => console.log("Conseguido last id email", this.lastIdEmail)
-    });
+    this.getLastIdEmail();
 
     this.user = this.userService.getUserLogged();
     this.log = this.logService.initLog();
@@ -179,7 +171,19 @@ export class TechnicalEmailsSendComponent implements OnInit, OnDestroy {
     this.emailsReadTotal = Number(localStorage.getItem('emailsReadTotal')!);
     this.emailsFavoritesTotal = Number(localStorage.getItem('emailsFavoritesTotal')!);
     this.emailsDeletedTotal = Number(localStorage.getItem('emailsDeletedTotal')!);
-    this.emailsSendedTotal = Number(localStorage.getItem('emailsSendedTotal')!);
+  }
+
+  private getLastIdEmail(): void {
+    this.uploadFileService.getLastIdEmail().subscribe({
+      next: (lastIdEmail: number) => { this.lastIdEmail = lastIdEmail }
+      , error: (err: any) => {
+        this.log.action = 'Conseguir lastIdEmail';
+        this.log.status = false;
+        this.log.message = `Error consiguiendo el último id de emails: ${JSON.stringify(err)}`;
+        this.logService.setLog(this.log);
+        console.log("Error consiguiendo el último id de emails", err);
+      }, complete: () => console.log("Conseguido last id email", this.lastIdEmail)
+    });
   }
 
   /**
@@ -215,7 +219,6 @@ export class TechnicalEmailsSendComponent implements OnInit, OnDestroy {
           console.log("Error eliminando el archivo", err);
         }
       });
-
   }
 
   /**
@@ -283,9 +286,9 @@ export class TechnicalEmailsSendComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           console.log("Error: ", err);
-          this.log.action = 'Subir imagen usuario';
+          this.log.action = 'Subir archivo';
           this.log.status = false;
-          this.log.message = `Error al subir imagen técnico: ${JSON.stringify(err)}`;
+          this.log.message = `Error al subir archivo adjunto: ${JSON.stringify(err)}`;
           this.logService.setLog(this.log);
           if (err.error && err.error.message) {
             console.log("Error: ", err.error.message);
@@ -339,13 +342,13 @@ export class TechnicalEmailsSendComponent implements OnInit, OnDestroy {
       favorite: 0
     };
 
-    this.log.action = 'Enviar email respuesta';
+    this.log.action = 'Enviar email ' + this.email.label;
     this.emailService.sendCustomEmail(this.dataForm).subscribe({
       next: (result: any) => {
         if (result.title.includes('error')) {
           this.showSwal('error');
           this.log.status = false;
-          this.log.message = `Error enviar email respuesta: ${JSON.stringify(result.message)}`;
+          this.log.message = `Error al enviar email ${this.email.label}: ${JSON.stringify(result.message)}`;
           this.logService.setLog(this.log);
           this.load = false;
           return;
@@ -354,18 +357,19 @@ export class TechnicalEmailsSendComponent implements OnInit, OnDestroy {
         this.sendEmailResult.title = this.sendEmailMessages.titleSuccess;
         this.sendEmailResult.message = this.sendEmailMessages.messageSuccess;
         this.log.status = true;
-        this.log.message = `Enviar email respuesta satisfactorio: ${JSON.stringify(this.dataForm)}`;
+        this.log.message = `Enviar email ${this.email.label} satisfactorio: ${JSON.stringify(this.dataForm)}`;
         this.logService.setLog(this.log);
         this.load = false;
+        this.getLastIdEmail();
         this.showSwal('success');
       }, error: (error: any) => {
         this.load = false;
         this.sendEmailResult.title = this.sendEmailMessages.titleError;
-        this.sendEmailResult.message = error.message;
-        this.showSwal('error');
+        this.sendEmailResult.message = `Error al enviar email ${this.email.label}`;
         this.deleteAttachments();
+        this.showSwal('error');
         this.log.status = false;
-        this.log.message = `Error enviar email respuesta: ${JSON.stringify(error)}`;
+        this.log.message = `Error al enviar email ${this.email.label}: ${JSON.stringify(error)}`;
         this.logService.setLog(this.log);
         console.log('Respuesta send email Error', error);
       }, complete: () => {
@@ -428,7 +432,7 @@ export class TechnicalEmailsSendComponent implements OnInit, OnDestroy {
           , error: (err: any) => {
             this.log.action = 'Eliminar archivo';
             this.log.status = false;
-            this.log.message = `Error eliminando el archivo al destruir send email component: ${JSON.stringify(err)}`;
+            this.log.message = `Error eliminando el archivo en enviar email componente: ${JSON.stringify(err)}`;
             this.logService.setLog(this.log);
             console.log("Error eliminando el archivo", err);
           }

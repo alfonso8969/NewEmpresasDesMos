@@ -88,10 +88,6 @@
                           </i> Favoritos </a>
                         <span class="badge badge-warning ml-auto">{{ emailsFavoritesTotal }}</span>
                       </li>
-                      <li class="list-group-item">
-                        <a> <i class="mdi mdi-send"></i> Borrador </a>
-                        <span class="badge badge-dark ml-auto text-light">0</span>
-                      </li>
                       <li class="list-group-item" (click)="filterSended()">
                         <a > <i class="mdi mdi-file-document-box"></i> Enviado </a>
                         <span class="badge badge-secondary ml-auto">{{ emailsSendedTotal }}</span>
@@ -192,8 +188,8 @@
                                 <i *ngSwitchCase="false" class="fa fa-star-o"></i>
                                 <i *ngSwitchCase="true" class="fa fa-star text-warning"></i>
                               </td>
-                              <td [matTooltip]="(email.label.includes('inscription') && (email.formInscription != null || email.formInscription != undefined )) ? email.formInscription.companyEmail : (email && email.from != undefined) ? email.from : 'Sin Datos'"
-                                (click)="navigateToDetail(email)">
+                              <td (click)="navigateToDetail(email)" [matTooltip]="(email.label.includes('inscription') && (email.formInscription != null || email.formInscription != undefined )) ? email.formInscription.companyEmail : (email && email.from != undefined) ? email.from : 'Sin Datos'"
+                                >
                                 {{ (email.label.includes('inscription') && (email.formInscription != null || email.formInscription != undefined )) ? email.formInscription.companyEmail :
                                 (email && email.from != undefined) ? email.from : 'Sin Datos' }}</td>
                               <td class="ms" [matTooltip]="email.subject">{{ email.subject }}</td>

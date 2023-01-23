@@ -32,7 +32,7 @@ export class ViewPdfComponent implements OnInit, OnDestroy, AfterViewInit {
     this.log = this.logService.initLog();
     this.route.paramMap.subscribe((params: any) => {
       this.file = params.get('file');
-      if(this.file.split('.')[1].toLowerCase() == 'pdf') {  
+      if(this.file.split('.')[1].toLowerCase() == 'pdf') {
         this.extensionsImg = false;
         setTimeout(() => {
           this.viewSDKClient.ready().then(() => {

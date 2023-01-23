@@ -65,7 +65,6 @@ a:hover {
   align-items: center;
   border: dashed 1px #979797;
   margin-bottom: 1rem;
-  display: flex;
   flex-grow: 1;
 }
 
@@ -153,7 +152,7 @@ a:hover {
   }
 }
 
-label[for=fileDropRef], input[type=file] { 
+label[for=fileDropRef], input[type=file] {
   cursor: pointer;;
 }
 

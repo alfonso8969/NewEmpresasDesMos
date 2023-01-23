@@ -14,12 +14,30 @@ a:hover {
   cursor: pointer;
 }
 
-#pdf-div-min {
+.pdf-div-min {
   display: inline-block;
   margin: 10% 0 10% 0;
   width: 200px;
   height: 300px !important;
   box-shadow: 1px 1px 10px 1px #dadada;
+}
+
+cite {
+  display: block !important;
+}
+
+.ms {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  width: 140px !important;
+}
+
+.emails {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 1em;
 }
 
 .container {
@@ -33,7 +51,7 @@ a:hover {
   border-radius: 5px;
   color: #ededed;
   cursor: pointer;
-  font-family: "Arial";
+  font-family: "Arial", sans-serif;
   font-size: 15px;
   padding: 10px;
   width: 120px;
@@ -58,9 +76,32 @@ a:hover {
 }
 
 .mb-14 {
-  margin-bottom: 1.4rem!important;
+  margin-bottom: 1.6rem!important;
 }
 
 ::ng-deep .email-container {
   width: 80% !important;
+}
+
+::ng-deep .mat-tooltip  {
+  white-space: pre-line !important;
+  background-color: rgb(43, 43, 212) !important;
+  font-size: 12px !important;
+}
+
+@media (max-width: 1439px) {
+
+  .card-body {
+    overflow-x: auto;
+  }
+
+  .emails {
+    padding-left: 15% !important;
+    padding-right: 15% !important;
+    margin-left: 0 !important;
+  }
+
+  img {
+    margin-bottom: 7px !important;
+  }
 }

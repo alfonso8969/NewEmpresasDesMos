@@ -18,7 +18,7 @@ export class TechnicalEmailsComponent implements OnInit {
   emails: Email[];
   emailsTmp: Email[];
   emailsResponse: Email[];
-  emailsStorage: Email[]
+  emailsStorage: Email[];
 
   log: Log;
   formInscription: FormInscription;
@@ -30,7 +30,34 @@ export class TechnicalEmailsComponent implements OnInit {
   emailsDeletedTotal: number = 0;
   emailsSendedTotal: number = 0;
 
-  isInTrash: boolean = false;
+
+  isInInbox: BoolCategory = {
+    name: 'isInBox',
+    value: false
+  }
+
+  isInFavorite: BoolCategory = {
+    name: 'isInFavorites',
+    value: false
+  }
+
+  isInSended: BoolCategory = {
+    name: 'isInSent',
+    value: false
+  }
+
+  isInTrash: BoolCategory = {
+    name: 'isInTrash',
+    value: false
+  }
+
+  isInLabels: BoolCategory = {
+    name: 'isInLabels',
+    value: false
+  }
+
+  categories: BoolCategory[] = [this.isInInbox, this.isInFavorite, this.isInSended, this.isInTrash, this.isInLabels];
+
   load: boolean = true;
   filter: string;
 
@@ -194,14 +221,14 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   /**
-   * Función que prepara (quita los caractéres no válidos ?=_) el from y el asunto de los emails.
+   * Función que prepara (quita los caracteres no válidos ?=_) del from y del asunto del email.
    *
    * @param {string} text Texto a preparar
    *
-   * @returns {string} Un string con los caratéres replazados
+   * @returns {string} Un string con los caracteres remplazados
    */
   private prepareEmailFromAndSubject(text: string): string {
-    return text.replace(/UTF-8/g, ' ').replace(/_/g, ' ').replace(/\?/g, '').replace(/=/g, '').replace(/Q/g, '');
+    return text.replace(/UTF-8/g, ' ').replace(/_/g, ' ').replace(/\?/g, '').replace(/=/g, '').replace(/Q/, '');
   }
 
   /**
@@ -262,22 +289,27 @@ export class TechnicalEmailsComponent implements OnInit {
   }
 
   public filterFavorites(): void {
+    this.setBoolCategory('isInFavorites', true);
     this.emails = this.emailsTmp.filter(email => email.favorite);
   }
 
   public filterInBox(): void {
+    this.setBoolCategory('isInBox', true);
     this.emails = this.emailsTmp.filter(email => !email.deleted && !email.answered);
   }
 
   public filterDeleted(): void {
+    this.setBoolCategory('isInTrash', true);
     this.emails = this.emailsTmp.filter(email => email.deleted);
   }
 
   public filterSended(): void {
+    this.setBoolCategory('isInSent', true);
     this.emails = this.emailsTmp.filter(email => email.answered);
   }
 
   public filterByLabel(label: string): void {
+    this.setBoolCategory('isInLabels', true);
     this.emails = this.emailsTmp.filter(email => email.label == label);
   }
 
@@ -288,6 +320,14 @@ export class TechnicalEmailsComponent implements OnInit {
     console.log(email);
   }
 
+  private getValueBoolCategory(name: string): boolean {
+    return this.categories.find(ct => ct.name == name)!.value;
+  }
+
+  private setBoolCategory(name: string, value: boolean): void {
+    this.categories.forEach(ct => ct.name == name ? ct.value = value : ct.value = !value);
+  }
+
   private setTotals(emails: Email[]): void {
     this.emails = emails.filter(email => Boolean(!email.deleted) && Boolean(!email.answered));
     this.emailsTmp = JSON.parse(JSON.stringify(emails));
@@ -296,7 +336,7 @@ export class TechnicalEmailsComponent implements OnInit {
     this.emailsReadTotal = emails.filter(email => Boolean(email.unread)).length;
     this.emailsFavoritesTotal = emails.filter(email => Boolean(email.favorite != !1)).length;
     this.emailsDeletedTotal = emails.filter(email => Boolean(email.deleted)).length;
-    this.emailsSendedTotal = emails.filter(email => Boolean(email.answered)).length;;
+    this.emailsSendedTotal = emails.filter(email => Boolean(email.answered)).length;
 
     localStorage.setItem('emailsTotal', this.emailsTotal.toString());
     localStorage.setItem('emailsUnreadTotal', this.emailsUnreadTotal.toString());
@@ -408,4 +448,9 @@ export class TechnicalEmailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+}
+
+export interface BoolCategory {
+  name: string;
+  value: boolean;
 }
