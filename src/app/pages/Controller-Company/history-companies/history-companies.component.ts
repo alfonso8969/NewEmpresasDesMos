@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Empresa } from 'src/app/class/empresa';
 import { User } from 'src/app/class/users';
+import { Log } from 'src/app/interfaces/log';
 import { CompaniesService } from 'src/app/services/companies.service';
+import { LogsService } from 'src/app/services/logs.service';
 import { UsersService } from 'src/app/services/users.service';
 import Swal from 'sweetalert2'
 
@@ -20,6 +22,7 @@ export class HistoryCompaniesComponent implements OnInit {
   empresasHab: Empresa[];
   empresasTmp: Empresa[];
   empresasHabTmp: Empresa[];
+  log: Log;
 
   viewSpinner: boolean = true;
   filterValueAct: string = '';
@@ -32,8 +35,10 @@ export class HistoryCompaniesComponent implements OnInit {
 
   constructor(private companiesService: CompaniesService,
               private userService: UsersService,
-              private router: Router) {
-
+              private router: Router,
+              private logService: LogsService) {
+                
+    this.log = this.logService.initLog()            
     this.user = this.userService.getUserLogged();
     let user_rol = Number(this.user?.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;
@@ -44,7 +49,7 @@ export class HistoryCompaniesComponent implements OnInit {
   }
 
   public fillTables(): void {
-    this.companiesService.getComapniesHistory().subscribe({
+    this.companiesService.getCompaniesHistory().subscribe({
       next: async (result: any) => {
         if (result != null) {
           this.empresasInHab = result.data;
@@ -55,6 +60,10 @@ export class HistoryCompaniesComponent implements OnInit {
         this.viewSpinner = false;
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir historial empresas';
+        this.log.status = false;
+        this.log.message = `(history-companies) Se produjo un error al conseguir el historial de las empresas inhabilitadas: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         this.viewSpinner = false;
         alert(error.message)
@@ -62,7 +71,7 @@ export class HistoryCompaniesComponent implements OnInit {
       complete: () => console.log("Complete", this.empresasInHab)
     });
 
-    this.companiesService.getComapniesHistoryHab().subscribe({
+    this.companiesService.getCompaniesHistoryHab().subscribe({
       next: async (result: any) => {
         if (result != null) {
           this.empresasHab = result.data;
@@ -73,6 +82,10 @@ export class HistoryCompaniesComponent implements OnInit {
         this.viewSpinner = false;
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir historial empresas';
+        this.log.status = false;
+        this.log.message = `(history-companies) Se produjo un error al conseguir el historial de las empresas habilitadas: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         this.viewSpinner = false;
         alert(error.message)
@@ -94,7 +107,7 @@ export class HistoryCompaniesComponent implements OnInit {
       this.empresa.user_id_alta = this.user.id_user;
     }
     console.log(this.empresa);
-    this.toAbledisabledCompany(this.empresa);
+    this.toAbleDisabledCompany(this.empresa);
   }
 
   public applyFilter(filterValue: any, hab: number): void {
@@ -123,7 +136,7 @@ export class HistoryCompaniesComponent implements OnInit {
     }
   }
 
-  public toAbledisabledCompany(empresa: Empresa): void {
+  public toAbleDisabledCompany(empresa: Empresa): void {
     let title = empresa.Habilitada == 1 ? 'Habilitar' : 'Deshabilitar';
     let message = `¿Está seguro que desea ${ title.toLowerCase() } la empresa ${ empresa.Nombre }?`;
     Swal.fire({
@@ -136,6 +149,7 @@ export class HistoryCompaniesComponent implements OnInit {
       confirmButtonText: 'Si, ' + title.toLowerCase()
     }).then((confirm) => {
       if (confirm.isConfirmed) {
+        this.log.action = `${title} empresa`;
         this.companiesService.toAbleDisableCompany(empresa).subscribe({
           next: (result: number) => {
             if (result === 1) {
@@ -145,6 +159,9 @@ export class HistoryCompaniesComponent implements OnInit {
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
               });
+              this.log.status = true;
+              this.log.message = `(history-companies) Se pudo ${title} la empresa correctamente: ${empresa.Nombre}`;
+              this.logService.setLog(this.log);
               this.fillTables();
             } else{
               Swal.fire({
@@ -153,10 +170,16 @@ export class HistoryCompaniesComponent implements OnInit {
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });
+              this.log.status = false;
+              this.log.message = `(history-companies) Se produjo un error al ${title} la empresa: ${empresa.Nombre}`;
+              this.logService.setLog(this.log);
             }
           },
           error: (error: any) => {
             console.log(error);
+            this.log.status = false;
+            this.log.message = `(history-companies) Se produjo un error al ${title} la empresa ${ empresa.Nombre }: ${JSON.stringify(error)}`;
+            this.logService.setLog(this.log);
             Swal.fire({
               title: title + ' empresa',
               text: 'Hubo algún error al ' + title.toLowerCase() + ` la empresa ${ empresa.Nombre }`,
@@ -164,10 +187,9 @@ export class HistoryCompaniesComponent implements OnInit {
               confirmButtonText: 'Aceptar'
             });
           },
-          complete: () => console.log("Update habilitada complete")
+          complete: () => console.log(`Update ${title} ${ empresa.Nombre } complete`)
         });
       }
     })
   }
-
 }

@@ -12,6 +12,8 @@ import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { UsersService } from 'src/app/services/users.service';
 import { Roles } from 'src/app/interfaces/roles';
+import { Log } from 'src/app/interfaces/log';
+import { LogsService } from 'src/app/services/logs.service';
 
 @Component({
   selector: 'app-ticket-support',
@@ -28,6 +30,7 @@ export class TicketSupportComponent implements OnInit {
   temas: Tema[];
   user: User;
   ticket: Ticket;
+  log: Log;
 
   ticketsByUser: TicketByUser[];
   ticketsTratadosByUser: TicketByUser[];
@@ -73,8 +76,10 @@ export class TicketSupportComponent implements OnInit {
     private supportService: SupportService,
     private emailService: EmailService,
     private userService: UsersService,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe,
+    private logService: LogsService) {
 
+    this.log = this.logService.initLog();
     this.checkTicketExitCode = {
       ticket_code: '',
       user_name: '',
@@ -102,16 +107,24 @@ export class TicketSupportComponent implements OnInit {
 
     this.ticketsTratadosByUser = [];
     this.ticketsByUser = [];
-    
+
     this.supportService.getTicketByUser(this.user).subscribe({
       next: (result: TicketByUser[]) => {
         if (result != null) {
           this.ticketsByUser = result;
         } else {
-          alert("Hubo un error")
+          alert("Hubo un error");
+          this.log.action = 'Conseguir tickets';
+          this.log.status = false;
+          this.log.message = `(ticket-support) Error al conseguir tickets: ${JSON.stringify(result)}`;
+          this.logService.setLog(this.log);
         }
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir tickets';
+        this.log.status = false;
+        this.log.message = `(ticket-support) Error al conseguir tickets: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -130,10 +143,18 @@ export class TicketSupportComponent implements OnInit {
           this.temas = [];
           this.temas = result.filter((t: Tema) => t.tema_rol!.includes(Roles[this.user.user_rol]));
         } else {
-          alert("Hubo un error")
+          alert("Hubo un error");
+          this.log.action = 'Conseguir temas';
+          this.log.status = false;
+          this.log.message = `(ticket-support) Error al conseguir los temas: ${JSON.stringify(result)}`;
+          this.logService.setLog(this.log);
         }
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir temas';
+        this.log.status = false;
+        this.log.message = `(ticket-support) Error al conseguir los temas: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -176,9 +197,17 @@ export class TicketSupportComponent implements OnInit {
         }
         this.sendEmailResult.title = this.sendEmailMessages.titleSuccess;
         this.sendEmailResult.message = this.sendEmailMessages.messageSuccess;
+        this.log.action = 'Enviar email tickets';
+        this.log.status = false;
+        this.log.message = `(ticket-support) Enviar email tickets correcto: ${JSON.stringify(result)}`;
+        this.logService.setLog(this.log);
         this.showSwal('success');
         this.saveTicket();
       }, error: (error: any) => {
+        this.log.action = 'Enviar email tickets';
+        this.log.status = false;
+        this.log.message = `(ticket-support) Error al enviar email tickets: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         this.load = false;
         this.sendEmailResult.title = this.sendEmailMessages.titleError;
         this.sendEmailResult.message = error.message;
@@ -197,6 +226,7 @@ export class TicketSupportComponent implements OnInit {
   }
 
   public onCheckboxChange(event: any) {
+    this.log.action = 'Marcar ticket solucionado';
     if (event.target.checked) {
       this.ticketTratadosByUser.solucionado = 1;
       this.ticketTratadosByUser.fecha_solucion = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')!;
@@ -206,28 +236,37 @@ export class TicketSupportComponent implements OnInit {
             this.sendEmailResult.title = "Solucionado";
             this.sendEmailResult.message = "El ticket se cerro exitosamente";
             this.showSwal('success');
+            this.log.status = true;
+            this.log.message = `(ticket-support) Marcar ticket solucionado correcto: ${JSON.stringify(this.ticketTratadosByUser)}`;
+            this.logService.setLog(this.log);
           } else {
             this.sendEmailResult.title = "Error";
             this.sendEmailResult.message = "El código no coincide con ninguno de sus tickets";
             this.showSwal('error');
+            this.log.status = false;
+            this.log.message = `(ticket-support) Error al marcar ticket solucionado: ${JSON.stringify(this.ticketTratadosByUser)}`;
+            this.logService.setLog(this.log);
           }
         },
-        error: (error: any) => {
+        error: (error: any) => {        
+          this.log.status = false;
+          this.log.message = `(ticket-support) Error al marcar ticket solucionado: ${JSON.stringify(error)}`;
+          this.logService.setLog(this.log);
           console.log(error);
           alert(error.message)
         },
-        complete: () => console.log("Complete closed ticked", this.checkTicketsCode)
+        complete: () => console.log("Complete closed ticked", this.ticketTratadosByUser)
       });
     }
   }
 
   public codeRefChange(event: any): void {
+    this.log.action = 'Comprobar ticket por código';
     if (event.target.value.length === 10) {
       this.codeRef = event.target.value;
       this.supportService.checkTicketExitByCode(this.codeRef).subscribe({
         next: (result: TicketByUser) => {
           if (result && result.campo != undefined) {
-
             this.checkTicketExitCode = result;
             this.addTicketSupport.get('field')?.setValue(this.checkTicketExitCode.campo);
           } else {
@@ -239,6 +278,9 @@ export class TicketSupportComponent implements OnInit {
           }
         },
         error: (error: any) => {
+          this.log.status = false;
+          this.log.message = `(ticket-support) Error al comprobar ticket REF por código: ${JSON.stringify(error)}`;
+          this.logService.setLog(this.log);
           console.log(error);
           alert(error.message)
         },
@@ -253,6 +295,7 @@ export class TicketSupportComponent implements OnInit {
   }
 
   changeTicketCode(event: any) {
+    this.log.action = 'Conseguir ticket por código';
     this.ticketCodeSelected = event.target.selectedOptions[0].text;
     if (this.ticketCodeSelected == 'Seleccione ticket') {
       return;
@@ -267,10 +310,16 @@ export class TicketSupportComponent implements OnInit {
           this.checkTicketsCode = result;
           console.log("this.checkTicketsCode", this.checkTicketsCode)
         } else {
-          alert("Hubo un error")
+          alert("Hubo un error");
+          this.log.status = false;
+          this.log.message = `(ticket-support) Error al conseguir ticket por código: ${JSON.stringify(result)}`;
+          this.logService.setLog(this.log);
         }
       },
       error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `(ticket-support) Error al conseguir ticket por código: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -278,16 +327,23 @@ export class TicketSupportComponent implements OnInit {
     });
     console.log("this.ticketByUser.respondido", this.ticketByUser.respondido);
     if (this.ticketByUser.respondido != 0) {
+      this.log.action = 'Conseguir ticket tratado';
       this.supportService.getTicketTratadosByUser(this.ticketCodeSelected).subscribe({
         next: (result: TicketByUser[]) => {
           if (result != null) {
             this.ticketsTratadosByUser = result;
             this.ticketTratadosByUser = this.ticketsTratadosByUser?.find((ticket: TicketByUser) => ticket.ticket_code == this.ticketCodeSelected)!;
           } else {
-            alert("Hubo un error")
+            alert("Hubo un error");
+            this.log.status = false;
+            this.log.message = `(ticket-support) Error al conseguir ticket tratados del ticket ${ this.ticketCodeSelected }: ${JSON.stringify(result)}`;
+            this.logService.setLog(this.log);
           }
         },
         error: (error: any) => {
+          this.log.status = false;
+          this.log.message = `(ticket-support) Error al conseguir ticket tratados del ticket ${ this.ticketCodeSelected }: ${JSON.stringify(error)}`;
+          this.logService.setLog(this.log);
           console.log(error);
           alert(error.message)
         },

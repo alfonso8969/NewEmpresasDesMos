@@ -9,6 +9,8 @@ import { DatePipe } from '@angular/common';
 import * as d3 from 'd3';
 import { Session } from 'src/app/interfaces/session';
 import { SessionsService } from 'src/app/services/sessions.service';
+import { Log } from 'src/app/interfaces/log';
+import { LogsService } from 'src/app/services/logs.service';
 
 @Component({
   selector: 'app-technical-sessions',
@@ -26,6 +28,7 @@ export class TechnicalSessionsComponent implements OnInit, AfterViewInit {
   sessionsFailTotal: number;
   filter: string;
 
+  log: Log
   sessions: Session[];
   sessionsTmp: Session[];
   session: Session;
@@ -38,12 +41,12 @@ export class TechnicalSessionsComponent implements OnInit, AfterViewInit {
   headers: QueryList<SortableHeaderSessionsDirective>;
 
   constructor(private sessionService: SessionsService,
-              private datePipe: DatePipe
-              ) {
+              private datePipe: DatePipe,
+              private logService: LogsService) {
     this.sessionsTotal = 0;
     this.sessionsSuccessTotal = 0;
     this.sessionsFailTotal = 0;
-
+    this.log = this.logService.initLog();
     this.load = true;
     this.sessionService.getSessions().subscribe({
       next: (sessions: Session[]) => {

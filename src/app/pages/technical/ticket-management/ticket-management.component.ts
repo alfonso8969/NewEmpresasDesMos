@@ -31,6 +31,7 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
   tickets: Ticket[];
   ticketsTmp: Ticket[];
   ticket: Ticket;
+  log: Log;
 
   filter: string;
   userFullName: string;
@@ -58,10 +59,12 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
   headers: QueryList<SortableHeaderDirective>;
 
   constructor(private supportService: SupportService,
-    private fb: FormBuilder,
-    private userService: UsersService,
-    private datePipe: DatePipe) {
+              private fb: FormBuilder,
+              private userService: UsersService,
+              private logService: LogsService,
+              private datePipe: DatePipe) {
 
+    this.log = this.logService.initLog();
     this.user = this.userService.getUserLogged();
     this.userFullName = `${this.user.user_name} ${this.user.user_lastName}`;
 
@@ -97,6 +100,10 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
                 ticket.estado = 'Nuevo';
               }
             }, error: (error: any) => {
+              this.log.action = 'Conseguir tickets tratados';
+              this.log.status = false;
+              this.log.message = `(ticket-management) Error al conseguir los tickets tratados: ${JSON.stringify(error)}`;
+              this.logService.setLog(this.log);
               console.log("Error consiguiendo ticket tratado", error);
               this.load = false;
             }, complete: () => {
@@ -110,6 +117,10 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
         this.ticketsTotalPending = this.tickets.filter((ticket: Ticket) => Number(ticket.respondido) == 0).length;
 
       }, error: (error: any) => {
+        this.log.action = 'Conseguir tickets';
+        this.log.status = false;
+        this.log.message = `(ticket-management) Error al conseguir los tickets: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log("Error consiguiendo tickets para técnico", this.tickets);
         this.load = false;
       }, complete: () => {
@@ -188,6 +199,10 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
           this.showSwal('error');
         }
       }, error: (error: any) => {
+        this.log.action = 'Respuesta tickets';
+        this.log.status = false;
+        this.log.message = `(ticket-management) Error enviando respuesta de ticket: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         this.sendTicketResponse.title = "Error";
         this.sendTicketResponse.message = "El código no coincide con ninguno de sus tickets";
         this.showSwal('error');
@@ -212,12 +227,20 @@ export class TicketManagementComponent implements OnInit, AfterViewInit {
             this.sendTicketResponse.message = "El ticket se cerro exitosamente";
             this.showSwal('success');
           } else {
+            this.log.action = 'Cerrar ticket';
+            this.log.status = false;
+            this.log.message = `(ticket-management) Error al cerrar el ticket ${this.ticket.code}: ${JSON.stringify(result)}`;
+            this.logService.setLog(this.log);
             this.sendTicketResponse.title = "Error";
             this.sendTicketResponse.message = "El código no coincide con ninguno de sus tickets";
             this.showSwal('error');
           }
         },
         error: (error: any) => {
+          this.log.action = 'Cerrar ticket';
+          this.log.status = false;
+          this.log.message = `(ticket-management) Error al cerrar el ticket ${this.ticket.code}: ${JSON.stringify(error)}`;
+          this.logService.setLog(this.log);
           console.log("Cerrar ticket", `Error al cerrar el ticket ${this.ticket.code}`, this.user.id_user, new Date(), error);
           alert(error.message)
         },

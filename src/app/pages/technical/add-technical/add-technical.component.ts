@@ -167,6 +167,7 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
   }
 
   public saveUser(formData: TechnicalInsert): void {
+    this.log.action = 'Añadir técnico';
     this.userService.addTechnical(formData).subscribe({
       next: (data: number) => {
         if (data === 1) {
@@ -176,11 +177,20 @@ export class AddTechnicalComponent implements OnInit, AfterViewInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = true;
+          this.log.message = `Se añadió al técnico ${formData.user.getUser_name()} correctamente`;
+          this.logService.setLog(this.log);
           this.router.navigate(['dashboard/list-technical']);
         } else {
+          this.log.status = false;
+          this.log.message = `Error al añadir al técnico ${formData.user.getUser_name()}: ${JSON.stringify(data)}`;
+          this.logService.setLog(this.log);
           throw new Error(`Se produjo un error al añadir al técnico ${formData.user.getUser_name()} `);
         }
-      }, error: (error: any) => {
+      }, error: (error: any) => {        
+        this.log.status = false;
+        this.log.message = `Error al añadir al técnico ${formData.user.getUser_name()}: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(`Se produjo un error al añadir al técnico: ${ error } `);
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({

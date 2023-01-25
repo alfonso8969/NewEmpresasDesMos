@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/class/users';
 import { Fields } from 'src/app/interfaces/fields';
+import { Log } from 'src/app/interfaces/log';
 import { Tema } from 'src/app/interfaces/tema';
 import { FieldsService } from 'src/app/services/fields.service';
+import { LogsService } from 'src/app/services/logs.service';
 import { SupportService } from 'src/app/services/support.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
@@ -22,14 +24,17 @@ export class TechnicalThemesComponent implements OnInit {
   themes: Tema[];
   theme: Tema;
   field: Fields;
+  log: Log;
   temaId: number;
 
   constructor(private supportService: SupportService,
-    private fb: FormBuilder,
-    private fieldsService: FieldsService,
-    private userService: UsersService) {
+              private fb: FormBuilder,
+              private fieldsService: FieldsService,
+              private userService: UsersService,
+              private logService: LogsService) {
 
     this.user = this.userService.getUserLogged();
+    this.log = this.logService.initLog();
 
     this.field = {
       field_name: '',
@@ -49,10 +54,18 @@ export class TechnicalThemesComponent implements OnInit {
         if (result != null) {
           this.themes = result;
         } else {
-          alert("Hubo un error")
+          alert("Hubo un error");
+          this.log.action = 'Conseguir temas';
+          this.log.status = false;
+          this.log.message = `(technical-themes) Error al conseguir los temas: ${JSON.stringify(result)}`;
+          this.logService.setLog(this.log);
         }
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir temas';
+        this.log.status = false;
+        this.log.message = `(technical-themes) Error al conseguir los temas: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -118,6 +131,7 @@ export class TechnicalThemesComponent implements OnInit {
   }
 
   public addFieldTheme(): void {
+    this.log.action = 'Añadir temas';
     if (this.field.tema_rol == '') {
       this.showMessageNotRoles();
       return;
@@ -133,12 +147,21 @@ export class TechnicalThemesComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = true;
+          this.log.message = `(technical-themes) Se añadió el tema: ${this.field.tema_name}`;
+          this.logService.setLog(this.log);
           this.getTemas();
         } else {
+          this.log.status = false;
+          this.log.message = `(technical-themes) Error al añadir tema ${this.field.tema_name}: ${JSON.stringify(result)}`;
+          this.logService.setLog(this.log);
           throw new Error(`Se produjo un error al añadir el tema ${this.field.tema_name} `);
         }
       },
       error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `(technical-themes) Error al al añadir tema ${this.field.tema_name}: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log("Tema error: ", error);
         this.cleanFormsTema();
         if (error.error.text.includes("Duplicate")) {
@@ -261,7 +284,7 @@ export class TechnicalThemesComponent implements OnInit {
   }
 
   public updateField(field: Fields): void {
-
+    this.log.action = 'Actualizar temas';
     this.fieldsService.updateField(field).subscribe({
       next: (result: any) => {
         if (result == 1) {
@@ -271,6 +294,9 @@ export class TechnicalThemesComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = true;
+          this.log.message = `(technical-themes) Se actualizó el tema: ${this.field.tema_name}`;
+          this.logService.setLog(this.log);
           this.getTemas();
         } else {
           Swal.fire({
@@ -279,9 +305,15 @@ export class TechnicalThemesComponent implements OnInit {
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = false;
+          this.log.message = `(technical-themes) Error al actualizar el tema ${this.field.tema_name}: ${JSON.stringify(result)}`;
+          this.logService.setLog(this.log);
         }
       },
       error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `(technical-themes) Error al al actualizar el tema ${this.field.tema_name}: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({

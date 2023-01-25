@@ -50,7 +50,8 @@ export class TechnicalLogsComponent implements OnInit, AfterViewInit {
           this.logsFailTotal = this.logsTotal - this.logsSuccessTotal;
         }, error: (error: any) => {
           console.log("Error consiguiendo logs");
-           this.load = false;
+          this.load = false;
+          alert(error);
         }, complete: () => {
           console.log(`Se consiguieron los logs ${ JSON.stringify(this.logs) }`, formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss', 'es_ES'));
            this.load = false;

@@ -31,32 +31,37 @@ export class TechnicalEmailsComponent implements OnInit {
   emailsSendedTotal: number = 0;
 
 
-  isInInbox: BoolCategory = {
+  isInInbox: EmailCategory = {
     name: 'isInBox',
-    value: false
+    value: false,
+    label: ''
   }
 
-  isInFavorite: BoolCategory = {
+  isInFavorite: EmailCategory = {
     name: 'isInFavorites',
-    value: false
+    value: false,
+    label: ''
   }
 
-  isInSended: BoolCategory = {
+  isInSended: EmailCategory = {
     name: 'isInSent',
-    value: false
+    value: false,
+    label: ''
   }
 
-  isInTrash: BoolCategory = {
+  isInTrash: EmailCategory = {
     name: 'isInTrash',
-    value: false
+    value: false,
+    label: ''
   }
 
-  isInLabels: BoolCategory = {
+  isInLabels: EmailCategory = {
     name: 'isInLabels',
-    value: false
+    value: false,
+    label: ''
   }
 
-  categories: BoolCategory[] = [this.isInInbox, this.isInFavorite, this.isInSended, this.isInTrash, this.isInLabels];
+  categories: EmailCategory[] = [this.isInInbox, this.isInFavorite, this.isInSended, this.isInTrash, this.isInLabels];
 
   load: boolean = true;
   filter: string;
@@ -72,6 +77,7 @@ export class TechnicalEmailsComponent implements OnInit {
   constructor(private emailService: EmailService,
     private logService: LogsService,
     private router: Router) {
+    this.isInInbox.value = true;
 
     this.formInscription = {
       idEmail: 0,
@@ -149,7 +155,6 @@ export class TechnicalEmailsComponent implements OnInit {
     this.emailService.getEmails().subscribe({
       next: (result: Email[]) => {
         if (result != null) {
-          console.log("Emails en result antes: ", result);
           result.forEach((email: Email) => {
             email.subject = this.prepareEmailFromAndSubject(email.subject);
             email.from = this.prepareEmailFromAndSubject(email.from);
@@ -158,16 +163,15 @@ export class TechnicalEmailsComponent implements OnInit {
               email.bodyText = this.prepareBody(email, email.idEmail!, email.bodyText);
             }
           });
-          console.log("Emails en result después: ", result);
 
-          if (this.emailsStorage != null && (this.emailsStorage.length < result.length)) {
-            this.compareArray(this.emailsStorage, result)
-          } else if (this.emailsStorage === null || this.emailsStorage === undefined || this.emailsStorage.length === 0) {
+          if (this.emailsStorage === null || this.emailsStorage === undefined || this.emailsStorage.length === 0) {
             this.setTotals(result);
+          } else {
+            this.compareArray(this.emailsStorage, result);
           }
-         setTimeout(() => {
-           this.getEmailsResponse();
-         }, 600);
+          setTimeout(() => {
+            this.getEmailsResponse();
+          }, 600);
         }
       }, error: (error: HttpErrorResponse) => {
         this.log.action = 'Conseguir emails';
@@ -196,7 +200,7 @@ export class TechnicalEmailsComponent implements OnInit {
           email.formInscription = undefined;
           let attTemp = email.attachments!.toString().replace('[', '').replace(']', '').replace('"', '').split(',');
           email.attachments = [];
-          if(attTemp[0] !== '') {
+          if (attTemp[0] !== '') {
             attTemp.forEach(att => email.attachments!.push(att.replace('"', '').replace(/\+|%28/g, '').replace(/\"/g, '')));
           }
         });
@@ -207,7 +211,7 @@ export class TechnicalEmailsComponent implements OnInit {
             this.compareArray(this.emailsStorage, this.emailsResponse)
           }, 600);
         }
-      } , error: (error: any) => {
+      }, error: (error: any) => {
         this.log.action = 'Conseguir emails enviados';
         this.log.status = false;
         this.log.message = `Error al conseguir emails enviados: ${JSON.stringify(error)}`;
@@ -243,12 +247,46 @@ export class TechnicalEmailsComponent implements OnInit {
    */
   private compareArray(emailsStorage: Email[], result: Email[]) {
     result.forEach((emailResult: Email) => {
-      if(emailsStorage.findIndex((emailStorage: Email) => emailStorage.idEmail === emailResult.idEmail) < 0) {
+      if (emailsStorage.findIndex((emailStorage: Email) => emailStorage.idEmail === emailResult.idEmail) < 0) {
         emailsStorage.push(emailResult);
       }
     });
 
     this.setTotals(emailsStorage);
+  }
+
+  public checkAll(read: boolean): void {
+    this.emails = this.emailsTmp;
+    let ct: EmailCategory = this.getValueBoolCategory();
+    this.emails.forEach(email => {
+      switch (ct.name) {
+        case 'isInBox':
+          if (!email.deleted && !email.answered)
+            email.unread = !read;
+          break;
+        case 'isInFavorites':
+          if (!email.deleted && !email.answered && email.favorite)
+            email.unread = !read;
+          break;
+        case 'isInSent':
+          if (!email.deleted && email.answered && !email.favorite)
+            email.unread = !read;
+          break;
+        case 'isInTrash':
+          if (email.deleted && !email.answered && !email.favorite)
+            email.unread = !read;
+          break;
+        case 'isInLabels':
+          if (ct.label == email.label)
+            email.unread = !read;
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    this.setTotals(this.emails);
   }
 
   public deleteEmails(): void {
@@ -280,36 +318,28 @@ export class TechnicalEmailsComponent implements OnInit {
     this.setTotals(this.emails);
   }
 
-  public checkAll(read: boolean): void {
-    this.emails = this.emailsTmp;
-    this.emails.forEach(email => {
-      email.unread = !read;
-    });
-    this.setTotals(this.emails);
-  }
-
   public filterFavorites(): void {
-    this.setBoolCategory('isInFavorites', true);
+    this.setBoolCategory('isInFavorites', true, '');
     this.emails = this.emailsTmp.filter(email => email.favorite);
   }
 
   public filterInBox(): void {
-    this.setBoolCategory('isInBox', true);
+    this.setBoolCategory('isInBox', true, '');
     this.emails = this.emailsTmp.filter(email => !email.deleted && !email.answered);
   }
 
   public filterDeleted(): void {
-    this.setBoolCategory('isInTrash', true);
+    this.setBoolCategory('isInTrash', true, '');
     this.emails = this.emailsTmp.filter(email => email.deleted);
   }
 
   public filterSended(): void {
-    this.setBoolCategory('isInSent', true);
+    this.setBoolCategory('isInSent', true, '');
     this.emails = this.emailsTmp.filter(email => email.answered);
   }
 
   public filterByLabel(label: string): void {
-    this.setBoolCategory('isInLabels', true);
+    this.setBoolCategory('isInLabels', true, label);
     this.emails = this.emailsTmp.filter(email => email.label == label);
   }
 
@@ -320,12 +350,40 @@ export class TechnicalEmailsComponent implements OnInit {
     console.log(email);
   }
 
-  private getValueBoolCategory(name: string): boolean {
-    return this.categories.find(ct => ct.name == name)!.value;
+  private getValueBoolCategory(): EmailCategory {
+    return this.categories.find((ct: EmailCategory) => ct.value)!;
   }
 
-  private setBoolCategory(name: string, value: boolean): void {
-    this.categories.forEach(ct => ct.name == name ? ct.value = value : ct.value = !value);
+  private setBoolCategory(name: string, value: boolean, label: string): void {
+    this.categories.forEach(ct => {
+      if (ct.name == name) {
+        ct.label = label;
+        ct.value = value;
+      } else {
+        ct.value = !value;
+        ct.label = '';
+      }
+    });
+    console.log("set categories: ", this.categories);
+  }
+
+  private translateEmailLabel(label: string): string {
+    let labelTranslate = '';
+    switch (label) {
+      case 'Inscription':
+        labelTranslate = 'Inscripción';
+        break;
+      case 'Notices':
+        labelTranslate = 'Avisos';
+        break;
+      case 'Communication':
+        labelTranslate = 'Comunicación';
+        break;
+      case 'Company':
+        labelTranslate = 'Empresa';
+        break;
+    }
+    return labelTranslate;
   }
 
   private setTotals(emails: Email[]): void {
@@ -450,7 +508,8 @@ export class TechnicalEmailsComponent implements OnInit {
 
 }
 
-export interface BoolCategory {
+export interface EmailCategory {
   name: string;
   value: boolean;
+  label: string;
 }

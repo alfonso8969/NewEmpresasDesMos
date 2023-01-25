@@ -13,6 +13,8 @@ import { Utils } from 'src/app/utils/utils';
 
 import { Operation, compare } from 'fast-json-patch';
 import Swal from 'sweetalert2'
+import { Log } from 'src/app/interfaces/log';
+import { LogsService } from 'src/app/services/logs.service';
 
 @Component({
   selector: 'app-view-company',
@@ -29,23 +31,21 @@ export class ViewCompanyComponent implements OnInit {
 
   empresa: Empresa;
   empresaTmp: Empresa;
+  user: User;
+  editCompanyForm: FormGroup;
+  sectores: Fields[];
+  distritos: Fields[];
+  poligonos: Fields[];
+  log: Log;
+
   Empresa_det_id: number;
   url: string;
   city: string = "Móstoles";
   region: string = "Madrid";
   actualYear: number = new Date().getFullYear();
-
-  user: User;
   admin: boolean;
-
-  sectores: Fields[];
-  distritos: Fields[];
-  poligonos: Fields[];
-
-  editCompanyForm: FormGroup;
   newEmp: any;
   newRedes: any;
-
   isEdited: boolean = false;
 
   constructor(private companiesService: CompaniesService,
@@ -53,8 +53,10 @@ export class ViewCompanyComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private userService: UsersService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private logService: LogsService) {
 
+    this.log = this.logService.initLog();
     this.user = this.userService.getUserLogged();
     let user_rol = Number(this.user.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;
@@ -79,6 +81,10 @@ export class ViewCompanyComponent implements OnInit {
             }
           },
           error: (error: any) => {
+            this.log.action = 'Conseguir empresa';
+            this.log.status = false;
+            this.log.message = `(view-company) Error al conseguir la empresa ${JSON.stringify(error)}`;
+            this.logService.setLog(this.log);
             console.log(error);
             alert(error.message)
           },
@@ -95,6 +101,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir sectores';
+        this.log.status = false;
+        this.log.message = `(view-company) Error al conseguir sectores ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -110,6 +120,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir distritos';
+        this.log.status = false;
+        this.log.message = `(view-company) Error al conseguir distritos ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -125,6 +139,10 @@ export class ViewCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir polígonos';
+        this.log.status = false;
+        this.log.message = `(view-company) Error al conseguir polígonos ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         alert(error.message)
       },
@@ -252,6 +270,7 @@ export class ViewCompanyComponent implements OnInit {
       return;
     }
 
+    this.log.action = 'Actualizar empresa';
     this.companiesService.updateCompany(empresa).subscribe({
       next: (data: number) => {
         if (data === 1) {
@@ -261,11 +280,20 @@ export class ViewCompanyComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = false;
+          this.log.message = `(view-company) Empresa ${ empresa.getNombre() } actualizada correctamente`;
+          this.logService.setLog(this.log);
           this.router.navigate(['dashboard/list-companies']);
         } else {
+          this.log.status = false;
+          this.log.message = `(view-company) Error al actualizar empresa ${ this.empresaTmp['Nombre'] }: ${ data }`;
+          this.logService.setLog(this.log);
           throw new Error(`Se produjo un error al actualizar la empresa ${ this.empresaTmp['Nombre'] } `);
         }
       }, error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `(view-company) Error al actualizar empresa ${ this.empresaTmp['Nombre'] }: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(`Se produjo un error al actualizar la empresa: ${ error } `);
         Swal.fire({
           title: 'Actualizar empresa',

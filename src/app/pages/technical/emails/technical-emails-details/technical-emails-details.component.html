@@ -61,6 +61,8 @@
                     <br>
                     <span *ngIf="email.user_name != null || email.user_name != undefined">Enviado por: {{
                       email.user_name }}</span><br>
+                    <span *ngIf="email.responseDate != null || email.responseDate != undefined">Fecha envío: {{
+                      email.responseDate | date: 'dd-MM-yyyy HH:mm:ss'}}</span><br>
                     <h3 class="card-title m-b-0">{{ email && email.label.toLowerCase().includes('inscription') &&
                       email.formInscription != undefined ?
                       email.formInscription.title! : email.subject }}</h3>
@@ -97,7 +99,7 @@
                     <div class="row text-center" *ngIf="email && email?.attachments?.length! !== 0">
                       <div class="col-md-2 emails" *ngFor="let file of email.attachments">
                         <cite class="font-10 ms" [matTooltip]="file">{{ file }}</cite>
-                        <div *ngIf="file.split('.')[1].toLowerCase() == 'pdf'" [id]="'pdf-div-min'  + file" class="pl-2 mt-3 pdf-div-min"></div>
+                        <div *ngIf="file.split('.')[1].toLowerCase() == 'pdf'" [id]="'pdf-div-min' + file" class="pl-2 mt-3 pdf-div-min"></div>
                         <img id="img-file" *ngIf="extensionsImg.includes(file.split('.')[1].toLowerCase())" [src]="url + '/attachment/' + file" [alt]="file" [title]="file" class="mt-3 pl-2 mb-14 no-gutters">
                         <div class="mt-1">
                           <button type="button" (click)='viewFile(file)' class='lb-view-file-btn'>

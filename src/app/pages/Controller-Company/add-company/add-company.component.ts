@@ -78,7 +78,7 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.log.action = 'Get Sectores';
+        this.log.action = 'Conseguir sectores';
         this.log.status = false;
         this.log.message = `(add-company) Error al conseguir sectores ${JSON.stringify(error)}`;
         this.logService.setLog(this.log);
@@ -97,7 +97,7 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.log.action = 'Get Distritos';
+        this.log.action = 'Conseguir distritos';
         this.log.status = false;
         this.log.message = `(add-company) Error al conseguir distritos ${JSON.stringify(error)}`;
         this.logService.setLog(this.log);
@@ -116,7 +116,7 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.log.action = 'Get Polígonos';
+        this.log.action = 'Conseguir polígonos';
         this.log.status = false;
         this.log.message = `(add-company) Error al conseguir polígonos ${JSON.stringify(error)}`;
         this.logService.setLog(this.log);

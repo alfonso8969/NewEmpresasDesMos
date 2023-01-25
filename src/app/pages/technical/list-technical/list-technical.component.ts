@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/class/users';
+import { Log } from 'src/app/interfaces/log';
+import { LogsService } from 'src/app/services/logs.service';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -15,6 +17,7 @@ export class ListTechnicalComponent implements OnInit {
   userLogged: User;
   users: User[];
   usersTemp: User[];
+  log: Log;
 
   public page: number = 1;
   public page2: number = 1;
@@ -24,8 +27,10 @@ export class ListTechnicalComponent implements OnInit {
   viewSpinner: boolean = true;
 
   constructor(private router: Router,
-    private userService: UsersService) {
+              private userService: UsersService,
+              private logService: LogsService) {
 
+    this.log = this.logService.initLog();
     this.userLogged = this.userService.getUserLogged();
 
     let user_rol = Number(this.userLogged.user_rol);
@@ -36,14 +41,22 @@ export class ListTechnicalComponent implements OnInit {
           this.users = users.data.filter((user: User) => user.rol_name == "Technical");
           this.usersTemp = JSON.parse(JSON.stringify(this.users));
         } else {
-          alert("Hubo un error")
+          alert("Hubo un error");
+          this.log.action = 'Conseguir técnicos';
+          this.log.status = false;
+          this.log.message = `Error al conseguir técnicos: ${JSON.stringify(users)}`;
+          this.logService.setLog(this.log);
         }
         this.viewSpinner = false;
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir técnicos';
+        this.log.status = false;
+        this.log.message = `Error al conseguir técnicos: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         this.viewSpinner = false;
-        alert(error.message)
+        alert(error.message || "Error al conseguir técnicos");
       },
       complete: () => console.log("Complete", this.users)
     });

@@ -60,7 +60,7 @@ export class ViewPdfComponent implements OnInit, OnDestroy, AfterViewInit {
   public downloadPdf(): void {
     this.fileService.getPdf(this.file).subscribe({
       next: (data: Blob) => {
-        var file = new Blob([data], { type: 'application/pdf' })
+        var file = new Blob([data], { type: data.type })
         var fileURL = URL.createObjectURL(file);
         window.open(fileURL);
         var a = document.createElement('a');
@@ -70,6 +70,10 @@ export class ViewPdfComponent implements OnInit, OnDestroy, AfterViewInit {
         document.body.appendChild(a);
         a.click();
       }, error: (error: any) => {
+        this.log.action = 'Descargar archivo';
+        this.log.status = false;
+        this.log.message = `Error al descargar archivo: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log('getPDF error: ', error);
       }
     });

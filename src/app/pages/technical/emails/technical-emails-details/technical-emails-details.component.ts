@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Email } from 'src/app/interfaces/email';
 import { FormInscription } from 'src/app/interfaces/formInscription';
-import { Log } from 'src/app/interfaces/log';
 import { ViewSDKClient } from 'src/app/services/view-sdk.service';
 import { environment } from 'src/environments/environment';
 
@@ -18,7 +17,6 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
 
   load: boolean = true;
   email: Email;
-  log: Log;
   formInscription: FormInscription;
   fileExtension: string;
   attachmentDiv: string;
@@ -31,7 +29,7 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
   emailsSendedTotal: number = 0;
 
   constructor(private viewSDKClient: ViewSDKClient,
-    private router: Router) {
+              private router: Router) {
   }
 
   ngAfterViewInit() {
@@ -52,7 +50,7 @@ export class TechnicalEmailsDetailsComponent implements OnInit, AfterViewInit {
 
   public previewFile(): void {
     if (this.email.attachments && this.email.attachments.length > 0) {
-      this.email.attachments = this.email.attachments!.toString().replace('[', '').replace(']', '').replace('"', '').replace(/\+|%28/g, '').replace(/\"/g, '').split(',');
+      this.email.attachments = this.email.attachments.toString().replace('[', '').replace(']', '').replace('"', '').replace(/\+|%28/g, '').replace(/\"/g, '').split(',');
       this.email.attachments.forEach(attachment => {
         if (attachment.split('.')[1] == 'pdf' || attachment.split('.')[1] == 'PDF') {
           this.viewSDKClient.ready().then(() => {

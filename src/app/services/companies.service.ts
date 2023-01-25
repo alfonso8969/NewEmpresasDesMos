@@ -34,11 +34,11 @@ export class CompaniesService {
     return this.http.get<Empresa[]>(`${ this.url }/listCompaniesInha.php`);
   }
 
-  getComapniesHistory(): Observable<Empresa[]> {
+  getCompaniesHistory(): Observable<Empresa[]> {
     return this.http.get<Empresa[]>(`${ this.url }/listCompaniesHistory.php`);
   }
 
-  getComapniesHistoryHab(): Observable<Empresa[]> {
+  getCompaniesHistoryHab(): Observable<Empresa[]> {
     return this.http.get<Empresa[]>(`${ this.url }/listCompaniesHistoryHab.php`);
   }
 
