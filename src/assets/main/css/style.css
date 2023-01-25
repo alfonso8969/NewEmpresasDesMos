@@ -1,50 +1,4 @@
-/*
-Template Name: Admin Pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-/**
- * Table Of Content
- *
- * 	1. Globals
- *	2. Headers
- *	3. Navigations
- *	4. Banners
- *	5. Footers
- *	6. app
- *	7. Widgets
- *	8. Custom Templates
- */
-/*
-Template Name: Admin Pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-/*Theme Colors*/
-/*bootstrap Color*/
-/*Light colors*/
-/*Normal Color*/
-/*Extra Variable*/
-/*
-Template Name: Admin Pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-/**
- * Table Of Content
- *
- *  1. Globals
- *  2. Headers
- *  3. Navigations
- *  4. Banners
- *  5. Footers
- *  6. Posts
- *  7. Widgets
- *  8. Custom Templates
- */
+
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700");
 /*******************
 Global Styles
@@ -743,12 +697,6 @@ Layouts
   max-width: 1170px;
   margin: 0 auto; }
 
-/*
-Template Name: Admin Pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
 /*******************
 Main sidebar
 ******************/
@@ -828,7 +776,7 @@ sidebar navigation
       .sidebar-nav ul li.nav-devider {
         height: 1px;
         background: rgba(120, 130, 140, 0.13);
-        display: block;
+        /* display: block; */
         margin: 15px 0; }
   .sidebar-nav > ul > li > a i {
     width: 31px;

@@ -18,6 +18,10 @@ a:hover {
   background: transparent !important;
 }
 
+.fw-bold {
+  font-weight: bold !important;
+}
+
 
 #container {
   margin-top: 10%;

@@ -69,7 +69,7 @@
                   <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false"
                     [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
                     <i [class]="item.icon"></i>
-                    <span class="hide-menu pl-2">{{ item.title }}</span>
+                    <span class="pl-2 fw-bold">{{ item.title }}</span>
                   </a>
                   <ul aria-expanded="false">
                     <li class="mt-1" *ngFor="let subitem of item.submenu">
@@ -81,7 +81,7 @@
                   <a *ngIf="item.rol" class="has-arrow waves-effect waves-dark" aria-expanded="false"
                     [matTooltip]="'Ver ' + item.title" matTooltipPosition="above">
                     <i [class]="item.icon"></i>
-                    <span class="hide-menu pl-2">{{ item.title }}</span>
+                    <span class="pl-2 fw-bold">{{ item.title }}</span>
                   </a>
                   <ul *ngIf="item.rol" aria-expanded="false">
                     <li class="mt-1" *ngFor="let subitem of item.submenu">
@@ -175,7 +175,7 @@
               <li><a (click)="logout()" matTooltip="Cerrar sesión">Cerrar sesión</a></li>
             </ul>
           </li>
-          <li class="nav-devider"></li>
+          <li class="hide-menu nav-devider"></li>
           <li class="nav-small-cap text-light">Indicadores</li>
 
           <li class="mb-3" *ngFor="let item of menuService.menu">
