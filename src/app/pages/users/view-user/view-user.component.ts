@@ -3,9 +3,11 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/class/users';
 import { Address } from 'src/app/interfaces/address';
+import { Log } from 'src/app/interfaces/log';
 import { TechnicalInsert } from 'src/app/interfaces/technicalInsert';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { LoginService } from 'src/app/services/login.service';
+import { LogsService } from 'src/app/services/logs.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
@@ -28,6 +30,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
   editUser: User;
   address: Address;
   fileUp: File;
+  log: Log;
 
   fileName: string;
   user_id: number;
@@ -51,7 +54,10 @@ export class ViewUserComponent implements OnInit, OnDestroy {
               private uploadService: FileUploadService,
               private loginService: LoginService,
               private userService: UsersService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private logService: LogsService) {
+
+    this.log = this.logService.initLog();
 
     this.route.paramMap.subscribe((params: any) => {
       this.user_id = params.get('id');
@@ -71,6 +77,10 @@ export class ViewUserComponent implements OnInit, OnDestroy {
           this.user = user;
           this.getAddressUser();
         }, error: (error: any) => {
+          this.log.action = 'Conseguir usuario';
+          this.log.status = false;
+          this.log.message = `(view-user) Error al conseguir usuario: ${JSON.stringify(error)}`;
+          this.logService.setLog(this.log);
           console.log("Error consiguiendo user del listado: ", error);
           this.viewSpinner = false;
         }, complete: () =>  { console.log("Completado getUser desde listado", this.user) }
@@ -98,6 +108,10 @@ export class ViewUserComponent implements OnInit, OnDestroy {
           this.setFormControlsReadOnly(this.addUserForm);
         }
       }, error: (error: any) => {
+        this.log.action = 'Conseguir dirección usuario';
+        this.log.status = false;
+        this.log.message = `(view-user) Error al conseguir la dirección del usuario: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         this.viewSpinner = false;
         console.log("Error consiguiendo address: ", error);
       },
@@ -217,6 +231,10 @@ export class ViewUserComponent implements OnInit, OnDestroy {
           }
         },
         error: (err: any) => {
+          this.log.action = 'Subir imagen usuario';
+          this.log.status = false;
+          this.log.message = `(view-user) Error al conseguir imagen usuario: ${JSON.stringify(err)}`;
+          this.logService.setLog(this.log);
           console.log("Error: ", err);
           if (err.error && err.error.message) {
             console.log("Error: ", err.error.message);
@@ -269,6 +287,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
   }
 
   public saveUser(user: User): void {
+    this.log.action = 'Actualizar usuario';
     this.userService.updateUser(user).subscribe({
       next: (data: number) => {
         if (data === 1) {
@@ -278,11 +297,20 @@ export class ViewUserComponent implements OnInit, OnDestroy {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = true;
+          this.log.message = `(view-user) Se actualizó al usuario: ${JSON.stringify(user)} correctamente`;
+          this.logService.setLog(this.log);
         } else {
+          this.log.status = false;
+          this.log.message = `(view-user) Error al actualizar al usuario: ${JSON.stringify(user)}`;
+          this.logService.setLog(this.log);
           throw new Error(`Se produjo un error al actualizar al usuario ${user.user_name } `);
         }
         this.cleanForm();
       }, error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `(view-user) Error al actualizar al usuario: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(`Se produjo un error al actualizar al usuario: ${ error } `);
           Swal.fire({
             title: 'Actualizar usuario',
@@ -297,6 +325,7 @@ export class ViewUserComponent implements OnInit, OnDestroy {
   }
 
   public saveTechnical(formData: TechnicalInsert): void {
+    this.log.action = 'Actualizar técnico';
     this.userService.updateTechnical(formData).subscribe({
       next: (data: number) => {
         if (data === 1) {
@@ -306,10 +335,19 @@ export class ViewUserComponent implements OnInit, OnDestroy {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = true;
+          this.log.message = `(view-user) Se actualizó al técnico: ${JSON.stringify(formData)} correctamente`;
+          this.logService.setLog(this.log);
         } else {
+          this.log.status = false;
+          this.log.message = `(view-user) Error al actualizar al técnico: ${JSON.stringify(formData)}`;
+          this.logService.setLog(this.log);
           throw new Error(`Se produjo un error al actualizar al técnico ${formData.user.getUser_name()} `);
         }
       }, error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `(view-user) Error al actualizar al técnico: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(`Se produjo un error al actualizar al técnico: ${ error } `);
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({

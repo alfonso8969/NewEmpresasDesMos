@@ -2,7 +2,9 @@ import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import * as d3 from 'd3';
 import { User } from 'src/app/class/users';
+import { Log } from 'src/app/interfaces/log';
 import { FileUploadService } from 'src/app/services/file-upload.service';
+import { LogsService } from 'src/app/services/logs.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
@@ -44,6 +46,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   userLogged: User;
   users: User[];
   usersTemp: User[];
+  log:Log;
 
   public page: number = 1;
   public page2: number = 1;
@@ -53,10 +56,11 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   viewSpinner: boolean = true;
   constructor(private fb: FormBuilder,
               private usersService: UsersService,
-              private uploadService: FileUploadService) {
+              private uploadService: FileUploadService,
+              private logService: LogsService) {
 
     this.userLogged = this.usersService.getUserLogged();
-
+    this.log = this.logService.initLog();
     let user_rol = Number(this.userLogged.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;
 
@@ -66,11 +70,19 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
           this.users = users.data.filter((user: User) => user.id_user != 0);
           this.usersTemp = JSON.parse(JSON.stringify(this.users));
         } else {
-          alert("Hubo un error")
+          alert("Hubo un error");
+          this.log.action = 'Conseguir usuarios';
+          this.log.status = false;
+          this.log.message = `(list-users) Error al conseguir usuarios: ${JSON.stringify(users)}`;
+          this.logService.setLog(this.log);
         }
         this.viewSpinner = false;
       },
       error: (error: any) => {
+        this.log.action = 'Conseguir usuarios';
+        this.log.status = false;
+        this.log.message = `(list-users) Error al conseguir usuarios: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         this.viewSpinner = false;
         alert(error.message)
@@ -157,8 +169,11 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
               }
             },
             error: (err: any) => {
+              this.log.action = 'Subir imagen usuario';
+              this.log.status = false;
+              this.log.message = `(list-users) Error al subir imagen usuario: ${JSON.stringify(err)}`;
+              this.logService.setLog(this.log);
               console.log("Error: ", err);
-
               if (err.error && err.error.message) {
                 console.log("Error: ", err.error.message);
               } else {
@@ -173,6 +188,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
   }
 
   public saveUser(user: User): void {
+    this.log.action = 'Actualizar usuario';
     this.usersService.updateUser(user).subscribe({
       next: (data: number) => {
         if (data === 1) {
@@ -182,10 +198,19 @@ export class ListUsersComponent implements OnInit, AfterViewInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = true;
+          this.log.message = `(list-users) Se actualizó al usuario: ${JSON.stringify(user)}`;
+          this.logService.setLog(this.log);
         } else {
+          this.log.status = false;
+          this.log.message = `(list-users) Error al actualizar al usuario: ${JSON.stringify(user)}`;
+          this.logService.setLog(this.log);
           throw new Error(`Se produjo un error al actualizar al usuario ${ user.user_name } `);
         }
       }, error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `(list-users) Error al actualizar al usuario: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(`Se produjo un error al actualizar al usuario: ${ error } `);
         Swal.fire({
           title: 'Actualizar usuario',

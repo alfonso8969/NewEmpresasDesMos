@@ -3,7 +3,9 @@ import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/class/users';
+import { Log } from 'src/app/interfaces/log';
 import { FileUploadService } from 'src/app/services/file-upload.service';
+import { LogsService } from 'src/app/services/logs.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2'
@@ -20,7 +22,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
    console.log('window:unload', event);
     alert('¿Está seguro de querer cerrar la sesión?');
   }
-  
+
   @HostListener('window:beforeunload', [ '$event' ])
    beforeUnloadHandler(event: any) {
     console.log('window:beforeunload', event)
@@ -28,9 +30,12 @@ export class AddUserComponent implements OnInit, AfterViewInit {
    }
 
   addUserForm: FormGroup;
+  user: User;
+  log: Log;
+
   fileUp: File;
   fileName: string;
-  user: User;
+
   img: HTMLElement | null;
 
   newPasswordHtml: HTMLElement;
@@ -40,9 +45,11 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   compPasswordIcon: HTMLElement;
 
   constructor(private fb: FormBuilder, private http: HttpClient,
-    private uploadService: FileUploadService,
-    private userService: UsersService,
-    private router: Router) {
+              private uploadService: FileUploadService,
+              private userService: UsersService,
+              private router: Router,
+              private logService: LogsService) {
+    this.log = this.logService.initLog();
     this.fillForm();
   }
 
@@ -107,8 +114,11 @@ export class AddUserComponent implements OnInit, AfterViewInit {
             }
           },
           error: (err: any) => {
+            this.log.action = 'Subir imagen usuario';
+            this.log.status = false;
+            this.log.message = `Error al subir imagen técnico: ${JSON.stringify(err)}`;
+            this.logService.setLog(this.log);
             console.log("Error: ", err);
-
             if (err.error && err.error.message) {
               console.log("Error: ", err.error.message);
             } else {
@@ -122,6 +132,7 @@ export class AddUserComponent implements OnInit, AfterViewInit {
   }
 
   public saveUser(user: User): void {
+    this.log.action = 'Añadir usuario';
     this.userService.addUser(user).subscribe({
       next: (data: number) => {
         if (data === 1) {
@@ -131,11 +142,20 @@ export class AddUserComponent implements OnInit, AfterViewInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.log.status = true;
+          this.log.message = `Se añadió al usuario ${user.getUser_name()} correctamente`;
+          this.logService.setLog(this.log);
           this.router.navigate(['dashboard/list-users']);
         } else {
+          this.log.status = false;
+          this.log.message = `Error al añadir al usuario ${user.getUser_name()}: ${JSON.stringify(data)}`;
+          this.logService.setLog(this.log);
           throw new Error(`Se produjo un error al añadir al usuario ${user.getUser_name()} `);
         }
       }, error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `Error al añadir al usuario ${user.getUser_name()}: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(`Se produjo un error al añadir al usuario: ${ error } `);
         if (error.error.text.includes("Duplicate")) {
           Swal.fire({

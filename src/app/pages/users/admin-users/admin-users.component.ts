@@ -4,6 +4,8 @@ import { User } from 'src/app/class/users';
 import { UsersService } from 'src/app/services/users.service';
 import * as d3 from 'd3';
 import Swal from 'sweetalert2'
+import { Log } from 'src/app/interfaces/log';
+import { LogsService } from 'src/app/services/logs.service';
 
 @Component({
   selector: 'app-admin-users',
@@ -17,6 +19,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   usersHabTmp: User[];
   usersInHab: User[];
   usersInHabTmp: User[];
+  log: Log;
 
   viewSpinner: boolean;
   rolValue: number;
@@ -31,8 +34,12 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
 
   editUserRolForm: FormGroup
 
-  constructor(private fb: FormBuilder, private usersService: UsersService) {
+  constructor(private fb: FormBuilder, 
+              private usersService: UsersService,
+              private logService: LogsService) {
+
     this.viewSpinner = true;
+    this.log = this.logService.initLog();
     this.fillTables();
 
     this.editUserRolForm = this.fb.group({
@@ -42,17 +49,24 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   }
 
   fillTables() {
+    this.log.action = 'Conseguir usuarios habilitados';
     this.usersService.getUsersEnabled().subscribe({
       next: (users: any) => {
         if (users != null) {
           this.usersHab = users.data;
           this.usersHabTmp = JSON.parse(JSON.stringify(this.usersHab));
         } else {
-          alert("Hubo un error")
+          alert("Hubo un error");
+          this.log.status = false;
+          this.log.message = `Error al conseguir usuarios habilitados: ${JSON.stringify(users)}`;
+          this.logService.setLog(this.log);
         }
         this.viewSpinner = false;
       },
       error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `Error al conseguir usuarios habilitados: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         this.viewSpinner = false;
         alert(error.message)
@@ -60,17 +74,24 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
       complete: () => console.log("Complete", this.usersHab)
     });
 
+    this.log.action = 'Conseguir usuarios inhabilitados';
     this.usersService.getUsersDisabled().subscribe({
       next: (users: any) => {
         if (users != null) {
           this.usersInHab = users.data.filter((user: User) => user.id_user != 0);;
           this.usersInHabTmp = JSON.parse(JSON.stringify(this.usersInHab));
         } else {
-          alert("Hubo un error")
+          this.log.status = false;
+          this.log.message = `Error al conseguir usuarios inhabilitados: ${JSON.stringify(users)}`;
+          this.logService.setLog(this.log);
+          alert("Hubo un error");
         }
         this.viewSpinner = false;
       },
       error: (error: any) => {
+        this.log.status = false;
+        this.log.message = `Error al conseguir usuarios inhabilitados: ${JSON.stringify(error)}`;
+        this.logService.setLog(this.log);
         console.log(error);
         this.viewSpinner = false;
         alert(error.message)
@@ -126,6 +147,7 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   public toAbleDisabledUser(user: User): void {
     let title = user.habilitado == 1 ? 'Habilitar' : 'Deshabilitar';
     let message = user.habilitado == 1 ? '¿Está seguro que desea habilitar al usuario ' : '¿Está seguro que desea deshabilitar al usuario ';
+    this.log.action = `${title} usuario`;
     Swal.fire({
       title: title + ' usuario',
       html: message  + user.user_name + ' ' + user.user_lastName + '?',
@@ -145,6 +167,9 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
               });
+              this.log.status = true;
+              this.log.message = `Usuario ${user.user_name} se pudo ${title.toLowerCase()} correctamente`;
+              this.logService.setLog(this.log);
               this.fillTables();
             } else{
               Swal.fire({
@@ -153,6 +178,9 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });
+              this.log.status = false;
+              this.log.message = `Usuario ${user.user_name} no se pudo ${title.toLowerCase()} correctamente`;
+              this.logService.setLog(this.log);
             }   
           },
           error: (error: any) => {
@@ -163,6 +191,9 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
               icon: 'error',
               confirmButtonText: 'Aceptar'
             });
+            this.log.status = false;
+            this.log.message = `Usuario ${user.user_name} no se pudo ${title.toLowerCase()} correctamente: ${JSON.stringify(error)}`;
+            this.logService.setLog(this.log);
           },
           complete: () => { 
             console.log(`${ title.toLowerCase()} usuario ${ user.user_name + ' ' + user.user_lastName } completado`); 
@@ -201,8 +232,10 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
   public editUserRol(): void {
     let message ='<p>¿Está seguro que desea actualizar el rol al usuario </p>';
     let user = this.user;
+    let title = 'Actualizar rol usuario';
+    this.log.action = title;
     Swal.fire({
-      title: 'Actualizar rol usuario',
+      title: title,
       html: message  + '<p>' +  user.user_name + ' ' + user.user_lastName + '?</p>',
       icon: 'warning',
       showCancelButton: true,
@@ -215,32 +248,41 @@ export class AdminUsersComponent implements OnInit, AfterViewInit {
           next: (result: number) => {
             if (result === 1) {
               Swal.fire({
-                title: 'Actualizar rol usuario',
+                title: title,
                 text: 'El usuario ' +  user.user_name + ' ' + user.user_lastName + ' fue actualizado correctamente',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
               });
+              this.log.status = true;
+              this.log.message = `Usuario ${user.user_name} actualizo rol a ${user.user_rol} correctamente`;
+              this.logService.setLog(this.log);
               this.fillTables();
             } else{
               Swal.fire({
-                title: 'Actualizar rol usuario',
+                title: title,
                 text: 'El usuario ' +  user.user_name + ' ' + user.user_lastName + ' no pudo ser actualizado correctamente',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });
+              this.log.status = false;
+              this.log.message = `Usuario ${user.user_name} no pudo actualizar rol a ${user.user_rol} correctamente`;
+              this.logService.setLog(this.log);
             } 
           },
           error: (error: any) => {
             console.log(error);
             Swal.fire({
-              title: 'Actualizar rol usuario',
+              title: title,
               text: `Hubo algún error al actualizar al usuario ${ user.user_name + ' ' + user.user_lastName }`,
               icon: 'error',
               confirmButtonText: 'Aceptar'
             });
+            this.log.status = false;
+            this.log.message = `Usuario ${user.user_name} no pudo actualizar rol a ${user.user_rol} correctamente: ${JSON.stringify(error)}`;
+            this.logService.setLog(this.log);
           },
           complete: () => { 
-            console.log(`Actualizar rol usuario ${ user.user_name + ' ' + user.user_lastName } completado`); 
+            console.log(title + ` ${ user.user_name + ' ' + user.user_lastName } completado`); 
           }
         });
       }

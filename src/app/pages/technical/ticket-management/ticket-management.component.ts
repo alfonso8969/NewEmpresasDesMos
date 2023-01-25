@@ -14,6 +14,8 @@ import {
   SortEvent,
   compare
 } from 'src/app/events/sortable-header.directive';
+import { Log } from 'src/app/interfaces/log';
+import { LogsService } from 'src/app/services/logs.service';
 
 @Component({
   selector: 'app-ticket-management',
