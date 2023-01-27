@@ -34,12 +34,13 @@ export class LogsService {
   }
 
   public setLog(log: Log): void {
-    log.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')!;
+    log.date = log.date !== '' ? log.date : this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')!;
     if (log.ip == '' || log.ip === undefined) {
       log.ip = this.ipAddress;
     }
     console.log("log in log Service: ", log);
     let logSave = log;
+    logSave.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')!;
     this.http.post<number>(`${this.baseUrl}/setLog.php`, { log: log })
     .subscribe({
       next: (result: number) => {

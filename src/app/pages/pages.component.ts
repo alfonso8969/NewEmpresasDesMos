@@ -14,11 +14,13 @@ import { User } from '../class/users';
 import Swal from 'sweetalert2'
 import { LogsService } from '../services/logs.service';
 import { Log } from '../interfaces/log';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pages',
   templateUrl: './pages.component.html',
-  styleUrls: ['./pages.component.css']
+  styleUrls: ['./pages.component.css'],
+  providers: [ DatePipe ]
 })
 export class PagesComponent implements OnInit {
 
@@ -56,7 +58,8 @@ export class PagesComponent implements OnInit {
     private cookieService: CookieService,
     private loginService: LoginService,
     private userService: UsersService,
-    private logService: LogsService
+    private logService: LogsService,
+    private datePipe: DatePipe,
   ) {
 
     setTimeout(() => {

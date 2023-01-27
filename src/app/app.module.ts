@@ -21,6 +21,7 @@ import { SupportService } from './services/support.service';
 import { UsersService } from './services/users.service';
 import { LogsService } from './services/logs.service';
 import { SessionsService } from './services/sessions.service';
+import { ViewSDKClient } from './services/view-sdk.service';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { SessionsService } from './services/sessions.service';
     UsersService,
     CookieService,
     LogsService,
+    ViewSDKClient,
     SessionsService,
     {
       provide: LocationStrategy,
