@@ -68,7 +68,6 @@ export class LoginComponent implements OnInit {
     private logService: LogsService,
     private datePipe: DatePipe) {
 
-    this.log = this.logService.initLog();
     this.load = false;
     this.viewRecoverForm = false;
     this.viewSingUpForm = false;
@@ -117,7 +116,6 @@ export class LoginComponent implements OnInit {
    */
   $l() {
     this.load = true;
-    this.log.action = 'Login';
     this.user = new User();
     let remember = this.loginForm.get('checkBoxSignup')!.value;
     if (remember) {
@@ -127,6 +125,8 @@ export class LoginComponent implements OnInit {
     }
     this.user.user_password = hex_sha512(this.loginForm.get('password')!.value);
     this.user.user_email = this.loginForm.get('email')!.value;
+    this.log = this.logService.initLog();
+    this.log.action = 'Login';
 
     this.loginService.$l(this.user).subscribe({
       next: (user: User) => {
@@ -150,6 +150,7 @@ export class LoginComponent implements OnInit {
             this.log.user_email = user.user_email;
             return;
           }
+          this.log.id_user = this.user.id_user;
           this.session.message = "Sesión empezada correctamente";
           this.session.complete = true;
           this.sessionService.setSession(this.session).subscribe({
@@ -263,7 +264,7 @@ export class LoginComponent implements OnInit {
     this.load = true;
     let userEmail: User = new User();
     userEmail.user_email = email;
-    if (action == 'recover') {      
+    if (action == 'recover') {
       this.emailService.checkEmail(userEmail)
         .subscribe({
           next: (data: User) => {
