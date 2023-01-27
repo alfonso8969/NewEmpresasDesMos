@@ -134,6 +134,7 @@ export class LoginComponent implements OnInit {
           this.user = user;
           this.session.id_user = user.id_user;
           this.session.user_email = user.user_email;
+          this.log.user_email = user.user_email;
           if (user.habilitado == 0) {
             this.session.message = "El usuario esta deshabilitado";
             this.session.complete = false;
@@ -147,10 +148,9 @@ export class LoginComponent implements OnInit {
             });
             this.load = false;
             this.log.id_user = 0;
-            this.log.user_email = user.user_email;
             return;
           }
-          this.log.id_user = this.user.id_user;
+          this.log.id_user = user.id_user;
           this.session.message = "Sesión empezada correctamente";
           this.session.complete = true;
           this.sessionService.setSession(this.session).subscribe({
