@@ -20,7 +20,7 @@ import { DatePipe } from '@angular/common';
   selector: 'app-pages',
   templateUrl: './pages.component.html',
   styleUrls: ['./pages.component.css'],
-  providers: [ DatePipe ]
+  providers: [DatePipe]
 })
 export class PagesComponent implements OnInit {
 
@@ -187,7 +187,7 @@ export class PagesComponent implements OnInit {
   }
 
   exit() {
-    if (Boolean(localStorage.getItem('remember'))) {
+    if (localStorage.getItem('remember')) {
       this._router.navigateByUrl('exit');
     } else {
       this.loginService.lG();

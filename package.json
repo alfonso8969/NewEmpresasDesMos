@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "build:prod": " ng build && rm -r ./dist/new-empresas-ms/assets && rm -r ./dist/opaque && jscrambler",
+    "start": "nx serve",
+    "build": "nx build",
+    "watch": "nx build --watch --configuration development",
+    "test": "nx test",
+    "build:prod": " nx build && rm -r ./dist/new-empresas-ms/assets && rm -r ./dist/opaque && jscrambler",
     "compodoc": "compodoc -p tsconfig.doc.json -s --language es-ES --customLogo src/assets/images/icon/favicon-32x32.png --customFavicon src/favicon.ico --hideGenerator"
   },
   "browser": {
@@ -45,8 +45,14 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.4",
+    "@angular-devkit/core": "~14.2.4",
+    "@angular-devkit/schematics": "~14.2.4",
     "@angular/cli": "~14.2.4",
     "@angular/compiler-cli": "^14.2.0",
+    "@nrwl/angular": "15.9.2",
+    "@nrwl/nx-cloud": "latest",
+    "@nrwl/workspace": "15.9.2",
+    "@schematics/angular": "~14.2.4",
     "@types/d3": "^7.4.0",
     "@types/file-saver": "^2.0.5",
     "@types/google.maps": "^3.50.5",
@@ -60,6 +66,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "nx": "15.9.2",
     "typescript": "~4.7.2"
   }
 }

@@ -9,9 +9,7 @@ import { Empresa } from '../class/empresa';
 })
 export class CompaniesService {
 
-  url: String = environment.apiUrl;
-
-
+  url: string = environment.apiUrl;
 
   constructor(private http: HttpClient) {
 
