@@ -82,7 +82,9 @@ export class Utils {
    */
   public static getFormValidationErrors(form: FormGroup<any>): string {
     const result: { Campo: string; error: string; value: any }[] = [];
+    let controlErrors: any = "";
     Object.keys(form.controls).forEach(key => {
+<<<<<<< HEAD
       const controlErrors: any = form.get(key).errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
@@ -90,9 +92,20 @@ export class Utils {
             Campo: key,
             'error': keyError,
             value: form.get(key).value
+=======
+      if (key != null && form.get(key) != null) {
+        controlErrors = form.get(key)!.errors;
+        if (controlErrors) {
+          Object.keys(controlErrors).forEach(keyError => {
+            result.push({
+              Campo: key,
+              error: keyError,
+              value: form.get(key)!.errors
+            });
+>>>>>>> 7271d77656f62b925a4801e4a5c22d71ba9de3d1
           });
-        });
-      }
+        }
+      } 
     });
     return JSON.stringify(result);
   }
