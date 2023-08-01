@@ -9,7 +9,7 @@ import { BenchMarks } from '../interfaces/benchmarks';
 })
 export class BenchmarksService {
 
-  url: String = environment.apiUrl;
+  url: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

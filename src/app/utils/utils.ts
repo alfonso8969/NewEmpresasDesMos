@@ -26,18 +26,18 @@ export class Utils {
   static NIE_REGEX: RegExp = new RegExp(/^[XYZ]\d{7,8}[A-Z]$/);
 
   public static makeString(length: number): string {
-    let result           = '';
-    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*_+=<>?';
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*_+=<>?';
     let charactersLength = characters.length;
-    for ( let i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
   }
 
   public static getMonths(month: number = 0): string | string[] {
-    const months =  ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     if (month > 0) {
       return months[month];
     }
@@ -61,14 +61,14 @@ export class Utils {
     return null;
   }
 
-  public static changeEye(element: HTMLElement, elementClose: HTMLElement):  void {
+  public static changeEye(element: HTMLElement, elementClose: HTMLElement): void {
     const type = elementClose.getAttribute('type') === 'password' ? 'text' : 'password';
     elementClose.setAttribute('type', type);
-    const clase = element.getAttribute('class')=== 'far fa-eye' ? 'far fa-eye-slash' : 'far fa-eye';
+    const clase = element.getAttribute('class') === 'far fa-eye' ? 'far fa-eye-slash' : 'far fa-eye';
     element.setAttribute('class', clase)!;
   }
 
-  public static changeEyeTime(element: HTMLElement, elementClose: HTMLElement ): void {
+  public static changeEyeTime(element: HTMLElement, elementClose: HTMLElement): void {
     setTimeout(() => {
       this.changeEye(element, elementClose);
     }, 2000);
@@ -83,13 +83,13 @@ export class Utils {
   public static getFormValidationErrors(form: FormGroup<any>): string {
     const result: { Campo: string; error: string; value: any }[] = [];
     Object.keys(form.controls).forEach(key => {
-      const controlErrors: any = form!.get(key)!.errors;
+      const controlErrors: any = form.get(key).errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
           result.push({
             Campo: key,
             'error': keyError,
-            value: form!.get(key)!.value
+            value: form.get(key).value
           });
         });
       }
@@ -247,11 +247,11 @@ export class Utils {
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="left" class="esd-block-text es-p20t es-p15b">
-                                                                                    <p>Hola ${ name } ${ lastname };</p>
+                                                                                    <p>Hola ${name} ${lastname};</p>
                                                                                     <p><br></p>
                                                                                     <p>Buscamos constantemente formas de mejorar la experiencia de nuestros usuarios y asegurarnos de que nuestras políticas expliquen cómo funcionan nuestros servicios. Por eso, le informamos sobre nuestros Términos de servicio y Política de privacidad.&nbsp;</p>
                                                                                     <p><br>Le enviamos una contraseña temporal, cambiarla lo antes posible mediante la aplicación<br><br><br></p>&nbsp;
-                                                                                    <strong style="font-size: 20px;">${ password }</strong><p><br>Gracias!<br><br>Empresas Admin</p>
+                                                                                    <strong style="font-size: 20px;">${password}</strong><p><br>Gracias!<br><br>Empresas Admin</p>
                                                                                     <p><br></p>
                                                                                 </td>
                                                                             </tr>
@@ -479,8 +479,8 @@ export class Utils {
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="left" class="esd-block-text es-p20t es-p15b">
-                                                                                    <p>Hola ${ user_name };</p>
-                                                                                    <p>Email: ${ userEmail };</p>
+                                                                                    <p>Hola ${user_name};</p>
+                                                                                    <p>Email: ${userEmail};</p>
                                                                                     <p><br></p>
                                                                                     <p>Buscamos constantemente formas de mejorar la experiencia de nuestros usuarios y asegurarnos de que nuestras políticas expliquen cómo funcionan nuestros servicios. Por eso, le informamos sobre nuestros Términos de servicio y Política de privacidad.&nbsp;</p>
                                                                                     <p><br>Por favor pulse en el enlace de abajo para completar este formulario..<br /> <a href="https://form.jotform.com/230067287676061">Rellenar formulario</a></p><br><br>
