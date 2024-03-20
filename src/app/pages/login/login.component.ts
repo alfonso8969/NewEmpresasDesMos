@@ -317,10 +317,10 @@ export class LoginComponent implements OnInit {
               }
             } else {
               this.load = false;
-              console.log(`El email ${email},  no está registrado`);
+              console.log(`El email ${email}, no está registrado`);
               Swal.fire({
                 title: 'Recuperar contraseña',
-                text: `El email ${email},  no está registrado`,
+                text: `El email ${email}, no está registrado`,
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
               });

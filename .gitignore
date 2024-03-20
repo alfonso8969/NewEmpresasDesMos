@@ -8,6 +8,7 @@
 /out-tsc
 /bazel-out
 *.report.html
+.nx
 
 # Node
 /node_modules
@@ -26,6 +27,7 @@ yarn-error.log
 # Visual Studio Code
 /.vscode/*.*
 .vscode/*.*
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

@@ -84,15 +84,14 @@ export class Utils {
     const result: { Campo: string; error: string; value: any }[] = [];
     let controlErrors: any = "";
     Object.keys(form.controls).forEach(key => {
-<<<<<<< HEAD
-      const controlErrors: any = form.get(key).errors;
-      if (controlErrors) {
-        Object.keys(controlErrors).forEach(keyError => {
-          result.push({
-            Campo: key,
-            'error': keyError,
-            value: form.get(key).value
-=======
+    //   const controlErrors: any = form.get(key).errors;
+    //   if (controlErrors) {
+    //     Object.keys(controlErrors).forEach(keyError => {
+    //       result.push({
+    //         Campo: key,
+    //         'error': keyError,
+    //         value: form.get(key).value
+
       if (key != null && form.get(key) != null) {
         controlErrors = form.get(key)!.errors;
         if (controlErrors) {
@@ -102,7 +101,6 @@ export class Utils {
               error: keyError,
               value: form.get(key)!.errors
             });
->>>>>>> 7271d77656f62b925a4801e4a5c22d71ba9de3d1
           });
         }
       } 
