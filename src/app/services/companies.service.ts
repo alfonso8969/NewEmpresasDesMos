@@ -49,7 +49,7 @@ export class CompaniesService {
  }
 
   public getApi(): any {
-    return this.http.get('./assets/utils-assets/util.txt', { responseType: 'text' });
+    return this.http.get('./assets/utils/util.txt', { responseType: 'text' });
   }
 
   public getLastEmpDetId(): Observable<number> {

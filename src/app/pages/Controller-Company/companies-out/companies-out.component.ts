@@ -39,7 +39,7 @@ export class CompaniesOutComponent implements OnInit {
   viewSpinner: boolean = true;
   message: string;
 
-  constructor(private companiesService: CompaniesService, 
+  constructor(private companiesService: CompaniesService,
               private route: Router,
               private logService: LogsService) {
     this.log = this.logService.initLog();
@@ -70,7 +70,7 @@ export class CompaniesOutComponent implements OnInit {
       error: (error: any) => {
         this.log.action = 'Conseguir empresas inhabilitadas';
         this.log.status = false;
-        this.log.message = `(companies-out) Se produjo un error al conseguir las empresa inhabilitadas: ${JSON.stringify(error)}`;
+        this.log.message = `(companies-out) Se produjo un error al conseguir las empresas inhabilitadas: ${JSON.stringify(error)}`;
         this.logService.setLog(this.log);
         this.viewSpinner = false;
         this.div.className = "page-wrapper";

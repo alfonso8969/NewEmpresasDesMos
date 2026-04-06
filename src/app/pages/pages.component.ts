@@ -163,7 +163,6 @@ export class PagesComponent implements OnInit {
     let title = remember == 'true' ? '¿Está seguro de querer cerrar la sesión?' : 'Salir';
     let message = remember == 'true' ? 'Si cierra la sesión, deberá volver a iniciar sesión para poder acceder a la aplicación'
       : '¿Está seguro de querer salir de la aplicación?';
-
     let confirmButtonText = remember == 'true' ? 'Si, cerrar sesión' : 'Si, salir';
 
     Swal.fire({

@@ -23,12 +23,12 @@ export class DndDirective {
   }
 
   // Drop listener
-  @HostListener('drop', ['$event']) public ondrop(evt: { preventDefault: () => void; stopPropagation: () => void; dataTransfer: { files: any; }; }) {
+  @HostListener('drop', ['$event']) public ondrop(evt: { preventDefault: () => void; stopPropagation: () => void; dataTransfer: { files: any; } | null; }) {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = false;
-    let files = evt.dataTransfer.files;
-    if (files.length > 0) {
+    let files = evt.dataTransfer!.files;
+    if (files && files.length > 0) {
       this.fileDropped.emit(files);
     }
   }
