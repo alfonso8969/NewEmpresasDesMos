@@ -4,11 +4,12 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost/api-angular-php",
+  apiUrl: 'http://localhost/api-angular-php',
   apiLocal: 'http://localhost:4200',
-  urlPHPEmail: "http://localhost/php/email.php",
-  urlPHPCustomEmail: "http://localhost/php/customEmail.php",
-  apiAdobe: 'b4b28ce81ddd43da953e2cf59857e1cc'
+  urlPHPEmail: 'http://localhost/php/email.php',
+  urlPHPCustomEmail: 'http://localhost/php/customEmail.php',
+  apiAdobe: 'b4b28ce81ddd43da953e2cf59857e1cc',
+  apiMap: 'AIzaSyCADhUpgNjNrq_YRYee-zMq6v1tZb5QyS8',
 };
 
 /*
