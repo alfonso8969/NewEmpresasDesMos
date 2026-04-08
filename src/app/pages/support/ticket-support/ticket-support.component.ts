@@ -25,7 +25,7 @@ export class TicketSupportComponent implements OnInit {
 
   url: string = environment.apiUrl;
 
-  addTicketSupport: FormGroup;
+  addTicketSupportForm: FormGroup;
 
   temas: Tema[];
   user: User;
@@ -131,7 +131,7 @@ export class TicketSupportComponent implements OnInit {
       complete: () => console.log("Complete ticketsByUser", this.ticketsByUser)
     });
 
-    this.addTicketSupport = this.fb.group({
+    this.addTicketSupportForm = this.fb.group({
       field: [0, Validators.required],
       codeRef: ['', Validators.maxLength(10)],
       message: ['', [Validators.required, Validators.maxLength(500)]]
@@ -167,13 +167,13 @@ export class TicketSupportComponent implements OnInit {
 
 
   isDisabled(): boolean {
-    return this.addTicketSupport.get('field')?.value == 0;
+    return this.addTicketSupportForm.get('field')?.value == 0;
   }
 
   public addTicket(): void {
     this.load = true;
-    this.message = this.addTicketSupport.get('message')?.value;
-    this.campoInt = this.addTicketSupport.get('field')?.value;
+    this.message = this.addTicketSupportForm.get('message')?.value;
+    this.campoInt = this.addTicketSupportForm.get('field')?.value;
     this.code = Utils.makeString(10);
     this.dataForm = {
       name: `${this.user.user_name} ${this.user.user_lastName}`,
@@ -219,7 +219,7 @@ export class TicketSupportComponent implements OnInit {
 
   public changeTema(event: any) {
     if (this.checkTicketExitCode.campo != '') {
-      this.addTicketSupport.get('field')!.setValue(this.checkTicketExitCode.campo);
+      this.addTicketSupportForm.get('field')!.setValue(this.checkTicketExitCode.campo);
       return;
     }
     this.campoStr = event.target.selectedOptions[0].text;
@@ -248,7 +248,7 @@ export class TicketSupportComponent implements OnInit {
             this.logService.setLog(this.log);
           }
         },
-        error: (error: any) => {        
+        error: (error: any) => {
           this.log.status = false;
           this.log.message = `(ticket-support) Error al marcar ticket solucionado: ${JSON.stringify(error)}`;
           this.logService.setLog(this.log);
@@ -268,13 +268,13 @@ export class TicketSupportComponent implements OnInit {
         next: (result: TicketByUser) => {
           if (result && result.campo != undefined) {
             this.checkTicketExitCode = result;
-            this.addTicketSupport.get('field')?.setValue(this.checkTicketExitCode.campo);
+            this.addTicketSupportForm.get('field')?.setValue(this.checkTicketExitCode.campo);
           } else {
             this.sendEmailResult.title = "Error";
             this.sendEmailResult.message = "El código no coincide con ninguno de sus tickets";
             this.showSwal('error');
             this.checkTicketExitCode.campo = '';
-            this.addTicketSupport.get('field')!.setValue(0);
+            this.addTicketSupportForm.get('field')!.setValue(0);
           }
         },
         error: (error: any) => {
@@ -289,7 +289,7 @@ export class TicketSupportComponent implements OnInit {
     } else {
       this.checkTicketExitCode.respondido = 0;
       this.checkTicketExitCode.campo = '';
-      this.addTicketSupport.get('field')!.setValue(0);
+      this.addTicketSupportForm.get('field')!.setValue(0);
     }
 
   }
@@ -366,12 +366,12 @@ export class TicketSupportComponent implements OnInit {
   }
 
   public cleanForm(): void {
-    this.addTicketSupport = this.fb.group({
+    this.addTicketSupportForm = this.fb.group({
       field: [0, Validators.required],
       codeRef: ['', Validators.maxLength(10)],
       message: ['', Validators.required]
     });
-    this.addTicketSupport.markAsUntouched();
+    this.addTicketSupportForm.markAsUntouched();
   }
 
   private clearDataForm(): void {

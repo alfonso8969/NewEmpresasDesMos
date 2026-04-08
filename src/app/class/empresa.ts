@@ -5,6 +5,7 @@ export class Empresa extends Descripcion {
   static SIN_DATOS: string = "sin datos";
 
   public Id!: number;
+  public id_user?: number;
   public Nombre: string;
   public CIF: string;
   public Sector: string;

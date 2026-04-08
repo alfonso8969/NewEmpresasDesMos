@@ -41,7 +41,7 @@
                       </mat-form-field>
                     </div>
                     <div class="example-header select">
-                      <form [formGroup]="selectSector" novalidate autocomplete="off" class="d-inline">
+                      <form [formGroup]="selectSectorForm" novalidate autocomplete="off" class="d-inline">
                         <mat-form-field appearance="fill" class="pc">
                           <mat-label>Seleccione sector</mat-label>
                           <mat-select formControlName="nombreSector" id="nombreSector" name="nombreSector" (selectionChange)="select()" required>

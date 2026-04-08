@@ -28,7 +28,7 @@
             <div class="form-body">
               <div class="row p-t-20">
                 <div class="col-md-6">
-                  <form [formGroup]="addTicketSupport" (ngSubmit)="addTicket()" novalidate autocomplete="off">
+                  <form [formGroup]="addTicketSupportForm" (ngSubmit)="addTicket()" novalidate autocomplete="off">
                     <div class="form-group">
                       <label for="field">* Seleccione de la lista el tema del ticket</label>
                       <select formControlName="field" name="field" id="field" class="form-control" title="field"
@@ -39,11 +39,11 @@
                         </option>
                       </select>
                       <span class="err text-danger"
-                        *ngIf="addTicketSupport.get('field')?.invalid && addTicketSupport.get('field')?.touched && addTicketSupport.get('field')?.value != 0">
+                        *ngIf="addTicketSupportForm.get('field')?.invalid && addTicketSupportForm.get('field')?.touched && addTicketSupportForm.get('field')?.value != 0">
                         El <strong>tema es</strong> requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="addTicketSupport.get('field')?.touched && addTicketSupport.get('field')?.value == 0">
+                        *ngIf="addTicketSupportForm.get('field')?.touched && addTicketSupportForm.get('field')?.value == 0">
                         El <strong>tema es</strong> requerido
                       </span>
                     </div>
@@ -60,17 +60,17 @@
                                    checkTicketExitCode.campo != undefined &&
                                    checkTicketExitCode.respondido == 0 &&
                                    checkTicketExitCode.campo != '' &&
-                                   addTicketSupport.get('codeRef')?.value != ''" class="text-success">Este ticket fue
+                                   addTicketSupportForm.get('codeRef')?.value != ''" class="text-success">Este ticket fue
                         enviado el {{ checkTicketExitCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</span>
                       <span class="err text-danger"
-                        *ngIf="addTicketSupport.get('codeRef')?.errors != null && addTicketSupport.get('codeRef')!.errors!['maxlength']">
+                        *ngIf="addTicketSupportForm.get('codeRef')?.errors != null && addTicketSupportForm.get('codeRef')!.errors!['maxlength']">
                         El <strong>limite es de 10 caracteres</strong>
                       </span>
                       <span *ngIf="checkTicketExitCode &&
                                    checkTicketExitCode.campo != undefined &&
                                    checkTicketExitCode.campo != '' &&
                                    checkTicketExitCode.respondido == 1 &&
-                                   addTicketSupport.get('codeRef')?.value != ''" class="text-danger">Este ticket fue
+                                   addTicketSupportForm.get('codeRef')?.value != ''" class="text-danger">Este ticket fue
                         enviado el {{ checkTicketExitCode.fecha | date: 'dd-MM-yyyy HH:mm:ss' }} y esta cerrado.</span>
                     </div>
 
@@ -80,26 +80,26 @@
                       <textarea formControlName="message" name="message" id="message" cols="100" rows="10"
                         class="form-control"></textarea>
                       <span
-                        *ngIf="addTicketSupport.get('message')?.value.length <= 500 && (addTicketSupport.get('message')?.value.length > 1 || addTicketSupport.get('message')?.value.length ==0)">
-                        {{ addTicketSupport.get('message')?.value.length }} caracteres de 500 permitidos</span>
+                        *ngIf="addTicketSupportForm.get('message')?.value.length <= 500 && (addTicketSupportForm.get('message')?.value.length > 1 || addTicketSupportForm.get('message')?.value.length ==0)">
+                        {{ addTicketSupportForm.get('message')?.value.length }} caracteres de 500 permitidos</span>
                       <span
-                        *ngIf="addTicketSupport.get('message')?.value.length <= 500 && addTicketSupport.get('message')?.value.length == 1">
-                        {{ addTicketSupport.get('message')?.value.length }} carácter de 500 permitidos</span>
+                        *ngIf="addTicketSupportForm.get('message')?.value.length <= 500 && addTicketSupportForm.get('message')?.value.length == 1">
+                        {{ addTicketSupportForm.get('message')?.value.length }} carácter de 500 permitidos</span>
                       <span class="err text-danger"
-                        *ngIf="addTicketSupport.get('message')?.invalid && addTicketSupport.get('message')?.touched && !addTicketSupport.get('message')!.errors!['maxlength']">
+                        *ngIf="addTicketSupportForm.get('message')?.invalid && addTicketSupportForm.get('message')?.touched && !addTicketSupportForm.get('message')!.errors!['maxlength']">
                         El <strong>mensaje es</strong> requerido
                       </span>
                       <span class="err text-danger"
-                        *ngIf="addTicketSupport.get('message')?.errors != null && addTicketSupport.get('message')!.errors!['maxlength']">
+                        *ngIf="addTicketSupportForm.get('message')?.errors != null && addTicketSupportForm.get('message')!.errors!['maxlength']">
                         El <strong>limite es de 500 caracteres</strong>
                       </span>
                     </div>
 
                     <div class="form-actions">
-                      <button type="submit" [disabled]="addTicketSupport.invalid || isDisabled() || checkTicketExitCode.respondido == 1"
+                      <button type="submit" [disabled]="addTicketSupportForm.invalid || isDisabled() || checkTicketExitCode.respondido == 1"
                         class="btn-primary button d-inline">
                         <span
-                          [matTooltip]="addTicketSupport.invalid || isDisabled() ? 'Faltan campos obligatorios' : checkTicketExitCode.respondido == 1 ? 'Ticket referencia cerrado, por favor cámbielo o bórrelo' : 'Elija enviar ticket'">Enviar
+                          [matTooltip]="addTicketSupportForm.invalid || isDisabled() ? 'Faltan campos obligatorios' : checkTicketExitCode.respondido == 1 ? 'Ticket referencia cerrado, por favor cámbielo o bórrelo' : 'Elija enviar ticket'">Enviar
                           ticket soporte
                         </span>
                         <i class="fa fa-save p-1"></i>
@@ -125,7 +125,7 @@
                           <li class="media">
                             <img [matTooltip]="(user.user_rol == 2 ?  'Usuario: ' : user.user_rol == 1 ? 'Administrador: ' : user.user_rol == 3 ? 'Super Administrador: ' : '' ) + user.user_name" class="d-flex mr-3"
                               [src]="user && user.user_img ? url + '/uploads/' + user.user_img : './assets/images/icon/staff.png'"
-                              width="100" [alt]="(user.user_rol == 2 ?  'Usuario: ' : user.user_rol == 1 ? 'Administrador: ' : user.user_rol == 3 ? 'Super Administrador: ' : '' ) + user.user_name">
+                              width="100" [alt]="(user.user_rol == 2 ?  'Usuario: ' : user.user_rol == 1 ? 'Administrador: ' : user.user_rol == 3 ? 'Super Administrador: ' : '' ) + user.user_name" alt="">
                             <div class="media-body">
                               <h5 class="mt-0 mb-1">Tema: {{ ticketByUser.campo }}</h5>
                               <h6 class="mt-0 mb-1">Fecha: {{ ticketByUser.fecha | date: 'dd-MM-yyyy HH:mm:ss' }}</h6>
@@ -156,7 +156,7 @@
                                   <img
                                     [src]="user && user.user_img ? url + '/uploads/' + ticketTratado.user_img : './assets/images/icon/staff.png'"
                                     width="100" height="100" [matTooltip]="'Técnico:' + ticketTratado.user_name"
-                                    [alt]="ticketTratado.user_name">
+                                    [alt]="ticketTratado.user_name" alt="">
                                 </a>
                                 <div class="media-body">
                                   <h5 class="mt-0">Fecha Respuesta: {{ ticketTratado.fecha | date: 'dd-MM-yyyy HH:mm:ss'

@@ -34,7 +34,7 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
   id: string;
   url: string;
 
-  selectSector: FormGroup;
+  selectSectorForm: FormGroup;
 
   displayedColumns: string[] = ['Nombre', 'Sector', 'Distrito', 'Poligono'];
   dataSource: MatTableDataSource<Empresa>;
@@ -67,7 +67,7 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
     let user_rol = Number(this.user?.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;
 
-    this.selectSector = this.fb.group({
+    this.selectSectorForm = this.fb.group({
       nombreSector: [0]
     });
 
@@ -106,7 +106,7 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
         console.log(this.filter);
         setTimeout(() => {
           this.applyFilter(this.filter);
-          this.selectSector.get('nombreSector')!.setValue(this.id);
+          this.selectSectorForm.get('nombreSector')!.setValue(this.id);
         }, 600);
       }
     });
@@ -127,7 +127,7 @@ export class ListCompaniesComponent implements OnInit, AfterViewInit {
   }
 
   public select(): void {
-    let sectorId = this.selectSector.get('nombreSector')?.value;
+    let sectorId = this.selectSectorForm.get('nombreSector')?.value;
     this.filterSended = false;
     let sector = this.sectores.filter((sec: Fields) => sec.sector_id == sectorId);
     this.dataSource.filter = sector.length > 0 ? sector[0].empresas_sector_name!.trim().toLowerCase() : '';

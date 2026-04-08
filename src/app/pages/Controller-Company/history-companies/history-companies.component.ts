@@ -37,8 +37,8 @@ export class HistoryCompaniesComponent implements OnInit {
               private userService: UsersService,
               private router: Router,
               private logService: LogsService) {
-                
-    this.log = this.logService.initLog()            
+
+    this.log = this.logService.initLog()
     this.user = this.userService.getUserLogged();
     let user_rol = Number(this.user?.user_rol);
     this.admin = user_rol === 1 || user_rol === 3 ? true : false;
@@ -53,6 +53,7 @@ export class HistoryCompaniesComponent implements OnInit {
       next: async (result: any) => {
         if (result != null) {
           this.empresasInHab = result.data;
+          console.log("empresasInHab", this.empresasInHab);
           this.empresasTmp = JSON.parse(JSON.stringify(this.empresasInHab));
         } else {
           alert("Hubo un error")
@@ -75,6 +76,7 @@ export class HistoryCompaniesComponent implements OnInit {
       next: async (result: any) => {
         if (result != null) {
           this.empresasHab = result.data;
+          console.log("empresasHab", this.empresasHab);
           this.empresasHabTmp = JSON.parse(JSON.stringify(this.empresasHab));
         } else {
           alert("Hubo un error")
